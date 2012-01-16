@@ -117,6 +117,21 @@ DOCUMENTATION
     if [ ! -s "$FILE" ]; then error "is size 0!" ; fi
 
     case "$EXTENSION" in
+      # Needs quite a rework, because this works something like bzip2.. double-extensions, decompresses in the same directory as the source, blah.
+      #xz)
+        ## probably test with something like..
+        ## touch 1 ; tar -cf 1.tar 1 ; bzip2 1.tar ; rm -f 1 ; mv 1.tar.bzip2 1.tbz2
+        #mcd "$BASENAME"
+        #xz --decompress ../"$FILE"
+        #tar -xvvf "$FILE"
+      #;;
+      #txz)
+        ## probably test with something like..
+        ## touch 1 ; tar -cf 1.tar 1 ; bzip2 1.tar ; rm -f 1 ; mv 1.tar.bzip2 1.tbz2
+        #mcd "$BASENAME"
+        #xz --decompress ../"$FILE"
+        #tar -xvvf "$FILE"
+      #;;
       tbz2)
         # probably test with something like..
         # touch 1 ; tar -cf 1.tar 1 ; bzip2 1.tar ; rm -f 1 ; mv 1.tar.bzip2 1.tbz2
@@ -178,7 +193,8 @@ DOCUMENTATION
       rar)
         # touch 1 ; rar a 1.rar 1 ; rm -f 1
         mcd "$BASENAME"
-        rar x ../"$FILE"
+#        rar x ../"$FILE"
+         unrar x ../"$FILE"
       ;;
       *)
         # TODO: If there's no period in the name, spit out another error.
