@@ -1,44 +1,65 @@
+todo() {
 # TODO: Distinctly identify debugging vs regular.  Maybe a simple colour change, or some text..?
 
-# ----
-# User Preferences
-# ----
+: <<TODO_LIST
+Also search this script for 'TODO:' and 'FIXME:'
 
-# Uncomment if you do not have an ANSI-capable terminal.
-# ANSI="no"
+- Implement versioning and a changelog.
 
-# Uncomment this if you don't want to have the timing of your script execution.
-# DATE="no"
-# Uses GNU coreutils' 'date'
-# http://www.gnu.org/software/coreutils/manual/coreutils.html#date-invocation
-# Note that this might be replacable with 'time', which gives more info.
+- Check all requirements in some way that doesn't require 'which'
 
-# EDITOR="/usr/bin/kwrite"
-EDITOR="/usr/bin/mousepad"
-EDITOR2="/usr/bin/geany"
-# EDITOR="/usr/bin/medit"
-# Note that if medit is already running in the background, to this script it will seem as though it exited immediately.
-# medit -n does not work.
-# TODO: Is there some way to force a process to the foreground?
+- Should I allow extensions like .bash or .zsh?
 
-# Uncomment this if you want to clear the terminal output each time your script is re-run.
-# CLEAR_SCREEN="yes"
+- make sure that $EDITOR exists, and is executable.
 
-# Uncomment this if you want this script to 'cd' into the directory your script resides in, each time it is run.
-# If not set, this script will 'cd' into your current working directory ($PWD) each time your script is run.
-# CD_SCRIPTDIR="yes"
+- This script could also do fun stuff:
+-- track the time spent.
+-- track the number of saves (successes vs failures, and a ratio)
+- I could spawn another process which will do the spinner activity and watch for the editor exit.  This could be thrown into a nice terminal window, a dialog/zenity dialogue or even a tray icon.
+TODO_LIST
+}
 
-# How long should the main loop routine wait before re-checking for a file change?
-# I thought this would impact system performance, but it doesn't even register.  "ls" must really be smart!
-# Change this if you need to!
-SLEEP="0.4s"
-
-# Uncomment if you don't want your script execution timed.
-# TIME="no"
-
-# Regularly re-check the file's permissions, to notice and attempt to correct permissions issues.
-# This may impact system performance.  If you suspect this, then uncomment this.
-# AGGRESSIVE_CHECK_AUTOTEST_FILE="no"
+user_preferences() {
+  # Uncomment if you do not have an ANSI-capable terminal.
+  # ANSI="no"
+  
+  # Uncomment this if you don't want to have the timing of your script execution.
+  # DATE="no"
+  # Uses GNU coreutils' `date`
+  # http://www.gnu.org/software/coreutils/manual/coreutils.html#date-invocation
+  # Note that this might be replacable with `time`, which gives more info.
+  # readlink
+  # basename
+  # TODO: I don't need basename if I just script it separately in zsh/bash..
+  
+  # EDITOR="/usr/bin/kwrite"
+  #EDITOR="/usr/bin/mousepad"
+  #EDITOR2="/usr/bin/geany"
+  # EDITOR="/usr/bin/medit"
+  # Note that if medit is already running in the background, to this script it will seem as though it exited immediately.
+  # medit -n does not work.
+  # TODO: Is there some way to force a process to the foreground?
+  
+  # Uncomment this if you want to clear the terminal output each time your script is re-run.
+  # CLEAR_SCREEN="yes"
+  
+  # Uncomment this if you want this script to 'cd' into the directory your script resides in, each time it is run.
+  # If not set, this script will 'cd' into your current working directory ($PWD) each time your script is run.
+  # CD_SCRIPTDIR="yes"
+  
+  # How long should the main loop routine wait before re-checking for a file change?
+  # I thought this would impact system performance, but it doesn't even register.  "ls" must really be smart!
+  # Change this if you need to!
+  SLEEP="0.4s"
+  
+  # Uncomment if you don't want your script execution timed.
+  # TIME="no"
+  
+  # Regularly re-check the file's permissions, to notice and attempt to correct permissions issues.
+  # This may impact system performance.  If you suspect this, then uncomment this.
+  # AGGRESSIVE_CHECK_AUTOTEST_FILE="no"
+}
+user_preferences
 
 usage() {
 cat<<USAGE
@@ -92,29 +113,11 @@ Requirements:  (all of which should be on all systems)
 USAGE
 }
 
-: <<TODO_LIST
-Also search this script for 'TODO:' and 'FIXME:'
-
-- Implement versioning and a changelog.
-
-- Check all requirements in some way that doesn't require 'which'
-
-- Should I allow extensions like .bash or .zsh?
-
-- make sure that $EDITOR exists, and is executable.
-
-- This script could also do fun stuff:
--- track the time spent.
--- track the number of saves (successes vs failures, and a ratio)
-- I could spawn another process which will do the spinner activity and watch for the editor exit.  This could be thrown into a nice terminal window, a dialog/zenity dialogue or even a tray icon.
-TODO_LIST
-
-# ----
-# Setup
-# ----
-
-MYSHELL=$(\basename $(\readlink /proc/$$/exe))
-ORIGINAL_PWD="$PWD"
+setup() {
+  MYSHELL=$( \basename $( \readlink /proc/$$/exe ) )
+  ORIGINAL_PWD="$PWD"
+}
+setup
 
 spinner() {
   # TODO: Implement sanity-checking then export this elsewhere so that this code can be used elsewhere.
@@ -130,11 +133,12 @@ spinner() {
       ((SPINNER++))
     ;;
     1)
-      \echo -en $GREEN ; \echo -n '\'
+      # CHECKME: One backslash was causing issues with syntax colouring.  Hopefully this works..
+      \echo -en $GREEN ; \echo -n "\\"
       ((SPINNER++))
     ;;
     2)
-      \echo -en $GREEN ; \echo -n '|'
+      \echo -en "$GREEN" ; \echo -n '|'
       ((SPINNER++))
     ;;
     3)
@@ -161,9 +165,9 @@ ansi_echo() {
   fi
 }
 
-# TODO: Allow parameters to be passed to only perform certain checks.  Then export this to make it a universal procedure.
-#   Then also have specific error codes for failing to correct certain checks.
 check_file() {
+  # TODO: Allow parameters to be passed to only perform certain checks.  Then export this to make it a universal procedure.
+  #   Then also have specific error codes for failing to correct certain checks.
   AUTOTEST_FILE="$1"
   until [ ! -d "$AUTOTEST_FILE" ] && [ "$AUTOTEST_FILE" != "" ] ; do
     \echo "That is a directory:  $AUTOTEST_FILE"
@@ -396,87 +400,157 @@ run_script() {
 
 }
 
-# ----
-# Main Routine:  Startup
-# ----
+main_foreground() {
+  until [ "MAIN_ROUTINE" = "finished" ]; do
+    AUTOTEST_FILE=$( \readlink --canonicalize "$1" )
 
-until [ "MAIN_ROUTINE" = "finished" ]; do
-  # TODO:  Parameter checking
-  if [ "$1" = "" ]; then usage ; break ; fi
+    check_file "$AUTOTEST_FILE"
+    if [ ! $? = "0" ]; then break ; fi
 
-  AUTOTEST_FILE=$(readlink --canonicalize "$1")
+    get_file_ext "$AUTOTEST_FILE"
+    if [ ! $? = "0" ]; then break ; fi
+
+    get_file_time "$AUTOTEST_FILE"
+    if [ ! $? = "0" ]; then break ; fi
+
+    NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
+  
+    # Launch the editor
+  #   "nohup" "$EDITOR" "$AUTOTEST_FILE" 2>/dev/null& ; RESULT="$?"
+    #\exec "$EDITOR" "$AUTOTEST_FILE" &
+    # Fuck the configurability, let's do this manually..
+    \geany --new-instance "$AUTOTEST_FILE" &
+    RESULT="$?"
+    if [ ! "$RESULT" = "0" ]; then
+      \echo "Unable to launch editor:  $EDITOR"
+      return 1
+    fi
+    # Capture the PID so I can know when the application has exited.
+    EDITORPID=$!
+    #exec "$EDITOR2" "$AUTOTEST_FILE" &
+  
+    # ----
+    # Main Routine:  The file change checking loop
+    # ----
+    # Note that I'm still in MAIN_ROUTINE.  This is so that all the earlier procedures can still be relied upon to break out of the whole script, even during operation.  This is a good idea in case things go awry during operation (permissions change, the filesystem unmounts, etc).
+  
+    until [ "MAIN_ROUTINE_LOOP" = "finished" ]; do
+  
+    # Check the file
+    # This is run every iteration of the main loop to see if the fundamental permissions of the script being edited change during operation.
+      if [ ! "$AGGRESSIVE_CHECK_AUTOTEST_FILE" = "no" ]; then
+       check_file "$AUTOTEST_FILE"
+        if [ $? -ne 0 ]; then \echo "check_file failed, aborting" ; break ; fi
+      fi
+  
+      # Status
+      if [ "$ANSI" = "no" ]; then
+        \echo "."
+        "sleep" "$SLEEP"
+      else
+        # spinner: save cursor position
+        \echo -n -e "\033[s"
+        spinner
+        "sleep" "$SLEEP"
+        # spinner: restore cursor position
+        \echo -n -e "\033[u"
+      fi
+  
+      # Check to see if the file has changed.  If so, run it.
+      get_file_time "$AUTOTEST_FILE"
+      if [ ! "$NEW_AUTOTEST_FILE_TIME" = "$AUTOTEST_FILE_TIME" ] && [ -s "$AUTOTEST_FILE" ]; then
+        NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
+        run_script "$AUTOTEST_FILE"
+      fi
+  
+      # Is the editor is still running?
+      # I could have used kill, but I prefer readlink because it's smaller.
+      # kill -0 $EDITORPID 2> /dev/null
+      # Interesting how --quiet and --silent don't work, and the name of the executable keeps being echoed on each iteration.  I wonder if this is a bug, because it's certainly unexpected.  But then again, GNU is all about difficult programs with unexpected results.  They are generally anti-POLS (principle of least surprise).
+      \readlink /proc/"$EDITORPID"/exe > /dev/null ; RESULT="$?"
+      if [ ! "$RESULT" = "0" ]; then
+        ansi_echo "The editor exited.  This concludes autotest."
+        # TODO:  If I can figure out how to set the terminal title, I could match that with wmctrl and focus to it like so:
+        # wmctrl -F -a "$title"
+        # TODO:  I could clean up temporary files or perform actions.  Implement a per-language cleanup.
+        break # MAIN_LOOP
+      fi
+    done
+  
+    break # MAIN_ROUTINE
+  done
+}
+main_background() {
+  PID_FILE="$TMP/$( \basename "$0" )".$$.lock
+  echo . >> "$PID_FILE"
 
   check_file "$AUTOTEST_FILE"
   if [ ! $? = "0" ]; then break ; fi
+  # Launch it automatically.
+  run_script "$AUTOTEST_FILE"
 
-  get_file_ext "$AUTOTEST_FILE"
-  if [ ! $? = "0" ]; then break ; fi
+#-----------
 
-  get_file_time "$AUTOTEST_FILE"
-  if [ ! $? = "0" ]; then break ; fi
-  NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
+  until [ "MAIN_ROUTINE" = "finished" ]; do
+    AUTOTEST_FILE=$( \readlink --canonicalize "$1" )
 
-  # Launch the editor
-#   "nohup" "$EDITOR" "$AUTOTEST_FILE" 2>/dev/null& ; RESULT="$?"
-  exec "$EDITOR" "$AUTOTEST_FILE" &
-  RESULT="$?"
-  # Did it work?
-  if [ ! "$RESULT" = "0" ]; then break ; fi
-  # Capture the PID so I can know when the application has exited.
-  EDITORPID=$!
-  exec "$EDITOR2" "$AUTOTEST_FILE" &
+    check_file "$AUTOTEST_FILE"
+    if [ ! $? = "0" ]; then break ; fi
 
-  # ----
-  # Main Routine:  The file change checking loop
-  # ----
-  # Note that I'm still in MAIN_ROUTINE.  This is so that all the earlier procedures can still be relied upon to break out of the whole script, even during operation.  This is a good idea in case things go awry during operation (permissions change, the filesystem unmounts, etc).
+    get_file_ext "$AUTOTEST_FILE"
+    if [ ! $? = "0" ]; then break ; fi
 
-  until [ "MAIN_ROUTINE_LOOP" = "finished" ]; do
-
-  # Check the file
-  # This is run every iteration of the main loop to see if the fundamental permissions of the script being edited change during operation.
-    if [ ! "$AGGRESSIVE_CHECK_AUTOTEST_FILE" = "no" ]; then
-     check_file "$AUTOTEST_FILE"
-      if [ $? -ne 0 ]; then \echo "check_file failed, aborting" ; break ; fi
-    fi
-
-    # Status
-    if [ "$ANSI" = "no" ]; then
-      \echo "."
-      "sleep" "$SLEEP"
-    else
-      # spinner: save cursor position
-      \echo -n -e "\033[s"
-      spinner
-      "sleep" "$SLEEP"
-      # spinner: restore cursor position
-      \echo -n -e "\033[u"
-    fi
-
-    # Check to see if the file has changed.  If so, run it.
     get_file_time "$AUTOTEST_FILE"
-    if [ ! "$NEW_AUTOTEST_FILE_TIME" = "$AUTOTEST_FILE_TIME" ] && [ -s "$AUTOTEST_FILE" ]; then
-      NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
-      run_script "$AUTOTEST_FILE"
-    fi
+    if [ ! $? = "0" ]; then break ; fi
 
-    # Is the editor is still running?
-    # I could have used kill, but I prefer readlink because it's smaller.
-    # kill -0 $EDITORPID 2> /dev/null
-    # Interesting how --quiet and --silent don't work, and the name of the executable keeps being echoed on each iteration.  I wonder if this is a bug, because it's certainly unexpected.  But then again, GNU is all about difficult programs with unexpected results.  They are generally anti-POLS (principle of least surprise).
-    \readlink /proc/"$EDITORPID"/exe > /dev/null ; RESULT="$?"
-    if [ ! "$RESULT" = "0" ]; then
-      ansi_echo "The editor exited.  This concludes autotest."
-      # TODO:  If I can figure out how to set the terminal title, I could match that with wmctrl and focus to it like so:
-      # wmctrl -F -a "$title"
-      # TODO:  I could clean up temporary files or perform actions.  Implement a per-language cleanup.
-      break # MAIN_LOOP
-    fi
+    NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
+  
+    # ----
+    # Main Routine:  The file change checking loop
+    # ----
+    # Note that I'm still in MAIN_ROUTINE.  This is so that all the earlier procedures can still be relied upon to break out of the whole script, even during operation.  This is a good idea in case things go awry during operation (permissions change, the filesystem unmounts, etc).
+    until [ "MAIN_ROUTINE_LOOP" = "finished" ]; do
+  
+    # Check the file
+    # This is run every iteration of the main loop to see if the fundamental permissions of the script being edited change during operation.
+      if [ ! "$AGGRESSIVE_CHECK_AUTOTEST_FILE" = "no" ]; then
+       check_file "$AUTOTEST_FILE"
+        if [ $? -ne 0 ]; then \echo "check_file failed, aborting" ; break ; fi
+      fi
+  
+      # Check to see if the file has changed.  If so, run it.
+      get_file_time "$AUTOTEST_FILE"
+      if [ ! "$NEW_AUTOTEST_FILE_TIME" = "$AUTOTEST_FILE_TIME" ] && [ -s "$AUTOTEST_FILE" ]; then
+        NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
+        run_script "$AUTOTEST_FILE"
+      fi
+
+      if [ ! -f $PID_FILE ]; then
+        break # MAIN_LOOP
+      fi
+
+    done
+  
+    break # MAIN_ROUTINE
   done
 
-  break # MAIN_ROUTINE
-done
 
-:<<ENDNOTES
 
-ENDNOTES
+
+
+}
+main() {
+if [ "$1" = "" ]; then
+  usage
+  return 1
+fi
+if [ "$2" = "" ]; then
+  main_foreground $@
+elif [ "$2" = "-bg" ]; then
+  main_background $@
+else
+  usage
+  return 1
+fi
+}
+main $@
