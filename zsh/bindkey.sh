@@ -1,4 +1,4 @@
-# Happy on Ubuntu 10.10, updated 2011-03-19.
+# FIXME:  This is generally borked and needs a complete rework.  It could just be my use of aterm.  Test!
 
 # NOTE: It's control-v and a key combination to learn the binding.
 
