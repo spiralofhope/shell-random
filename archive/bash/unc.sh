@@ -11,11 +11,11 @@ Note:  Scan this file for other misc. 'TODO' items.
 - Complete some documentation
 - Consider other archivers
 - Build a full list of archivers in here, and list the tested version numbers, testing date and author/website ?
-- After un-archiving, detect if the archiver made its own directory of name $BASENAME - or if there is only one directory and nothing else - and if true, then move all the contents of that one directory into self and remove that directory.
 
 -------
 History
 -------
+0.1.1, 2009-03-29 -- Since most filename.tar.gz will create "filename" already, detect it and avoid the duplicate directory structure.
 0.1.0, 2009-03-25 -- First successful beta, thanks to figuring "break" out.
 COMMENTBLOCK
 
@@ -171,6 +171,28 @@ DOCUMENTATION
         echo "I don't know how to handle a $EXTENSION"
       ;;
     esac
+
+    # 0.1.1 - Since most filename.tar.gz will create "filename" already, detect it and avoid the duplicate directory structure.
+    if [ -d ./$BASENAME ]; then
+      for i in *; do
+        if [ "$i" = $BASENAME ]; then
+          :
+        elif [ ! "$i" = $BASENAME ]; then
+          FILEEXISTS=yes
+        else
+          echo Eek!
+        fi
+      done
+      if [ "$FILEEXISTS" = "yes" ]; then
+        :
+      elif [ ! "$FILEEXISTS" = "yes" ]; then
+        shopt -s dotglob
+        mv $BASENAME/* ./
+        rmdir $BASENAME
+      else
+        echo Eek!
+      fi
+    fi
 
     # End of the breakable main body.  And since I only want to iterate once, break!
     break
