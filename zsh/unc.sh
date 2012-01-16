@@ -1,30 +1,11 @@
 unc() {
-
-VERSION="0.1.6, 2011-09-15"
 : <<'COMMENTBLOCK'
-
-----
-Todo
-----
-Note:  Scan this file for other misc. 'TODO' items.
-
-- Complete some documentation
-- Consider other archivers
-- Build a full list of archivers in here, and list the tested version numbers, testing date and author/website ?
-
--------
-History
--------
-0.1.6, 2011-09-15 -- added .7z support.
-0.1.5, no clue but it was different so I backed it up.
-0.1.4, 2010-04-20 -- added .tbz2 support
-0.1.3, 2009-05-22 -- I wasn't properly quoting variables, giving unexpected results with files with spaces in their name.
-0.1.2, 2009-05-16 -- added .tgz support
-0.1.1, 2009-03-29 -- Since most filename.tar.gz will create "filename" already, detect it and avoid the duplicate directory structure.
-0.1.0, 2009-03-25 -- First successful beta, thanks to figuring "break" out.
+TODO:  Complete some documentation
+TODO:  Consider other archivers
+TODO:  Build a full list of archivers in here, and list the tested version numbers, testing date and author/website ?
+TODO:  Use the existing colour functionality I've already made.  Check if the functionality found within here ought to be imported into that other work.
 COMMENTBLOCK
 
-  # TODO: Put some of this crap in another script somewhere, then use 'source filename.sh'?  (test)
 
   reset_colour() {
     # darkgrey on black
