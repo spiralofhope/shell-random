@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # TODO:  Needs to be tested for a video with mp3 audio.  I don't need to unravel and transcode it.  video => mp3 => wav => mp3 is just stupid.
 
 # Tested and works for an AAC-audio video, like with most music videos on YouTube.
