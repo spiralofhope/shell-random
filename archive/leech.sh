@@ -81,3 +81,49 @@ done
 #--------------------------------------------------------------------
 : <<HERE_DOCUMENT
 
+This is the content of another leech.sh found elsewhere.  Here for reference.
+TODO:  Absorb this into the existing downloader.
+
+
+
+:<< TODO
+check out 'dog' .. if I could find it.  =/
+    $ dog --images http://www.dvdownload.nl
+    http://www.dvddownload.nl/site/3821/front/w150/long_time_since.jpg
+    http://www.dvddownload.nl/site/3822/front/w150/the_confidence_man.jpg
+    http://www.dvddownload.nl/site/3823/front/w150/body_puzzle.jpg
+    http://www.dvddownload.nl/site/3824/front/w150/betty.jpg
+    http://www.dvddownload.nl/site/3826/front/w150/perfect_lover.jpg
+    http://www.dvdownload.nl/'images/spacer.gif'
+    http://www.dvdownload.nl/images/spacer.gif
+    http://www.dvdownload.nl/images/top.gif
+
+
+
+- Make another script which will normalize directories by appending zeroes.  I need to be able to say dirst= or files="001..010" in some nice way.
+  - This is easy to do with something like:  rename 's//0/' ??
+- Extend this to add a description to each file, with the download location.
+  - Not very important, since I create a directory tree.
+TODO
+
+dir_before="http://example.com/dir/"
+dirs="1..2"
+dir_after="/"
+
+file_before=""
+files="1..1"
+file_after=".wmv"
+
+
+ROOT="/l/Downloads/leeched/"
+cd $ROOT
+
+for i in {$dirs}; do
+  for j in {$files}; do
+    referrer="$dir_before""$i""$dir_after"
+    file="$dir_before""$i""$dir_after""$file_before""$j""$file_after"
+    echo $file
+    # --force-directories will build a nice directory tree for me.  Sweet.
+    wget --no-verbose --force-directories --continue --referrer="$referrer" $file
+  done
+done
