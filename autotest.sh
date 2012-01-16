@@ -1,8 +1,12 @@
+#!/usr/bin/env zsh
+
 todo() {
 # TODO: Distinctly identify debugging vs regular.  Maybe a simple colour change, or some text..?
 
 : <<TODO_LIST
 Also search this script for 'TODO:' and 'FIXME:'
+
+- host on github
 
 - Implement versioning and a changelog.
 
@@ -16,13 +20,17 @@ Also search this script for 'TODO:' and 'FIXME:'
 -- track the time spent.
 -- track the number of saves (successes vs failures, and a ratio)
 - I could spawn another process which will do the spinner activity and watch for the editor exit.  This could be thrown into a nice terminal window, a dialog/zenity dialogue or even a tray icon.
+
+- Consider making an autotest.sh.ini file to make things more user-serviceable.
+
+- Perhaps separate out all the specific filetype handling stuff into separate .sh or .ini files?  I don't know if that would actually make things more maintainable..
 TODO_LIST
 }
 
 user_preferences() {
   # Uncomment if you do not have an ANSI-capable terminal.
   # ANSI="no"
-  
+
   # Uncomment this if you don't want to have the timing of your script execution.
   # DATE="no"
   # Uses GNU coreutils' `date`
@@ -31,7 +39,7 @@ user_preferences() {
   # readlink
   # basename
   # TODO: I don't need basename if I just script it separately in zsh/bash..
-  
+
   # EDITOR="/usr/bin/kwrite"
   #EDITOR="/usr/bin/mousepad"
   #EDITOR2="/usr/bin/geany"
@@ -39,22 +47,22 @@ user_preferences() {
   # Note that if medit is already running in the background, to this script it will seem as though it exited immediately.
   # medit -n does not work.
   # TODO: Is there some way to force a process to the foreground?
-  
+
   # Uncomment this if you want to clear the terminal output each time your script is re-run.
   # CLEAR_SCREEN="yes"
-  
+
   # Uncomment this if you want this script to 'cd' into the directory your script resides in, each time it is run.
   # If not set, this script will 'cd' into your current working directory ($PWD) each time your script is run.
   # CD_SCRIPTDIR="yes"
-  
+
   # How long should the main loop routine wait before re-checking for a file change?
   # I thought this would impact system performance, but it doesn't even register.  "ls" must really be smart!
   # Change this if you need to!
   SLEEP="0.4s"
-  
+
   # Uncomment if you don't want your script execution timed.
   # TIME="no"
-  
+
   # Regularly re-check the file's permissions, to notice and attempt to correct permissions issues.
   # This may impact system performance.  If you suspect this, then uncomment this.
   # AGGRESSIVE_CHECK_AUTOTEST_FILE="no"
@@ -62,25 +70,38 @@ user_preferences() {
 user_preferences
 
 usage() {
-cat<<USAGE
+\cat <<'HEREDOC'
 USE:
 autotest "filename"
 autotest /path/to/file.sh
 
+switches:
+-bg         some sort of background thingy (to re-test)
+--nodebug   do not re-run if a non-0 exit code is returned from the first run
+
 Supported file types:
-*.sh (bash, zsh)
+.sh  - bash, zsh
   http://www.gnu.org/software/bash/bash.html
   http://www.zsh.org/
-*.boo (boo programming language)
+.boo - boo programming language
   http://boo.codehaus.org/
-.py (Python programming language)
+.my  - Mythryl programming language
+  http://mythryl.org/
+  With this script, the top shebang is optional.
+.py  - Python programming language
   http://www.python.org/
-*.rb (Ruby programming language)
+.rb  - Ruby programming language
   http://ruby-lang.org/
+.rb  - Ruby programming language using the Shoes GUI toolkit with a .rb extension
+  http://ruby-lang.org/
+  http://shoesrb.com/
+.shy - Ruby programming language, Shoes GUI toolkit
+  http://ruby-lang.org/
+  http://shoesrb.com/
 Note that other programming languages won't be too hard to add.
 
-Then script to your hearts content, and every time you save it, it'll be
-automatically run so you can make sure you're doing ok.
+Then script to your heart's content, and every time you save it,
+it'll be automatically run so you can make sure you're doing ok.
 
 Perfect for people like me who save a *lot* but don't test enough. =)
 
@@ -95,64 +116,78 @@ Requirements:  (all of which should be on all systems)
     'basename'
       http://www.gnu.org/software/coreutils/manual/coreutils.html#basename-invocation
         Alternates: 'cut' or with shell functionality.
-    'cut'
+    `cat`
+      http://www.gnu.org/software/coreutils/manual/coreutils.html#cat-invocation
+        Alternates: Probably shell functionality.  Perhaps just zsh.
+    `cut`
       http://www.gnu.org/software/coreutils/manual/coreutils.html#cut-invocation
       I used to be able to do this with bash/zsh internals, but now it's not possible.  Odd.
-    'dirname'
+    `dirname`
         http://www.gnu.org/software/coreutils/manual/coreutils.html#dirname-invocation
         Alternates: 'cut' or with shell functionality.
-    'nohup'
+    `grep`
+        Alternates: Probably zsh shell functionality.
+    `nohup`
         http://www.gnu.org/software/coreutils/manual/coreutils.html#nohup-invocation
         I don't think there are alternatives.  I tried some other methods, but they don't seem to work.
-    'readlink'
+    `readlink`
         http://www.gnu.org/software/coreutils/manual/coreutils.html#readlink-invocation
         Alternates:  'ps', or some funky scripting to check /proc
-    'sleep'
+    `sleep`
         http://www.gnu.org/software/coreutils/manual/coreutils.html#sleep-invocation
         Alternates:  Shell functionality or another program/method.
-USAGE
+
+TODO:  `head` is used by .my
+
+`chmod`
+
+HEREDOC
 }
 
 setup() {
   MYSHELL=$( \basename $( \readlink /proc/$$/exe ) )
   ORIGINAL_PWD="$PWD"
+  \pushd
+  \cd /l/Linux/bin/zsh/
+  \source colours.sh
+  \popd
 }
 setup
 
 spinner() {
+  if [ -z $SPINNER ]; then return 0 ; fi
+  # FIXME?  This doesn't handle a resized terminal window very well.  It should re-check / re-set its position somehow.
   # TODO: Implement sanity-checking then export this elsewhere so that this code can be used elsewhere.
-  if [ "$SPINNER" = "" ]; then SPINNER=0 ; fi
   # Traditional bar-spinner with these characters: -\|/
   # Another idea:  .oO0Oo
-  GREEN="\x1b\x5b0;32;40m"
-  LGREY="\x1b\x5b0;37;40m"
   # I could use printf, but I'd rather use echo.
-  case "$SPINNER" in
+  case $SPINNER in
     0)
-      \echo -en $GREEN ; \echo -en "\055"
-      ((SPINNER++))
+      \echo -e -n "${green}\055${reset}"
+      SPINNER=1
     ;;
     1)
       # CHECKME: One backslash was causing issues with syntax colouring.  Hopefully this works..
-      \echo -en $GREEN ; \echo -n "\\"
-      ((SPINNER++))
+      \echo -e -n "${green}\\${reset}"
+      SPINNER=2
     ;;
     2)
-      \echo -en "$GREEN" ; \echo -n '|'
-      ((SPINNER++))
+      \echo -e -n "${green}|${reset}"
+      SPINNER=3
     ;;
     3)
-      \echo -en $GREEN ; \echo -n '/'
-      ((SPINNER++))
+      \echo -e -n "${green}/${reset}"
+      SPINNER=0
     ;;
     *)
-      SPINNER="0"
+      echo "${red}Odd error, SPINNER was out of range:${reset} \"${SPINNER}\""
+      SPINNER=0
       spinner
     ;;
   esac
   # Restore the colour in case there is some output that interrupts the spinner.
   # TODO: Figure out how to save the original foreground/background colours and restore them here..
-  \echo -en $LGREY
+  \echo -e -n ${reset}
 }
 
 ansi_echo() {
@@ -232,16 +267,19 @@ check_file() {
 
 get_file_ext() {
   AUTOTEST_FILE="$1"
+  AUTOTEST_DIR=`dirname "$AUTOTEST_FILE"`
   # 1.tar.bz2 => tar.bz2 (good, but...)
   #   it also does 1.test.test.tar.bz2 => test.test.tar.bz2 (bad idea!)
   # EXT=${AUTOTEST_FILE#*.}
   # 1.tar.bz2 => bz2 (better!)
   # Is this problematic code for other shells?
   EXT=${AUTOTEST_FILE##*.}
+  # Something like this is possible with zsh, but I never figured it out:
+  #EXT=${AUTOTEST_FILE:t}
 
   #Based on the extension, set up the pre/post execution routines.
   case "$EXT" in
-    "boo")
+    "boo") # Boo programming language
       # I know this looks convoluted, but booc cannot be sent a non-useful parameter (unset/empty, or a blank space, etc)
       DUCKY="$AUTOTEST_FILE"
       execute() {
@@ -264,7 +302,7 @@ get_file_ext() {
       }
       return 0
     ;;
-    "py")
+    "py") # Python programming language
       execute() {
         \python "$AUTOTEST_FILE" ; RESULT="$?"
       }
@@ -273,16 +311,98 @@ get_file_ext() {
       }
       return 0
     ;;
-    "rb")
+    "rb") # Ruby programming language
+      # Check if it's a shoes script
+      \cat "$AUTOTEST_FILE" | \grep -q "Shoes.app" ; RESULT="$?"
+      if [ $RESULT = 1 ]; then
+        # Ruby programming language
+        execute() {
+          \ruby "$AUTOTEST_FILE" ; RESULT="$?"
+        }
+        execute_with_debugging() {
+          if [ "x${DEBUG}" != "xfalse" ]; then
+            \ruby --debug "$AUTOTEST_FILE" ; RESULT="$?"
+          fi
+        }
+      else
+        # Ruby programming language, Shoes GUI toolkit
+        execute() {
+          ~/shoes/dist/shoes "$AUTOTEST_FILE" ; RESULT="$?"
+        }
+        execute_with_debugging() {
+          ~/shoes/dist/shoes "$AUTOTEST_FILE" ; RESULT="$?"
+        }
+      fi
+      return 0
+    ;;
+    "shy") # Ruby programming language, Shoes GUI toolkit
       execute() {
-        \ruby "$AUTOTEST_FILE" ; RESULT="$?"
+        ~/shoes/dist/shoes "$AUTOTEST_FILE" ; RESULT="$?"
       }
       execute_with_debugging() {
-        \ruby --debug "$AUTOTEST_FILE" ; RESULT="$?"
+        ~/shoes/dist/shoes "$AUTOTEST_FILE" ; RESULT="$?"
       }
       return 0
     ;;
-    "sh")
+    "my") # Mythryl programming language
+      execute() {
+        #/usr/bin/mythryl: '/mnt/ssd/projects/mythryl/tutorial.my' is not a valid script!
+        #/usr/bin/mythryl should only be invoked via ''#!...'' line in a script!
+        #/usr/bin/mythryl "$AUTOTEST_FILE" ; RESULT="$?"
+        # Check for the shebang
+        local head="`\head --lines=1 \"$AUTOTEST_FILE\"`"
+        local mythryl_shebang="#!/usr/bin/mythryl"
+        if ! [[ $head == $mythryl_shebang ]]; then
+          #\echo "no shebang?"
+          # No shebang?  Add one.
+          # Also add braces, since I was probably lazy about that.
+          # TODO:  Check if I already had braces?  Meh.
+          local mythryl_file="${AUTOTEST_DIR}/mythryl_shebanged.my"
+          \echo $mythryl_shebang > $mythryl_file
+          \echo                 >> $mythryl_file
+          \echo "{"             >> $mythryl_file
+          \cat "$AUTOTEST_FILE" >> $mythryl_file
+          \echo                 >> $mythryl_file
+          \echo "};"            >> $mythryl_file
+          \chmod +x $mythryl_file
+          "$mythryl_file" ; RESULT="$?"
+          \rm --force $mythryl_file
+        else
+          #\echo "found a shebang"
+          "$AUTOTEST_FILE" ; RESULT="$?"
+        fi
+
+        # I can't fathom why they throw 1 on success and 0 on failure.
+        if [ $RESULT = 1 ]; then
+          RESULT=0
+        else
+          if [ $RESULT = 0 ]; then
+            RESULT=1
+          fi
+        fi
+        # Since I can't figure debugging out, I'm going to hard-code success.
+        RESULT=0
+        \rm --force \
+          "$AUTOTEST_DIR"/main.log~ \
+          "$AUTOTEST_DIR"/mythryl.COMPILE_LOG \
+          "$AUTOTEST_DIR"/read-eval-print-loop.log~
+      }
+      execute_with_debugging() {
+        # TODO:  Deal with the shebang issue here too, when I figure debugging out.
+        "$AUTOTEST_FILE"
+
+        \echo "TODO: I don't know how to invoke debugging, if such a thing exists."
+        # These aren't actually useful.
+        #\cat "$AUTOTEST_DIR"/main.log~
+        #\cat "$AUTOTEST_DIR"/read-eval-print-loop.log~
+        \rm --force \
+          "$AUTOTEST_DIR"/main.log~ \
+          "$AUTOTEST_DIR"/read-eval-print-loop.log~
+      }
+      return 0
+    ;;
+    "sh") # *nix shell scripting languages
+      if [ "x$MYSHELL" = "xzsh4" ]; then MYSHELL="zsh"; fi
       case "$MYSHELL" in
         "bash")
           execute() {
@@ -361,43 +481,46 @@ run_script() {
   RESULT=0
 
   run_script_main() {
-    AUTOTEST_FILE="$1"
-    if [ "$CLEAR_SCREEN" = "yes" ]; then clear; fi
-    if [ "$CD_SCRIPTDIR" = "yes" ]; then
-      \cd `"dirname" "$AUTOTEST_FILE"`
+    if [ "$RESULT" != "0" ] && [ "x${DEBUG}" != "false" ]; then
+      # nothing
     else
-      \cd "$ORIGINAL_PWD"
-    fi
+      AUTOTEST_FILE="$1"
+      if [ "$CLEAR_SCREEN" = "yes" ]; then clear; fi
+      if [ "$CD_SCRIPTDIR" = "yes" ]; then
+        \cd `"dirname" "$AUTOTEST_FILE"`
+      else
+        \cd "$ORIGINAL_PWD"
+      fi
 
-    if [ ! "$TIME" = "no" ]; then
-      # TODO : use 'time' to time it.  I'm not sure how, since I want to grab the result from the original program.
-      TIMESTAMP_BEGIN=`date +%s`
-    fi
-    ansi_echo "--+ begin" `date` "+--"
+      if [ ! "$TIME" = "no" ]; then
+        # TODO : use 'time' to time it.  I'm not sure how, since I want to grab the result from the original program.
+        TIMESTAMP_BEGIN=`date +%s`
+      fi
+      ansi_echo "--+ begin" `date` "+--"
 
-    if [ "$RESULT" = "0" ]; then
-      execute
-    else
-      execute_with_debugging
-    fi
+      if [ "$RESULT" = "0" ]; then
+        execute
+      else
+        execute_with_debugging
+      fi
 
-    ansi_echo "--+ end [$RESULT]" `date` "+--"
-    if [ ! "$TIME" = "no" ]; then
-      TIMESTAMP_END=`date +%s`
-      \echo "$(($TIMESTAMP_END - $TIMESTAMP_BEGIN)) seconds"
-      # TODO: Detect if it's appropriate to list in minutes, then display in mm:ss
-      #   Maybe also do hh:mm:ss, oh hell.. do yy:dd:mm:ss for kicks!
+      ansi_echo "--+ end [$RESULT]" `date` "+--"
+      if [ ! "$TIME" = "no" ]; then
+        TIMESTAMP_END=`date +%s`
+        \echo "$(($TIMESTAMP_END - $TIMESTAMP_BEGIN)) seconds"
+        # TODO: Detect if it's appropriate to list in minutes, then display in mm:ss
+        #   Maybe also do hh:mm:ss, oh hell.. do yy:dd:mm:ss for kicks!
+      fi
+      # Give a little breathing room, so you can see better.
+      \echo ""
+      \echo ""
     fi
-    # Give a little breathing room, so you can see better.
-    \echo ""
-    \echo ""
   }
 
   run_script_main "$AUTOTEST_FILE"
   # If it fails, re-run it.
   # It'll see the non-zero $RESULT and run execute_with_debugging
   if [ ! "$RESULT" = "0" ]; then run_script_main "$AUTOTEST_FILE" ; fi
-
 }
 
 main_foreground() {
@@ -414,7 +537,7 @@ main_foreground() {
     if [ ! $? = "0" ]; then break ; fi
 
     NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
-  
+
     # Launch the editor
   #   "nohup" "$EDITOR" "$AUTOTEST_FILE" 2>/dev/null& ; RESULT="$?"
     #\exec "$EDITOR" "$AUTOTEST_FILE" &
@@ -428,21 +551,21 @@ main_foreground() {
     # Capture the PID so I can know when the application has exited.
     EDITORPID=$!
     #exec "$EDITOR2" "$AUTOTEST_FILE" &
-  
+
     # ----
     # Main Routine:  The file change checking loop
     # ----
     # Note that I'm still in MAIN_ROUTINE.  This is so that all the earlier procedures can still be relied upon to break out of the whole script, even during operation.  This is a good idea in case things go awry during operation (permissions change, the filesystem unmounts, etc).
-  
+
     until [ "MAIN_ROUTINE_LOOP" = "finished" ]; do
-  
+
     # Check the file
     # This is run every iteration of the main loop to see if the fundamental permissions of the script being edited change during operation.
       if [ ! "$AGGRESSIVE_CHECK_AUTOTEST_FILE" = "no" ]; then
        check_file "$AUTOTEST_FILE"
         if [ $? -ne 0 ]; then \echo "check_file failed, aborting" ; break ; fi
       fi
-  
+
       # Status
       if [ "$ANSI" = "no" ]; then
         \echo "."
@@ -455,14 +578,14 @@ main_foreground() {
         # spinner: restore cursor position
         \echo -n -e "\033[u"
       fi
-  
+
       # Check to see if the file has changed.  If so, run it.
       get_file_time "$AUTOTEST_FILE"
       if [ ! "$NEW_AUTOTEST_FILE_TIME" = "$AUTOTEST_FILE_TIME" ] && [ -s "$AUTOTEST_FILE" ]; then
         NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
         run_script "$AUTOTEST_FILE"
       fi
-  
+
       # Is the editor is still running?
       # I could have used kill, but I prefer readlink because it's smaller.
       # kill -0 $EDITORPID 2> /dev/null
@@ -476,13 +599,13 @@ main_foreground() {
         break # MAIN_LOOP
       fi
     done
-  
+
     break # MAIN_ROUTINE
   done
 }
 main_background() {
   PID_FILE="$TMP/$( \basename "$0" )".$$.lock
-  echo . >> "$PID_FILE"
+  \echo . >> "$PID_FILE"
 
   check_file "$AUTOTEST_FILE"
   if [ ! $? = "0" ]; then break ; fi
@@ -504,20 +627,20 @@ main_background() {
     if [ ! $? = "0" ]; then break ; fi
 
     NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
-  
+
     # ----
     # Main Routine:  The file change checking loop
     # ----
     # Note that I'm still in MAIN_ROUTINE.  This is so that all the earlier procedures can still be relied upon to break out of the whole script, even during operation.  This is a good idea in case things go awry during operation (permissions change, the filesystem unmounts, etc).
     until [ "MAIN_ROUTINE_LOOP" = "finished" ]; do
-  
+
     # Check the file
     # This is run every iteration of the main loop to see if the fundamental permissions of the script being edited change during operation.
       if [ ! "$AGGRESSIVE_CHECK_AUTOTEST_FILE" = "no" ]; then
        check_file "$AUTOTEST_FILE"
         if [ $? -ne 0 ]; then \echo "check_file failed, aborting" ; break ; fi
       fi
-  
+
       # Check to see if the file has changed.  If so, run it.
       get_file_time "$AUTOTEST_FILE"
       if [ ! "$NEW_AUTOTEST_FILE_TIME" = "$AUTOTEST_FILE_TIME" ] && [ -s "$AUTOTEST_FILE" ]; then
@@ -530,24 +653,27 @@ main_background() {
       fi
 
     done
-  
+
     break # MAIN_ROUTINE
   done
-
-
-
-
-
 }
+
+# TODO:  No spinner
 main() {
-if [ "$1" = "" ]; then
+if [ -z $1 ]; then
   usage
-  return 1
+  return 0
 fi
-if [ "$2" = "" ]; then
+if [ "x${2}" = "x" ]; then
+  SPINNER=0
   main_foreground $@
-elif [ "$2" = "-bg" ]; then
+elif [ "x${2}" = "x-bg" ]; then
+  SPINNER=0
   main_background $@
+elif [ "x${2}" = "x--nodebug" ]; then
+  SPINNER=0
+  DEBUG="false"
+  main_foreground $@
 else
   usage
   return 1
