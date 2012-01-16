@@ -40,7 +40,8 @@ export LESS
 # Suffix aliases
 alias -s txt=medit
 alias -s pdf=xpdf
-alias -s sh=zsh
+# Holy shit this has caused so many issues, what was I thinking?
+#alias -s sh=zsh
 
 # MIME is possible, but I can't figure it out.
 # autoload -U zsh-mime-setup
