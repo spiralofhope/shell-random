@@ -1,6 +1,6 @@
 unc() {
 
-VERSION="0.1.3, 2009-05-22"
+VERSION="0.1.4, 2010-04-20"
 : <<'COMMENTBLOCK'
 
 ----
@@ -15,6 +15,7 @@ Note:  Scan this file for other misc. 'TODO' items.
 -------
 History
 -------
+0.1.4, 2010-04-20 -- added .tbz2 support
 0.1.3, 2009-05-22 -- I wasn't properly quoting variables, giving unexpected results with files with spaces in their name.
 0.1.2, 2009-05-16 -- added .tgz support
 0.1.1, 2009-03-29 -- Since most filename.tar.gz will create "filename" already, detect it and avoid the duplicate directory structure.
@@ -116,6 +117,12 @@ DOCUMENTATION
     if [ ! -s "$FILE" ]; then error "is size 0!" ; fi
 
     case "$EXTENSION" in
+      tbz2)
+        # probably test with something like..
+        # touch 1 ; tar -cf 1.tar 1 ; bzip2 1.tar ; rm -f 1 ; mv 1.tar.bzip2 1.tbz2
+        mcd "$BASENAME"
+        tar -xvvjf ../"$FILE"
+      ;;
       tgz)
         # touch 1 ; tar -cf 1.tar 1 ; gzip 1.tar ; rm -f 1
         mcd "$BASENAME"
