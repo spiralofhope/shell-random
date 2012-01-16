@@ -1,3 +1,7 @@
+# TODO:  Review this and compare it with the existing autotest.sh
+#        Absorb it.
+
+
 spinner() {
   # Should implement sanity-checking then export this elsewhere so it can be universal.
   if [ "$spinner" = "" ]; then spinner=0 ; fi
