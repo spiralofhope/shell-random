@@ -1,0 +1,2 @@
+#!/bin/sh
+Terminal --hide-toolbars --hide-menubar --execute /home/user/bin/autotest.sh /home/user/bin/boo/play/test.boo

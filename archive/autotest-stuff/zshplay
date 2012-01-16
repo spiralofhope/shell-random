@@ -1,0 +1,8 @@
+#!/bin/sh
+
+:<<TODO
+- detect if I'm in an interactive console.  If so, just run things in this current terminal and not in a separate popup window.
+TODO
+
+xterm -e /home/user/bin/autotest.sh /home/user/bin/zsh/play/test.sh
+# Terminal --hide-toolbars --hide-menubar --execute /home/user/bin/autotest.sh /home/user/bin/zsh/play/test.sh
