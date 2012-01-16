@@ -1,6 +1,6 @@
 unc() {
 
-VERSION="0.1.4, 2010-04-20"
+VERSION="0.1.6, 2011-09-15"
 : <<'COMMENTBLOCK'
 
 ----
@@ -15,6 +15,8 @@ Note:  Scan this file for other misc. 'TODO' items.
 -------
 History
 -------
+0.1.6, 2011-09-15 -- added .7z support.
+0.1.5, no clue but it was different so I backed it up.
 0.1.4, 2010-04-20 -- added .tbz2 support
 0.1.3, 2009-05-22 -- I wasn't properly quoting variables, giving unexpected results with files with spaces in their name.
 0.1.2, 2009-05-16 -- added .tgz support
@@ -142,6 +144,10 @@ DOCUMENTATION
         # touch 1 ; tar -cf 1.tar 1 ; gzip 1.tar ; rm -f 1
         mcd "$BASENAME"
         tar -xvvzf ../"$FILE"
+      ;;
+      7z)
+        mcd "$BASENAME"
+        7za x ../"$FILE"
       ;;
       bz2) # check more:
         EXTENSION="${BASENAME##*.}"
