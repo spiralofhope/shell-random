@@ -1,6 +1,6 @@
 unc() {
 
-VERSION="0.1.2, 2009-05-16"
+VERSION="0.1.3, 2009-05-22"
 : <<'COMMENTBLOCK'
 
 ----
@@ -15,6 +15,7 @@ Note:  Scan this file for other misc. 'TODO' items.
 -------
 History
 -------
+0.1.3, 2009-05-22 -- I wasn't properly quoting variables, giving unexpected results with files with spaces in their name.
 0.1.2, 2009-05-16 -- added .tgz support
 0.1.1, 2009-03-29 -- Since most filename.tar.gz will create "filename" already, detect it and avoid the duplicate directory structure.
 0.1.0, 2009-03-25 -- First successful beta, thanks to figuring "break" out.
@@ -76,9 +77,9 @@ COMMENTBLOCK
     help
   }
 
-  FILE=$1
-  EXTENSION=${FILE##*.}
-  BASENAME=${FILE%.*}
+  FILE="$1"
+  EXTENSION="${FILE##*.}"
+  BASENAME="${FILE%.*}"
 
   # Main loop
   until [ "sky" = "falling" ]; do
@@ -117,60 +118,60 @@ DOCUMENTATION
     case "$EXTENSION" in
       tgz)
         # touch 1 ; tar -cf 1.tar 1 ; gzip 1.tar ; rm -f 1
-        mcd $BASENAME
-        tar -xvvzf ../$FILE
+        mcd "$BASENAME"
+        tar -xvvzf ../"$FILE"
       ;;
       bz2) # check more:
-        EXTENSION=${BASENAME##*.}
-        case $EXTENSION in
+        EXTENSION="${BASENAME##*.}"
+        case "$EXTENSION" in
           tar) # .tar.bz2
             # touch 1 ; tar -cf 1.tar 1 ; bzip2 1.tar ; rm -f 1
             # strip out .tar
-            BASENAME=${BASENAME%.*}
-            mcd $BASENAME
-            tar -xvvjf ../$FILE
+            BASENAME="${BASENAME%.*}"
+            mcd "$BASENAME"
+            tar -xvvjf ../"$FILE"
           ;;
           *) # .bz2
             # touch 1 ; bzip2 1
-            mcd $BASENAME
+            mcd "$BASENAME"
             # --keep = Explicitly keep the original file.
             # Using bzcat because bzip2 will try to extract to the same directory as the archive.
-            bzcat --keep --verbose ../$FILE > ./$BASENAME
+            bzcat --keep --verbose ../"$FILE" > ./"$BASENAME"
         ;;
         esac
       ;;
       gz) # check more:
-        EXTENSION=${BASENAME##*.}
+        EXTENSION="${BASENAME##*.}"
         case $EXTENSION in
           tar) # .tar.gz
             # touch 1 ; tar -cf 1.tar 1 ; gzip 1.tar ; rm -f 1
             # strip out .tar
-            BASENAME=${BASENAME%.*}
-            mcd $BASENAME
-            tar -xvvzf ../$FILE
+            BASENAME="${BASENAME%.*}"
+            mcd "$BASENAME"
+            tar -xvvzf ../"$FILE"
           ;;
           *) # .gz
             # touch 1 ; gzip 1
-            mcd $BASENAME
+            mcd "$BASENAME"
             # --to-stdout and the redirect are done so that the original file is kept.
-            gzip --decompress --to-stdout ../$FILE > ./$BASENAME
+            gzip --decompress --to-stdout ../"$FILE" > ./"$BASENAME"
         ;;
         esac
       ;;
       tar)
         # touch 1 ; tar -cf 1.tar 1 ; rm -f 1
-        mcd $BASENAME
-        tar -xvvf ../$FILE
+        mcd "$BASENAME"
+        tar -xvvf ../"$FILE"
       ;;
       zip)
         # touch 1 ; zip 1.zip 1 ; rm -f 1
-        mcd $BASENAME
-        unzip ../$FILE
+        mcd "$BASENAME"
+        unzip ../"$FILE"
       ;;
       rar)
         # touch 1 ; rar a 1.rar 1 ; rm -f 1
-        mcd $BASENAME
-        rar x ../$FILE
+        mcd "$BASENAME"
+        rar x ../"$FILE"
       ;;
       *)
         # TODO: If there's no period in the name, spit out another error.
@@ -179,14 +180,14 @@ DOCUMENTATION
     esac
 
     # 0.1.1 - Since most filename.tar.gz will create "filename" already, detect it and avoid the duplicate directory structure.
-    if [ -d ./$BASENAME ]; then
+    if [ -d ./"$BASENAME" ]; then
       for i in *; do
-        if [ "$i" = $BASENAME ]; then
+        if [ "$i" = "$BASENAME" ]; then
           :
-        elif [ ! "$i" = $BASENAME ]; then
-          FILEEXISTS=yes
+        elif [ ! "$i" = "$BASENAME" ]; then
+          FILEEXISTS="yes"
         else
-          echo Eek!
+          echo "Eek!"
         fi
       done
       if [ "$FILEEXISTS" = "yes" ]; then
@@ -197,8 +198,8 @@ DOCUMENTATION
         # shopt -s dotglob
         # zsh:
         setopt dotglob
-        mv $BASENAME/* ./
-        rmdir $BASENAME
+        mv "$BASENAME"/* ./
+        rmdir "$BASENAME"
       else
         echo Eek!
       fi
