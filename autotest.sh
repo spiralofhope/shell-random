@@ -147,10 +147,7 @@ HEREDOC
 setup() {
   MYSHELL=$( \basename $( \readlink /proc/$$/exe ) )
   ORIGINAL_PWD="$PWD"
-  \pushd
-  \cd /l/Linux/bin/zsh/
-  \source colours.sh
-  \popd
+  \source /l/Linux/bin/zsh/colours.sh
 }
 setup
 
@@ -163,24 +160,24 @@ spinner() {
   # I could use printf, but I'd rather use echo.
   case $SPINNER in
     0)
-      \echo -e -n "${green}\055${reset}"
+      \echo -e -n "${cursor_position_save}${green}\055${reset}${cursor_position_restore}"
       SPINNER=1
     ;;
     1)
       # CHECKME: One backslash was causing issues with syntax colouring.  Hopefully this works..
-      \echo -e -n "${green}\\${reset}"
+      \echo -e -n "${cursor_position_save}${green}\\${reset}${cursor_position_restore}"
       SPINNER=2
     ;;
     2)
-      \echo -e -n "${green}|${reset}"
+      \echo -e -n "${cursor_position_save}${green}|${reset}${cursor_position_restore}"
       SPINNER=3
     ;;
     3)
-      \echo -e -n "${green}/${reset}"
+      \echo -e -n "${cursor_position_save}${green}/${reset}${cursor_position_restore}"
       SPINNER=0
     ;;
     *)
-      echo "${red}Odd error, SPINNER was out of range:${reset} \"${SPINNER}\""
+      echo "${red}Odd error, SPINNER was out of range:${reset} \"${SPINNER}\"${cursor_position_save}"
       SPINNER=0
       spinner
     ;;

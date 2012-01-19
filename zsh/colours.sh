@@ -39,6 +39,9 @@ initializeANSI() {
   invoff="${esc}[27m"
 
   reset="${esc}[0m"
+
+  cursor_position_save="\033[s"
+  cursor_position_restore="\033[u"
 }
 
 initializeANSI
