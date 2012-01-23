@@ -1,14 +1,11 @@
-#I have no idea why it's not starting up properly
-\pulseaudio&
-
-\Xdialog --yesno "The usual startup?" 6 40
-if [ $? -eq 1 ]; then
-  exit 1
-fi
-
 # The global settings are: /etc/xdg/openbox/autostart.sh
 # The local master settings are: /home/user/.config/openbox/autostart.sh
 # Then this file is run..
+
+\zenity --question
+if [ $? -eq 1 ]; then
+  exit 1
+fi
 
 disconnected(){
   \echo " * Internet connection not detected."
