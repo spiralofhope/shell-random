@@ -9,30 +9,42 @@ fi
 
 disconnected(){
   \echo " * Internet connection not detected."
+  # I don't do anything special in this case.
 }
 
 connected(){
   \echo " * Internet connection detected."
-  #\twinkle&
+
+  # IRC
+  # X-Chat
+  #   It's already configured to auto-connect to servers and join channels.
+  #   --minimize=2  =  Minimize to the tray
+  #\xchat --minimize=2 &
+  # WeeChat
+  #   Pops up top-left with no window decorations.
+  #   I don't know where this script went.  Oh well.
+  #~/bin/weechat.sh &
+
+  # Instant Messaging
   #\empathy &
+
+  # VoIP
+  #\twinkle&
+
+  # Voice Chat
+  # TODO:  How do I get Mumble to automatically connect to a specific server on startup?
+  # TODO:  How do I get Mumble to minimize on startup?
   \mumble &
 
-  # IRC client.  Pops up top-left with no window decorations.
-  #  ~/bin/weechat.sh &
-
-  # Can be started trayed (it gets minimized to the tray after a moment)
-  #   but only if I set the tray plugin to do that.  There's no way to just
-  #   tell it to tray itself when it's started up by this script.
+  # Email
+  #   Can be started trayed (it gets minimized to the tray after a moment)
+  #     but only if I set the tray plugin to do that.
   \claws-mail &
-
-  # It's already configured to auto-connect to servers and join channels.
-  # minimize=2 is the tray
-  \xchat --minimize=2 &
 }
 
-# ----
-# If connected to the internet:
-# ----
+# --
+# -- Internet connection test
+# --
 
 \ping -n -q -w 2 example.com &> /dev/null
 if [ $? -eq 2 ]; then
@@ -43,13 +55,12 @@ else
   connected
 fi
 
-# ----
-# No net connection is required for this stuff:
-# ----
+# --
+# -- No net connection required for this stuff
+# --
 
 # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
 $( \sleep 15 && /l/Linux/bin/sh/projects.sh ) &
 
 # I start this up because I want to have my local wiki visible.
 \nice -n 6 /l/Linux/bin/Firefox/firefox -no-remote -P default &
-
