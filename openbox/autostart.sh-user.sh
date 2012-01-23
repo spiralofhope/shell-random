@@ -13,9 +13,9 @@ disconnected(){
 
 connected(){
   \echo " * Internet connection detected."
-  #twinkle&
-  #skype &
-  #empathy &
+  #\twinkle&
+  #\empathy &
+  \mumble &
 
   # IRC client.  Pops up top-left with no window decorations.
   #  ~/bin/weechat.sh &
