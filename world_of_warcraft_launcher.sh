@@ -1,12 +1,4 @@
-#!/bin/env zsh
-
-#TODO:  This should refuse to run in other than root.
-
-# My previous Unity Linux needed this.  Now I can just `\rm -rf ~/.wine && \winecfg` and the default sound settings are correct.
-# padsp is from pulseaudio-utils (try task-pulseaudio)
-# \rm -rf ~/.wine
-# \padsp \winecfg
-# don't bother with gecko.
+#!/bin/zsh
 
 # TODO:  have a config.wtf just for raiding, and summon it via this script with something like ./wow.sh raid
 
@@ -23,9 +15,8 @@ trap _wow_die INT
 _wow_teardown(){
   \echo " * Cleaning up.."
 
-  # Installed but not working on Unity Linux.  It says "no or unknown cpufreq driver is active on this CPU"
-  #\echo " * Cooling down the CPU for \"on demand\" performance."
-  #\cpufreq-set --governor ondemand
+  \echo " * Cooling down the CPU for \"on demand\" performance."
+  \cpufreq-set --governor ondemand
 
   \echo " * Restoring the mouse."
   \xsetroot -cursor_name left_ptr
@@ -35,7 +26,7 @@ _wow_teardown(){
   if ! [ $(whoami) = root ]; then
     \openbox --reconfigure
   else
-    \su user -c "\openbox --reconfigure"
+    \su $user -c "\openbox --reconfigure"
   fi
   \echo " * Backing up any WoW configuration changes that I've made in-game."
   \echo "   Note that in case I screwed things up, there is a static copy kept"
@@ -71,20 +62,20 @@ cache_files() {
   done
 }
 test_cache_files() {
-  cache_files /home/user
+  cache_files /home/$user
 }
 #test_cache_files
 # Consider a variable for the editor.  I recall having poor luck with that in the past.
 _open_wow_texts() {
   cache_files $wow_texts
   cd $wow_texts
-  \su user -c "\geany _wow.txt" &
+  \su $user -c "\geany _wow.txt" &
   sleep 1
   for i in $wow_texts/*; do
-    \su user -c "\geany $i" &
+    \su $user -c "\geany $i" &
     sleep 0.1
   done
-  \su user -c "\geany _wow.txt" &
+  \su $user -c "\geany _wow.txt" &
   cd -
   sleep 3
 }
@@ -124,8 +115,8 @@ else
   if [ -z $1 ]; then
     \echo " * Launching Mangler (Ventrilo client) with auto-login."
     # Zomg plaintext login information!
-    su user -c "\padsp \mangler -s $mangler_ip:$mangler_port -u $mangler_user -p $mangler_pass" &
-    
+    su $user -c "\mangler -s $mangler_ip:$mangler_port -u $mangler_user -p $mangler_pass" &
+
     _open_wow_texts
   fi
 
@@ -143,14 +134,13 @@ else
   \echo "   ( note that this is not a kill -9 )"
   \killall Wow.exe &> /dev/null
 
-  #\echo " * Heating up the CPU for maximum performance."
-  #\cpufreq-set --governor performance
+  \echo " * Heating up the CPU for maximum performance."
+  \cpufreq-set --governor performance
 
   \echo " * Launching Wow.exe via wine."
-  \su user -c "\padsp \wine \"$wowdir\"/Wow.exe &> /dev/null" & \
+  # padsp added to perhaps fix crackling audio.
+  \su $user -c "\padsp \wine \"$wowdir\"/Wow.exe &> /dev/null" & \
     wowpid=$!
-  #\su user -c "\padsp \wine \"$wowdir\"/launcher.exe &> /dev/null" & \
-    #wowpid=$!
   #\echo "   WoW is at pid: " $wowpid
   \renice -n -10 $wowpid &> /dev/null
   \renice -n -10 `\pidof wineserver` &> /dev/null
