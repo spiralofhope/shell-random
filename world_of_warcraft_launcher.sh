@@ -5,7 +5,6 @@
 # Read in the configuration
 \. $( \readlink -f $0 ).ini
 
-
 _wow_die(){
   \echo " * ^c detected, killing WoW."
   _wow_teardown
