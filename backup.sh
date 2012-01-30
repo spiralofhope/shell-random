@@ -17,7 +17,7 @@
 
 source /l/Linux/bin/zsh/colours.sh
 # Otherwise use rsync.
-backup_method="unison"
+#backup_method="unison"
 # The unison executable.
 unison=/home/unison
 
@@ -129,6 +129,7 @@ _backup_unison(){
       ` # Some sort of GTK undelete trash bin: ` \
       -ignore 'Regex root/.Trash-.*/' \
       -ignore 'Regex user/.Trash-.*' \
+      ` # FIXME:  This isn't working? ` \
       -ignore 'Regex root/.thumbnails/.*' \
       -ignore 'Regex user/.thumbnails/.*' \
       -ignore 'Regex root/tmp/.*' \
@@ -194,7 +195,7 @@ _backup_rsync(){
       --exclude '/media/**' \
       --exclude '/.thumbnails/**' \
       ` # Note that I'm choosing not to do Transmission-*/**.part anymore, which includes Transmission-completed, because I sometimes have nearly-completed things which are bloody hard to get completely downloaded, which I *do* want backed up.` \
-      --exclude '/l/Downloads/BitTorrent/Transmission-downloading/**.part' \
+      --exclude '/l/_inbox/BitTorrent/Transmission-downloading/**.part' \
     ` # This is sometimes a bad idea.. ` \
     --delete-excluded \
     $source \
@@ -234,26 +235,26 @@ _backup_die(){
 _backup_go(){
   if [[ $backup_method == "unison" ]]; then
     _backup_unison
+    # .unison is a special case.  =/
+    if [ $i -eq 6 ]; then
+      \echo "${bullet} Manually backing up the unison dot directory.."
+      \echo "   It skips backing it up, for some retarded reason."
+      \rm \
+        --recursive \
+        --force \
+        /mnt/backup_dest/6/dotunison/ \
+        ` # `
+      \cp \
+        --no-dereference \
+        --preserve=links \
+        --recursive \
+        --verbose \
+        /mnt/backup_source/6/dotunison \
+        /mnt/backup_dest/6/dotunison \
+        ` # `
+    fi
   else
     _backup_rsync
-  fi
-  # .unison is a special case.  =/
-  if [ $i -eq 6 ]; then
-    \echo "${bullet} Manually backing up the unison dot directory.."
-    \echo "   It skips backing it up, for some retarded reason."
-    \rm \
-      --recursive \
-      --force \
-      /mnt/backup_dest/6/dotunison/ \
-      ` # `
-    \cp \
-      --no-dereference \
-      --preserve=links \
-      --recursive \
-      --verbose \
-      /mnt/backup_source/6/dotunison \
-      /mnt/backup_dest/6/dotunison \
-      ` # `
   fi
 }
 
@@ -268,9 +269,7 @@ _backup_initialize_esata
 if [ -z $1 ]; then
   _backup_mbr
   _backup_sdb
-  # 4 is a partition table boundery thingy
-  # 5 is swap space
-  for i in {1..3} {6..8}; do
+  for i in 1 {6..8}; do
     _backup_setup
     _backup_go
     _backup_teardown
@@ -278,9 +277,9 @@ if [ -z $1 ]; then
 elif [ $1 -eq 7 ]; then
   _backup_sdb
   for i in 7; do
-  _backup_setup
-  _backup_go
-  _backup_teardown
+    _backup_setup
+    _backup_go
+    _backup_teardown
   done
 else
   i=$1
