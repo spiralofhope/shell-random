@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+# TODO:  What was I thinking with archive/backup-lib.sh  ?  I should probably cut this script apart to put things in an external library like that.  Maybe that's what I was working on.
+
+
 # TODO:  Copy the MBR into a file / script which can be re-run to restore that info.. I often won't have access to the eSATA to restore in that manner.
 
 # TODO:
@@ -15,7 +18,7 @@
 # Disabled, as it's really inconvenient when I'm doing testing.
 #\hdparm -Y $external
 
-source /l/Linux/bin/zsh/colours.sh
+\source /l/Linux/bin/zsh/colours.sh
 # Otherwise use rsync.
 #backup_method="unison"
 # The unison executable.
@@ -27,10 +30,11 @@ bullet="${yellow}*${reset}"
 
 _backup_initialize_esata(){
   # NOTE:  The number will change depending upon which USB port the eSATA bay was plugged into.  So let's just scan everything.
-  \echo -e "${bullet} Initializing the eSata / re-checking for a device..."
-  for i in {0..6}; do
-    /usr/local/sbin/scsiadd -s $i &>> /dev/null
-  done
+  # If the OS isn't magical, I'd have to use `scsiadd` and do a scan like so:
+  #\echo -e "${bullet} Initializing the eSata / re-checking for a device..."
+  #for i in {0..6}; do
+    #/usr/local/sbin/scsiadd -s $i &>> /dev/null
+  #done
   # It needs a moment to actually kick in.
   # Meh, it's smart enough to fail if it needs to, and I re-run it too frequently to want to wait two seconds.
   # \sleep 2
