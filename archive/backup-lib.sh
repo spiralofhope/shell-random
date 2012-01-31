@@ -4,6 +4,9 @@
 source /home/user/bin/zsh/colours.sh
 bullet="${yellow}*${reset}"
 
+# This is used by data-migration.sh and may end up being used by backup.sh
+
+
 err() {
   if [ "x$1" = "x0" ]; then
     return $1

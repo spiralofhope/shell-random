@@ -1,7 +1,6 @@
 #!/bin/zsh
 
-# TODO:  What was I thinking with archive/backup-lib.sh  ?  I should probably cut this script apart to put things in an external library like that.  Maybe that's what I was working on.
-
+# TODO:  Push stuff into an external lib and `source` it.  I see that I made archive/backup-lib.sh which is used by archive/data-migration.sh
 
 # TODO:  Copy the MBR into a file / script which can be re-run to restore that info.. I often won't have access to the eSATA to restore in that manner.
 
