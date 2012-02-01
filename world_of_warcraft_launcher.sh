@@ -140,7 +140,10 @@ else
   # padsp added to perhaps fix crackling audio.
   \su $user -c "\padsp \wine \"$wowdir\"/Wow.exe &> /dev/null" & \
     wowpid=$!
-  #\echo "   WoW is at pid: " $wowpid
+  #\echo "     WoW found at pid: " $wowpid
+  #ps alx|grep padsp
+  #ps alx|grep wine
+  #ps alx|grep Wow.exe
   \renice -n -10 $wowpid &> /dev/null
   \renice -n -10 `\pidof wineserver` &> /dev/null
 
