@@ -1,242 +1,296 @@
 #!/bin/zsh
 
-if [ $# -eq 0 ]; then
-  echo "help goes here"
-  exit 2
-fi
+# TODO:  Push stuff into an external lib and `source` it.  I see that I made archive/backup-lib.sh which is used by archive/data-migration.sh
 
-_help() {
-  echo "help"
-}
+# TODO:  Copy the MBR into a file / script which can be re-run to restore that info.. I often won't have access to the eSATA to restore in that manner.
 
-# Cludge for now
-umount /dev/sda1
+# TODO:
+# - File tree.
+# - Time the backups?
+# skip rpm database stuff - hell, check the list of stuff to clean up when remastering, that'd be good to work off of.
+# maybe suppress unknown file type errors?
+# peek into the backup partitions and delete anything I'm excluding via unison.  then confirm they're being skipped!
 
-# Cleaning up if something goes strangely:
-#rm -f /mnt/source/*/date.txt /mnt/dest/*/date.txt && umount /mnt/source/* && umount /mnt/dest/* && rmdir -p /mnt/dest/* && rmdir -p /mnt/source/*
 
-# -- TROUBLESHOOTING
+# Go to sleep.
+# I wish I could lock it from further use until manually power-cycled.
+# Disabled, as it's really inconvenient when I'm doing testing.
+#\hdparm -Y $external
+
+\source /l/Linux/bin/zsh/colours.sh
+# Otherwise use rsync.
+#backup_method="unison"
+# The unison executable.
+unison=/home/unison
+
 # --
-# sfdisk returns "b"
-# This seems to occur when I first create the partition.  Force-changing its type to "7" seems to work.  e.g. for sdi2:
-# sfdisk --change-id /dev/sdi 2 7
 
-# -- TODO
-# --
-# FIXME -- VERY IMPORTANT - do not use -a (archive) on rsync with an ntfs filesystem (type 7).  Change the code so that the rsync switches are defined when the mount occurs.
-# Why did I write this?  I don't remember why rsync+ntfs is bad..  it's bad to do ntfs->ext and ext->ntfs, but I have a cached document with instructions on fixing this.
+bullet="${yellow}*${reset}"
 
-#   I'm so sick and tired of not trusting the backup of such stuff.  I get funny errors and all that.. and they shouldn't happen.  rsync is a piece of shit and keeps trying to copy things it shouldn't, and I need to do what I can to prevent such nonsense.
-# Build a file listing, named by date, and never delete anything from it.
-#   I'm sick of losing files and never knowing the filenames to re-download them.
-# Convert all "echo" into "vecho" and use $VERBOSE like I do in ruby.
-# Add colour.  Need to somehow detect when colour is possible/ok.  Be able to disable it easily.
-# check if the sync times are similar, and skip (`continue`) if I've recently completed a full sync
-#   can/should I record when I do a partial sync?
-# Generate complete listings of all directories (tree)
-#  - files
-#  - file info (size, etc or the md5sum?)
-# Intelligent rsync excludes, depending on what source partition I'm on.
-#   So pagefile.sys is only excluded when syncing from sda1
-#   Then also exclude temporary and cache directories.  Over a number of syncs, learn what the common cache locations are.
-#   user/.BitTornado/datacache/
-#   user/bin/BOINC/projects/freehal.net_freehal_at_home
-# tmp/
-# var/lib/logrotate.status
-# var/log/Xorg.0.log
-# var/log/auth.log
-# var/log/messages
-# var/log/rpmpkgs
-# var/log/syslog
-# var/log/user.log
-# var/log/cron/errors.log
-# var/log/cron/info.log
-# var/log/daemons/info.log
-# var/log/gdm/:0.log
-# var/spool/anacron/cron.daily
-# Leverage an intrusion detection program to really do this right.
-# Check to make sure I'm logged in as root.
-
-# Note that if I shred a drive and then start this routine,
-# this routine will wait until the shred is done.
-# So start this first, then shred.
-# shred being:  shred -n 2 -z -v /dev/hdx
-#sync
-
-source /home/lib-backup.sh
-
-backup() {
-  # The Unity Linux livecd can't handle this?
-  for element in ${@[@]}; do
-    processing="${cyan}${source}$element => ${dest}$element${reset}"
-    \echo -e ""
-    \echo -e "${bullet}${bullet}"
-    \echo -e "${bullet}${bullet} Processing $processing"
-    \echo -e "${bullet}${bullet}"
-    \echo -e ""
-    \echo -e "${bullet} $processing - Making the working folders..."
-    \mkdir -pv /mnt/source/$element
-    err $?
-    \mkdir -pv /mnt/dest/$element
-    err $?
-    \echo -e "${bullet} $processing - Mounting source..."
-    smartmount $source $element "source"
-    err $?
-    \echo -e "${bullet} $processing - Mounting destination..."
-    smartmount $dest $element "dest"
-    err $?
-
-# \mkdir -p /tmp/rsync-backup
-
-#~~~
-# Making a tree listing is brutal!
-#    \echo -e "${bullet} $processing - Creating tree listing..."
-#    \echo `\gvfs-tree --hidden /mnt/source/$element/` >! /mnt/source/$element/tree.txt
-
-    \echo -e "${bullet} $processing - rsync..."
-    # --bwlimit=KBPS          limit I/O bandwidth; KBytes per second
-#      --bwlimit=10000 \
-
-# Fortress Grand Clean Slate:
-#      --exclude '/FGCDIR' \
-
-#      --compress \
-
-# I'd need to do --delete-after to properly use this.
-#      --fuzzy \
-#      --itemize-changes \
-
-# this is very thorough, but evil on resources
-# --checksum \
-
-# Everything works fine but sometimes the rename results metadata
-# modifications which will reset the modification time to the current value.
-# This is fine except during rename. That's the bug.
-
-# It'd be nice if I could be very exact with the excludes, so that an exclude can be meant for one partition and not another.  Currently this is impossible because the rsync is like `rsync /mnt/source/$element/ /mnt/dest/$element/` and so I cannot --exclude '/mnt/source/1/file' for just partition 1.
-   
-    rsync=1
-    \rsync \
-	  ` # --archive is -rlptgoD (no -H,-A,-X) ` \
-        --recursive \
-        --links \
-        ` # Not useful for NTFS. ` \
-        --perms \
-        --times \
-        --group \
-        --owner \
-      --update \
-      ` # Windows sucks and doesn't get the time stamping correct.  This helps. ` \
-      --modify-window=2 \
-      --devices \
-      --specials \
-      ` # Files on the target host are updated in the same storage the current version of the file occupies. ` \
-      ` # This eliminates the need to use temp files, solving a whole shitload of issues. ` \
-      --inplace \
-      --delete \
-        ` # This is faster: ` \
-` #        --delete-during ` \
-        ` # If I don't have much space, I need to do this instead: ` \
-      --delete-before \
-      --hard-links \
-      --verbose \
-      --progress \
-      ` # --stats ` \
-      --human-readable \
-      ` # WINDOWS ` \
-      ` # This includes various versions of Windows.` \
-        --exclude 'pagefile.sys' \
-        --exclude 'hiberfil.sys' \
-        --exclude '/$Recycle.Bin/**' \
-        --exclude '/RECYCLER/**' \
-        --exclude '/Documents and Settings/*/Local Settings/Application Data/Mozilla/Firefox/Profiles/default/Cache/**' \
-        --exclude '/Documents and Settings/*/Local Settings/History/**' \
-        --exclude '/Documents and Settings/*/Local Settings/Temporary Internet Files/Content.IE5/**' \
-        --exclude '/Documents and Settings/*/Local Settings/Temp/**' \
-        --exclude '/Windows/Temp/**' \
-        --exclude '/Windows/assembly/temp/**' \
-        --exclude '/Windows/assembly/NativeImages_v2.0.50727_32/Temp/**' \
-        --exclude '/Windows/Microsoft.NET/Framework/v2.0.50727/Temporary ASP.NET Files/**' \
-        --exclude '/Documents and Settings/*/Application Data/Ventrilo/temp/**' \
-      ` # LINUX ` \
-        --exclude '/tmp/**' \
-        --exclude '/home/user/tmp/**' \
-        ` # Some sort of GTK thing. ` \
-        --exclude '/.Trash-1000/**' \
-        ` # Dynamically-generated.  For USB sticks and such. ` \
-        --exclude '/media/**' \
-        --exclude '/.thumbnails/**' \
-        --exclude '/live/Downloads/BitTorrent/Transmission-*/**.part' \
-        --exclude '/live/Downloads/**.dtapart' \
-      --delete-excluded \
-      /mnt/source/$element/ \
-      /mnt/dest/$element/
-    err $?
-    rsync=
-
-    \echo -e "${bullet} $processing - Creating date text file..."
-    \echo -e "Last backed up `date`" >! /mnt/source/$element/date.txt
-
-    breaktrap
-  done
-  \sync
-}
-
-# BEGIN
-if   [ "x${1}" = "xexternal" ]; then
-elif [ "x${1}" = "x5" ] ; then
-elif [ "x${1}" = "x6" ] ; then
-elif [ "x${1}" = "x8" ] ; then
-else
-  #for partition in 1 2 3; do
-  for partition in 1; do
-    source=sda
-    dest=sdb
-    backup $partition
-    if [ "x${external_dest}" != "x" ]; then
-      dest=$external_dest
-      backup $partition
+_backup_initialize_esata(){
+  # NOTE:  The number will change depending upon which USB port the eSATA bay was plugged into.  So let's just scan everything.
+  # If the OS isn't magical, I'd have to use `scsiadd` and do a scan like so:
+  #\echo -e "${bullet} Initializing the eSata / re-checking for a device..."
+  #for i in {0..6}; do
+    #/usr/local/sbin/scsiadd -s $i &>> /dev/null
+  #done
+  # It needs a moment to actually kick in.
+  # Meh, it's smart enough to fail if it needs to, and I re-run it too frequently to want to wait two seconds.
+  # \sleep 2
+  
+  for i in c d e f g h i j k l m n o p q r s t u v w x y z; do
+    if [ -b /dev/sd${i}8 ]; then
+      \echo "${bullet} External drive found at /dev/sd${i}"
+      external=/dev/sd$i
     fi
   done
-fi
-
-if [ "x${external_dest}" != "x" ]; then
-  source=sdb
-  dest=$external_dest
-  if   [ "x${1}" = "x5" ] ; then
-    backup     5
-  elif [ "x${1}" = "x6" ] ; then
-    backup     6
-  elif [ "x${1}" = "x8" ] ; then
-    backup     8
-  else
-    backup 5 6 8
+  if [ "x$external" = "x" ]; then
+    \echo "ERROR:  Backup device not found, aborting!"
+    _backup_die
   fi
+  # get/set acoustic management (0-254, 128: quiet, 254: fast)
+  #\hdparm -M 254 $external
+}
+
+_backup_mbr(){
+  \echo "${bullet} Cloning the MBR... (boot record only, not the partition table)"
+  \dd \
+    if=/dev/sda \
+    of=$external \
+    bs=446 \
+    count=1 \
+    ` # `
+}
+
+_backup_setup(){
+  \echo "${bullet} Preparing $i .."
+  source=/mnt/backup_source/$i/
+  dest=/mnt/backup_dest/$i/
+  #if [ -d "$source" ] && [ -d "$dest" ]; then
+  \mkdir --parents $source $dest
+  echo /dev/sda$i $source
+  \mount /dev/sda$i $source
+  echo $external$i $dest
+  \mount $external$i $dest
+  #else
+    #echo "There's a problem with the source or destination"
+    #echo "  $source"
+    #echo "  $dest"
+    #_backup_teardown
+  #fi
+}
+
+_backup_unison(){
+  # Check for, and repair, the unison dotdir.
+  # My /root/.unison is actually found on the data partition, so I don't overwrite it upon system-reinstallation.
+  if [ -L ~/.unison ]; then
+    # It's already symbolically-linked.
+  else
+    # Directory
+    if [ -d ~/.unison ]; then
+      \rm -rf ~/.unison
+    fi
+    \echo "${bullet} First run?  Creating the ~/.unison symlink."
+    ln -s /home/dotunison ~/.unison
+  fi
+
+  \echo "${bullet} Syncing $i .."
+
+  # If encountering either a socket or a fifo (named pipe), it gives the message "Error: path /foo/bar has unknown file type." and skips gracefully.
+  # http://tech.groups.yahoo.com/group/unison-users/message/7419?var=1&p=3
+  # Should I just use rsync for those? .. I don't think I have to worry about attempting to back up either of those things.
+  #
+  # http://www.cis.upenn.edu/~bcpierce/unison/download/releases/stable/unison-manual.html#caveats
+  # Unison does not understand hard links.
+  # I don't use hard links anyways.
+  \nice -n 19 \
+    $unison \
+      $source \
+      $dest \
+      ` # force changes from this replica to the other ` \
+      -force $source \
+      -batch \
+      -log=false \
+      ` # maximum number of simultaneous file transfers ` \
+      ` # Probably a bad idea to enlarge. ` \
+      -maxthreads=1 \
+      -copymax=1 \
+      -owner \
+      -group \
+      -times \
+      -contactquietly \
+      -ignore 'Regex WoW/World of Warcraft/Logs/WoWCombatLog.txt' \
+      ` # I don't know how to be more specific than this.  Dammit! ` \
+      -ignore 'Name *.dtapart' \
+    ` # LINUX ` \
+      ` # FIXME:  I don't know how the fuck to make it properly ignore paths!!  It still spits out error messages when it should be ignoring the path. ` \
+      -ignore 'Regex lost+found/.*' \
+      -ignore 'Regex dev/.*' \
+      -ignore 'Regex tmp/.*' \
+      ` # Dynamically-generated.  For USB sticks and such: ` \
+      -ignore 'Regex media/.*' \
+      ` # Some sort of GTK undelete trash bin: ` \
+      -ignore 'Regex root/.Trash-.*/' \
+      -ignore 'Regex user/.Trash-.*' \
+      ` # FIXME:  This isn't working? ` \
+      -ignore 'Regex root/.thumbnails/.*' \
+      -ignore 'Regex user/.thumbnails/.*' \
+      -ignore 'Regex root/tmp/.*' \
+      -ignore 'Regex user/tmp/.*' \
+      ` # Note that I'm choosing not to do Transmission-*/**.part anymore, which includes Transmission-completed, because I sometimes have nearly-completed things which are bloody hard to get completely downloaded, which I *do* want backed up:` \
+      -ignore 'Regex l/Downloads/BitTorrent/Transmission-downloading/.*\.part' \
+      ` # `
+}
+
+_backup_rsync(){
+
+  #` # WINDOWS ` \
+  #` # This includes various versions of Windows.` \
+    #--exclude 'pagefile.sys' \
+    #--exclude 'hiberfil.sys' \
+    #--exclude '/$Recycle.Bin/**' \
+    #--exclude '/RECYCLER/**' \
+    #--exclude '/Documents and Settings/*/Local Settings/Application Data/Mozilla/Firefox/Profiles/default/Cache/**' \
+    #--exclude '/Documents and Settings/*/Local Settings/History/**' \
+    #--exclude '/Documents and Settings/*/Local Settings/Temporary Internet Files/Content.IE5/**' \
+    #--exclude '/Documents and Settings/*/Local Settings/Temp/**' \
+    #--exclude '/Windows/Temp/**' \
+    #--exclude '/Windows/assembly/temp/**' \
+    #--exclude '/Windows/assembly/NativeImages_v2.0.50727_32/Temp/**' \
+    #--exclude '/Windows/Microsoft.NET/Framework/v2.0.50727/Temporary ASP.NET Files/**' \
+    #--exclude '/Documents and Settings/*/Application Data/Ventrilo/temp/**' \
+
+  \echo "${bullet} Syncing $i .."
+  \nice -n 19 \rsync \
+    ` # This is -rlptgoD (no -H,-A,-X) ` \
+    ` # Which is --recursive --links --perms --times --group --owner --devices --specials ` \
+    ` # No --hard-links --acls --xattrs ` \
+    ` # --archive ` \
+    --recursive --links --perms --times --group --owner --devices --specials \
+    ` # Very important! ` \
+    --hard-links \
+    ` # These supposedly slow things down.  I'm not sure how significant they are. ` \
+    --verbose \
+    --progress \
+    ` # Files on the target host are updated in the same storage the current version of the file occupies. ` \
+    ` # This eliminates the need to use temp files, solving a whole shitload of issues. ` \
+    --inplace \
+    ` # I don't know how or why there would be sparse files, but this supposedly deals with them intelligently. ` \
+    ` # I'm going to remove this for now, to do some more aggressive testing. ` \
+    ` # Cannot be used with --inplace ` \
+    ` # --sparse ` \
+    ` # skip based on checksum, not mod-time & size ` \
+    ` # --checksum ` \
+    --delete \
+    ` # --delete-during ` \
+    ` # Deleting before doing the copying ensures that there is enough space for new files. ` \
+    ` # If --inplace is used, then that ensures that a file can be copied overtop of the backup, and extra space for a copy-on-write isn't needed. ` \
+    --delete-before \
+      ` # Downthemall, Firefox extension.  Temporary files. ` \
+      --exclude '*-{????????-????-????-????-????????????}.dtapart' \
+    ` # LINUX ` \
+      --exclude '/tmp/**' \
+      --exclude '/home/user/tmp/**' \
+      --exclude 'user/tmp/Firefox Cache/**' \
+      ` # Some sort of GTK thing. ` \
+      --exclude '/.Trash-*/**' \
+      ` # Dynamically-generated.  For USB sticks and such. ` \
+      --exclude '/media/**' \
+      --exclude '/.thumbnails/**' \
+      ` # Note that I'm choosing not to do Transmission-*/**.part anymore, which includes Transmission-completed, because I sometimes have nearly-completed things which are bloody hard to get completely downloaded, which I *do* want backed up.` \
+      --exclude '/l/_inbox/BitTorrent/Transmission-downloading/**.part' \
+    ` # This is sometimes a bad idea.. ` \
+    --delete-excluded \
+    $source \
+    $dest
+}
+
+_backup_teardown(){
+  \echo "${bullet} Cleaning up $i .."
+  \umount   /mnt/backup_source/* /mnt/backup_dest/* &> /dev/null
+  \rmdir --parents /mnt/backup_source/* /mnt/backup_dest/* &> /dev/null
+#  \rmdir --parents /mnt/backup_source/  /mnt/backup_dest/  &> /dev/null
+}
+
+# TODO:  Find a more elegant way to do this.
+_backup_sdb(){
+  \echo "${bullet} Preparing sdb .."
+  source=/mnt/backup_source/sdb/
+  dest=/mnt/backup_dest/sda7/
+  i=7
+  if [[ -d $source ]] || [[ -d $dest ]]; then
+    _backup_teardown
+  fi
+  \mkdir --parents $source $dest
+  \mount /dev/sdb $source
+  \mount /dev/sda$i $dest
+  _backup_go
+  _backup_teardown
+}
+
+_backup_die(){
+  _backup_teardown
+  \echo ""
+  \echo ".. aborted."
+  exit 1
+}
+
+_backup_go(){
+  if [[ $backup_method == "unison" ]]; then
+    _backup_unison
+    # .unison is a special case.  =/
+    if [ $i -eq 6 ]; then
+      \echo "${bullet} Manually backing up the unison dot directory.."
+      \echo "   It skips backing it up, for some retarded reason."
+      \rm \
+        --recursive \
+        --force \
+        /mnt/backup_dest/6/dotunison/ \
+        ` # `
+      \cp \
+        --no-dereference \
+        --preserve=links \
+        --recursive \
+        --verbose \
+        /mnt/backup_source/6/dotunison \
+        /mnt/backup_dest/6/dotunison \
+        ` # `
+    fi
+  else
+    _backup_rsync
+  fi
+}
+
+# --
+
+# ^c
+trap _backup_die INT
+_backup_initialize_esata
+
+# TODO:  Deal with multiple numbers sent.  Back those items up.
+# $1 needs serious sanity-checking.
+if [ -z $1 ]; then
+  _backup_mbr
+  _backup_sdb
+  for i in 1 {6..8}; do
+    _backup_setup
+    _backup_go
+    _backup_teardown
+  done
+elif [ $1 -eq 7 ]; then
+  _backup_sdb
+  for i in 7; do
+    _backup_setup
+    _backup_go
+    _backup_teardown
+  done
+else
+  i=$1
+  _backup_setup
+  _backup_go
+  _backup_teardown
 fi
 
-\echo -e "${bullet} Done!"
-
-# -- Rsync Notes
-# --
-# --inplace
-# use --delete-during and then I could also use --fuzzy
-# maybe I could delete the files first like this:
-# nice -n 10 rsync --archive --min-size=1000GiB --delete-before /mnt/source/ /mnt/dest/
-# nice -n 10 rsync --archive --bwlimit=10000 --stats --min-size=1000GiB --delete-before --progress --hard-links /mnt/source/ /mnt/dest/
-# nice -n 10 rsync --temp-dir=/mnt/sda9/rsync-temp/ --bwlimit=10000 --stats --sparse --delete-before --archive --hard-links --verbose --progress /mnt/source/ /mnt/dest/
-#
-# --delete-after --force
-# -A -D
-#
-# rsync \
-#   -vaHx \
-#   --progress \
-#   --numeric-ids \
-#   --delete \
-#   --exclude-from=asylum_backup.excludes \
-#   --delete-excluded \
-#   root@asylum:/home/asylum/ \
-#   /backup/rsync/asylum/_home_asylum.demo/
-
-# Cludge for now
-mount /dev/sda1
+\echo ""
+\echo ".. done."
+exit 0
