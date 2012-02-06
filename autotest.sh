@@ -309,7 +309,9 @@ get_file_ext() {
     ;;
     "c") # C programming language
       execute() {
-        \gcc "$AUTOTEST_FILE" ; RESULT="$?"
+        #\gcc "$AUTOTEST_FILE" ; RESULT="$?"
+        # Turn on warnings.
+        \gcc -Wall "$AUTOTEST_FILE" ; RESULT="$?"
         \mv a.out "${AUTOTEST_FILE%.*}"
         "${AUTOTEST_FILE%.*}"
         \rm --force "${AUTOTEST_FILE%.*}"
