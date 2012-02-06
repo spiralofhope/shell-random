@@ -83,6 +83,8 @@ Supported file types:
 .sh  - bash, zsh
   http://www.gnu.org/software/bash/bash.html
   http://www.zsh.org/
+.c   - C programming language
+  (TODO)
 .boo - boo programming language
   http://boo.codehaus.org/
 .my  - Mythryl programming language
@@ -248,15 +250,21 @@ check_file() {
     fi
   fi
   # Executable?
+  
   if [ ! -x "$AUTOTEST_FILE" ]; then
-    \echo "The file isn't executable.  Trying to correct that."
-    \chmod u+x "$AUTOTEST_FILE" ; RESULT=$?
-    if [ $RESULT -ne 0 ]; then
-      \echo "I couldn't correct that.  Aborting."
-      return 1
-    else
-      \echo "It looks like it worked."
-    fi
+    case "$EXT" in
+    "c")
+    ;;
+    *)
+      \echo "The file isn't executable.  Trying to correct that."
+      \chmod u+x "$AUTOTEST_FILE" ; RESULT=$?
+      if [ $RESULT -ne 0 ]; then
+        \echo "I couldn't correct that.  Aborting."
+        return 1
+      else
+        \echo "It looks like it worked."
+      fi
+    esac
   fi
   # If we survived this, then the file seems to be sane.
   return 0
@@ -296,6 +304,18 @@ get_file_ext() {
         else
           ansi_echo "I don't know what to do with that exit code:  $RESULT"
         fi
+      }
+      return 0
+    ;;
+    "c") # C programming language
+      execute() {
+        \gcc "$AUTOTEST_FILE" ; RESULT="$?"
+        \mv a.out "${AUTOTEST_FILE%.*}"
+        "${AUTOTEST_FILE%.*}"
+        \rm --force "${AUTOTEST_FILE%.*}"
+      }
+      execute_with_debugging() {
+        \gcc gcc -v -Wall "$AUTOTEST_FILE" ; RESULT="$?"
       }
       return 0
     ;;
@@ -524,10 +544,10 @@ main_foreground() {
   until [ "MAIN_ROUTINE" = "finished" ]; do
     AUTOTEST_FILE=$( \readlink --canonicalize "$1" )
 
-    check_file "$AUTOTEST_FILE"
+    get_file_ext "$AUTOTEST_FILE"
     if [ ! $? = "0" ]; then break ; fi
 
-    get_file_ext "$AUTOTEST_FILE"
+    check_file "$AUTOTEST_FILE"
     if [ ! $? = "0" ]; then break ; fi
 
     get_file_time "$AUTOTEST_FILE"
