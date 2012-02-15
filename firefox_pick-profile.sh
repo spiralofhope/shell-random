@@ -36,6 +36,21 @@ result=$(
 #)
 
 if [[ $? -eq 0 ]]; then
-  /l/Linux/bin/Firefox/firefox -no-remote -P $result &
+  # Sigh, why can't firefox implement a simple -new-instance
+  if [ "$(pidof firefox)" ] 
+  then
+    # process was found
+    # This had worked for years, but the functionality was broken.
+    /l/Linux/bin/Firefox/firefox -no-remote -P $result &
+    # I used to be able to do the following to open content in a new tab:
+    #/l/Linux/bin/Firefox/firefox -a firefox -remote "openurl(%s,new-window)" 
+    # I have no way of opening a new instance of firefox.
+  else
+    # process not found
+    /l/Linux/bin/Firefox/firefox -P $result &
+    # Can be used with:
+    #/l/Linux/bin/Firefox/firefox -P default -a firefox -new-tab "%s"
+  fi
+
 fi
 \echo $result
