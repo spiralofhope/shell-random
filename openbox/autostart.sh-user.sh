@@ -31,6 +31,9 @@ connected(){
   # VoIP
   #\twinkle&
 
+  \nice -n 6 \
+    /l/Linux/bin/Firefox/firefox -P $result &
+
   # Voice Chat
   # TODO:  How do I get Mumble to automatically connect to a specific server on startup?
   # TODO:  How do I get Mumble to minimize on startup?
@@ -61,6 +64,3 @@ fi
 
 # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
 $( \sleep 15 && /l/Linux/bin/sh/projects.sh ) &
-
-# I start this up because I want to have my local wiki visible.
-\nice -n 6 /l/Linux/bin/Firefox/firefox -no-remote -P default &
