@@ -1,5 +1,11 @@
 # TODO:  rename this file.  Move it into lib.sh?
 
+# as in re-source.
+resource() {
+  for i in /l/Linux/bin/sh/zsh/*.sh
+    source $i
+}
+
 rmln() {
   # TODO:  Sanity checking
   rmln_target=`basename $1`
@@ -258,15 +264,6 @@ findfile() {
   \sed 's/$/"/' |\
   \grep --colour=always -i "$1"
 }
-# A more simple version of it, so that it can be used with pipes and such.  For example:
-#   findfile2 "worry be happy"|xargs deadbeef -queue
-findfile2() {
-  # TODO: parameter-sanity
-  \find -type f -iname \*"$1"\* |\
-  \sed 's/^/"/'|\
-  \sed 's/$/"/' |\
-  \grep --colour=never -i "$1"
-}
 finddir()  {
   # TODO: parameter-sanity
   \find -type d -iname \*"$1"\* |\
@@ -290,24 +287,78 @@ findin() {
 # TODO: parameter-sanity?
 findinall() { findin '*' $1 ; }
 
-findplay() {
-  # TODO: parameter-sanity
-  \findfile2 "$1" |\
-  \head --lines 1 |\
-  \xargs --no-run-if-empty deadbeef &
-}
-# This is seriously limited.
-# \find -type f -iname \*"the gathering"\* | \sed 's/^/"/'| \sed 's/$/"/' | \tr -d '\n' | \sed 's/""/" "/g' | \xargs -P0 -s99999 deadbeef --queue
-#  failed to add file or folder ëî
-# There is some sort of limitation to the number of items which can be processed.  I thought xargs solved that.  I don't understand... deadbeef has no queue limitation, so there must be something else.
+
+# Solves commandline limitations.  Hot damn.
 findqueue() {
-  # TODO: parameter-sanity
-  \findfile2 "$1" |\
-  \xargs --no-run-if-empty deadbeef --queue &
+  # Case-insensitive globbing:
+  \unsetopt CASE_GLOB
+  # Search through directories, and read it all into an array.
+  # The ending (.) means "files only".
+  # Fucking son of a bitch it's impossible to make glob use a variable in a sensible way.
+  #params=
+  #for i in {1..${#@}}; do
+    #if [ $i -gt 1 ]; then
+      #params+="\ "
+    #fi;
+    #params+="$@[$i]"
+  #done
+  #echo $params
+  #echo "$params"
+  # Just brute forcing this..
+  if [ -z $1 ]; then
+    files_array=( ./**/**(.) )
+  elif [ -z $2 ]; then
+    files_array=( ./**/*$1*(.) )
+  elif [ -z $3 ]; then
+    files_array=( ./**/*$1\ $2*(.) )
+  elif [ -z $4 ]; then
+    files_array=( ./**/*$1\ $2\ $3*(.) )
+  elif [ -z $5 ]; then
+    files_array=( ./**/*$1\ $2\ $3\ $4*(.) )
+  fi;
+
+  # TODO:  files_array can be shuffled here.
+  #        If zsh could sanely shuffle an array.  =/
+
+  # Iterate through the array.
+  for i in {1..${#files_array}}; do
+    #\echo $i
+    #\echo $files_array[$i]
+    \deadbeef --queue "$files_array[$i]" &
+    #\sleep 0.1
+  done
 }
-#
-# TODO: randomplay
-# TODO: findqueue, but shuffled
+
+findplay() {
+  \unsetopt CASE_GLOB
+  # See findqueue() for the explanation of this retardation.
+  if [ -z $1 ]; then
+    files_array=( ./**/**(.) )
+  elif [ -z $2 ]; then
+    files_array=( ./**/*$1*(.) )
+  elif [ -z $3 ]; then
+    files_array=( ./**/*$1\ $2*(.) )
+  elif [ -z $4 ]; then
+    files_array=( ./**/*$1\ $2\ $3*(.) )
+  elif [ -z $5 ]; then
+    files_array=( ./**/*$1\ $2\ $3\ $4*(.) )
+  fi;
+
+  # Deadbeef has no functionality to just empty out its existing play list, but I can load an empty one.
+  \deadbeef /l/media/deadbeef_empty_playlist.dbpl
+  for i in {1..${#files_array}}; do
+    \echo $i
+    \echo $files_array[$i]
+    \deadbeef --queue "$files_array[$i]" &
+  done
+  \deadbeef --play
+
+  # I could take a random entry like this:
+  #echo $files_array[$RANDOM%$#FILES+1]
+  # Or I could just point to a random entry in deadbeef's playlist.
+  #\deadbeef --random --play
+}
+
 
 
 # TODO: Do I actually use this anywhere?
