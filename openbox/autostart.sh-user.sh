@@ -32,7 +32,7 @@ connected(){
   #\twinkle&
 
   \nice -n 6 \
-    /l/Linux/bin/Firefox/firefox -P $result &
+    /l/Linux/bin/Firefox/firefox -P default &
 
   # Voice Chat
   # TODO:  How do I get Mumble to automatically connect to a specific server on startup?
