@@ -1,5 +1,12 @@
 # TODO:  rename this file.  Move it into lib.sh?
 
+ziprepair() {
+  file=ziprepair.$$.zip
+  \zip -FF $1 --out $file
+  \unzip -tqqq $file >> /dev/null; 
+}
+
+
 # as in re-source.
 resource() {
   for i in /l/Linux/bin/sh/zsh/*.sh
@@ -347,8 +354,8 @@ findplay() {
   # Deadbeef has no functionality to just empty out its existing play list, but I can load an empty one.
   \deadbeef /l/media/deadbeef_empty_playlist.dbpl
   for i in {1..${#files_array}}; do
-    \echo $i
-    \echo $files_array[$i]
+    #\echo $i
+    #\echo $files_array[$i]
     \deadbeef --queue "$files_array[$i]" &
   done
   \deadbeef --play
