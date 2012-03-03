@@ -16,7 +16,7 @@ resource() {
 rmln() {
   # TODO:  Sanity checking
   rmln_target=`basename $1`
-  echo $rmln_target
+  \echo $rmln_target
   \rm --interactive=once --recursive --verbose $rmln_target
   \ln --symbolic --verbose $1 .
 }
@@ -67,7 +67,7 @@ c() {
     local size=$(c_size ./)
     \echo "$size bytes."
   elif [ -z $2 ]; then
-    echo "For $1"
+    \echo "For $1"
 
     local count=$(c_count "$1")
     \echo "$count files."
@@ -116,18 +116,18 @@ alias mcedit="\mcedit --colors editnormal=lightgrey,black"
   #done
 #}
 global() {
-  echo "use **"
+  \echo "use **"
 }
 globaldirs() {
-  echo "use **/"
+  \echo "use **/"
 }
 #globaldirs() {
   #EXEC="$@"
   #EXEC=(${=EXEC})
-  #echo $EXEC
+  #\echo $EXEC
   #for globaldirs in **/; do
     #cd "$globaldirs"
-    ##echo $EXEC
+    ##\echo $EXEC
     #cd -
   #done
 #}
@@ -142,10 +142,10 @@ globaldirs() {
 #}
 # ccd() {
 # a="$@"
-# echo $a
+# \echo $a
 # # b=${a:gs/ /\\\\ /}
 # b=${(q)a}
-# echo $b
+# \echo $b
 #   \cd $b
 # }
 
@@ -242,7 +242,7 @@ EOF
   \paste <( \printf '%s' "$file_sizes") <( \printf '%s' "$file_names") | \less --raw-control-chars --HILITE-UNREAD --QUIT-AT-EOF
 
 
-#echo "$new_file_sizes"
+#\echo "$new_file_sizes"
 }
 
 
@@ -309,8 +309,8 @@ findqueue() {
     #fi;
     #params+="$@[$i]"
   #done
-  #echo $params
-  #echo "$params"
+  #\echo $params
+  #\echo "$params"
   # Just brute forcing this..
   if [ -z $1 ]; then
     files_array=( ./**/**(.) )
@@ -361,7 +361,7 @@ findplay() {
   \deadbeef --play
 
   # I could take a random entry like this:
-  #echo $files_array[$RANDOM%$#FILES+1]
+  #\echo $files_array[$RANDOM%$#FILES+1]
   # Or I could just point to a random entry in deadbeef's playlist.
   #\deadbeef --random --play
 }
@@ -381,7 +381,7 @@ searchstring() {
   unset searchstring_success
   until [ "sky" = "falling" ]; do
   # 2 parameters, no blanks, first parameter  must be one character.
-  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ `expr length $1` -gt 1 ]; then echo "Needs two parameters: a character, and a string"; break ; fi
+  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ `expr length $1` -gt 1 ]; then \echo "Needs two parameters: a character, and a string"; break ; fi
   character="$1"
   string="$2"
   # Iterate through the string.
@@ -390,7 +390,7 @@ searchstring() {
     # I should convert this into an 'until' so it makes sense to me, and it halts on the first success.
     if [ "${string:$i:1}" = "$character" ]; then searchstring_success=$i ; fi
   done
-  if [ ! "$searchstring_success" = "" ]; then echo $searchstring_success ; else echo "-1" ; fi
+  if [ ! "$searchstring_success" = "" ]; then \echo $searchstring_success ; else \echo "-1" ; fi
   break
   done
 }
@@ -399,7 +399,7 @@ searchstring_right_l() {
   unset searchstring_success
   until [ "sky" = "falling" ]; do
   # 2 parameters, no blanks, first parameter  must be one character.
-  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ `expr length $1` -gt 1 ]; then echo "Needs two parameters: a character, and a string"; break ; fi
+  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ `expr length $1` -gt 1 ]; then \echo "Needs two parameters: a character, and a string"; break ; fi
   character="$1"
   string="$2"
 
@@ -410,7 +410,7 @@ searchstring_right_l() {
     ((position++))
     ((length--))
   done
-  if [ ! "$searchstring_success" = "" ]; then echo $searchstring_success ; else echo "-1" ; fi
+  if [ ! "$searchstring_success" = "" ]; then \echo $searchstring_success ; else \echo "-1" ; fi
   break
   done
 }
@@ -419,7 +419,7 @@ searchstring_right_r() {
   unset searchstring_success
   until [ "sky" = "falling" ]; do
   # 2 parameters, no blanks, first parameter  must be one character.
-  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ `expr length $1` -gt 1 ]; then echo "Needs two parameters: a character, and a string"; break ; fi
+  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ `expr length $1` -gt 1 ]; then \echo "Needs two parameters: a character, and a string"; break ; fi
   character="$1"
   string="$2"
   position=0
@@ -429,7 +429,7 @@ searchstring_right_r() {
     ((position++))
     ((length--))
   done
-  if [ ! "$searchstring_success" = "" ]; then echo $searchstring_success ; else echo "-1" ; fi
+  if [ ! "$searchstring_success" = "" ]; then \echo $searchstring_success ; else \echo "-1" ; fi
   break
   done
 }
@@ -438,16 +438,16 @@ divide() {
   # Just simple for now.  Elsewhere I have more complex code that's more thorough
   isnumber() {
     if expr $1 + 1 &> /dev/null ; then
-      echo "0"
+      \echo "0"
     else
-      echo "1"
+      \echo "1"
     fi
   }
 
   # Since "exit" also exits xterm, I do this to allow "break" to end this procedure.
   until [ "sky" = "falling" ]; do
-  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] ; then echo "Needs two parameters"; break ; fi
-  if [ ! `isnumber $1` -eq 0 ] || [ ! `isnumber $2` -eq 0 ] ; then echo "Needs two numbers"; break; fi
+  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] ; then \echo "Needs two parameters"; break ; fi
+  if [ ! `isnumber $1` -eq 0 ] || [ ! `isnumber $2` -eq 0 ] ; then \echo "Needs two numbers"; break; fi
 
   left=$1
   right=$2
@@ -463,7 +463,7 @@ divide() {
   answer_right=${answer_right#*$answer_left}
 
   # Add a dot.  Must be combined into a variable otherwise the final echo won't work.
-  echo $answer_left"."$answer_right
+  \echo $answer_left"."$answer_right
 
 break
 done
@@ -471,9 +471,9 @@ done
 
 position_from_right_to_left() {
   until [ "sky" = "falling" ]; do
-  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ]; then echo "Needs two parameters: a string and a number"; break ; fi
+  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ]; then \echo "Needs two parameters: a string and a number"; break ; fi
   expr $2 + 1 &> /dev/null ; result=$?
-  if [ $result -ne 0 ]; then echo $2 is not a number. ; break ; fi
+  if [ $result -ne 0 ]; then \echo $2 is not a number. ; break ; fi
   string=$1
   position=$2
   length=${#string}
@@ -482,7 +482,7 @@ position_from_right_to_left() {
     ((iteration++))
     ((length--))
   done
-  echo $iteration
+  \echo $iteration
   break
   done
 }
@@ -491,9 +491,9 @@ insert_character() {
   unset searchstring_success
   until [ "sky" = "falling" ]; do
   # 2 parameters, no blanks, first parameter  must be one character.
-  if [ ! "$#" -eq 3 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ "$3" = "" ] || [ `expr length $1` -gt 1 ]; then echo "Needs three parameters: a character, a string and a position"; break ; fi
+  if [ ! "$#" -eq 3 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ "$3" = "" ] || [ `expr length $1` -gt 1 ]; then \echo "Needs three parameters: a character, a string and a position"; break ; fi
   expr $3 + 1 &> /dev/null ; result=$?
-  if [ $result -ne 0 ]; then echo $3 is not a number. ; break ; fi
+  if [ $result -ne 0 ]; then \echo $3 is not a number. ; break ; fi
   character="$1"
   string="$2"
   position="$3"
@@ -505,7 +505,7 @@ insert_character() {
     ((i++))
     if [ $i -eq $position ]; then newstring=$newstring$character ; fi
   done
-  echo $newstring
+  \echo $newstring
 
   break
   done
@@ -515,9 +515,9 @@ replace_character() {
   unset searchstring_success
   until [ "sky" = "falling" ]; do
   # 2 parameters, no blanks, first parameter  must be one character.
-  if [ ! "$#" -eq 3 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ "$3" = "" ] || [ `expr length $1` -gt 1 ]; then echo "Needs three parameters: a character, a string and a position"; break ; fi
+  if [ ! "$#" -eq 3 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ "$3" = "" ] || [ `expr length $1` -gt 1 ]; then \echo "Needs three parameters: a character, a string and a position"; break ; fi
   expr $3 + 1 &> /dev/null ; result=$?
-  if [ $result -ne 0 ]; then echo $3 is not a number. ; break ; fi
+  if [ $result -ne 0 ]; then \echo $3 is not a number. ; break ; fi
   character="$1"
   string="$2"
   position="$3"
@@ -532,7 +532,7 @@ replace_character() {
     fi
     ((i++))
   done
-  echo $newstring
+  \echo $newstring
 
   break
   done
@@ -541,8 +541,8 @@ replace_character() {
 
 multiply() {
   until [ "sky" = "falling" ]; do
-    if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] ; then echo "Needs two parameters"; break ; fi
-    if [ ! `isnumber $1` -eq 0 ] || [ ! `isnumber $2` -eq 0 ] ; then echo "Needs two numbers"; break; fi
+    if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] ; then \echo "Needs two parameters"; break ; fi
+    if [ ! `isnumber $1` -eq 0 ] || [ ! `isnumber $2` -eq 0 ] ; then \echo "Needs two numbers"; break; fi
     a=$1
     b=$2
 
@@ -572,7 +572,7 @@ multiply() {
     # insert a "." into $sum, but not at the end
     if [ $dotloc -ne ${#sum} ]; then sum=`insert_character "." "$sum" $dotloc` ; fi
 
-    echo $sum
+    \echo $sum
   break
   done
 }
@@ -582,7 +582,7 @@ multiply() {
 # -- Auto-remove empty directories (with no subdirectories)
 rm() {
   # Be aware that if you alias rm, it'll muck this up.
-#   echo "$#"
+#   \echo "$#"
   if [ "$#" = "1" ] && [ -d "$1" ]; then
 #     \rmdir --ignore-fail-on-non-empty "$1"
     \rmdir -v "$1"
