@@ -1,14 +1,16 @@
+bitnami_dir=/z/mediawiki
+
 if ! [ $(whoami) = root ]; then
   \echo "You need to be root!"
 else
 
 \adduser --no-create-home mysql &> /dev/null
 if ! [ -d /opt/bitnami ]; then
-  ln -s /home/bitnami-install /opt/bitnami &> /dev/null
+  ln --force --symbolic $bitnami_dir/bitnami-install /opt/bitnami &> /dev/null
 fi
 
-\chown -R user:users /home/bitnami-install
-\chown -R user:users /home/bitnami-data
+\chown -R user:users $bitnami_dir/bitnami-install
+\chown -R user:users $bitnami_dir/bitnami-data
 
 \echo ''
 \echo ' * Starting MySQL.'

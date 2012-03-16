@@ -112,9 +112,11 @@ else
   _clear_combatlog
 
   if [ -z $1 ]; then
-    \echo " * Launching Mangler (Ventrilo client) with auto-login."
+    #\echo " * Launching Mangler (Ventrilo client) with auto-login."
     # Zomg plaintext login information!
-    su $user -c "\mangler -s $mangler_ip:$mangler_port -u $mangler_user -p $mangler_pass" &
+    #su $user -c "\mangler -s $mangler_ip:$mangler_port -u $mangler_user -p $mangler_pass" &
+
+    \mumble&
 
     _open_wow_texts
   fi
