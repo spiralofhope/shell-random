@@ -42,9 +42,9 @@ if [[ $? -eq 0 ]]; then
     # process was found
     # This had worked for years, but the functionality was broken.
     \nice -n 6 \
-      /l/Linux/bin/Firefox/firefox -no-remote -P $result &
+      /l/Firefox/bin/firefox -no-remote -P $result &
     # I used to be able to do the following to open content in a new tab:
-    #/l/Linux/bin/Firefox/firefox -a firefox -remote "openurl(%s,new-window)" 
+    #/l/Firefox/bin/firefox -a firefox -remote "openurl(%s,new-window)" 
     # I have no way of opening a new instance of firefox.
   else
     # process not found
@@ -53,9 +53,9 @@ if [[ $? -eq 0 ]]; then
 # Then if $result was non-default, open that profile with -no-remote
 
     \nice -n 6 \
-      /l/Linux/bin/Firefox/firefox -P $result &
+      /l/Firefox/bin/firefox -P $result &
     # Can be used with:
-    #/l/Linux/bin/Firefox/firefox -P default -a firefox -new-tab "%s"
+    #/l/Firefox/bin/firefox -P default -a firefox -new-tab "%s"
   fi
 
 fi
