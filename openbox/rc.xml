@@ -240,20 +240,62 @@ This method has a noticeable delay..
       </action>
     </keybind>
 -->
-    <keybind key="A-F5"><action name="Execute"><command>openbox --reconfigure</command></action><action name="Execute"><command>xrefresh</command></action></keybind>
-    <keybind key="A-S-F5"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>geany /home/user/.config/openbox/rc.xml</command></action></keybind>
-    <keybind key="W-p"><action name="Execute"><command>/home/user/bin/terminal.sh -geometry 239x71+0+0 -e htop</command></action></keybind>
-    <keybind key="W-s"><action name="Execute"><command>/home/user/bin/terminal.sh</command></action></keybind>
-    <keybind key="C-A-s"><action name="Execute"><command>
-      gksu -u root "xterm -si +vb +sb -j -s -fn vga +fbx -bg black -fg gray -cr darkgreen -sl 10000 -geometry 80x24+0+0"
+    <keybind key="A-F5"><action name="Execute">
+      <command>
+        openbox --reconfigure
+      </command></action><action name="Execute">
+      <command>
+        xrefresh
+      </command>
+    </action></keybind>
+    <keybind key="A-S-F5"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
+      geany /home/user/.config/openbox/rc.xml
     </command></action></keybind>
-    <keybind key="W-m"><action name="Execute"><!--        <command>/home/user/bin/terminal.sh -geometry 100x14+0+0 -e /home/user/bin/mixer -I</command> --><!-- font default is probably wrong, but it works! --><command>/home/user/bin/terminal.sh -geometry 160x25+0+0 -font default -e alsamixer</command></action></keybind>
-    <keybind key="C-A-b"><startupnotify><enabled>yes</enabled></startupnotify><action name="Execute"><command>/home/user/bin/BOINC/run_manager</command></action></keybind>
-    <keybind key="W-b"><action name="Execute"><!-- I don't know how to pass a string with spaces to -T --><!--
-        <command>/home/user/bin/terminal.sh -geometry 103x70+0+0 -T BitTornado -e 'nice -n 10 /usr/bin/perl /home/user/bin/btstatus.pl /tmp/RAMDISK/bittornado.log'</command>
---><command>nice -n 5 deluge</command></action></keybind>
-    <keybind key="W-w"><action name="Execute"><command>nice -n 6 /home/user/bin/firefox/firefox -no-remote -P default</command><startupnotify><enabled>yes</enabled></startupnotify></action></keybind>
-    <keybind key="W-S-w"><action name="Execute"><command>links -g</command><startupnotify><enabled>no</enabled></startupnotify></action></keybind>
+    <keybind key="W-p"><action name="Execute"><command>
+      /home/user/bin/terminal.sh -geometry 239x71+0+0 -e htop
+    </command></action></keybind>
+    <keybind key="W-s"><action name="Execute"><command>\
+<!--
+      /home/user/bin/terminal.sh
+-->
+      /usr/bin/sakura --geometry 80x24+1+1
+    </command></action></keybind>
+    <keybind key="C-A-s"><action name="Execute"><command>
+<!--
+      gksu -u root "xterm -si +vb +sb -j -s -fn vga +fbx -bg black -fg gray -cr darkgreen -sl 10000 -geometry 80x24+0+0"
+-->
+      gksu -u root "/usr/bin/sakura --geometry 80x24+1+1"
+    </command></action></keybind>
+    <keybind key="W-m"><action name="Execute"><command>
+<!--
+      /home/user/bin/terminal.sh -geometry 100x14+0+0 -e /home/user/bin/mixer -I
+-->
+      <!-- The font 'default' is probably wrong, but it works! -->
+      /home/user/bin/terminal.sh -geometry 160x25+0+0 -font default -e alsamixer
+      </command></action></keybind>
+
+<!--
+    <keybind key="C-A-b"><startupnotify><enabled>yes</enabled></startupnotify><action name="Execute"><command>
+      /home/user/bin/BOINC/run_manager
+    </command></action></keybind>
+-->
+    <keybind key="W-b"><action name="Execute"><command>
+      <!-- I don't know how to pass a string with spaces to -T -->
+      <!--
+        /home/user/bin/terminal.sh -geometry 103x70+0+0 -T BitTornado -e 'nice -n 10 /usr/bin/perl /home/user/bin/btstatus.pl /tmp/RAMDISK/bittornado.log'
+      -->
+<!--
+      nice -n 5 deluge
+-->
+      nice -n 5 /usr/bin/transmission-gtk
+    </command></action></keybind>
+
+    <keybind key="W-w"><action name="Execute"><command>
+      nice -n 6 /home/user/bin/firefox/firefox -no-remote -P default
+    </command><startupnotify><enabled>yes</enabled></startupnotify></action></keybind>
+    <keybind key="W-S-w"><action name="Execute"><command>
+      links -g
+    </command><startupnotify><enabled>no</enabled></startupnotify></action></keybind>
 <!--
     <keybind key="C-A-S-w">
       <action name="Execute">
@@ -264,26 +306,46 @@ This method has a noticeable delay..
       </action>
     </keybind>
 -->
-    <keybind key="C-A-S-w"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><!--
-        <command>links -g</command>
---><command>midori</command></action></keybind>
-    <keybind key="C-A-e"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>claws-mail</command></action></keybind>
-    <keybind key="A-C-Escape"><action name="Execute"><command>xkill</command></action></keybind>
-    <keybind key="C-A-l"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>xscreensaver-demo</command></action></keybind>
-    <keybind key="W-l"><action name="Execute"><command>xscreensaver-command -lock</command></action></keybind>
-    <keybind key="W-c"><action name="Execute"><command>xcalc</command></action></keybind>
-    <!-- to be redone -->
+    <keybind key="C-A-S-w"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
+    <!--
+        links -g
+    -->
+      midori
+    </command></action></keybind>
+    <keybind key="C-A-e"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
+      claws-mail
+    </command></action></keybind>
+    <keybind key="A-C-Escape"><action name="Execute"><command>
+      xkill
+    </command></action></keybind>
+    <keybind key="C-A-l"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
+      xscreensaver-demo
+    </command></action></keybind>
+    <keybind key="W-l"><action name="Execute"><command>
+      xscreensaver-command -lock
+    </command></action></keybind>
+    <keybind key="W-c"><action name="Execute"><command>
+      xcalc
+    </command></action></keybind>
+    <!-- TODO:  Revisit this concept -->
     <!--    [Execute] (Mod1-Control-F) {xtoolwait sfm & wmpid=$! && wait $wmpid && wmctrl -F -r "sfm #1" -e 1,0,0,800,1148 && wmctrl -F -r "sfm #0" -e 1,800,0,800,1148}  -->
-    <keybind key="W-f"><action name="Execute"><!--
-        Works under Lubuntu 10.10
---><command>zsh -c "export LS_COLORS=\"no=00:fi=00:di=00;36:ln=00;35:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=00;05;37;41:mi=00;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.rar=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.torrent=00;31:*.jpg=00;35:*~.jpg=00;33:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*~.mp3=00;03:*~.ogg=00;03:*~.flv=00;03:*~.ape=00;03:*~.flv=00;03:*~.mpg=00;03:*~.wmv=00;03:\";ssfm"</command><!--
+    <keybind key="W-f"><action name="Execute"><command>
+    <!-- Works under Lubuntu 10.10 -->
+    <!-- Works under Unity Linux 2011.0 alpha, 2011-07-23 -->
+      zsh -c "export LS_COLORS=\"no=00:fi=00:di=00;36:ln=00;35:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=00;05;37;41:mi=00;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.rar=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.torrent=00;31:*.jpg=00;35:*~.jpg=00;33:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*~.mp3=00;03:*~.ogg=00;03:*~.flv=00;03:*~.ape=00;03:*~.flv=00;03:*~.mpg=00;03:*~.wmv=00;03:\";ssfm"
+      <!--
         I don't understand why /etc/DIR_COLORS is being ignored.  I'm not entirely sure how to import it either.
---><!-- Working under Unity Linux 2010.1
+      -->
+      <!-- Working under Unity Linux 2010.1
         <command>zsh -c "export LS_COLORS=\"$LS_COLORS:*.jpeg=00;35:*~.flv=00;03:*~.mpg=00;03:*~.avi=00;03:*~.wmv=00;03:*~.mp3=00;03:*~.jpg=00;03:*~.png=00;03:\";ssfm"</command>
---><!--
-        <command>ssfm</command>
---></action></keybind>
-    <keybind key="C-A-f"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>pcmanfm</command></action></keybind>
+      -->
+      <!--
+        ssfm
+      -->
+    </command></action></keybind>
+    <keybind key="C-A-f"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
+      pcmanfm
+    </command></action></keybind>
     <keybind key="W-e"><action name="Execute"><command>
       /home/user/bin/projects.sh
 <!--
@@ -291,9 +353,12 @@ This method has a noticeable delay..
       xterm -e "/usr/bin/env zsh -c -exec /home/user/bin/projects.sh; sleep 100"
 -->
     </command></action></keybind>
-    <keybind key="W-k"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><!--
-        <command>mtpaint ~/new.png</command>
---><command>kolourpaint ~/new.png</command></action></keybind>
+    <keybind key="W-k"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
+    <!--
+      mtpaint ~/new.png
+    -->
+      kolourpaint ~/new.png
+    </command></action></keybind>
     <!-- run an arbitrary commandline -->
     <!-- TODO: Figure out more about this window, so that I can properly control it! -->
     <keybind key="C-A-r"><action name="Execute"><command>
@@ -307,8 +372,12 @@ This method has a noticeable delay..
       bashrun
 -->
 
-    <keybind key="Print"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>ddm-screenshot</command></action></keybind>
-    <keybind key="A-Print"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>ksnapshot</command></action></keybind>
+    <keybind key="Print"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
+      ddm-screenshot
+    </command></action></keybind>
+    <keybind key="A-Print"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
+      ksnapshot
+    </command></action></keybind>
     <!-- ~~~~~~~~~~~~~~~ -->
     <!-- My Custom Stuff -->
     <keybind key="W-Left"><action name="DesktopLeft"><dialog>no</dialog><wrap>no</wrap></action></keybind>
