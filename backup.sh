@@ -39,9 +39,9 @@ _backup_initialize_esata(){
   # \sleep 2
   
   for i in c d e f g h i j k l m n o p q r s t u v w x y z; do
-    if [ -b /dev/sd${i}8 ]; then
-      \echo "${bullet} External drive found at /dev/sd${i}"
+    if [ -b /dev/sd${i}7 ]; then
       external=/dev/sd$i
+      \echo "${bullet} External drive found at $external"
     fi
   done
   if [ "x$external" = "x" ]; then
@@ -63,24 +63,20 @@ _backup_mbr(){
 }
 
 _backup_setup(){
-  \echo "${bullet} Preparing $i .."
-  source=/mnt/backup_source/$i/
-  dest=/mnt/backup_dest/$i/
-  #if [ -d "$source" ] && [ -d "$dest" ]; then
-  \mkdir --parents $source $dest
-  echo /dev/sda$i $source
-  \mount /dev/sda$i $source
-  echo $external$i $dest
-  \mount $external$i $dest
-  #else
-    #echo "There's a problem with the source or destination"
-    #echo "  $source"
-    #echo "  $dest"
-    #_backup_teardown
-  #fi
+  \echo "${bullet} _backup_setup : ${1:t} => ${2:t} .."
+
+  source=/mnt/backup_source/${1:t}/
+  target=/mnt/backup_target/${2:t}/
+
+  \mkdir --parents  $source
+  \mkdir --parents  $target
+  \mount  $1  $source
+  \mount  $2  $target
 }
 
 _backup_unison(){
+  \echo "${bullet} : _backup_unison : ${1:t} => ${2:t} .."
+
   # Check for, and repair, the unison dotdir.
   # My /root/.unison is actually found on the data partition, so I don't overwrite it upon system-reinstallation.
   if [ -L ~/.unison ]; then
@@ -94,8 +90,6 @@ _backup_unison(){
     ln -s /home/dotunison ~/.unison
   fi
 
-  \echo "${bullet} Syncing $i .."
-
   # If encountering either a socket or a fifo (named pipe), it gives the message "Error: path /foo/bar has unknown file type." and skips gracefully.
   # http://tech.groups.yahoo.com/group/unison-users/message/7419?var=1&p=3
   # Should I just use rsync for those? .. I don't think I have to worry about attempting to back up either of those things.
@@ -105,10 +99,10 @@ _backup_unison(){
   # I don't use hard links anyways.
   \nice -n 19 \
     $unison \
-      $source \
-      $dest \
+      $1 \
+      $2 \
       ` # force changes from this replica to the other ` \
-      -force $source \
+      -force $1 \
       -batch \
       -log=false \
       ` # maximum number of simultaneous file transfers ` \
@@ -143,7 +137,6 @@ _backup_unison(){
 }
 
 _backup_rsync(){
-
   #` # WINDOWS ` \
   #` # This includes various versions of Windows.` \
     #--exclude 'pagefile.sys' \
@@ -160,7 +153,7 @@ _backup_rsync(){
     #--exclude '/Windows/Microsoft.NET/Framework/v2.0.50727/Temporary ASP.NET Files/**' \
     #--exclude '/Documents and Settings/*/Application Data/Ventrilo/temp/**' \
 
-  \echo "${bullet} Syncing $i .."
+  \echo "${bullet} _backup_rsync : ${1:t} => ${2:t} .."
   \nice -n 19 \rsync \
     ` # This is -rlptgoD (no -H,-A,-X) ` \
     ` # Which is --recursive --links --perms --times --group --owner --devices --specials ` \
@@ -201,31 +194,16 @@ _backup_rsync(){
       --exclude '/l/_inbox/BitTorrent/Transmission-downloading/**.part' \
     ` # This is sometimes a bad idea.. ` \
     --delete-excluded \
-    $source \
-    $dest
+    $1 \
+    $2
 }
 
 _backup_teardown(){
-  \echo "${bullet} Cleaning up $i .."
-  \umount   /mnt/backup_source/* /mnt/backup_dest/* &> /dev/null
-  \rmdir --parents /mnt/backup_source/* /mnt/backup_dest/* &> /dev/null
-#  \rmdir --parents /mnt/backup_source/  /mnt/backup_dest/  &> /dev/null
-}
-
-# TODO:  Find a more elegant way to do this.
-_backup_sdb(){
-  \echo "${bullet} Preparing sdb .."
-  source=/mnt/backup_source/sdb/
-  dest=/mnt/backup_dest/sda7/
-  i=7
-  if [[ -d $source ]] || [[ -d $dest ]]; then
-    _backup_teardown
-  fi
-  \mkdir --parents $source $dest
-  \mount /dev/sdb $source
-  \mount /dev/sda$i $dest
-  _backup_go
-  _backup_teardown
+  \echo "${bullet} _backup_teardown .."
+  \umount   /mnt/backup_source/*  &>  /dev/null
+  \umount   /mnt/backup_target/*  &>  /dev/null
+  \rmdir --parents  /mnt/backup_source/*  &> /dev/null
+  \rmdir --parents  /mnt/backup_target/*  &> /dev/null
 }
 
 _backup_die(){
@@ -237,7 +215,7 @@ _backup_die(){
 
 _backup_go(){
   if [[ $backup_method == "unison" ]]; then
-    _backup_unison
+    _backup_unison  $1  $2
     # .unison is a special case.  =/
     if [ $i -eq 6 ]; then
       \echo "${bullet} Manually backing up the unison dot directory.."
@@ -245,7 +223,7 @@ _backup_go(){
       \rm \
         --recursive \
         --force \
-        /mnt/backup_dest/6/dotunison/ \
+        /mnt/backup_target/6/dotunison/ \
         ` # `
       \cp \
         --no-dereference \
@@ -253,13 +231,14 @@ _backup_go(){
         --recursive \
         --verbose \
         /mnt/backup_source/6/dotunison \
-        /mnt/backup_dest/6/dotunison \
+        /mnt/backup_target/6/dotunison \
         ` # `
     fi
   else
-    _backup_rsync
+    _backup_rsync  $1  $2
   fi
 }
+
 
 # --
 
@@ -267,30 +246,34 @@ _backup_go(){
 trap _backup_die INT
 _backup_initialize_esata
 
-# TODO:  Deal with multiple numbers sent.  Back those items up.
-# $1 needs serious sanity-checking.
+# TODO:  $1 needs serious sanity-checking.
 if [ -z $1 ]; then
-  _backup_mbr
-  _backup_sdb
-  for i in 1 {6..8}; do
-    _backup_setup
-    _backup_go
+  # MBR TODO:
+  #_backup_mbr /dev/sda  $external
+
+  # SSD backup
+  _backup_setup  /dev/sda6  /dev/sdb6
+  _backup_go  $source  $target
+
+  for i in {1,3,5,6,7}; do
+    _backup_setup  /dev/sdb$i  $external$i
+    _backup_go  $source  $target
     _backup_teardown
   done
-elif [ $1 -eq 7 ]; then
-  _backup_sdb
-  for i in 7; do
-    _backup_setup
-    _backup_go
-    _backup_teardown
-  done
-else
-  i=$1
-  _backup_setup
-  _backup_go
-  _backup_teardown
+
+  \rsync -av --progress --delete \
+    /opt/bitnami/ \
+    /mnt/data/zombie/mediawiki/bitnami/
 fi
 
-\echo ""
-\echo ".. done."
+# TODO:  $@ needs serious sanity-checking.
+if ! [ -z $1 ]; then
+  for i in $@; do
+    _backup_setup  /dev/sdb$i  $external$i
+    _backup_go  $source  $target
+    _backup_teardown
+  done
+fi
+
+\echo "${bullet} done."
 exit 0
