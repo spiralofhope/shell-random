@@ -244,7 +244,9 @@ This method has a noticeable delay..
     <keybind key="A-S-F5"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>geany /home/user/.config/openbox/rc.xml</command></action></keybind>
     <keybind key="W-p"><action name="Execute"><command>/home/user/bin/terminal.sh -geometry 239x71+0+0 -e htop</command></action></keybind>
     <keybind key="W-s"><action name="Execute"><command>/home/user/bin/terminal.sh</command></action></keybind>
-    <keybind key="C-A-s"><action name="Execute"><command>Terminal --geometry 80x24+0+0</command></action></keybind>
+    <keybind key="C-A-s"><action name="Execute"><command>
+      gksu -u root "xterm -si +vb +sb -j -s -fn vga +fbx -bg black -fg gray -cr darkgreen -sl 10000 -geometry 80x24+0+0"
+    </command></action></keybind>
     <keybind key="W-m"><action name="Execute"><!--        <command>/home/user/bin/terminal.sh -geometry 100x14+0+0 -e /home/user/bin/mixer -I</command> --><!-- font default is probably wrong, but it works! --><command>/home/user/bin/terminal.sh -geometry 160x25+0+0 -font default -e alsamixer</command></action></keybind>
     <keybind key="C-A-b"><startupnotify><enabled>yes</enabled></startupnotify><action name="Execute"><command>/home/user/bin/BOINC/run_manager</command></action></keybind>
     <keybind key="W-b"><action name="Execute"><!-- I don't know how to pass a string with spaces to -T --><!--
@@ -282,25 +284,29 @@ This method has a noticeable delay..
         <command>ssfm</command>
 --></action></keybind>
     <keybind key="C-A-f"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>pcmanfm</command></action></keybind>
-    <keybind key="W-e"><action name="Execute"><command>/home/user/bin/projects.sh</command><!--
-        <command>xterm -e "/home/user/bin/projects.sh; sleep 100"</command>
---><!--
-        <command>xterm -e "/usr/bin/env zsh -c -exec /home/user/bin/projects.sh; sleep 100"</command>
---></action></keybind>
+    <keybind key="W-e"><action name="Execute"><command>
+      /home/user/bin/projects.sh
+<!--
+      xterm -e "/home/user/bin/projects.sh; sleep 100"
+      xterm -e "/usr/bin/env zsh -c -exec /home/user/bin/projects.sh; sleep 100"
+-->
+    </command></action></keybind>
     <keybind key="W-k"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><!--
         <command>mtpaint ~/new.png</command>
 --><command>kolourpaint ~/new.png</command></action></keybind>
     <!-- run an arbitrary commandline -->
     <!-- TODO: Figure out more about this window, so that I can properly control it! -->
-    <keybind key="W-r"><action name="Execute">
-      <command>gnome-panel-control --run-dialog</command>
+    <keybind key="C-A-r"><action name="Execute"><command>
+      gksu
+    </command></action></keybind>
+    <keybind key="W-r"><action name="Execute"><command>
+      thinglaunch
+    </command></action></keybind>
 <!--
-      <command>bashrun</command>
+      gnome-panel-control DASH-run-dialog
+      bashrun
 -->
-<!--
-      <command>thinglaunch</command>
--->
-    </action></keybind>
+
     <keybind key="Print"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>ddm-screenshot</command></action></keybind>
     <keybind key="A-Print"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>ksnapshot</command></action></keybind>
     <!-- ~~~~~~~~~~~~~~~ -->
