@@ -160,60 +160,86 @@
     <moveButton>Middle</moveButton>
     <!-- 'Left', 'Middle', 'Right' -->
   </dock>
-  <keyboard><chainQuitKey>C-g</chainQuitKey><!-- Keybindings for desktop switching --><!-- My Custom Stuff --><!-- ~~~~~~~~~~~~~~ --><!-- The backtick doesn't work for a hotkey.  Lame --><keybind key="W-`"><action name="ToggleOmnipresent"/></keybind><keybind key="S-W-1"><action name="SendToDesktop"><desktop>1</desktop><follow>no</follow></action></keybind><keybind key="S-W-2"><action name="SendToDesktop"><desktop>2</desktop><follow>no</follow></action></keybind><keybind key="S-W-3"><action name="SendToDesktop"><desktop>3</desktop><follow>no</follow></action></keybind><keybind key="S-W-4"><action name="SendToDesktop"><desktop>4</desktop><follow>no</follow></action></keybind><keybind key="W-1"><action name="Desktop"><desktop>1</desktop></action></keybind><keybind key="W-2"><action name="Desktop"><desktop>2</desktop></action></keybind><keybind key="W-3"><action name="Desktop"><desktop>3</desktop></action></keybind><keybind key="W-4"><action name="Desktop"><desktop>4</desktop></action></keybind><!--
-  For a multimedia keyboard, you can find the names in
-  /usr/share/X11/XKeysymDB
-  I could replace audacious2's key mapping helper plugin with some openbox hotkeys pretty easily.
---><!-- launching applications --><keybind key="XF86AudioRaiseVolume"><action name="Execute"><!--
-This method has a noticeable delay..
-        <command>python /home/user/bin/pvol.py -c 5</command>
---><command>aumix -v+10</command></action></keybind><keybind key="XF86AudioMute"><action name="Execute"><!--
-        <command>python /home/user/bin/pvol.py -m</command>
---><command>aumix -M</command></action></keybind><keybind key="XF86AudioLowerVolume"><action name="Execute"><!--
-        <command>python /home/user/bin/pvol.py -c -5</command>
---><command>aumix -v-10</command></action></keybind><keybind key="XF86AudioMedia"><action name="Execute"><command>audacious2</command></action></keybind><!-- taken from Lubuntu -->
-  <keybind key="XF86AudioRaiseVolume">
-      <action name="Execute">
-          <command>amixer -q sset Master 3%+</command>
-      </action>
-    </keybind>
+  <keyboard>
+    <chainQuitKey>C-g</chainQuitKey>
+    <!-- Keybindings for desktop switching -->
+    <!-- My Custom Stuff -->
+    <!-- ~~~~~~~~~~~~~~ -->
+    <!-- The backtick doesn't work for a hotkey.  Lame -->
+<!--
+    <keybind key="W-`">
+      <action name="ToggleOmnipresent"/>
+    </keybind>
+-->
+    <keybind key="S-W-1"><action name="SendToDesktop"><desktop>1</desktop><follow>no</follow></action></keybind>
+    <keybind key="S-W-2"><action name="SendToDesktop"><desktop>2</desktop><follow>no</follow></action></keybind>
+    <keybind key="S-W-3"><action name="SendToDesktop"><desktop>3</desktop><follow>no</follow></action></keybind>
+    <keybind key="S-W-4"><action name="SendToDesktop"><desktop>4</desktop><follow>no</follow></action></keybind>
+    <keybind key="W-1"><action name="Desktop"><desktop>1</desktop></action></keybind>
+    <keybind key="W-2"><action name="Desktop"><desktop>2</desktop></action></keybind>
+    <keybind key="W-3"><action name="Desktop"><desktop>3</desktop></action></keybind>
+    <keybind key="W-4"><action name="Desktop"><desktop>4</desktop></action></keybind>
+    <!-- For a multimedia keyboard, you can find the names in /usr/share/X11/XKeysymDB
+         I could replace audacious2's key mapping helper plugin with some openbox hotkeys pretty easily. -->
+    <!-- launching applications -->
+    <keybind key="XF86AudioRaiseVolume"><action name="Execute"><command>
+      <!-- NOTE: pyvol has a noticeable delay.. -->
+<!--
+      python /home/user/bin/pvol.py -c 5
+-->
+<!--
+      aumix -v+10
+-->
+      amixer -q sset Master 3%+
+    </command></action></keybind>
+    <keybind key="XF86AudioMute"><action name="Execute"><command>
+<!--
+      python /home/user/bin/pvol.py -m
+-->
+<!--
+      aumix -M
+-->
+      amixer -q sset Master toggle
+    </command></action></keybind>
+    <keybind key="XF86AudioLowerVolume"><action name="Execute"><command>
+<!--
+      python /home/user/bin/pvol.py -c -5
+-->
+<!--
+      aumix -v-10
+-->
+      amixer -q sset Master 3%-
+    </command></action></keybind>
+    <keybind key="XF86AudioMedia"><action name="Execute"><command>
+      audacious2
+    </command></action></keybind>
 
-    <keybind key="XF86AudioLowerVolume">
-      <action name="Execute">
-          <command>amixer -q sset Master 3%-</command>
-      </action>
-    </keybind>
+    <keybind key="XF86WWW"><action name="Execute"><command>
+      x-terminal-emulator
+    </command></action></keybind>
+    <keybind key="XF86Terminal"><action name="Execute"><command>
+      x-terminal-emulator
+    </command></action></keybind>
+    <keybind key="XF86Calculator"><action name="Execute"><command>
+      galculator
 
-    <keybind key="XF86AudioMute">
-      <action name="Execute">
-          <command>amixer -q sset Master toggle</command>
-      </action>
-    </keybind>
+<!--
+        <startupnotify>
+          <enabled>yes</enabled>
+          <name>Calculator</name>
+          <icon>gnome-calc2</icon>
+        </startupnotify>
+        <command>kcalc</command>
+-->
 
-    <keybind key="XF86WWW">
-      <action name="Execute">
-          <command>x-terminal-emulator</command>
-      </action>
-    </keybind>
+    </command></action></keybind>
 
-    <keybind key="XF86Calculator">
-      <action name="Execute">
-          <command>galculator</command>
-      </action>
-    </keybind>
-
-    <keybind key="XF86MyComputer">
-      <action name="Execute">
-          <command>pcmanfm</command>
-      </action>
-    </keybind>
-
-    <keybind key="XF86Terminal">
-      <action name="Execute">
-          <command>x-terminal-emulator</command>
-      </action>
-    </keybind>
-<!-- // taken from Lubuntu -->
+    <keybind key="XF86MyComputer"><action name="Execute"><command>
+<!--
+      pcmanfm
+-->
+      pcmanfm-mod
+    </command></action></keybind>
 
 
 <!--
@@ -228,18 +254,7 @@ This method has a noticeable delay..
       </action>
     </keybind>
 -->
-<!--
-    <keybind key="A-F6">
-      <action name="Execute">
-        <startupnotify>
-          <enabled>yes</enabled>
-          <name>Calculator</name>
-          <icon>gnome-calc2</icon>
-        </startupnotify>
-        <command>kcalc</command>
-      </action>
-    </keybind>
--->
+
     <keybind key="A-F5"><action name="Execute">
       <command>
         openbox --reconfigure
@@ -252,19 +267,25 @@ This method has a noticeable delay..
       geany /home/user/.config/openbox/rc.xml
     </command></action></keybind>
     <keybind key="W-p"><action name="Execute"><command>
-      /home/user/bin/terminal.sh -geometry 239x71+0+0 -e htop
+<!--
+      /home/user/bin/terminal.sh -geometry 170x44+0+0 -e htop
+-->
+      /home/user/bin/terminal.sh -geometry 239x64+0+0 -e htop
     </command></action></keybind>
     <keybind key="W-s"><action name="Execute"><command>\
-<!--
       /home/user/bin/terminal.sh
+<!--
+      /usr/bin/sakura //geometry 80x24+1+1
 -->
-      /usr/bin/sakura --geometry 80x24+1+1
     </command></action></keybind>
     <keybind key="C-A-s"><action name="Execute"><command>
 <!--
-      gksu -u root "xterm -si +vb +sb -j -s -fn vga +fbx -bg black -fg gray -cr darkgreen -sl 10000 -geometry 80x24+0+0"
+      FIXME:  For Unity Linux - Something has to be set up again.
 -->
-      gksu -u root "/usr/bin/sakura --geometry 80x24+1+1"
+      gksu -u root "xterm -si +vb +sb -j -s -fn vga +fbx -bg black -fg gray -cr darkgreen -sl 10000 -geometry 80x24+0+0"
+<!--
+      gksu -u root "/usr/bin/sakura //geometry 80x24+1+1"
+-->
     </command></action></keybind>
     <keybind key="W-m"><action name="Execute"><command>
 <!--
@@ -332,7 +353,7 @@ This method has a noticeable delay..
     <keybind key="W-f"><action name="Execute"><command>
     <!-- Works under Lubuntu 10.10 -->
     <!-- Works under Unity Linux 2011.0 alpha, 2011-07-23 -->
-      zsh -c "export LS_COLORS=\"no=00:fi=00:di=00;36:ln=00;35:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=00;05;37;41:mi=00;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.rar=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.torrent=00;31:*.jpg=00;35:*~.jpg=00;33:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*~.mp3=00;03:*~.ogg=00;03:*~.flv=00;03:*~.ape=00;03:*~.flv=00;03:*~.mpg=00;03:*~.wmv=00;03:\";ssfm"
+      zsh -c "export LS_COLORS=\"no=00:fi=00:di=00;36:ln=00;35:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=00;05;37;41:mi=00;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.rar=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.torrent=00;31:*.jpg=00;35:*~.jpg=00;33:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*~.mp3=00;03:*~.ogg=00;03:*~.flv=00;03:*~.ape=00;03:*~.flv=00;03:*~.mpg=00;03:*~.wmv=00;03:*.part=00;03:\";ssfm"
       <!--
         I don't understand why /etc/DIR_COLORS is being ignored.  I'm not entirely sure how to import it either.
       -->
@@ -344,7 +365,10 @@ This method has a noticeable delay..
       -->
     </command></action></keybind>
     <keybind key="C-A-f"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
+<!--
       pcmanfm
+-->
+      pcmanfm-mod
     </command></action></keybind>
     <keybind key="W-e"><action name="Execute"><command>
       /home/user/bin/projects.sh
@@ -354,10 +378,10 @@ This method has a noticeable delay..
 -->
     </command></action></keybind>
     <keybind key="W-k"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
-    <!--
       mtpaint ~/new.png
-    -->
+<!--
       kolourpaint ~/new.png
+-->
     </command></action></keybind>
     <!-- run an arbitrary commandline -->
     <!-- TODO: Figure out more about this window, so that I can properly control it! -->
@@ -430,6 +454,7 @@ This method has a noticeable delay..
       <mousebind button="A-Right" action="Drag">
         <action name="Resize"/>
       </mousebind>
+<!--
       <mousebind button="A-Middle" action="Press">
         <action name="Lower"/>
         <action name="FocusToBottom"/>
@@ -453,6 +478,7 @@ This method has a noticeable delay..
       <mousebind button="A-S-Down" action="Click">
         <action name="SendToDesktopNext"/>
       </mousebind>
+-->
     </context>
     <context name="Titlebar">
       <mousebind button="Left" action="Press">
@@ -465,6 +491,7 @@ This method has a noticeable delay..
       <mousebind button="Left" action="DoubleClick">
         <action name="ToggleMaximizeFull"/>
       </mousebind>
+<!--
       <mousebind button="Middle" action="Press">
         <action name="Lower"/>
         <action name="FocusToBottom"/>
@@ -480,6 +507,7 @@ This method has a noticeable delay..
         <action name="Unshade"/>
         <action name="Raise"/>
       </mousebind>
+-->
       <mousebind button="Right" action="Press">
         <action name="Focus"/>
         <action name="Raise"/>
@@ -679,6 +707,7 @@ This method has a noticeable delay..
       </mousebind>
     </context>
     <context name="Desktop">
+<!--
       <mousebind button="Up" action="Click">
         <action name="DesktopPrevious"/>
       </mousebind>
@@ -705,12 +734,25 @@ This method has a noticeable delay..
         <action name="Focus"/>
         <action name="Raise"/>
       </mousebind>
+-->
     </context>
     <context name="Root">
       <!-- Menus -->
+<!--
       <mousebind button="Middle" action="Press">
         <action name="ShowMenu">
           <menu>client-list-combined-menu</menu>
+        </action>
+      </mousebind>
+-->
+      <mousebind button="Left" action="Press">
+        <action name="ShowMenu">
+          <menu>root-menu</menu>
+        </action>
+      </mousebind>
+      <mousebind button="Middle" action="Press">
+        <action name="ShowMenu">
+          <menu>root-menu</menu>
         </action>
       </mousebind>
       <mousebind button="Right" action="Press">
@@ -719,6 +761,7 @@ This method has a noticeable delay..
         </action>
       </mousebind>
     </context>
+<!--
     <context name="MoveResize">
       <mousebind button="Up" action="Click">
         <action name="DesktopPrevious"/>
@@ -733,6 +776,7 @@ This method has a noticeable delay..
         <action name="DesktopNext"/>
       </mousebind>
     </context>
+-->
   </mouse>
   <menu>
     <!-- You can specify more than one menu file in here and they are all loaded,
