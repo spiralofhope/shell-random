@@ -1,39 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Also /etc/xdg/openbox/rc.xml -->
+<!-- http://openbox.org/wiki/Help:Configuration -->
 <openbox_config xmlns="http://openbox.org/3.4/rc">
+
   <resistance>
     <strength>10</strength>
     <screen_edge_strength>20</screen_edge_strength>
   </resistance>
+
   <focus>
+    <!-- always try to focus new windows when they appear. other rules do apply -->
     <focusNew>yes</focusNew>
-    <!-- always try to focus new windows when they appear. other rules do
-       apply -->
-    <followMouse>no</followMouse>
+
     <!-- move focus to a window when you move the mouse into it -->
+    <followMouse>no</followMouse>
+
+    <!-- focus the last used window when changing desktops, instead of the one under the mouse pointer. when followMouse is enabled -->
     <focusLast>yes</focusLast>
-    <!-- focus the last used window when changing desktops, instead of the one
-       under the mouse pointer. when followMouse is enabled -->
-    <underMouse>no</underMouse>
+
     <!-- move focus under the mouse, even when the mouse is not moving -->
+    <underMouse>no</underMouse>
+
+    <!-- when followMouse is enabled, the mouse must be inside the window for this many milliseconds (1000 = 1 sec) before moving focus to it -->
     <focusDelay>200</focusDelay>
-    <!-- when followMouse is enabled, the mouse must be inside the window for
-       this many milliseconds (1000 = 1 sec) before moving focus to it -->
+
+    <!-- when followMouse is enabled, and a window is given focus by moving the mouse into it, also raise the window -->
     <raiseOnFocus>no</raiseOnFocus>
-    <!-- when followMouse is enabled, and a window is given focus by moving the
-       mouse into it, also raise the window -->
   </focus>
+
   <placement>
+    <!-- New window placement.
+    Smart      = new windows to be placed automatically by Openbox.
+    UnderMouse = new windows to be placed under the mouse cursor. -->
     <policy>Smart</policy>
-    <!-- 'Smart' or 'UnderMouse' -->
-    <center>yes</center>
-    <!-- whether to place windows in the center of the free area found or
-       the top left corner -->
+
+    <!-- no  = place new windows at the top-left -->
+    <!-- yes = place new windows in the center of the free area found (seems inconsistent to me) -->
+    <center>no</center>
+
+    <!-- With <policy>Smart</policy> and on a multi-monitor system, try to place new windows on:
+           Any    = any monitor
+           Mouse  = where the mouse is
+           Active = where the active window is -->
     <monitor>Active</monitor>
-    <!-- with Smart placement on a multi-monitor system, try to place new windows
-       on: 'Any' - any monitor, 'Mouse' - where the mouse is, 'Active' - where
-       the active window is -->
   </placement>
+
   <theme>
     <name>Bear2</name>
     <titleLayout>NLDIMC</titleLayout>
@@ -183,45 +194,42 @@
          I could replace audacious2's key mapping helper plugin with some openbox hotkeys pretty easily. -->
     <!-- launching applications -->
     <keybind key="XF86AudioRaiseVolume"><action name="Execute"><command>
-      <!-- NOTE: pyvol has a noticeable delay.. -->
 <!--
-      python /home/user/bin/pvol.py -c 5
--->
-<!--
+      pyvol has a noticeable delay..
+      python /l/Linux/bin/pvol.py -c 5
       aumix -v+10
 -->
-      amixer -q sset Master 3%+
+      \amixer -q sset Master 3%+
+    </command></action></keybind>
+    <keybind key="XF86AudioLowerVolume"><action name="Execute"><command>
+<!--
+      pyvol has a noticeable delay..
+      python /l/Linux/bin/pvol.py -c -5
+      aumix -v-10
+-->
+      \amixer -q sset Master 3%-
     </command></action></keybind>
     <keybind key="XF86AudioMute"><action name="Execute"><command>
 <!--
-      python /home/user/bin/pvol.py -m
+      python /l/Linux/bin/pvol.py -m
 -->
 <!--
       aumix -M
 -->
-      amixer -q sset Master toggle
-    </command></action></keybind>
-    <keybind key="XF86AudioLowerVolume"><action name="Execute"><command>
-<!--
-      python /home/user/bin/pvol.py -c -5
--->
-<!--
-      aumix -v-10
--->
-      amixer -q sset Master 3%-
+      \amixer -q sset Master toggle
     </command></action></keybind>
     <keybind key="XF86AudioMedia"><action name="Execute"><command>
-      audacious2
+      \audacious2
     </command></action></keybind>
 
     <keybind key="XF86WWW"><action name="Execute"><command>
-      x-terminal-emulator
+      \x-terminal-emulator
     </command></action></keybind>
     <keybind key="XF86Terminal"><action name="Execute"><command>
-      x-terminal-emulator
+      \x-terminal-emulator
     </command></action></keybind>
     <keybind key="XF86Calculator"><action name="Execute"><command>
-      galculator
+      \galculator
 
 <!--
         <startupnotify>
@@ -257,23 +265,23 @@
 
     <keybind key="A-F5"><action name="Execute">
       <command>
-        openbox --reconfigure
+        \openbox --reconfigure
       </command></action><action name="Execute">
       <command>
-        xrefresh
+        \xrefresh
       </command>
     </action></keybind>
     <keybind key="A-S-F5"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
-      geany /home/user/.config/openbox/rc.xml
+      \geany ~/.config/openbox/rc.xml
     </command></action></keybind>
     <keybind key="W-p"><action name="Execute"><command>
 <!--
-      /home/user/bin/terminal.sh -geometry 170x44+0+0 -e htop
+      /l/Linux/bin/sh/terminal.sh -geometry 170x44+0+0 -e htop
 -->
-      /home/user/bin/terminal.sh -geometry 239x64+0+0 -e htop
+      /l/Linux/bin/sh/terminal.sh -geometry 239x64+0+0 -e htop
     </command></action></keybind>
     <keybind key="W-s"><action name="Execute"><command>\
-      /home/user/bin/terminal.sh
+      /l/Linux/bin/sh/terminal.sh
 <!--
       /usr/bin/sakura //geometry 80x24+1+1
 -->
@@ -282,28 +290,31 @@
 <!--
       FIXME:  For Unity Linux - Something has to be set up again.
 -->
-      gksu -u root "xterm -si +vb +sb -j -s -fn vga +fbx -bg black -fg gray -cr darkgreen -sl 10000 -geometry 80x24+0+0"
+      \gksu -u root "\xterm -si +vb +sb -j -s -fn vga +fbx -bg black -fg gray -cr darkgreen -sl 10000 -geometry 80x24+0+0"
 <!--
       gksu -u root "/usr/bin/sakura //geometry 80x24+1+1"
 -->
     </command></action></keybind>
     <keybind key="W-m"><action name="Execute"><command>
 <!--
-      /home/user/bin/terminal.sh -geometry 100x14+0+0 -e /home/user/bin/mixer -I
+      /l/Linux/bin/sh/terminal.sh -geometry 100x14+0+0 -e /l/Linux/bin/mixer -I
 -->
       <!-- The font 'default' is probably wrong, but it works! -->
-      /home/user/bin/terminal.sh -geometry 160x25+0+0 -font default -e alsamixer
-      </command></action></keybind>
+      /l/Linux/bin/sh/terminal.sh -geometry 160x25+0+0 -font default -e alsamixer
+    </command></action></keybind>
+    <keybind key="W-S-m"><action name="Execute"><command>
+      \deadbeef
+    </command></action></keybind>
 
 <!--
     <keybind key="C-A-b"><startupnotify><enabled>yes</enabled></startupnotify><action name="Execute"><command>
-      /home/user/bin/BOINC/run_manager
+      /l/Linux/bin/BOINC/run_manager
     </command></action></keybind>
 -->
     <keybind key="W-b"><action name="Execute"><command>
       <!-- I don't know how to pass a string with spaces to -T -->
       <!--
-        /home/user/bin/terminal.sh -geometry 103x70+0+0 -T BitTornado -e 'nice -n 10 /usr/bin/perl /home/user/bin/btstatus.pl /tmp/RAMDISK/bittornado.log'
+        /l/Linux/bin/sh/terminal.sh -geometry 103x70+0+0 -T BitTornado -e 'nice -n 10 /usr/bin/perl /l/Linux/bin/btstatus.pl /tmp/RAMDISK/bittornado.log'
       -->
 <!--
       nice -n 5 deluge
@@ -312,10 +323,10 @@
     </command></action></keybind>
 
     <keybind key="W-w"><action name="Execute"><command>
-      nice -n 6 /home/user/bin/firefox/firefox -no-remote -P default
+      /l/Linux/bin/sh/firefox_pick-profile.sh
     </command><startupnotify><enabled>yes</enabled></startupnotify></action></keybind>
     <keybind key="W-S-w"><action name="Execute"><command>
-      links -g
+      \links -g
     </command><startupnotify><enabled>no</enabled></startupnotify></action></keybind>
 <!--
     <keybind key="C-A-S-w">
@@ -331,16 +342,19 @@
     <!--
         links -g
     -->
-      midori
+<!--
+      \midori
+-->
+      /l/Linux/bin/sh/chromium_pick-profile.sh
     </command></action></keybind>
     <keybind key="C-A-e"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
-      claws-mail
+      \claws-mail
     </command></action></keybind>
     <keybind key="A-C-Escape"><action name="Execute"><command>
-      xkill
+      \xkill
     </command></action></keybind>
     <keybind key="C-A-l"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
-      xscreensaver-demo
+      \xscreensaver-demo
     </command></action></keybind>
     <keybind key="W-l"><action name="Execute"><command>
       xscreensaver-command -lock
@@ -353,7 +367,7 @@
     <keybind key="W-f"><action name="Execute"><command>
     <!-- Works under Lubuntu 10.10 -->
     <!-- Works under Unity Linux 2011.0 alpha, 2011-07-23 -->
-      zsh -c "export LS_COLORS=\"no=00:fi=00:di=00;36:ln=00;35:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=00;05;37;41:mi=00;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.rar=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.torrent=00;31:*.jpg=00;35:*~.jpg=00;33:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*~.mp3=00;03:*~.ogg=00;03:*~.flv=00;03:*~.ape=00;03:*~.flv=00;03:*~.mpg=00;03:*~.wmv=00;03:*.part=00;03:\";ssfm"
+      \zsh -c "export LS_COLORS=\"no=00:fi=00:di=00;36:ln=00;35:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=00;05;37;41:mi=00;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.rar=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.torrent=00;31:*.jpg=00;35:*~.jpg=00;33:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*~.mp3=00;03:*~.ogg=00;03:*~.flv=00;03:*~.ape=00;03:*~.flv=00;03:*~.mpg=00;03:*~.wmv=00;03:*.part=00;03:\";\ssfm"
       <!--
         I don't understand why /etc/DIR_COLORS is being ignored.  I'm not entirely sure how to import it either.
       -->
@@ -366,15 +380,15 @@
     </command></action></keybind>
     <keybind key="C-A-f"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
 <!--
-      pcmanfm
+      \pcmanfm
 -->
-      pcmanfm-mod
+      \pcmanfm-mod
     </command></action></keybind>
     <keybind key="W-e"><action name="Execute"><command>
-      /home/user/bin/projects.sh
+      /l/Linux/bin/sh/projects.sh
 <!--
-      xterm -e "/home/user/bin/projects.sh; sleep 100"
-      xterm -e "/usr/bin/env zsh -c -exec /home/user/bin/projects.sh; sleep 100"
+      xterm -e "/l/Linux/bin/sh/projects.sh; sleep 100"
+      xterm -e "/usr/bin/env zsh -c -exec /l/Linux/bin/sh/projects.sh; sleep 100"
 -->
     </command></action></keybind>
     <keybind key="W-k"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
@@ -386,10 +400,10 @@
     <!-- run an arbitrary commandline -->
     <!-- TODO: Figure out more about this window, so that I can properly control it! -->
     <keybind key="C-A-r"><action name="Execute"><command>
-      gksu
+      \gksu
     </command></action></keybind>
     <keybind key="W-r"><action name="Execute"><command>
-      thinglaunch
+      \thinglaunch
     </command></action></keybind>
 <!--
       gnome-panel-control DASH-run-dialog
@@ -397,10 +411,10 @@
 -->
 
     <keybind key="Print"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
-      ddm-screenshot
+      \ddm-screenshot
     </command></action></keybind>
     <keybind key="A-Print"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
-      ksnapshot
+      \ksnapshot
     </command></action></keybind>
     <!-- ~~~~~~~~~~~~~~~ -->
     <!-- My Custom Stuff -->
