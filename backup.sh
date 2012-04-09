@@ -235,7 +235,7 @@ _backup_go(){
         ` # `
     fi
   else
-    if [ $i -eq 7 ]; then
+    if [[ $i -eq 7 ]]; then
       _backup_rsync  /opt/bitnami/  /z/mediawiki/bitnami/
     fi
     _backup_rsync  $1  $2
