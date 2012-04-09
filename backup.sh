@@ -235,6 +235,9 @@ _backup_go(){
         ` # `
     fi
   else
+    if [ $i -eq 7 ]; then
+      _backup_rsync  /opt/bitnami/  /z/mediawiki/bitnami/
+    fi
     _backup_rsync  $1  $2
   fi
 }
@@ -244,6 +247,12 @@ _backup_go(){
 
 # ^c
 trap _backup_die INT
+
+if [ $(whoami) != "root" ]; then
+  \echo "ERROR:  You're not root!"
+  exit 1
+fi
+
 _backup_initialize_esata
 
 # TODO:  $1 needs serious sanity-checking.
