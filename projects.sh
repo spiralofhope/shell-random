@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-PROJECTS="/l/projects"
+PROJECTS="/l"
 NEW_PROJECT_MESSAGE="New project notes started `date`"
 
 if [ ! -d $PROJECTS ]; then
