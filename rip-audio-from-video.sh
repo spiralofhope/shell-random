@@ -4,15 +4,13 @@
 
 
 _rip_sanity_check(){
-  if [ x$1 = x ]; then
-    # FIXME: Help text / examples / etc.
-    echo Usage: `basename $0` "<filename>"
-    return 0
-  fi
-
   # TODO: Check for read permissions.
-  if [ ! -f "$1" ]; then
-    echo "File doesn't exist: " $1
+  if [ -z $1 ]; then
+    # FIXME: Help text / examples / etc.
+    \echo "Usage: `basename $0` filename.ext"
+    return 0
+  elif [ ! -f "$1" ]; then
+    \echo "File doesn't exist: " $1
     return 1
   fi
   in="$1"
@@ -33,7 +31,7 @@ _rip_setup(){
   match=
 
   if [ ! $audio_codec = mp3 ]; then
-    echo Note:  Adding _ to identify this as a transcoded item.
+    \echo "Note:  Adding _ to identify this as a transcoded item."
     mp3="$file_basename _.mp3"
   else
     mp3="$file_basename".mp3
@@ -58,41 +56,51 @@ _rip_go(){
   \echo " *"
   \echo
 
-  \echo " * Video => Audio"
-  \echo    "$in" "=>" $working_filename
-  \echo
-  # Can't reduce the number of channels.  Wth.  -ac 2 doesn't work.
-  \ffmpeg -i "$in" -acodec copy -ac 2 -vn $working_filename
-  # TODO: Check for an error code?
-  if [ ! -e $working_filename ]; then
-    echo something went wrong with the rip, aborting
-    return 1
-  fi
 
-  \echo " * Audio => WAV"
-  \echo    $working_filename => audiodump.wav
-  \echo
-  # TODO: Check that audiodump.wav doesn't already exist?
-  \mplayer $working_filename -ao pcm
-  # TODO: Check for an error code.
-  \echo
-  \mv -v audiodump.wav $working_filename.wav
+  # A quick hack just to get webm ripping working.
+  # TODO:  The rest needs to be redone.  The idea is solid, but perhaps there's a better way to implement this.
+  EXT=${1##*.}
+  case "$EXT" in
+    "webm")
+      \ffmpeg -i $1 -aq 3 $mp3
+    ;;
+    *)
+      \echo " * Video => Audio"
+      \echo    "$in" "=>" $working_filename
+      \echo
+      # Can't reduce the number of channels.  Wth.  -ac 2 doesn't work.
+      \ffmpeg -i "$in" -acodec copy -ac 2 -vn $working_filename
+      # TODO: Check for an error code?
+      if [ ! -e $working_filename ]; then
+        \echo "Something went wrong with the rip, aborting."
+        return 1
+      fi
 
-  \echo
-  \echo " * WAV => MP3"
-  \echo    $working_filename.wav "=>" $working_filename.wav.mp3
-  \echo
-  # -V0 is a bit silly, seeing as we're transcoding.
-  \lame -V3 $working_filename.wav
-  # TODO: Check for an error code.
-  if [ ! -e $working_filename.wav.mp3 ]; then
-    echo something went wrong with the encoding, aborting
-    return 1
-  fi
+      \echo " * Audio => WAV"
+      \echo    $working_filename => audiodump.wav
+      \echo
+      # TODO: Check that audiodump.wav doesn't already exist?
+      \mplayer $working_filename -ao pcm
+      # TODO: Check for an error code.
+      \echo
+      \mv -v audiodump.wav $working_filename.wav
 
-  \echo
-  \mv -v $working_filename.wav.mp3 "$mp3"
+      \echo
+      \echo " * WAV => MP3"
+      \echo    $working_filename.wav "=>" $working_filename.wav.mp3
+      \echo
+      # -V0 is a bit silly, seeing as we're transcoding.
+      \lame -V3 $working_filename.wav
+      # TODO: Check for an error code.
+      if [ ! -e $working_filename.wav.mp3 ]; then
+        \echo "Something went wrong with the encoding, aborting."
+        return 1
+      fi
 
+      \echo
+      \mv -v $working_filename.wav.mp3 "$mp3"
+    # *)
+  esac
 }
 
 _rip_teardown(){
@@ -106,6 +114,6 @@ _rip_teardown(){
 # -- The actual work
 # --
 
-_rip_sanity_check
+_rip_sanity_check  $1
 _rip_setup
-_rip_go
+_rip_go            $1
