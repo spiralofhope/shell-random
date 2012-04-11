@@ -323,7 +323,7 @@
     </command></action></keybind>
 
     <keybind key="W-w"><action name="Execute"><command>
-      /l/Linux/bin/sh/firefox_pick-profile.sh
+      /l/Firefox/bin/firefox
     </command><startupnotify><enabled>yes</enabled></startupnotify></action></keybind>
     <keybind key="W-S-w"><action name="Execute"><command>
       \links -g
