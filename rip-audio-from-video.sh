@@ -57,12 +57,26 @@ _rip_go(){
   \echo
 
 
+# This is the advice I found for the more direct way to do the ripping:
+#
+# for lower quality flash:
+# ffmpeg -i somevideo.flv -acodec copy output.mp3
+#
+# larger videos (flv, mp4) use AAC audio:
+# ffmpeg -i somevideo.ext -acodec copy output.aac
+
+
   # A quick hack just to get webm ripping working.
   # TODO:  The rest needs to be redone.  The idea is solid, but perhaps there's a better way to implement this.
   EXT=${1##*.}
   case "$EXT" in
     "webm")
+      # This depends on libavcodec-extra-52
       \ffmpeg -i $1 -aq 3 $mp3
+      # An absolute bitrate can be defined like:
+      # ffmpeg -i $1 -ab 320k -ar 44100 $mp3
+      # Can simply rip the ogg directly out of a webm:
+      # ffmpeg -i $1 -vn -acodec copy output.ogg
     ;;
     *)
       \echo " * Video => Audio"
