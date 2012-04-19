@@ -5,17 +5,20 @@ if ! [ $(whoami) = root ]; then
 else
   \adduser --no-create-home mysql &> /dev/null
 
-  # Of course, there might be an actual file or directory at /opt/bitnami, but I ought to notice that..
-  if [ -s /opt/bitnami ]; then
-    \rm --force /opt/bitnami
-  fi
-  \ln --symbolic \
-    $bitnami_dir/bitnami \
-    /opt/bitnami
-
-  # This might be a bad idea!
-  \chown -R user:users $bitnami_dir/bitnami-install
-  \chown -R user:users $bitnami_dir/bitnami-data
+#
+# Commented-out because I have an actual copy made at /opt
+#
+#  # Of course, there might be an actual file or directory at /opt/bitnami, but I ought to notice that..
+#  if [ -s /opt/bitnami ]; then
+#    \rm --force /opt/bitnami
+#  fi
+#  \ln --symbolic \
+#    $bitnami_dir/bitnami \
+#    /opt/bitnami
+#
+#  # This might be a bad idea!
+#  \chown -R user:users $bitnami_dir/bitnami-install
+#  \chown -R user:users $bitnami_dir/bitnami-data
 
   \echo ''
   \echo ' * Starting MySQL.'

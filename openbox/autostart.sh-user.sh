@@ -35,13 +35,14 @@ connected(){
     /l/Linux/bin/Firefox/firefox -P default &
 
   # Voice Chat
-  # TODO:  How do I get Mumble to automatically connect to a specific server on startup?
   # TODO:  How do I get Mumble to minimize on startup?
   \mumble &
+  # autoconnect is done like so:
+  \mumble "mumble://username@server:port/?version=1.2.0" >> /dev/null 2>&1 &
 
   # Email
   #   Can be started trayed (it gets minimized to the tray after a moment)
-  #     but only if I set the tray plugin to do that.
+  #     but only if I use the tray plugin and configure it to minimize on startup.
   \claws-mail &
 }
 

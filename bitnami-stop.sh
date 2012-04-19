@@ -11,6 +11,7 @@ else
     ctlscript.sh \
     &> /dev/null
 
+# TODO:  Update this for the raw /opt directory structure.
   # Kill log files before they bloat things up:
   \cd ./bitnami-install/apache2/logs
   \rm --force \
