@@ -264,15 +264,17 @@ if [ -z $1 ]; then
   _backup_setup  /dev/sda6  /dev/sdb6
   _backup_go  $source  $target
 
+  # Back up the manually bitnami installation.
+  \rsync -av --progress --delete \
+    /opt/bitnami/ \
+    /mnt/data/zombie/mediawiki/bitnami/
+
   for i in {1,3,5,6,7}; do
     _backup_setup  /dev/sdb$i  $external$i
     _backup_go  $source  $target
     _backup_teardown
   done
 
-  \rsync -av --progress --delete \
-    /opt/bitnami/ \
-    /mnt/data/zombie/mediawiki/bitnami/
 fi
 
 # TODO:  $@ needs serious sanity-checking.
