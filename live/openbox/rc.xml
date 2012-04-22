@@ -276,12 +276,12 @@
     </command></action></keybind>
     <keybind key="W-p"><action name="Execute"><command>
 <!--
-      /l/Linux/bin/sh/terminal.sh -geometry 170x44+0+0 -e htop
+      /l/Linux/bin/sh/live/terminal.sh -geometry 170x44+0+0 -e htop
 -->
-      /l/Linux/bin/sh/terminal.sh -geometry 239x64+0+0 -e htop
+      /l/Linux/bin/sh/live/terminal.sh -geometry 239x64+0+0 -e htop
     </command></action></keybind>
     <keybind key="W-s"><action name="Execute"><command>\
-      /l/Linux/bin/sh/terminal.sh
+      /l/Linux/bin/sh/live/terminal.sh
 <!--
       /usr/bin/sakura //geometry 80x24+1+1
 -->
@@ -297,10 +297,10 @@
     </command></action></keybind>
     <keybind key="W-m"><action name="Execute"><command>
 <!--
-      /l/Linux/bin/sh/terminal.sh -geometry 100x14+0+0 -e /l/Linux/bin/mixer -I
+      /l/Linux/bin/sh/live/terminal.sh -geometry 100x14+0+0 -e /l/Linux/bin/mixer -I
 -->
       <!-- The font 'default' is probably wrong, but it works! -->
-      /l/Linux/bin/sh/terminal.sh -geometry 160x25+0+0 -font default -e alsamixer
+      /l/Linux/bin/sh/live/terminal.sh -geometry 160x25+0+0 -font default -e alsamixer
     </command></action></keybind>
     <keybind key="W-S-m"><action name="Execute"><command>
       \deadbeef
@@ -314,7 +314,7 @@
     <keybind key="W-b"><action name="Execute"><command>
       <!-- I don't know how to pass a string with spaces to -T -->
       <!--
-        /l/Linux/bin/sh/terminal.sh -geometry 103x70+0+0 -T BitTornado -e 'nice -n 10 /usr/bin/perl /l/Linux/bin/btstatus.pl /tmp/RAMDISK/bittornado.log'
+        /l/Linux/bin/sh/live/terminal.sh -geometry 103x70+0+0 -T BitTornado -e 'nice -n 10 /usr/bin/perl /l/Linux/bin/btstatus.pl /tmp/RAMDISK/bittornado.log'
       -->
 <!--
       nice -n 5 deluge
