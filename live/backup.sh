@@ -17,7 +17,7 @@
 # Disabled, as it's really inconvenient when I'm doing testing.
 #\hdparm -Y $external
 
-\source /l/Linux/bin/zsh/colours.sh
+\source /l/shell-random/live/zsh/colours.sh
 # Otherwise use rsync.
 #backup_method="unison"
 # The unison executable.
@@ -25,7 +25,7 @@ unison=/home/unison
 
 # --
 
-bullet="${yellow}*${reset}"
+bullet=" ${yellow}*${reset}"
 
 _backup_initialize_esata(){
   # NOTE:  The number will change depending upon which USB port the eSATA bay was plugged into.  So let's just scan everything.
@@ -37,7 +37,7 @@ _backup_initialize_esata(){
   # It needs a moment to actually kick in.
   # Meh, it's smart enough to fail if it needs to, and I re-run it too frequently to want to wait two seconds.
   # \sleep 2
-  
+
   for i in c d e f g h i j k l m n o p q r s t u v w x y z; do
     if [ -b /dev/sd${i}7 ]; then
       external=/dev/sd$i

@@ -275,10 +275,10 @@
       \geany ~/.config/openbox/rc.xml
     </command></action></keybind>
     <keybind key="W-p"><action name="Execute"><command>
+      /l/Linux/bin/sh/live/terminal.sh -geometry 239x64+0+0 -e htop
 <!--
       /l/Linux/bin/sh/live/terminal.sh -geometry 170x44+0+0 -e htop
 -->
-      /l/Linux/bin/sh/live/terminal.sh -geometry 239x64+0+0 -e htop
     </command></action></keybind>
     <keybind key="W-s"><action name="Execute"><command>\
       /l/Linux/bin/sh/live/terminal.sh
@@ -287,10 +287,13 @@
 -->
     </command></action></keybind>
     <keybind key="C-A-s"><action name="Execute"><command>
+      \lxterminal
 <!--
-      FIXME:  For Unity Linux - Something has to be set up again.
+      \gksu -u root /l/Linux/bin/sh/live/terminal.sh
 -->
+<!--
       \gksu -u root "\xterm -si +vb +sb -j -s -fn vga +fbx -bg black -fg gray -cr darkgreen -sl 10000 -geometry 80x24+0+0"
+-->
 <!--
       gksu -u root "/usr/bin/sakura //geometry 80x24+1+1"
 -->
@@ -323,7 +326,10 @@
     </command></action></keybind>
 
     <keybind key="W-w"><action name="Execute"><command>
+<!--
       /l/Firefox/bin/firefox
+-->
+      /0/Linux/bin/sh/zombie/firefox_pick-profile.sh
     </command><startupnotify><enabled>yes</enabled></startupnotify></action></keybind>
     <keybind key="W-S-w"><action name="Execute"><command>
       \links -g
@@ -339,13 +345,13 @@
     </keybind>
 -->
     <keybind key="C-A-S-w"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
-    <!--
         links -g
-    -->
 <!--
       \midori
 -->
+<!--
       /l/Linux/bin/sh/chromium_pick-profile.sh
+-->
     </command></action></keybind>
     <keybind key="C-A-e"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
       \claws-mail
@@ -385,7 +391,7 @@
       \pcmanfm-mod
     </command></action></keybind>
     <keybind key="W-e"><action name="Execute"><command>
-      /l/Linux/bin/sh/projects.sh
+      /l/Linux/bin/sh/live/projects.sh
 <!--
       xterm -e "/l/Linux/bin/sh/projects.sh; sleep 100"
       xterm -e "/usr/bin/env zsh -c -exec /l/Linux/bin/sh/projects.sh; sleep 100"

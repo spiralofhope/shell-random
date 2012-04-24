@@ -18,9 +18,9 @@ result=$(
     --column="" \
     --title="Firefox" \
     --text="Select a profile" \
-    "default" \
-    "wow" \
-    "p" \
+    "0-default" \
+    "1-default" \
+    "1-p" \
   ` # `
 )
 

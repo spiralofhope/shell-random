@@ -78,6 +78,9 @@ _rip_go(){
       # Can simply rip the ogg directly out of a webm:
       # ffmpeg -i $1 -vn -acodec copy output.ogg
     ;;
+    "flv")
+      \ffmpeg -i $1 -aq 3 $mp3
+    ;;
     *)
       \echo " * Video => Audio"
       \echo    "$in" "=>" $working_filename
