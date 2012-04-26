@@ -12,6 +12,13 @@
 # This fixes a GNOME hotkey issue which was starting the terminal in /  I don't know if this breaks any other usage!
 cd ~
 
+DISPLAY=:0.0 \xlsfonts | grep vga
+if [ $? -eq 1 ]; then
+  font=-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*
+else
+  font=vga
+fi
+
 
   # http://www.afterstep.org/aterm.php
   # Zero dependencies, from what I can tell.  Even xterm has a few, on Unity Linux.
@@ -24,7 +31,7 @@ cd ~
     +sb \
       ` # My font addition ` \
       ` # -font default    <- that's able to do the fancy designs. ` \
-    -fn vga \
+    -fn $font \
     -bg black \
     -fg gray \
     -cr darkgreen \
@@ -52,7 +59,7 @@ if [ $? -eq 127 ]; then
       ` # Indicates that xterm may scroll asynchronously, meaning that the screen does not have to be kept completely up to date while scrolling. This allows xterm to run faster when network latencies are very high and is typically useful when running across a very large internet or many gateways. ` \
     -s \
       ` # My font addition ` \
-    -fn vga \
+    -fn $font \
       ` # xterm should assume that the normal and bold fonts have VT100 line-drawing characters.  It sets the forceBoxChars resource to "true". ` \
     +fbx \
     -bg black \
