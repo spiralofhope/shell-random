@@ -1,4 +1,4 @@
-alias autotest="/l/Linux/bin/sh/autotest.sh"
+alias autotest="/l/Linux/bin/sh/live/autotest.sh"
 
 alias smartgui="su -c \"smart --gui\""
 

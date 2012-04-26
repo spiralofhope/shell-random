@@ -404,7 +404,10 @@ get_file_ext() {
         \rm --force \
           "$AUTOTEST_DIR"/main.log~ \
           "$AUTOTEST_DIR"/mythryl.COMPILE_LOG \
-          "$AUTOTEST_DIR"/read-eval-print-loop.log~
+          "$AUTOTEST_DIR"/read-eval-print-loop.log~ \
+          "$AUTOTEST_DIR"/*.compile.log \
+          "$AUTOTEST_DIR"/unknown.log \
+          "$AUTOTEST_DIR"/*.config
       }
       execute_with_debugging() {
         # TODO:  Deal with the shebang issue here too, when I figure debugging out.
