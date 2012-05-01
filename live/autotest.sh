@@ -401,13 +401,16 @@ get_file_ext() {
         fi
         # Since I can't figure debugging out, I'm going to hard-code success.
         RESULT=0
+        # Clean up all the shit that's left behind.  It's for faster future compilation, but I don't want or need it right now.
         \rm --force \
           "$AUTOTEST_DIR"/main.log~ \
           "$AUTOTEST_DIR"/mythryl.COMPILE_LOG \
           "$AUTOTEST_DIR"/read-eval-print-loop.log~ \
           "$AUTOTEST_DIR"/*.compile.log \
           "$AUTOTEST_DIR"/unknown.log \
-          "$AUTOTEST_DIR"/*.config
+          "$AUTOTEST_DIR"/*.config \
+          "$AUTOTEST_DIR"/*.index \
+          "$AUTOTEST_DIR"/.*.module-dependencies-summary
       }
       execute_with_debugging() {
         # TODO:  Deal with the shebang issue here too, when I figure debugging out.
