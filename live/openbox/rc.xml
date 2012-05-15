@@ -405,17 +405,13 @@
     </command></action></keybind>
     <!-- run an arbitrary commandline -->
     <!-- TODO: Figure out more about this window, so that I can properly control it! -->
+    <!-- update from future self:  It's doable, look down below for the solution for the run dialog. -->
     <keybind key="C-A-r"><action name="Execute"><command>
       \gksu
     </command></action></keybind>
     <keybind key="W-r"><action name="Execute"><command>
-      \thinglaunch
+      /0/shell-random/live/run.sh
     </command></action></keybind>
-<!--
-      gnome-panel-control DASH-run-dialog
-      bashrun
--->
-
     <keybind key="Print"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
       \ddm-screenshot
     </command></action></keybind>
