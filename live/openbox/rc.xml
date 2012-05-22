@@ -2,49 +2,38 @@
 <!-- Also /etc/xdg/openbox/rc.xml -->
 <!-- http://openbox.org/wiki/Help:Configuration -->
 <openbox_config xmlns="http://openbox.org/3.4/rc">
-
   <resistance>
     <strength>10</strength>
     <screen_edge_strength>20</screen_edge_strength>
   </resistance>
-
   <focus>
     <!-- always try to focus new windows when they appear. other rules do apply -->
     <focusNew>yes</focusNew>
-
     <!-- move focus to a window when you move the mouse into it -->
     <followMouse>no</followMouse>
-
     <!-- focus the last used window when changing desktops, instead of the one under the mouse pointer. when followMouse is enabled -->
     <focusLast>yes</focusLast>
-
     <!-- move focus under the mouse, even when the mouse is not moving -->
     <underMouse>no</underMouse>
-
     <!-- when followMouse is enabled, the mouse must be inside the window for this many milliseconds (1000 = 1 sec) before moving focus to it -->
     <focusDelay>200</focusDelay>
-
     <!-- when followMouse is enabled, and a window is given focus by moving the mouse into it, also raise the window -->
     <raiseOnFocus>no</raiseOnFocus>
   </focus>
-
   <placement>
     <!-- New window placement.
     Smart      = new windows to be placed automatically by Openbox.
     UnderMouse = new windows to be placed under the mouse cursor. -->
     <policy>Smart</policy>
-
     <!-- no  = place new windows at the top-left -->
     <!-- yes = place new windows in the center of the free area found (seems inconsistent to me) -->
     <center>no</center>
-
     <!-- With <policy>Smart</policy> and on a multi-monitor system, try to place new windows on:
            Any    = any monitor
            Mouse  = where the mouse is
            Active = where the active window is -->
     <monitor>Active</monitor>
   </placement>
-
   <theme>
     <name>Bear2</name>
     <titleLayout>NLDIMC</titleLayout>
@@ -104,6 +93,18 @@
       <!-- 'bold' or 'normal' -->
       <slant>Normal</slant>
       <!-- 'italic' or 'normal' -->
+    </font>
+    <font place="OnScreenActiveDisplay">
+      <name>Sans</name>
+      <size>8</size>
+      <weight></weight>
+      <slant></slant>
+    </font>
+    <font place="OnScreenIactiveDisplay">
+      <name>Sans</name>
+      <size>8</size>
+      <weight></weight>
+      <slant></slant>
     </font>
   </theme>
   <desktops>
@@ -171,54 +172,30 @@
     <moveButton>Middle</moveButton>
     <!-- 'Left', 'Middle', 'Right' -->
   </dock>
-  <keyboard>
-    <chainQuitKey>C-g</chainQuitKey>
-    <!-- Keybindings for desktop switching -->
-    <!-- My Custom Stuff -->
-    <!-- ~~~~~~~~~~~~~~ -->
-    <!-- The backtick doesn't work for a hotkey.  Lame -->
-<!--
+  <keyboard><chainQuitKey>C-g</chainQuitKey><!-- Keybindings for desktop switching --><!-- My Custom Stuff --><!-- ~~~~~~~~~~~~~~ --><!-- The backtick doesn't work for a hotkey.  Lame --><!--
     <keybind key="W-`">
       <action name="ToggleOmnipresent"/>
     </keybind>
--->
-    <keybind key="S-W-1"><action name="SendToDesktop"><desktop>1</desktop><follow>no</follow></action></keybind>
-    <keybind key="S-W-2"><action name="SendToDesktop"><desktop>2</desktop><follow>no</follow></action></keybind>
-    <keybind key="S-W-3"><action name="SendToDesktop"><desktop>3</desktop><follow>no</follow></action></keybind>
-    <keybind key="S-W-4"><action name="SendToDesktop"><desktop>4</desktop><follow>no</follow></action></keybind>
-    <keybind key="W-1"><action name="Desktop"><desktop>1</desktop></action></keybind>
-    <keybind key="W-2"><action name="Desktop"><desktop>2</desktop></action></keybind>
-    <keybind key="W-3"><action name="Desktop"><desktop>3</desktop></action></keybind>
-    <keybind key="W-4"><action name="Desktop"><desktop>4</desktop></action></keybind>
-    <!-- For a multimedia keyboard, you can find the names in /usr/share/X11/XKeysymDB
-         I could replace audacious2's key mapping helper plugin with some openbox hotkeys pretty easily. -->
-    <!-- launching applications -->
-    <keybind key="XF86AudioRaiseVolume"><action name="Execute"><command>
-<!--
+--><keybind key="S-W-1"><action name="SendToDesktop"><desktop>1</desktop><follow>no</follow></action></keybind><keybind key="S-W-2"><action name="SendToDesktop"><desktop>2</desktop><follow>no</follow></action></keybind><keybind key="S-W-3"><action name="SendToDesktop"><desktop>3</desktop><follow>no</follow></action></keybind><keybind key="S-W-4"><action name="SendToDesktop"><desktop>4</desktop><follow>no</follow></action></keybind><keybind key="W-1"><action name="Desktop"><desktop>1</desktop></action></keybind><keybind key="W-2"><action name="Desktop"><desktop>2</desktop></action></keybind><keybind key="W-3"><action name="Desktop"><desktop>3</desktop></action></keybind><keybind key="W-4"><action name="Desktop"><desktop>4</desktop></action></keybind><!-- For a multimedia keyboard, you can find the names in /usr/share/X11/XKeysymDB
+         I could replace audacious2's key mapping helper plugin with some openbox hotkeys pretty easily. --><!-- launching applications --><keybind key="XF86AudioRaiseVolume"><action name="Execute"><command><!--
       pyvol has a noticeable delay..
       python /l/Linux/bin/pvol.py -c 5
       aumix -v+10
 -->
       \amixer -q sset Master 3%+
-    </command></action></keybind>
-    <keybind key="XF86AudioLowerVolume"><action name="Execute"><command>
-<!--
+    </command></action></keybind><keybind key="XF86AudioLowerVolume"><action name="Execute"><command><!--
       pyvol has a noticeable delay..
       python /l/Linux/bin/pvol.py -c -5
       aumix -v-10
 -->
       \amixer -q sset Master 3%-
-    </command></action></keybind>
-    <keybind key="XF86AudioMute"><action name="Execute"><command>
-<!--
+    </command></action></keybind><keybind key="XF86AudioMute"><action name="Execute"><command><!--
       python /l/Linux/bin/pvol.py -m
--->
-<!--
+--><!--
       aumix -M
 -->
       \amixer -q sset Master toggle
-    </command></action></keybind>
-    <keybind key="XF86AudioMedia"><action name="Execute"><command>
+    </command></action></keybind><keybind key="XF86AudioMedia"><action name="Execute"><command>
       \audacious2
     </command></action></keybind>
 
@@ -242,8 +219,7 @@
 
     </command></action></keybind>
 
-    <keybind key="XF86MyComputer"><action name="Execute"><command>
-<!--
+    <keybind key="XF86MyComputer"><action name="Execute"><command><!--
       pcmanfm
 -->
       pcmanfm-mod
@@ -263,14 +239,11 @@
     </keybind>
 -->
 
-    <keybind key="A-F5"><action name="Execute">
-      <command>
+    <keybind key="A-F5"><action name="Execute"><command>
         \openbox --reconfigure
-      </command></action><action name="Execute">
-      <command>
+      </command></action><action name="Execute"><command>
         \xrefresh
-      </command>
-    </action></keybind>
+      </command></action></keybind>
     <keybind key="A-S-F5"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
       \geany ~/.config/openbox/rc.xml
     </command></action></keybind>
@@ -298,11 +271,9 @@
       gksu -u root "/usr/bin/sakura //geometry 80x24+1+1"
 -->
     </command></action></keybind>
-    <keybind key="W-m"><action name="Execute"><command>
-<!--
+    <keybind key="W-m"><action name="Execute"><command><!--
       /l/Linux/bin/sh/live/terminal.sh -geometry 100x14+0+0 -e /l/Linux/bin/mixer -I
--->
-      <!-- The font 'default' is probably wrong, but it works! -->
+--><!-- The font 'default' is probably wrong, but it works! -->
       /l/Linux/bin/sh/live/terminal.sh -geometry 160x25+0+0 -font default -e alsamixer
     </command></action></keybind>
     <keybind key="W-S-m"><action name="Execute"><command>
@@ -314,19 +285,15 @@
       /l/Linux/bin/BOINC/run_manager
     </command></action></keybind>
 -->
-    <keybind key="W-b"><action name="Execute"><command>
-      <!-- I don't know how to pass a string with spaces to -T -->
-      <!--
+    <keybind key="W-b"><action name="Execute"><command><!-- I don't know how to pass a string with spaces to -T --><!--
         /l/Linux/bin/sh/live/terminal.sh -geometry 103x70+0+0 -T BitTornado -e 'nice -n 10 /usr/bin/perl /l/Linux/bin/btstatus.pl /tmp/RAMDISK/bittornado.log'
-      -->
-<!--
+      --><!--
       nice -n 5 deluge
 -->
       nice -n 5 /usr/bin/transmission-gtk
     </command></action></keybind>
 
-    <keybind key="W-w"><action name="Execute"><command>
-<!--
+    <keybind key="W-w"><action name="Execute"><command><!--
       /l/Firefox/bin/firefox
 -->
       /0/Linux/bin/sh/zombie/firefox_pick-profile.sh
@@ -370,9 +337,7 @@
     </command></action></keybind>
     <!-- TODO:  Revisit this concept -->
     <!--    [Execute] (Mod1-Control-F) {xtoolwait sfm & wmpid=$! && wait $wmpid && wmctrl -F -r "sfm #1" -e 1,0,0,800,1148 && wmctrl -F -r "sfm #0" -e 1,800,0,800,1148}  -->
-    <keybind key="W-f"><action name="Execute"><command>
-    <!-- Works under Lubuntu 10.10 -->
-    <!-- Works under Unity Linux 2011.0 alpha, 2011-07-23 -->
+    <keybind key="W-f"><action name="Execute"><command><!-- Works under Lubuntu 10.10 --><!-- Works under Unity Linux 2011.0 alpha, 2011-07-23 -->
       \zsh -c "export LS_COLORS=\"no=00:fi=00:di=00;36:ln=00;35:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=00;05;37;41:mi=00;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.rar=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.torrent=00;31:*.jpg=00;35:*~.jpg=00;33:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*~.mp3=00;03:*~.ogg=00;03:*~.flv=00;03:*~.ape=00;03:*~.flv=00;03:*~.mpg=00;03:*~.wmv=00;03:*.part=00;03:\";\ssfm"
       <!--
         I don't understand why /etc/DIR_COLORS is being ignored.  I'm not entirely sure how to import it either.
@@ -384,8 +349,7 @@
         ssfm
       -->
     </command></action></keybind>
-    <keybind key="C-A-f"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command>
-<!--
+    <keybind key="C-A-f"><action name="Execute"><startupnotify><enabled>yes</enabled></startupnotify><command><!--
       \pcmanfm
 -->
       \pcmanfm-mod
@@ -470,7 +434,7 @@
       <mousebind button="A-Right" action="Drag">
         <action name="Resize"/>
       </mousebind>
-<!--
+      <!--
       <mousebind button="A-Middle" action="Press">
         <action name="Lower"/>
         <action name="FocusToBottom"/>
@@ -507,7 +471,7 @@
       <mousebind button="Left" action="DoubleClick">
         <action name="ToggleMaximizeFull"/>
       </mousebind>
-<!--
+      <!--
       <mousebind button="Middle" action="Press">
         <action name="Lower"/>
         <action name="FocusToBottom"/>
@@ -723,7 +687,7 @@
       </mousebind>
     </context>
     <context name="Desktop">
-<!--
+      <!--
       <mousebind button="Up" action="Click">
         <action name="DesktopPrevious"/>
       </mousebind>
@@ -754,7 +718,7 @@
     </context>
     <context name="Root">
       <!-- Menus -->
-<!--
+      <!--
       <mousebind button="Middle" action="Press">
         <action name="ShowMenu">
           <menu>client-list-combined-menu</menu>
@@ -777,7 +741,7 @@
         </action>
       </mousebind>
     </context>
-<!--
+    <!--
     <context name="MoveResize">
       <mousebind button="Up" action="Click">
         <action name="DesktopPrevious"/>
