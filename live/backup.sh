@@ -17,7 +17,7 @@
 # Disabled, as it's really inconvenient when I'm doing testing.
 #\hdparm -Y $external
 
-\source /l/shell-random/live/zsh/colours.sh
+\source /l/shell-random/git/live/zsh/colours.sh
 # Otherwise use rsync.
 #backup_method="unison"
 # The unison executable.
