@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+# TODO:  Can this be converted into a pure shell script?  I have trouble on if statements.
+
 PROJECTS="/l"
 NEW_PROJECT_MESSAGE="New project notes started `date`"
 
