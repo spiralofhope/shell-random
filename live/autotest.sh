@@ -401,17 +401,10 @@ get_file_ext() {
         fi
         # Since I can't figure debugging out, I'm going to hard-code success.
         RESULT=0
-        # Clean up all the shit that's left behind.  It's for faster future compilation, but I don't want or need it right now.
-        # I was getting stupid errors doing it this way.  Fuck it.  This stuff only applies when I'm using modules, which I'm damned well not until I can do it right.
-        #\rm --force \
-          #/main.log~ \
-          #"$AUTOTEST_DIR"/mythryl.COMPILE_LOG \
-          #"$AUTOTEST_DIR"/read-eval-print-loop.log~ \
-          #"$AUTOTEST_DIR"/*.compile.log \
-          #"$AUTOTEST_DIR"/unknown.log \
-          #"$AUTOTEST_DIR"/*.config \
-          #"$AUTOTEST_DIR"/*.index \
-          #"$AUTOTEST_DIR"/.*.module-dependencies-summary
+        \rm --force \
+          "$AUTOTEST_DIR"/main.log~ \
+          "$AUTOTEST_DIR"/mythryl.COMPILE_LOG \
+          "$AUTOTEST_DIR"/read-eval-print-loop.log~
       }
       execute_with_debugging() {
         # TODO:  Deal with the shebang issue here too, when I figure debugging out.
@@ -429,10 +422,31 @@ get_file_ext() {
     ;;
     "sh") # *nix shell scripting languages
       if [ "x$MYSHELL" = "xzsh4" ]; then MYSHELL="zsh"; fi
+      # Check for the shebang
+      local head="`\head --lines=1 \"$AUTOTEST_FILE\"`"
+      case $head in
+        "#!/bin/bash")
+        MYSHELL=bash
+      ;;
+        "#!/usr/local/bin/bash")
+        MYSHELL=bash
+      ;;
+        "#!/bin/zsh")
+        MYSHELL=zsh
+      ;;
+        "#!/usr/local/bin/zsh")
+        MYSHELL=zsh
+      ;;
+      *)
+        # May not be a good idea.. hrm.
+        #MYSHELL=bash
+        \echo " * Uh, I didn't finish this bit of programming.  Good luck!"
+      esac        
       case "$MYSHELL" in
         "bash")
           execute() {
-            source "$AUTOTEST_FILE" ; RESULT="$?"
+            #source "$AUTOTEST_FILE" ; RESULT="$?"
+            \bash "$AUTOTEST_FILE" ; RESULT="$?"
           }
           execute_with_debugging() {
             # TODO: I should remember and then restore it, but how?

@@ -108,8 +108,8 @@ terminal_determination() {
 
   # TODO:  Website
   # Tabbed
-  \terminal --geometry 80x24+0+0 $@
   run_if_exists \
+    \terminal --geometry 80x24+0+0 $@
 
   # http://lilyterm.luna.com.tw/
   # Tabbed
@@ -152,7 +152,7 @@ if [ "x$1" == "xwith_lines" ]; then
   shift
   # This can do fancy lines and has a decent default font.
   \lxterminal \
-    $@
+    "$@"
 
 #  \aterm \
 #    ` # Output to the window should not have it scroll to the bottom.` \
