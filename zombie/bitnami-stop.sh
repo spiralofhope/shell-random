@@ -11,12 +11,10 @@ else
     ctlscript.sh \
     &> /dev/null
 
-# TODO:  Update this for the raw /opt directory structure.
   # Kill log files before they bloat things up:
-  \cd ./bitnami-install/apache2/logs
   \rm --force \
-    ./access_log \
-    ./error_log
+    /opt/bitnami/apache2/logs/access_log \
+    /opt/bitnami/apache2/logs/error_log
 
   # I did this nonsense just to get my prompt back when things end.
   # .. I don't like having to press enter.  =p
