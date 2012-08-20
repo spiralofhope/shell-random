@@ -1,5 +1,9 @@
 #!/bin/zsh
 
+# TODO/FIXME - this should be based on UUID!
+#   mount -U uuid
+#   The current method is potentially disastrous!
+
 # TODO:  Push stuff into an external lib and `source` it.  I see that I made archive/backup-lib.sh which is used by archive/data-migration.sh
 
 # TODO:  Copy the MBR into a file / script which can be re-run to restore that info.. I often won't have access to the eSATA to restore in that manner.

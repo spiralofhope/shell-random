@@ -1,4 +1,5 @@
 alias autotest="/l/shell-random/git/live/autotest.sh"
+alias jpegoptimize="jpegoptim --preserve **/**"
 
 alias smartgui="su -c \"smart --gui\""
 
