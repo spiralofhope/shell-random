@@ -1,9 +1,5 @@
 #!/bin/zsh
 
-# TODO/FIXME - this should be based on UUID!
-#   mount -U uuid
-#   The current method is potentially disastrous!
-
 # TODO:  Push stuff into an external lib and `source` it.  I see that I made archive/backup-lib.sh which is used by archive/data-migration.sh
 
 # TODO:  Copy the MBR into a file / script which can be re-run to restore that info.. I often won't have access to the eSATA to restore in that manner.
@@ -21,7 +17,7 @@
 # Disabled, as it's really inconvenient when I'm doing testing.
 #\hdparm -Y $external
 
-\source /l/shell-random/git/live/zsh/colours.sh
+\source /l/shell-random/live/zsh/colours.sh
 # Otherwise use rsync.
 #backup_method="unison"
 # The unison executable.

@@ -2,18 +2,26 @@
 
 ziprepair() {
   file=ziprepair.$$.zip
-  \zip -FF $1 --out $file
-  \unzip -tqqq $file >> /dev/null; 
+  dir="$1".ziprepair.$$
+  \echo y | \zip  --fixfix "$1"  --out $file
+  \mkdir $dir
+  \cd $dir
+  \unzip  -o  ../$file
+  \cd -
+  \rm  --force  $file
+#  \unzip  -tqq  $file  >> /dev/null 2>&1
 }
 
 
 # as in re-source.
 resource() {
-  for i in /l/Linux/bin/sh/zsh/*.sh
+  for i in /l/shell-random/git/live/zsh/*.sh
     source $i
 }
 
-rmln() {
+
+# What the fuck was this for, anyways?
+DISABLED_rmln() {
   # TODO:  Sanity checking
   rmln_target=`basename $1`
   \echo $rmln_target
@@ -177,6 +185,28 @@ NOWAY-umount() {
 # Make and change into a directory:
 mcd() { \mkdir "$1" && \cd "$1" ; }
 
+
+# FIXME: I don't understand why I cannot call this ls()
+dir() {
+  \ls \
+    -1 \
+    --almost-all \
+    --color=always \
+    --group-directories-first \
+    --human-readable \
+    --no-group \
+    --size \
+    $@  |\
+      \less \
+        --raw-control-chars \
+        --no-init \
+        --quit-at-eof \
+        --quit-on-intr \
+        --quiet
+    ` # `
+}
+
+
 # A proper dir command!
 # dir() { /bin/ls --color -gGh "$@"|cut -d" " -f4-100 ; }
 # dir() { \ls --color -gGh "$@" | \cut -b14- | \less -F -r ; }
@@ -184,7 +214,7 @@ mcd() { \mkdir "$1" && \cd "$1" ; }
 # 1) Don't display a size for directories.
 # TODO: -R does funny things.  Catch if it's been sent (even with -AR) and deal with it specially?
 # Note that $LESS will influence the display.
-dir() {
+TODO_dir() {
   if [ "x$1" = "x-d" ] || [ "x$1" = "x-ad" ]; then
     ddir
     return $?

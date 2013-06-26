@@ -13,13 +13,14 @@ terminal_setup() {
   # This fixes a GNOME hotkey issue which was starting the terminal in /  I don't know if this breaks any other usage!
   \cd ~
 
+# This was for Unity Linux, possibly for Ubuntu/Lubuntu, does not apply to Gentoo/Sabayon
   # Check for my favourite font, with a safe fallback.
-  DISPLAY=:0.0 \xlsfonts | grep vga
-  if [ $? -eq 1 ]; then
-    font=-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*
-  else
-    font=vga
-  fi
+#  DISPLAY=:0.0 \xlsfonts | grep vga
+#  if [ $? -eq 1 ]; then
+#    font=-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*
+#  else
+#    font=vga
+#  fi
 
   terminal_run=0
 }
@@ -48,7 +49,7 @@ terminal_determination() {
       +vb \
       ` # No scrollbar. ` \
       +sb \
-      ` The default font can do fancy designs. ` \
+      ` # The default font can do fancy designs. ` \
       ` # -font default ` \
       ` # My font addition ` \
       -fn $font \
@@ -64,6 +65,12 @@ terminal_determination() {
     \lxterminal \
       --geometry=80x24 \
       $@
+
+  # http://pleyades.net/david/sakura.php
+  # Tabbed
+  # when using bash as the default shell, the prompt doesn't immediately appear.  zsh works fine.
+  run_if_exists \
+    \sakura --geometry 80x24+1+1 $@
 
   # http://invisible-island.net/xterm/
   run_if_exists \
@@ -88,12 +95,6 @@ terminal_determination() {
       -sl 10000 \
       -geometry 80x24+0+0 \
       $@
-
-  # http://pleyades.net/david/sakura.php
-  # Tabbed
-  # when using bash as the default shell, the prompt doesn't immediately appear.  zsh works fine.
-  run_if_exists \
-    \sakura --geometry 80x24+1+1 $@
 
   # TODO:  Website
   # Bloated, but at least it can use the default system fixed width font so it looks right.
@@ -147,28 +148,68 @@ terminal_determination() {
 # --
 
 terminal_setup
+# TODO:  This can be redone.  The knowledge of "with_lines-ness" can be moved up into the individual programs.
+# 1) Each program can set a flag.
+# 2) When referring to the programs, pass an option to require+execute with or without with_lines-ness.
+# seems straightforward.. good luck, self!
 if [ "x$1" == "xwith_lines" ]; then
   # Nuke $1
   shift
-  # This can do fancy lines and has a decent default font.
-  \lxterminal \
-    "$@"
 
-#  \aterm \
-#    ` # Output to the window should not have it scroll to the bottom.` \
-#    -si \
-#    ` # No visual bell. ` \
-#    +vb \
-#    ` # No scrollbar. ` \
-#    +sb \
-#    ` The default font can do fancy designs. ` \
-#    -font default
-#    -bg black \
-#    -fg gray \
-#    -cr darkgreen \
-#    -sl 10000 \
-#    -geometry 80x24+0+0 \
-#    $@
+  run_if_exists \
+    \sakura $@
+
+  run_if_exists \
+    \lxterminal "$@"
+
+  run_if_exists \
+    \Terminal "$@"
+
+  # --
+  # Fallbacks
+  # --
+  # This includes some sane defaults.  Not sure if I ought/needed to do this..
+
+  run_if_exists \
+    \aterm \
+      ` # Output to the window should not have it scroll to the bottom.` \
+      -si \
+      ` # No visual bell. ` \
+      +vb \
+      ` # No scrollbar. ` \
+      +sb \
+      ` # The default font can do fancy designs. ` \
+      -font default
+      -bg black \
+      -fg gray \
+      -cr darkgreen \
+      -sl 10000 \
+      -geometry 80x24+0+0 \
+      $@
+
+  run_if_exists \
+    \xterm \
+        ` # Output to the window should not have it scroll to the bottom.` \
+      -si \
+        ` # No visual bell. ` \
+      +vb \
+        ` # No scrollbar. ` \
+      +sb \
+        ` # Jump scrolling.  Normally, text is scrolled one line at a time; this option allows xterm to move multiple lines at a time so that it does not fall as far behind. Its use is strongly recommended since it makes xterm much faster when scanning through large amounts of text. ` \
+      -j \
+        ` # Indicates that xterm may scroll asynchronously, meaning that the screen does not have to be kept completely up to date while scrolling. This allows xterm to run faster when network latencies are very high and is typically useful when running across a very large internet or many gateways. ` \
+      -s \
+        ` # My font addition ` \
+      -fn $font \
+        ` # xterm should assume that the normal and bold fonts have VT100 line-drawing characters.  It sets the forceBoxChars resource to "true". ` \
+      +fbx \
+      -bg black \
+      -fg gray \
+      -cr darkgreen \
+      -sl 10000 \
+      -geometry 80x24+0+0 \
+      $@
+
 else
   terminal_determination
 fi

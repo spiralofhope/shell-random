@@ -1,5 +1,4 @@
 alias autotest="/l/shell-random/git/live/autotest.sh"
-alias jpegoptimize="jpegoptim --preserve **/**"
 
 alias smartgui="su -c \"smart --gui\""
 
@@ -27,7 +26,7 @@ alias mv="\mv -i"
 alias rd="\rmdir"
 # alias rm="\rm -i"
 alias grep="\grep --color"
-alias mc=". /usr/share/mc/bin/mc-wrapper.sh"
+#alias mc=". /usr/share/mc/bin/mc-wrapper.sh"
 alias df="\df -h -x supermount"
 alias du="\du -h"
 alias less="less -r"
@@ -63,3 +62,6 @@ else
   #ls_opt="-F"
 fi
 alias ls="ls $ls_opt"
+
+IDEAS
+

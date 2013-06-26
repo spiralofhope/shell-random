@@ -1,16 +1,15 @@
+#!/bin/bash
+
 # The global settings are: /etc/xdg/openbox/autostart.sh
 # The local master settings are: /home/user/.config/openbox/autostart.sh
 # Then this file is run..
 
-\zenity --question
-if [ $? -eq 1 ]; then
-  exit 1
-fi
 
 disconnected(){
   \echo " * Internet connection not detected."
   # I don't do anything special in this case.
 }
+
 
 connected(){
   \echo " * Internet connection detected."
@@ -32,36 +31,68 @@ connected(){
   #\twinkle&
 
   \nice -n 6 \
-    /l/Linux/bin/Firefox/firefox -P default &
+    \firefox -P default &
 
   # Voice Chat
   # TODO:  How do I get Mumble to minimize on startup?
-  \mumble &
-  # autoconnect is done like so:
-  \mumble "mumble://username@server:port/?version=1.2.0" >> /dev/null 2>&1 &
+  /l/bin/mumble.sh
 
   # Email
   #   Can be started trayed (it gets minimized to the tray after a moment)
-  #     but only if I use the tray plugin and configure it to minimize on startup.
+  #     but only if I set the tray plugin to do that.
   \claws-mail &
 }
 
+
+:<<OLD_METHOD
 # --
 # -- Internet connection test
 # --
-
-\ping -n -q -w 2 example.com &> /dev/null
-if [ $? -eq 2 ]; then
-  internet=false
+# example.com is supposed to be provided by the ISP.
+\ping  -n -q -w 2  example.com  &> /dev/null
+# TODO - there ought to be a better way to do this..
+# ping not found || ping doesn't find a connection
+if [[ $? -eq 127 || $? -eq 2 ]]; then
+  # internet=false
   disconnected
 else
-  internet=true
-  connected
+  # internet=true
+  \zenity --question
+  if [[ $? -eq 0 ]]; then
+    connected
+  else
+    # zenity not found || user said no
+    exit 1
+  fi
 fi
+OLD_METHOD
+
+
+# --
+# -- Network connection test
+# --
+
+for interface in $( \ls /sys/class/net/ | \grep  --invert-match  lo ); do
+  if [[ $( \cat /sys/class/net/$interface/carrier ) = 1 ]]; then
+    \zenity --question
+    if [[ $? -eq 0 ]]; then
+      connected
+    else
+      # zenity not found || user said no
+      exit 1
+    fi
+  else
+    disconnected
+  fi
+done
+
+
 
 # --
 # -- No net connection required for this stuff
 # --
 
+\keepassx &
+
 # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-$( \sleep 15 && /l/Linux/bin/sh/projects.sh ) &
+$( \sleep 15 && /l/shell-random/git/live/projects.sh ) &

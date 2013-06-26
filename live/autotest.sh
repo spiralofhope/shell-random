@@ -70,7 +70,7 @@ user_preferences() {
 user_preferences
 
 usage() {
-\cat <<'HEREDOC'
+\cat  <<'HEREDOC'
 USE:
 autotest "filename"
 autotest /path/to/file.sh
@@ -147,9 +147,9 @@ HEREDOC
 }
 
 setup() {
-  MYSHELL=$( \basename $( \readlink /proc/$$/exe ) )
+  MYSHELL=$( \basename  $( \readlink  /proc/$$/exe ) )
   ORIGINAL_PWD="$PWD"
-  \source /l/Linux/bin/zsh/colours.sh
+  \source  /l/shell-random/git/live/zsh/colours.sh
 }
 setup
 
@@ -162,40 +162,40 @@ spinner() {
   # I could use printf, but I'd rather use echo.
   case $SPINNER in
     0)
-      \echo -e -n "${cursor_position_save}${green}\055${reset}${cursor_position_restore}"
+      \echo  -e  -n  "${cursor_position_save}${green}\055${reset}${cursor_position_restore}"
       SPINNER=1
     ;;
     1)
       # CHECKME: One backslash was causing issues with syntax colouring.  Hopefully this works..
-      \echo -e -n "${cursor_position_save}${green}\\${reset}${cursor_position_restore}"
+      \echo  -e  -n  "${cursor_position_save}${green}\\${reset}${cursor_position_restore}"
       SPINNER=2
     ;;
     2)
-      \echo -e -n "${cursor_position_save}${green}|${reset}${cursor_position_restore}"
+      \echo  -e  -n  "${cursor_position_save}${green}|${reset}${cursor_position_restore}"
       SPINNER=3
     ;;
     3)
-      \echo -e -n "${cursor_position_save}${green}/${reset}${cursor_position_restore}"
+      \echo  -e  -n  "${cursor_position_save}${green}/${reset}${cursor_position_restore}"
       SPINNER=0
     ;;
     *)
-      echo "${red}Odd error, SPINNER was out of range:${reset} \"${SPINNER}\"${cursor_position_save}"
+      \echo  "${red}Odd error, SPINNER was out of range:${reset} \"${SPINNER}\"${cursor_position_save}"
       SPINNER=0
       spinner
     ;;
   esac
   # Restore the colour in case there is some output that interrupts the spinner.
   # TODO: Figure out how to save the original foreground/background colours and restore them here..
-  \echo -e -n ${reset}
+  \echo  -e  -n  ${reset}
 }
 
 ansi_echo() {
   STRING="$1"
   if [ "$ANSI" = "no" ]; then
-    \echo $STRING
+    \echo  $STRING
   else
     # Note that this assumes you have light grey as your default text.  That's the end part after $STRING and before the final \n
-    \echo -e "\x1b\x5b1;33;40m$STRING\x1b\x5b0;37;40m\n"
+    \echo  -e  "\x1b\x5b1;33;40m$STRING\x1b\x5b0;37;40m\n"
   fi
 }
 
@@ -204,22 +204,22 @@ check_file() {
   #   Then also have specific error codes for failing to correct certain checks.
   AUTOTEST_FILE="$1"
   until [ ! -d "$AUTOTEST_FILE" ] && [ "$AUTOTEST_FILE" != "" ] ; do
-    \echo "That is a directory:  $AUTOTEST_FILE"
+    \echo  "That is a directory:  $AUTOTEST_FILE"
     # TODO:  Implement a file lister to choose another file - there's the zsh file lister I have somewhere around here...
-    \echo "Type the name of the file to use, or ^c to abort:  "
-    \echo -n "> "
-    \read AUTOTEST_FILE
-    trap "{ \echo 'Aborting.' ; return 1 ; }" SIGINT SIGTERM
+    \echo  "Type the name of the file to use, or ^c to abort:  "
+    \echo  -n  "> "
+    \read  AUTOTEST_FILE
+    trap  "{ \echo 'Aborting.' ; return 1 ; }" SIGINT SIGTERM
   done
   if [ ! -e "$AUTOTEST_FILE" ]; then
-    \echo "File doesn't exist:  $AUTOTEST_FILE"
-    \echo -n "Shall I create it? [Y/n]  "
-    \read ANSWER
+    \echo  "File doesn't exist:  $AUTOTEST_FILE"
+    \echo  -n  "Shall I create it? [Y/n]  "
+    \read  ANSWER
     if [ "$ANSWER" = "" ] || [[ "$ANSWER" =~ "^(y)" ]]; then
-      \echo>"$AUTOTEST_FILE" ; RESULT=$?
+      \echo  >  "$AUTOTEST_FILE" ; RESULT=$?
       if [ ! -e "$AUTOTEST_FILE" ] || [ $RESULT -ne 0 ] ; then
-        \echo "There were issues creating the file.  Aborting."
-        return 1
+        \echo  "There were issues creating the file.  Aborting."
+        return  1
       fi
     else
       \echo "Opted to not create the file.  Aborting."
@@ -229,24 +229,24 @@ check_file() {
   # The file does exist.
   # Readable?
   if [ ! -r "$AUTOTEST_FILE" ]; then
-    \echo "The file isn't readible.  Trying to correct that."
-    \chmod u+r "$AUTOTEST_FILE" ; RESULT=$?
+    \echo  "The file isn't readible.  Trying to correct that."
+    \chmod  u+r  "$AUTOTEST_FILE" ; RESULT=$?
     if [ $RESULT -ne 0 ]; then
-      \echo "I couldn't correct that.  Aborting."
-      return 1
+      \echo  "I couldn't correct that.  Aborting."
+      return  1
     else
-      \echo "It looks like it worked."
+      \echo  "It looks like it worked."
     fi
   fi
   # Writable?
   if [ ! -w "$AUTOTEST_FILE" ]; then
-    \echo "The file isn't writable.  Trying to correct that."
-    \chmod u+w "$AUTOTEST_FILE" ; RESULT=$?
+    \echo  "The file isn't writable.  Trying to correct that."
+    \chmod  u+w  "$AUTOTEST_FILE" ; RESULT=$?
     if [ $RESULT -ne 0 ]; then
-      \echo "I couldn't correct that.  Aborting."
-      return 1
+      \echo  "I couldn't correct that.  Aborting."
+      return  1
     else
-      \echo "It looks like it worked."
+      \echo  "It looks like it worked."
     fi
   fi
   # Executable?
@@ -256,13 +256,13 @@ check_file() {
     "c")
     ;;
     *)
-      \echo "The file isn't executable.  Trying to correct that."
-      \chmod u+x "$AUTOTEST_FILE" ; RESULT=$?
+      \echo  "The file isn't executable.  Trying to correct that."
+      \chmod  u+x  "$AUTOTEST_FILE" ; RESULT=$?
       if [ $RESULT -ne 0 ]; then
-        \echo "I couldn't correct that.  Aborting."
-        return 1
+        \echo  "I couldn't correct that.  Aborting."
+        return  1
       else
-        \echo "It looks like it worked."
+        \echo  "It looks like it worked."
       fi
     esac
   fi
@@ -272,7 +272,7 @@ check_file() {
 
 get_file_ext() {
   AUTOTEST_FILE="$1"
-  AUTOTEST_DIR=`dirname "$AUTOTEST_FILE"`
+  AUTOTEST_DIR=$( \dirname "$AUTOTEST_FILE" )
   # 1.tar.bz2 => tar.bz2 (good, but...)
   #   it also does 1.test.test.tar.bz2 => test.test.tar.bz2 (bad idea!)
   # EXT=${AUTOTEST_FILE#*.}
@@ -288,13 +288,13 @@ get_file_ext() {
       # I know this looks convoluted, but booc cannot be sent a non-useful parameter (unset/empty, or a blank space, etc)
       DUCKY="$AUTOTEST_FILE"
       execute() {
-        \booc "$DUCKY" ; RESULT="$?"
-        ansi_echo "--+ booc finished"
+        \booc  "$DUCKY" ; RESULT="$?"
+        ansi_echo  "--+ booc finished"
         # Since problems can arise with booc, the mono execution should be smart.
         if [ "$RESULT" = "0" ]; then
-          \mono ${AUTOTEST_FILE%.*}.exe ; RESULT="$?"
-          ansi_echo "--+ mono finished"
-          \rm -f ${AUTOTEST_FILE%.*}.exe
+          \mono  ${AUTOTEST_FILE%.*}.exe ; RESULT="$?"
+          ansi_echo  "--+ mono finished"
+          \rm  --force  ${AUTOTEST_FILE%.*}.exe
         fi
       }
       execute_with_debugging() {
@@ -302,33 +302,33 @@ get_file_ext() {
           DUCKY="$AUTOTEST_FILE -ducky"
           execute
         else
-          ansi_echo "I don't know what to do with that exit code:  $RESULT"
+          ansi_echo  "I don't know what to do with that exit code:  $RESULT"
         fi
       }
-      return 0
+      return  0
     ;;
     "c") # C programming language
       execute() {
         #\gcc "$AUTOTEST_FILE" ; RESULT="$?"
         # Turn on warnings.
-        \gcc -Wall "$AUTOTEST_FILE" ; RESULT="$?"
-        \mv a.out "${AUTOTEST_FILE%.*}"
+        \gcc  -Wall  "$AUTOTEST_FILE" ; RESULT="$?"
+        \mv  a.out  "${AUTOTEST_FILE%.*}"
         "${AUTOTEST_FILE%.*}"
-        \rm --force "${AUTOTEST_FILE%.*}"
+        \rm  --force  "${AUTOTEST_FILE%.*}"
       }
       execute_with_debugging() {
-        \gcc gcc -v -Wall "$AUTOTEST_FILE" ; RESULT="$?"
+        \gcc  gcc  -v  -Wall  "$AUTOTEST_FILE" ; RESULT="$?"
       }
-      return 0
+      return  0
     ;;
     "py") # Python programming language
       execute() {
-        \python "$AUTOTEST_FILE" ; RESULT="$?"
+        \python  "$AUTOTEST_FILE" ; RESULT="$?"
       }
       execute_with_debugging() {
-        \python -d "$AUTOTEST_FILE" ; RESULT="$?"
+        \python  -d  "$AUTOTEST_FILE" ; RESULT="$?"
       }
-      return 0
+      return  0
     ;;
     "rb") # Ruby programming language
       # Check if it's a shoes script
@@ -336,30 +336,30 @@ get_file_ext() {
       if [ $RESULT = 1 ]; then
         # Ruby programming language
         execute() {
-          \ruby "$AUTOTEST_FILE" ; RESULT="$?"
+          \ruby  "$AUTOTEST_FILE" ; RESULT="$?"
         }
         execute_with_debugging() {
           if [ "x${DEBUG}" != "xfalse" ]; then
-            \ruby --debug "$AUTOTEST_FILE" ; RESULT="$?"
+            \ruby  --debug  "$AUTOTEST_FILE" ; RESULT="$?"
           fi
         }
       else
         # Ruby programming language, Shoes GUI toolkit
         execute() {
-          ~/shoes/dist/shoes "$AUTOTEST_FILE" ; RESULT="$?"
+          ~/shoes/dist/shoes  "$AUTOTEST_FILE" ; RESULT="$?"
         }
         execute_with_debugging() {
-          ~/shoes/dist/shoes "$AUTOTEST_FILE" ; RESULT="$?"
+          ~/shoes/dist/shoes  "$AUTOTEST_FILE" ; RESULT="$?"
         }
       fi
       return 0
     ;;
     "shy") # Ruby programming language, Shoes GUI toolkit
       execute() {
-        ~/shoes/dist/shoes "$AUTOTEST_FILE" ; RESULT="$?"
+        ~/shoes/dist/shoes  "$AUTOTEST_FILE" ; RESULT="$?"
       }
       execute_with_debugging() {
-        ~/shoes/dist/shoes "$AUTOTEST_FILE" ; RESULT="$?"
+        ~/shoes/dist/shoes  "$AUTOTEST_FILE" ; RESULT="$?"
       }
       return 0
     ;;
@@ -367,27 +367,28 @@ get_file_ext() {
       execute() {
         #/usr/bin/mythryl: '/mnt/ssd/projects/mythryl/tutorial.my' is not a valid script!
         #/usr/bin/mythryl should only be invoked via ''#!...'' line in a script!
-        #/usr/bin/mythryl "$AUTOTEST_FILE" ; RESULT="$?"
+        #/usr/bin/mythryl  "$AUTOTEST_FILE" ; RESULT="$?"
         # Check for the shebang
-        local head="`\head --lines=1 \"$AUTOTEST_FILE\"`"
-        local mythryl_shebang="#!/usr/bin/mythryl"
+        local  head="$( \head  --lines=1  \"$AUTOTEST_FILE\" )"
+        local  mythryl_shebang="#!/usr/bin/mythryl"
         if ! [[ $head == $mythryl_shebang ]]; then
-          #\echo "no shebang?"
+          #\echo  "no shebang?"
           # No shebang?  Add one.
           # Also add braces, since I was probably lazy about that.
           # TODO:  Check if I already had braces?  Meh.
           local mythryl_file="${AUTOTEST_DIR}/mythryl_shebanged.my"
-          \echo $mythryl_shebang > $mythryl_file
-          \echo                 >> $mythryl_file
-          \echo "{"             >> $mythryl_file
-          \cat "$AUTOTEST_FILE" >> $mythryl_file
-          \echo                 >> $mythryl_file
-          \echo "};"            >> $mythryl_file
-          \chmod +x $mythryl_file
+          # TODO - replace this with a variable-heredoc
+          \echo   $mythryl_shebang > $mythryl_file
+          \echo                   >> $mythryl_file
+          \echo  "{"              >> $mythryl_file
+          \cat  "$AUTOTEST_FILE"  >> $mythryl_file
+          \echo                   >> $mythryl_file
+          \echo  "};"             >> $mythryl_file
+          \chmod  +x  $mythryl_file
           "$mythryl_file" ; RESULT="$?"
-          \rm --force $mythryl_file
+          \rm  --force  $mythryl_file
         else
-          #\echo "found a shebang"
+          #\echo  "found a shebang"
           "$AUTOTEST_FILE" ; RESULT="$?"
         fi
 
@@ -401,7 +402,7 @@ get_file_ext() {
         fi
         # Since I can't figure debugging out, I'm going to hard-code success.
         RESULT=0
-        \rm --force \
+        \rm  --force \
           "$AUTOTEST_DIR"/main.log~ \
           "$AUTOTEST_DIR"/mythryl.COMPILE_LOG \
           "$AUTOTEST_DIR"/read-eval-print-loop.log~
@@ -410,11 +411,11 @@ get_file_ext() {
         # TODO:  Deal with the shebang issue here too, when I figure debugging out.
         "$AUTOTEST_FILE"
 
-        \echo "TODO: I don't know how to invoke debugging, if such a thing exists."
+        \echo  "TODO: I don't know how to invoke debugging, if such a thing exists."
         # These aren't actually useful.
         #\cat "$AUTOTEST_DIR"/main.log~
         #\cat "$AUTOTEST_DIR"/read-eval-print-loop.log~
-        \rm --force \
+        \rm  --force \
           "$AUTOTEST_DIR"/main.log~ \
           "$AUTOTEST_DIR"/read-eval-print-loop.log~
       }
@@ -425,23 +426,17 @@ get_file_ext() {
       # Check for the shebang
       local head="`\head --lines=1 \"$AUTOTEST_FILE\"`"
       case $head in
-        "#!/bin/bash")
+        "/usr/bin/env bash" | "/usr/bin/env  bash" | "#!/bin/bash" | "#!/usr/local/bin/bash")
         MYSHELL=bash
       ;;
-        "#!/usr/local/bin/bash")
-        MYSHELL=bash
-      ;;
-        "#!/bin/zsh")
-        MYSHELL=zsh
-      ;;
-        "#!/usr/local/bin/zsh")
+        "/usr/bin/env zsh"  | "/usr/bin/env  zsh"  | "#!/bin/zsh"  | "#!/usr/local/bin/zsh")
         MYSHELL=zsh
       ;;
       *)
         # May not be a good idea.. hrm.
-        #MYSHELL=bash
-        \echo " * Uh, I didn't finish this bit of programming.  Good luck!"
-      esac        
+        MYSHELL=zsh
+        \echo  " * This is assumed to be a shell script, and further assumed to be zsh."
+      esac
       case "$MYSHELL" in
         "bash")
           execute() {
@@ -450,46 +445,46 @@ get_file_ext() {
           }
           execute_with_debugging() {
             # TODO: I should remember and then restore it, but how?
-            set -x
+            set  -x
             execute
-            set +x
+            set  +x
           }
         ;;
-        "zsh")
+        "zsh" | "zsh5")
           execute() {
-            source "$AUTOTEST_FILE" ; RESULT="$?"
+            source  "$AUTOTEST_FILE" ; RESULT="$?"
           }
           execute_with_debugging() {
             # TODO: I should remember and then restore it, but how?
-            setopt xtrace
+            setopt  xtrace
             execute
-            unsetopt xtrace
+            unsetopt  xtrace
           }
         ;;
         *)
-          \echo ""
-          ansi_echo "ERROR:  Your shell is not supported:  $MYSHELL"
-          \echo "Don't fret, it's not too hard to hack this script to add functionality."
-          \echo "To add support, edit this script and:"
-          \echo "  1. Search for this error message and edit this code."
-          \echo "  2. Also search for "\''case "$MYSHELL" in'\'" and edit that code."
-          \echo ""
+          \echo  ""
+          ansi_echo  "ERROR:  Your shell is not supported:  $MYSHELL"
+          \echo  "Don't fret, it's not too hard to hack this script to add functionality."
+          \echo  "To add support, edit this script and:"
+          \echo  "  1. Search for this error message and edit this code."
+          \echo  "  2. Also search for "\''case "$MYSHELL" in'\'" and edit that code."
+          \echo  ""
           break
       esac
-      return 0
+      return  0
     ;;
     *)
-      \echo ""
-      ansi_echo "ERROR:  Your file type is not supported:  $EXT"
-      \echo "Don't fret, it's not too hard to hack this script to add functionality."
-      \echo "To add support, edit this script and search for this error message."
-      \echo ""
+      \echo  ""
+      ansi_echo  "ERROR:  Your file type is not supported:  $EXT"
+      \echo  "Don't fret, it's not too hard to hack this script to add functionality."
+      \echo  "To add support, edit this script and search for this error message."
+      \echo  ""
       # TODO: Peek in and check the first line for a shebang that's supported.  That would be a good way to at least warn when in one shell but executing a script meant for another shell.  Maybe even switch to that shell to run the script?  i.e. if in zsh, and there is #!/bin/bash at the top, then do:  execute() { "bash $AUTOTEST_FILE" ; RESULT="$?" }
       # head -n 1 "$AUTOTEST_FILE"
       # Use sed/whatever else?
-      return 1
+      return  1
   esac
-  return 0
+  return  0
 }
 
 get_file_time() {
@@ -497,22 +492,22 @@ get_file_time() {
   AUTOTEST_FILE_TIME=""
   # AUTOTEST_FILE_TIME_TEMP="-rw-rw-r-- 1 4 2009-03-29 13:34:56.000000000 -0700 /tmp/checkfile"
   # AUTOTEST_FILE_TIME="2009-03-29 13:34:56.000000000"
-  AUTOTEST_FILE_TIME_TEMP=`ls --full-time -gG --no-group "$AUTOTEST_FILE"`
+  AUTOTEST_FILE_TIME_TEMP=$( \ls --full-time -gG --no-group "$AUTOTEST_FILE" )
 
   case "$MYSHELL" in
     "bash")
       # For reasons unknown, this doesn't work anymore.
       # AUTOTEST_FILE_TIME="${AUTOTEST_FILE_TIME_TEMP:15:29}"
-      AUTOTEST_FILE_TIME=`\echo "$AUTOTEST_FILE_TIME_TEMP"|"cut" --delimiter " " --fields 4,5`
+      AUTOTEST_FILE_TIME=$( \echo "$AUTOTEST_FILE_TIME_TEMP"|"cut" --delimiter " " --fields 4,5 )
     ;;
     "zsh")
       # For reasons unknown, this doesn't work anymore.
       # AUTOTEST_FILE_TIME="${AUTOTEST_FILE_TIME_TEMP[12,30]}"
-      AUTOTEST_FILE_TIME=`\echo "$AUTOTEST_FILE_TIME_TEMP"|"cut" --delimiter " " --fields 4,5`
+      AUTOTEST_FILE_TIME=$( \echo "$AUTOTEST_FILE_TIME_TEMP"|"cut" --delimiter " " --fields 4,5 )
     ;;
     *)
       # Other shells might/should be able to use an external program like 'cut', or some other "real" programming language (Perl, Python, Ruby, etc)
-      AUTOTEST_FILE_TIME=`\echo "$AUTOTEST_FILE_TIME_TEMP"|"cut" --delimiter " " --fields 4,5`
+      AUTOTEST_FILE_TIME=$( \echo "$AUTOTEST_FILE_TIME_TEMP"|"cut" --delimiter " " --fields 4,5 )
   esac
 }
 
@@ -527,16 +522,16 @@ run_script() {
       AUTOTEST_FILE="$1"
       if [ "$CLEAR_SCREEN" = "yes" ]; then clear; fi
       if [ "$CD_SCRIPTDIR" = "yes" ]; then
-        \cd `"dirname" "$AUTOTEST_FILE"`
+        \cd  $( "dirname" "$AUTOTEST_FILE" )
       else
-        \cd "$ORIGINAL_PWD"
+        \cd  "$ORIGINAL_PWD"
       fi
 
       if [ ! "$TIME" = "no" ]; then
         # TODO : use 'time' to time it.  I'm not sure how, since I want to grab the result from the original program.
-        TIMESTAMP_BEGIN=`date +%s`
+        TIMESTAMP_BEGIN=$( \date +%s )
       fi
-      ansi_echo "--+ begin" `date` "+--"
+      ansi_echo "--+ begin" $( \date ) "+--"
 
       if [ "$RESULT" = "0" ]; then
         execute
@@ -546,35 +541,35 @@ run_script() {
 
       ansi_echo "--+ end [$RESULT]" `date` "+--"
       if [ ! "$TIME" = "no" ]; then
-        TIMESTAMP_END=`date +%s`
-        \echo "$(($TIMESTAMP_END - $TIMESTAMP_BEGIN)) seconds"
+        TIMESTAMP_END=$( \date +%s )
+        \echo  "$(($TIMESTAMP_END - $TIMESTAMP_BEGIN)) seconds"
         # TODO: Detect if it's appropriate to list in minutes, then display in mm:ss
         #   Maybe also do hh:mm:ss, oh hell.. do yy:dd:mm:ss for kicks!
       fi
       # Give a little breathing room, so you can see better.
-      \echo ""
-      \echo ""
+      \echo  ""
+      \echo  ""
     fi
   }
 
-  run_script_main "$AUTOTEST_FILE"
+  run_script_main  "$AUTOTEST_FILE"
   # If it fails, re-run it.
   # It'll see the non-zero $RESULT and run execute_with_debugging
-  if [ ! "$RESULT" = "0" ]; then run_script_main "$AUTOTEST_FILE" ; fi
+  if [ ! "$RESULT" = "0" ]; then run_script_main  "$AUTOTEST_FILE" ; fi
 }
 
 main_foreground() {
   until [ "MAIN_ROUTINE" = "finished" ]; do
-    AUTOTEST_FILE=$( \readlink --canonicalize "$1" )
+    AUTOTEST_FILE=$( \readlink  --canonicalize  "$1" )
 
     get_file_ext "$AUTOTEST_FILE"
-    if [ ! $? = "0" ]; then break ; fi
+    if [ ! $? = "0" ]; then  break ; fi
 
     check_file "$AUTOTEST_FILE"
-    if [ ! $? = "0" ]; then break ; fi
+    if [ ! $? = "0" ]; then  break ; fi
 
     get_file_time "$AUTOTEST_FILE"
-    if [ ! $? = "0" ]; then break ; fi
+    if [ ! $? = "0" ]; then  break ; fi
 
     NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
 
@@ -582,15 +577,15 @@ main_foreground() {
   #   "nohup" "$EDITOR" "$AUTOTEST_FILE" 2>/dev/null& ; RESULT="$?"
     #\exec "$EDITOR" "$AUTOTEST_FILE" &
     # Fuck the configurability, let's do this manually..
-    \geany --new-instance "$AUTOTEST_FILE" &
+    \geany  --new-instance  "$AUTOTEST_FILE" &
     RESULT="$?"
     if [ ! "$RESULT" = "0" ]; then
-      \echo "Unable to launch editor:  $EDITOR"
-      return 1
+      \echo  "Unable to launch editor:  $EDITOR"
+      return  1
     fi
     # Capture the PID so I can know when the application has exited.
     EDITORPID=$!
-    #exec "$EDITOR2" "$AUTOTEST_FILE" &
+    #exec  "$EDITOR2"  "$AUTOTEST_FILE" &
 
     # ----
     # Main Routine:  The file change checking loop
@@ -602,37 +597,37 @@ main_foreground() {
     # Check the file
     # This is run every iteration of the main loop to see if the fundamental permissions of the script being edited change during operation.
       if [ ! "$AGGRESSIVE_CHECK_AUTOTEST_FILE" = "no" ]; then
-       check_file "$AUTOTEST_FILE"
-        if [ $? -ne 0 ]; then \echo "check_file failed, aborting" ; break ; fi
+       check_file  "$AUTOTEST_FILE"
+        if [ $? -ne 0 ]; then  \echo  "check_file failed, aborting" ; break ; fi
       fi
 
       # Status
       if [ "$ANSI" = "no" ]; then
-        \echo "."
+        \echo  "."
         "sleep" "$SLEEP"
       else
         # spinner: save cursor position
-        \echo -n -e "\033[s"
+        \echo  -n  -e  "\033[s"
         spinner
         "sleep" "$SLEEP"
         # spinner: restore cursor position
-        \echo -n -e "\033[u"
+        \echo  -n  -e  "\033[u"
       fi
 
       # Check to see if the file has changed.  If so, run it.
       get_file_time "$AUTOTEST_FILE"
       if [ ! "$NEW_AUTOTEST_FILE_TIME" = "$AUTOTEST_FILE_TIME" ] && [ -s "$AUTOTEST_FILE" ]; then
         NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
-        run_script "$AUTOTEST_FILE"
+        run_script  "$AUTOTEST_FILE"
       fi
 
       # Is the editor is still running?
       # I could have used kill, but I prefer readlink because it's smaller.
       # kill -0 $EDITORPID 2> /dev/null
       # Interesting how --quiet and --silent don't work, and the name of the executable keeps being echoed on each iteration.  I wonder if this is a bug, because it's certainly unexpected.  But then again, GNU is all about difficult programs with unexpected results.  They are generally anti-POLS (principle of least surprise).
-      \readlink /proc/"$EDITORPID"/exe > /dev/null ; RESULT="$?"
+      \readlink  /proc/"$EDITORPID"/exe > /dev/null ; RESULT="$?"
       if [ ! "$RESULT" = "0" ]; then
-        ansi_echo "The editor exited.  This concludes autotest."
+        ansi_echo  "The editor exited.  This concludes autotest."
         # TODO:  If I can figure out how to set the terminal title, I could match that with wmctrl and focus to it like so:
         # wmctrl -F -a "$title"
         # TODO:  I could clean up temporary files or perform actions.  Implement a per-language cleanup.
@@ -645,26 +640,26 @@ main_foreground() {
 }
 main_background() {
   PID_FILE="$TMP/$( \basename "$0" )".$$.lock
-  \echo . >> "$PID_FILE"
+  \echo  . >> "$PID_FILE"
 
   check_file "$AUTOTEST_FILE"
-  if [ ! $? = "0" ]; then break ; fi
+  if [ ! $? = "0" ]; then  break ; fi
   # Launch it automatically.
-  run_script "$AUTOTEST_FILE"
+  run_script  "$AUTOTEST_FILE"
 
 #-----------
 
   until [ "MAIN_ROUTINE" = "finished" ]; do
-    AUTOTEST_FILE=$( \readlink --canonicalize "$1" )
+    AUTOTEST_FILE=$( \readlink  --canonicalize  "$1" )
 
     check_file "$AUTOTEST_FILE"
-    if [ ! $? = "0" ]; then break ; fi
+    if [ ! $? = "0" ]; then  break ; fi
 
     get_file_ext "$AUTOTEST_FILE"
-    if [ ! $? = "0" ]; then break ; fi
+    if [ ! $? = "0" ]; then  break ; fi
 
     get_file_time "$AUTOTEST_FILE"
-    if [ ! $? = "0" ]; then break ; fi
+    if [ ! $? = "0" ]; then  break ; fi
 
     NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
 
@@ -677,15 +672,15 @@ main_background() {
     # Check the file
     # This is run every iteration of the main loop to see if the fundamental permissions of the script being edited change during operation.
       if [ ! "$AGGRESSIVE_CHECK_AUTOTEST_FILE" = "no" ]; then
-       check_file "$AUTOTEST_FILE"
-        if [ $? -ne 0 ]; then \echo "check_file failed, aborting" ; break ; fi
+       check_file  "$AUTOTEST_FILE"
+        if [ $? -ne 0 ]; then  \echo  "check_file failed, aborting" ; break ; fi
       fi
 
       # Check to see if the file has changed.  If so, run it.
-      get_file_time "$AUTOTEST_FILE"
+      get_file_time  "$AUTOTEST_FILE"
       if [ ! "$NEW_AUTOTEST_FILE_TIME" = "$AUTOTEST_FILE_TIME" ] && [ -s "$AUTOTEST_FILE" ]; then
         NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
-        run_script "$AUTOTEST_FILE"
+        run_script  "$AUTOTEST_FILE"
       fi
 
       if [ ! -f $PID_FILE ]; then
@@ -702,21 +697,21 @@ main_background() {
 main() {
 if [ -z $1 ]; then
   usage
-  return 0
+  return  0
 fi
 if [ "x${2}" = "x" ]; then
   SPINNER=0
-  main_foreground $@
+  main_foreground  $@
 elif [ "x${2}" = "x-bg" ]; then
   SPINNER=0
-  main_background $@
+  main_background  $@
 elif [ "x${2}" = "x--nodebug" ]; then
   SPINNER=0
   DEBUG="false"
-  main_foreground $@
+  main_foreground  $@
 else
   usage
-  return 1
+  return  1
 fi
 }
-main $@
+main  $@

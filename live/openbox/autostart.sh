@@ -1,3 +1,7 @@
+##!/bin/bash
+
+# FIXME - this should be runnable with zsh!
+
 # This shell script is run before Openbox launches.
 # Environment variables set here are passed to the Openbox session.
 
@@ -79,19 +83,45 @@ export XLIB_SKIP_ARGB_VISUALS=1
 \enable_X11_numlock on &
 
 # Start the bottom panel
-\fbpanel &
-checkpid=$!
-\kill -0 $checkpid &> /dev/null
-if [ $? -eq 0 ]; then
-  # TODO:  A universal checker for whatever panel is running, like terminal.sh
-  # fbpanel, tint2, etc...
-  \lxpanel &
-fi
 
-\python /usr/bin/smart-applet &
+if_exists=0
+# TODO - Ugh, this seems overly complicated.. redo?
+run_if_exists(){
+  if [ $if_exists -eq 0 ]; then
+    $@
+    if [[ $? -eq 127 || $? -eq 0 ]]; then
+      $@
+      if [ $? -eq 0 ]; then
+        if_exists=1
+      fi
+    fi
+  fi;
+}
+
+panel_determination() {
+  # Based on fbpanel
+  # Seems to crash a lot.  Maybe rework all of this based on my ancient stuff, which automatically re-launches.
+  run_if_exists \
+    \lxpanel &
+
+  run_if_exists \
+    \fbpanel &
+
+  # May be a bit bloated..
+  run_if_exists \
+    \xfce4-panel &
+
+  run_if_exists \
+    \tint2 &
+}
+panel_run=0
+panel_determination
+
+# this must be pretty old.. maybe unity linux?
+# \python /usr/bin/smart-applet &
 
 # Turn the X beep off.
-\xset b off
+\xset b off &
 # Or in ~/.inputrc add:
 # set bell-style none
 
@@ -99,11 +129,8 @@ fi
 # Doesn't come with X
 \unclutter -root -idle 3 &
 
-# TODO:  This is too brute-force.  Be more elegant.
-\cd ~/.config/openbox
-\cp --force ./rc.xml-normal.xml ./rc.xml
-\cd -
-\openbox --reconfigure
+# Fixes the hotkeys.
+~/.config/openbox/unwine.sh &
 
 # launch any user-specific stuff:
 ~/.config/openbox/autostart.sh-user.sh &

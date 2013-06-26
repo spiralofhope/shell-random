@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-# TODO:  Can this be converted into a pure shell script?  I have trouble on if statements.
-
 PROJECTS="/l"
 NEW_PROJECT_MESSAGE="New project notes started `date`"
 
@@ -18,9 +16,10 @@ fi
 
 # Make sure it's the first tab.
 # I only need to "&" (background process) for the first summoning of Geany.
+\geany ./todo.txt &
 # But I need to wait a bit so it actually gets a process which other files can attach to.
-\geany ./projects.txt &
 \sleep 1
+\geany ./projects.txt
 
 # Open all the other project files.
 for i in *; do
@@ -42,4 +41,4 @@ for i in *; do
 done
 
 # Switch back to that first tab
-\geany ./projects.txt &
+\geany ./todo.txt &
