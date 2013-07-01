@@ -1,5 +1,13 @@
 # TODO:  rename this file.  Move it into lib.sh?
 
+be_root_or_die() {
+  if [ $(whoami) != "root" ]; then
+    \echo "ERROR:  You're not root!"
+    exit 1
+  fi
+}
+
+
 ziprepair() {
   file=ziprepair.$$.zip
   dir="$1".ziprepair.$$
