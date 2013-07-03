@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env  sh
+
+# This was also integrated into backup/backup-lib.sh, but expect this
+# script here to have more functionality.
 
 # http://www.intuitive.com/wicked/showscript.cgi?011-colors.sh
 # ANSI Color -- use these variables to easily have different color
@@ -9,6 +12,7 @@
 initializeANSI() {
   esc=""
 
+  # Foreground colour
   black="${esc}[30m"
   red="${esc}[31m"
   green="${esc}[32m"
@@ -20,6 +24,7 @@ initializeANSI() {
   gray="${boldoff}${esc}[37m"
   grey="${boldoff}${esc}[37m"
 
+  # Background colour
   blackb="${esc}[40m"
   redb="${esc}[41m"
   greenb="${esc}[42m"
@@ -37,6 +42,16 @@ initializeANSI() {
   uloff="${esc}[24m"
   invon="${esc}[7m"
   invoff="${esc}[27m"
+
+  # Foreground colour, bolded
+  black_bold="${boldon}${esc}[30m"
+  red_bold="${boldon}${esc}[31m"
+  green_bold="${boldon}${esc}[32m"
+  yellow_bold="${boldon}${esc}[33m"
+  blue_bold="${boldon}${esc}[34m"
+  purple_bold="${boldon}${esc}[35m"
+  cyan_bold="${boldon}${esc}[36m"
+  white_bold="${boldon}${esc}[37m"
 
   reset="${esc}[0m"
 

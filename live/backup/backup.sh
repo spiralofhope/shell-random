@@ -1,191 +1,141 @@
-#!/usr/bin/env  sh
+#!/usr/bin/env  bash
 
-# Tested 2013-07-02 on dash 0.5.7-3ubuntu1, on Lubuntu 13.04, updated recently.
+# Tested 2013-07-02 on bash 4.2.45(1)-release (x86_64-pc-linux-gnu), on Lubuntu 13.04, updated recently.
+# This is used very regularly, so expect it be updated.
+
+:<<IDEAS
+  - Generate a file tree.
+  - Time the backups.
+
+IDEAS
+
+working_directory=/mnt
+
+
 
 # TODO:  Move self-specific stuff into a configuration file, and use that.  Make this more generic.
 
-./backup-lib.sh
+_backup_setup() {
+  # DASH - `source` is unavailable.
+  source  ./backup-lib.sh
+  bullet=${yellow}*${reset}
+  # If the user does control-c
+  trap _backup_die INT
+}
 
-echo $a
+
+_backup_die(){
+  _backup_teardown
+  \echo ""
+  \echo "${bullet} Aborted!"
+  exit 1
+}
+
+
+_backup_teardown(){
+  \echo  "${bullet} _backup_teardown .."
+  \df \
+    ` # --human-readable ` \
+    --print-type \
+    ` # `
+  # \ls  -al  /mnt/backup_target
+  #\umount   /mnt/backup_source/*  &>  /dev/null
+  #\umount   /mnt/backup_target/*  &>  /dev/null
+  #\rmdir   /mnt/backup_source/*  &>  /dev/null
+  #\rmdir   /mnt/backup_target/*  &>  /dev/null
+  #\rmdir   /mnt/backup_*
+}
+
+error(){
+  \echo \ ${red}error${reset} - $1:  ${yellow}$2 ${reset}
+}
+
+ok(){
+  \echo \ ${green}ok${reset} - $1:  ${yellow}$2 ${reset}
+}
+
+info(){
+  \echo \ ${yellow}info${reset} - $1:  ${yellow}$2 ${reset}
+}
+
+
+_backup_check_uuid(){
+  if [ -L /dev/disk/by-uuid/$1 ]; then
+    ok  "found UUID"  "$1"
+  else
+    error  "Could not find UUID"  "$1"
+    _backup_die
+  fi
+}
+
+
+_backup_make_directory(){
+  dir=$working_directory/$1
+  \mkdir --parents  $dir
+  if [ $? -eq 0 ]; then
+    ok  "made directory"  "$dir"
+  else
+    error  "could not make directory"  "$dir"
+    _backup_die
+  fi
+}
+
+
+_go(){
+  source=$1
+  target=$2
+  _backup_check_uuid  $source
+  _backup_check_uuid  $target
+  # note:  was  ${1:t} => ${2:t}
+  info  "_backup_setup"  "$source  =>  $target"
+  _backup_make_directory  $source
+  _backup_make_directory  $target
+  # --
+  # -- TODO -- I am here --
+  # --
+  # TODO:  data-migration-lib.sh has smartmount()
+  # mount from util-linux 2.20.1 (with libblkid and selinux support)
+  # .. apparently does not support a long form of -U, some sort of --uuid
+  #\mount -U  $1  $source
+  #\mount -U  $2  $target
+  # Interestingly, this is another way to check if something is mounted..  $? returns 1 if there's no match.
+  \df  --human-readable  --print-type | \grep $( \basename  $( \readlink  /dev/disk/by-uuid/$source ) )
+  \df  --human-readable  --print-type | \grep $( \basename  $( \readlink  /dev/disk/by-uuid/$target ) )
+}
+
+
+_backup_setup
+
+info  'Going'
+# TODO - this process has to be done another way, I'm pondering processing a text file.
+_go \
+  ` # sda1 ` \
+  9b0bc44a-d8c1-4630-be6d-da90a1f311d7 \
+  ` # sdb5 ` \
+  0d94abe1-9439-491a-8ddd-7558ccf5ede1 \
+  ` # `
+
+
 
 exit 0
 
 
 
-# FIXME URGENT -- errors thrown by rsync should abort additional backups!  Go back to old code and re-implement it!
-
-# TODO:  Push stuff into an external lib and `source` it.  I see that I made archive/backup-lib.sh which is used by archive/data-migration.sh
-
-# TODO:  Copy the MBR into a file / script which can be re-run to restore that info.. I often won't have access to the eSATA to restore in that manner.
-
-# TODO:
-# - File tree.
-# - Time the backups?
-# skip rpm database stuff - hell, check the list of stuff to clean up when remastering, that'd be good to work off of.
-# maybe suppress unknown file type errors?
-# peek into the backup partitions and delete anything I'm excluding via unison.  then confirm they're being skipped!
-
-
-# Go to sleep.
-# I wish I could lock it from further use until manually power-cycled.
-# Disabled, as it's really inconvenient when I'm doing testing.
-#\hdparm -Y $external
-\source /l/shell-random/git/live/zsh/colours.sh
-\source /l/shell-random/git/live/lib.sh
-# backup_method="unison"
-backup_method="rsync"
-# The unison executable, if used.
-#unison=/home/unison
 
 # --
 
-bullet=" ${yellow}*${reset}"
 
 
-# TODO:  This is obsolete, isn't it?
-_backup_initialize_esata(){
-  # NOTE:  The number will change depending upon which USB port the eSATA bay was plugged into.  So let's just scan everything.
-  # If the OS isn't magical, I'd have to use `scsiadd` and do a scan like so:
-  #\echo -e "${bullet} Initializing the eSata / re-checking for a device..."
-  #for i in {0..6}; do
-    #/usr/local/sbin/scsiadd -s $i &>> /dev/null
-  #done
-  # It needs a moment to actually kick in.
-  # Meh, it's smart enough to fail if it needs to, and I re-run it too frequently to want to wait two seconds.
-  # \sleep 2
-
-  for i in c d e f g h i j k l m n o p q r s t u v w x y z; do
-    if [ -b /dev/sd${i}7 ]; then
-      external=/dev/sd$i
-      \echo "${bullet} External drive found at $external"
-    fi
-  done
-  if [ "x$external" = "x" ]; then
-    \echo "ERROR:  Backup device not found, aborting!"
-    _backup_die
-  fi
-  # get/set acoustic management (0-254, 128: quiet, 254: fast)
-  #\hdparm -M 254 $external
-}
 
 
-# MBR TODO:
-_backup_mbr(){
-  \echo "${bullet} Cloning the MBR... (boot record only, not the partition table)"
-  \dd \
-    if=/dev/sda \
-    of=$external \
-    bs=446 \
-    count=1 \
-    ` # `
-}
 
 
-_backup_setup(){
-  \echo "${bullet} _backup_setup : ${1:t} => ${2:t} .."
-
-  if ! [ -L /dev/disk/by-uuid/$1 ]; then
-    \echo  "ERROR:  Could not find UUID:  $1"
-    _backup_die
-  fi
-  if ! [ -L /dev/disk/by-uuid/$2 ]; then
-    \echo  "ERROR:  Could not find UUID:  $2"
-    _backup_die
-  fi
-
-  source=/mnt/backup_source/${1}/
-  target=/mnt/backup_target/${2}/
-
-  \mkdir --parents  $source
-  \mkdir --parents  $target
-  \mount -U  $1  $source
-  \mount -U  $2  $target
-
-  \df  --human-readable --print-type | \grep $1
-  \df  --human-readable --print-type | \grep $2
-}
-
-
-_backup_unison(){
-  \echo "${bullet} : _backup_unison : ${1:t} => ${2:t} .."
-
-  # Check for, and repair, the unison dotdir.
-  # My /root/.unison is actually found on the data partition, so I don't overwrite it upon system-reinstallation.
-  if [ -L ~/.unison ]; then
-    # It's already symbolically-linked.
-  else
-    # Directory
-    if [ -d ~/.unison ]; then
-      \rm -rf ~/.unison
-    fi
-    \echo "${bullet} First run?  Creating the ~/.unison symlink."
-    ln -s /home/dotunison ~/.unison
-  fi
-
-  # If encountering either a socket or a fifo (named pipe), it gives the message "Error: path /foo/bar has unknown file type." and skips gracefully.
-  # http://tech.groups.yahoo.com/group/unison-users/message/7419?var=1&p=3
-  # Should I just use rsync for those? .. I don't think I have to worry about attempting to back up either of those things.
-  #
-  # http://www.cis.upenn.edu/~bcpierce/unison/download/releases/stable/unison-manual.html#caveats
-  # Unison does not understand hard links.
-  # I don't use hard links anyways.
-  \nice -n 19 \
-    $unison \
-      $1 \
-      $2 \
-      ` # force changes from this replica to the other ` \
-      -force $1 \
-      -batch \
-      -log=false \
-      ` # maximum number of simultaneous file transfers ` \
-      ` # Probably a bad idea to enlarge. ` \
-      -maxthreads=1 \
-      -copymax=1 \
-      -owner \
-      -group \
-      -times \
-      -contactquietly \
-      -ignore 'Regex WoW/World of Warcraft/Logs/WoWCombatLog.txt' \
-      ` # I don't know how to be more specific than this.  Dammit! ` \
-      -ignore 'Name *.dtapart' \
-    ` # LINUX ` \
-      ` # FIXME:  I don't know how the fuck to make it properly ignore paths!!  It still spits out error messages when it should be ignoring the path. ` \
-      -ignore 'Regex lost+found/.*' \
-      -ignore 'Regex dev/.*' \
-      -ignore 'Regex tmp/.*' \
-      ` # Dynamically-generated.  For USB sticks and such: ` \
-      -ignore 'Regex media/.*' \
-      ` # Some sort of GTK undelete trash bin: ` \
-      -ignore 'Regex root/.Trash-.*/' \
-      -ignore 'Regex user/.Trash-.*' \
-      ` # FIXME:  This isn't working? ` \
-      -ignore 'Regex root/.thumbnails/.*' \
-      -ignore 'Regex user/.thumbnails/.*' \
-      -ignore 'Regex root/tmp/.*' \
-      -ignore 'Regex user/tmp/.*' \
-      ` # Note that I'm choosing not to do Transmission-*/**.part anymore, which includes Transmission-completed, because I sometimes have nearly-completed things which are bloody hard to get completely downloaded, which I *do* want backed up:` \
-      -ignore 'Regex l/Downloads/BitTorrent/Transmission-downloading/.*\.part' \
-      ` # `
-}
-
-
+# TODO:
+# exclude rpm database stuff - hell, check the list of stuff to clean up when remastering, that'd be good to work off of.
+# peek into the backup partitions and delete anything I'm excluding via unison.  then confirm they're being skipped!
+# FIXME URGENT -- errors thrown by rsync should abort additional backups!  Go back to old code and re-implement it!
+#                 maybe suppress "unknown file type" errors?
 _backup_rsync(){
-  #` # WINDOWS ` \
-  #` # This includes various versions of Windows.` \
-    #--exclude 'pagefile.sys' \
-    #--exclude 'hiberfil.sys' \
-    #--exclude '/$Recycle.Bin/**' \
-    #--exclude '/RECYCLER/**' \
-    #--exclude '/Documents and Settings/*/Local Settings/Application Data/Mozilla/Firefox/Profiles/default/Cache/**' \
-    #--exclude '/Documents and Settings/*/Local Settings/History/**' \
-    #--exclude '/Documents and Settings/*/Local Settings/Temporary Internet Files/Content.IE5/**' \
-    #--exclude '/Documents and Settings/*/Local Settings/Temp/**' \
-    #--exclude '/Windows/Temp/**' \
-    #--exclude '/Windows/assembly/temp/**' \
-    #--exclude '/Windows/assembly/NativeImages_v2.0.50727_32/Temp/**' \
-    #--exclude '/Windows/Microsoft.NET/Framework/v2.0.50727/Temporary ASP.NET Files/**' \
-    #--exclude '/Documents and Settings/*/Application Data/Ventrilo/temp/**' \
-
   \echo "${bullet} _backup_rsync : ${1:t} => ${2:t} .."
   \nice -n 19 \rsync \
     ` # This is -rlptgoD (no -H,-A,-X) ` \
@@ -234,10 +184,6 @@ _backup_rsync(){
 
 
 _backup_teardown(){
-  \echo  "${bullet} _backup_teardown .."
-  \sleep  1
-  \df  --print-type
-  # \ls  -al  /mnt/backup_target
   \umount   /mnt/backup_source/*  &>  /dev/null
   \umount   /mnt/backup_target/*  &>  /dev/null
   \rmdir   /mnt/backup_source/*  &>  /dev/null
@@ -246,44 +192,13 @@ _backup_teardown(){
 }
 
 
-_backup_die(){
-  _backup_teardown
-  \echo ""
-  \echo ".. aborted."
-  exit 1
-}
 
 
 _backup_go(){
-  if [[ $backup_method == "unison" ]]; then
-    _backup_unison  $1  $2
-    # .unison is a special case.  =/
-    if [ $i -eq 7 ]; then
-      \echo "${bullet} Manually backing up the unison dot directory.."
-      \echo "   It skips backing it up, for some retarded reason."
-      \rm \
-        --recursive \
-        --force \
-        /mnt/backup_target/$i/dotunison/ \
-        ` # `
-      \cp \
-        --no-dereference \
-        --preserve=links \
-        --recursive \
-        --verbose \
-        /mnt/backup_source/$i/dotunison \
-        /mnt/backup_target/$i/dotunison \
-        ` # `
-    fi
-  elif [[ $backup_method == "rsync" ]]; then
-    if [ $i -eq 7 ]; then
-      _backup_rsync  /opt/bitnami/  /z/mediawiki/bitnami/
-    fi
-    _backup_rsync  $1  $2
-  else
-    \echo  "Bad configuration"
-    _backup_teardown
+  if [ $i -eq 7 ]; then
+    _backup_rsync  /opt/bitnami/  /z/mediawiki/bitnami/
   fi
+  _backup_rsync  $1  $2
 }
 
 
@@ -346,22 +261,14 @@ _backup_some_number() {
 
 # --
 
-# ^c
-trap _backup_die INT
-# FIXME - this is a dependency I should absorb or have explicitly in a backup-lib.sh, so that others can use this more easily.
-#be_root_or_die
-if [ $(whoami) != "root" ]; then
-  \echo "ERROR:  You're not root!"
-  exit 1
-fi
+
+
 
 
 # TODO:  This is obsolete, isn't it?
 # _backup_initialize_esata
 # TODO:  $1 needs serious sanity-checking.
 if [ -z $1 ]; then
-  # MBR TODO:
-  #_backup_mbr /dev/sda  $external
 
 
   for i in 1 3 5 6 7; do
@@ -375,3 +282,186 @@ fi
 
 \echo  "${bullet} done."
 exit 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+# --
+# -- Ancient shit:
+# --
+
+
+# Go to sleep.
+# I wish I could lock it from further use until manually power-cycled.
+# Disabled, as it's really inconvenient when I'm doing testing.
+#\hdparm -Y $external
+
+# TODO:  This is obsolete, from when I used the eSATA dock.
+_backup_initialize_esata(){
+  # NOTE:  The number will change depending upon which USB port the eSATA bay was plugged into.  So let's just scan everything.
+  # If the OS isn't magical, I'd have to use `scsiadd` and do a scan like so:
+  #\echo -e "${bullet} Initializing the eSata / re-checking for a device..."
+  #for i in {0..6}; do
+    #/usr/local/sbin/scsiadd -s $i &>> /dev/null
+  #done
+  # It needs a moment to actually kick in.
+  # Meh, it's smart enough to fail if it needs to, and I re-run it too frequently to want to wait two seconds.
+  # \sleep 2
+
+  for i in c d e f g h i j k l m n o p q r s t u v w x y z; do
+    if [ -b /dev/sd${i}7 ]; then
+      external=/dev/sd$i
+      \echo "${bullet} External drive found at $external"
+    fi
+  done
+  if [ "x$external" = "x" ]; then
+    \echo "ERROR:  Backup device not found, aborting!"
+    _backup_die
+  fi
+  # get/set acoustic management (0-254, 128: quiet, 254: fast)
+  #\hdparm -M 254 $external
+}
+
+
+# MBR TODO:
+# TODO:  Copy the MBR into a file / script which can be re-run to restore that info.. I often won't have access to the eSATA to restore in that manner.
+_backup_mbr(){
+  \echo "${bullet} Cloning the MBR... (boot record only, not the partition table)"
+  \dd \
+    if=/dev/sda \
+    of=$external \
+    bs=446 \
+    count=1 \
+    ` # `
+}
+# MBR TODO:
+#_backup_mbr /dev/sda  $external
+
+
+_backup_unison(){
+  \echo "${bullet} : _backup_unison : ${1:t} => ${2:t} .."
+
+  # Check for, and repair, the unison dotdir.
+  # My /root/.unison is actually found on the data partition, so I don't overwrite it upon system-reinstallation.
+  if [ -L ~/.unison ]; then
+    # It's already symbolically-linked.
+  else
+    # Directory
+    if [ -d ~/.unison ]; then
+      \rm -rf ~/.unison
+    fi
+    \echo "${bullet} First run?  Creating the ~/.unison symlink."
+    ln -s /home/dotunison ~/.unison
+  fi
+
+
+  backup_method="rsync"
+  # I haven't used unison in a very long time.  That code could be broken.
+  #backup_method="unison"
+  # The unison executable, if used.
+  #unison=/home/unison
+# --
+  # If encountering either a socket or a fifo (named pipe), it gives the message "Error: path /foo/bar has unknown file type." and skips gracefully.
+  # http://tech.groups.yahoo.com/group/unison-users/message/7419?var=1&p=3
+  # Should I just use rsync for those? .. I don't think I have to worry about attempting to back up either of those things.
+  #
+  # http://www.cis.upenn.edu/~bcpierce/unison/download/releases/stable/unison-manual.html#caveats
+  # Unison does not understand hard links.
+  # I don't use hard links anyways.
+  \nice -n 19 \
+    $unison \
+      $1 \
+      $2 \
+      ` # force changes from this replica to the other ` \
+      -force $1 \
+      -batch \
+      -log=false \
+      ` # maximum number of simultaneous file transfers ` \
+      ` # Probably a bad idea to enlarge. ` \
+      -maxthreads=1 \
+      -copymax=1 \
+      -owner \
+      -group \
+      -times \
+      -contactquietly \
+      -ignore 'Regex WoW/World of Warcraft/Logs/WoWCombatLog.txt' \
+      ` # I don't know how to be more specific than this.  Dammit! ` \
+      -ignore 'Name *.dtapart' \
+    ` # LINUX ` \
+      ` # FIXME:  I don't know how the fuck to make it properly ignore paths!!  It still spits out error messages when it should be ignoring the path. ` \
+      -ignore 'Regex lost+found/.*' \
+      -ignore 'Regex dev/.*' \
+      -ignore 'Regex tmp/.*' \
+      ` # Dynamically-generated.  For USB sticks and such: ` \
+      -ignore 'Regex media/.*' \
+      ` # Some sort of GTK undelete trash bin: ` \
+      -ignore 'Regex root/.Trash-.*/' \
+      -ignore 'Regex user/.Trash-.*' \
+      ` # FIXME:  This isn't working? ` \
+      -ignore 'Regex root/.thumbnails/.*' \
+      -ignore 'Regex user/.thumbnails/.*' \
+      -ignore 'Regex root/tmp/.*' \
+      -ignore 'Regex user/tmp/.*' \
+      ` # Note that I'm choosing not to do Transmission-*/**.part anymore, which includes Transmission-completed, because I sometimes have nearly-completed things which are bloody hard to get completely downloaded, which I *do* want backed up:` \
+      -ignore 'Regex l/Downloads/BitTorrent/Transmission-downloading/.*\.part' \
+      ` # `
+}
+#-- This used to be called like so:
+_backup_go(){
+  if [[ $backup_method == "unison" ]]; then
+    _backup_unison  $1  $2
+    # .unison is a special case.  =/
+    if [ $i -eq 7 ]; then
+      \echo "${bullet} Manually backing up the unison dot directory.."
+      \echo "   It skips backing it up, for some retarded reason."
+      \rm \
+        --recursive \
+        --force \
+        /mnt/backup_target/$i/dotunison/ \
+        ` # `
+      \cp \
+        --no-dereference \
+        --preserve=links \
+        --recursive \
+        --verbose \
+        /mnt/backup_source/$i/dotunison \
+        /mnt/backup_target/$i/dotunison \
+        ` # `
+    fi
+  elif [[ $backup_method == "rsync" ]]; then
+    if [ $i -eq 7 ]; then
+      _backup_rsync  /opt/bitnami/  /z/mediawiki/bitnami/
+    fi
+    _backup_rsync  $1  $2
+  else
+    \echo  "Bad configuration"
+    _backup_teardown
+  fi
+}
+
+
+# Ancient Windows  --exclude  statements for rsync:
+#` # WINDOWS ` \
+#` # This includes various versions of Windows.` \
+  #--exclude 'pagefile.sys' \
+  #--exclude 'hiberfil.sys' \
+  #--exclude '/$Recycle.Bin/**' \
+  #--exclude '/RECYCLER/**' \
+  #--exclude '/Documents and Settings/*/Local Settings/Application Data/Mozilla/Firefox/Profiles/default/Cache/**' \
+  #--exclude '/Documents and Settings/*/Local Settings/History/**' \
+  #--exclude '/Documents and Settings/*/Local Settings/Temporary Internet Files/Content.IE5/**' \
+  #--exclude '/Documents and Settings/*/Local Settings/Temp/**' \
+  #--exclude '/Windows/Temp/**' \
+  #--exclude '/Windows/assembly/temp/**' \
+  #--exclude '/Windows/assembly/NativeImages_v2.0.50727_32/Temp/**' \
+  #--exclude '/Windows/Microsoft.NET/Framework/v2.0.50727/Temporary ASP.NET Files/**' \
+  #--exclude '/Documents and Settings/*/Application Data/Ventrilo/temp/**' \
