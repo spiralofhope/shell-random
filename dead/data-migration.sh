@@ -3,7 +3,7 @@
 # TODO:
 # Check to make sure I'm logged in as root.
 
-source backup-lib.sh
+source data-migration-lib.sh
 
 # All of this shit is useless since ntfsmount can only exclusively mount, and /dev/sdb9 will already be mounted.  Boo!
 # FIXME: NEEDS TO BE REDONE FOR LUBUNTU

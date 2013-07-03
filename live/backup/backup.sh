@@ -1,4 +1,4 @@
-#!/usr/bin/env  /bin/zsh
+#!/usr/bin/env  zsh
 # FIXME URGENT -- errors thrown by rsync should abort additional backups!  Go back to old code and re-implement it!
 
 
