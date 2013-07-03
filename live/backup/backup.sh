@@ -1,12 +1,18 @@
-#!/usr/bin/env  zsh
-# FIXME URGENT -- errors thrown by rsync should abort additional backups!  Go back to old code and re-implement it!
+#!/usr/bin/env  sh
 
-
-
-# FIXME:  This shouldn't be bash or zsh-centric
+# Tested 2013-07-02 on dash 0.5.7-3ubuntu1, on Lubuntu 13.04, updated recently.
 
 # TODO:  Move self-specific stuff into a configuration file, and use that.  Make this more generic.
 
+./backup-lib.sh
+
+echo $a
+
+exit 0
+
+
+
+# FIXME URGENT -- errors thrown by rsync should abort additional backups!  Go back to old code and re-implement it!
 
 # TODO:  Push stuff into an external lib and `source` it.  I see that I made archive/backup-lib.sh which is used by archive/data-migration.sh
 
