@@ -3,117 +3,103 @@
 # Tested 2013-07-02 on bash 4.2.45(1)-release (x86_64-pc-linux-gnu), on Lubuntu 13.04, updated recently.
 # This is used very regularly, so expect it be updated.
 
+
+
 :<<IDEAS
   - Generate a file tree.
   - Time the backups.
 
-IDEAS
-
-working_directory=/mnt
-
-
-
-# TODO:  Move self-specific stuff into a configuration file, and use that.  Make this more generic.
-
-_backup_setup() {
-  # DASH - `source` is unavailable.
-  source  ./backup-lib.sh
-  bullet=${yellow}*${reset}
-  # If the user does control-c
-  trap _backup_die INT
-}
-
-
-_backup_die(){
-  _backup_teardown
-  \echo ""
-  \echo "${bullet} Aborted!"
-  exit 1
-}
-
-
-_backup_teardown(){
-  \echo  "${bullet} _backup_teardown .."
-  \df \
-    ` # --human-readable ` \
-    --print-type \
-    ` # `
-  # \ls  -al  /mnt/backup_target
-  #\umount   /mnt/backup_source/*  &>  /dev/null
-  #\umount   /mnt/backup_target/*  &>  /dev/null
-  #\rmdir   /mnt/backup_source/*  &>  /dev/null
-  #\rmdir   /mnt/backup_target/*  &>  /dev/null
-  #\rmdir   /mnt/backup_*
-}
-
-error(){
-  \echo \ ${red}error${reset} - $1:  ${yellow}$2 ${reset}
-}
-
-ok(){
-  \echo \ ${green}ok${reset} - $1:  ${yellow}$2 ${reset}
-}
-
-info(){
-  \echo \ ${yellow}info${reset} - $1:  ${yellow}$2 ${reset}
-}
-
-
-_backup_check_uuid(){
-  if [ -L /dev/disk/by-uuid/$1 ]; then
-    ok  "found UUID"  "$1"
-  else
-    error  "Could not find UUID"  "$1"
-    _backup_die
-  fi
-}
-
-
-_backup_make_directory(){
-  dir=$working_directory/$1
-  \mkdir --parents  $dir
-  if [ $? -eq 0 ]; then
-    ok  "made directory"  "$dir"
-  else
-    error  "could not make directory"  "$dir"
-    _backup_die
-  fi
-}
-
-
-_go(){
-  source=$1
-  target=$2
-  _backup_check_uuid  $source
-  _backup_check_uuid  $target
-  # note:  was  ${1:t} => ${2:t}
-  info  "_backup_setup"  "$source  =>  $target"
-  _backup_make_directory  $source
-  _backup_make_directory  $target
-  # --
-  # -- TODO -- I am here --
-  # --
-  # TODO:  data-migration-lib.sh has smartmount()
-  # mount from util-linux 2.20.1 (with libblkid and selinux support)
-  # .. apparently does not support a long form of -U, some sort of --uuid
-  #\mount -U  $1  $source
-  #\mount -U  $2  $target
-  # Interestingly, this is another way to check if something is mounted..  $? returns 1 if there's no match.
-  \df  --human-readable  --print-type | \grep $( \basename  $( \readlink  /dev/disk/by-uuid/$source ) )
-  \df  --human-readable  --print-type | \grep $( \basename  $( \readlink  /dev/disk/by-uuid/$target ) )
-}
-
-
-_backup_setup
-
-info  'Going'
-# TODO - this process has to be done another way, I'm pondering processing a text file.
-_go \
+_backup_go \
   ` # sda1 ` \
   9b0bc44a-d8c1-4630-be6d-da90a1f311d7 \
   ` # sdb5 ` \
   0d94abe1-9439-491a-8ddd-7558ccf5ede1 \
   ` # `
+
+.. or arbitrarily use directories:
+
+_backup_go \
+  ` # sda1 ` \
+  9b0bc44a-d8c1-4630-be6d-da90a1f311d7 \
+  /some/directory \
+  ` # `
+
+_backup_go \
+  /some/directory \
+  ` # sdb5 ` \
+  0d94abe1-9439-491a-8ddd-7558ccf5ede1 \
+  ` # `
+
+.. where if the target is a UUID, I could also provide a target directory within it.
+
+_backup_go \
+  <WHATEVER> \
+  ` # sdb5 ` \
+  0d94abe1-9439-491a-8ddd-7558ccf5ede1/some/directory \
+  ` # `
+
+
+IDEAS
+
+# TODO:  Move self-specific stuff into a configuration file, and use that.  Make this more generic.
+working_directory=/mnt/_backup.$$
+
+
+_backup_go(){
+  local  source=$1
+  local  target=$2
+  echo_info   ''  "$source => $target"
+
+  _smart_mount  $source  'ro'  ;  source=$__
+  _smart_mount  $target  'rw'  ;  target=$__
+
+
+_backup_die  '+++    dying here    +++'
+}
+
+
+if [ $(whoami) != "root" ]; then
+  \echo  "ERROR:  You're not root!"  ;  exit 1
+fi
+# DASH - `source` is unavailable.
+source  ./backup-lib.sh
+# If the user does control-c
+trap _backup_die_int INT
+_backup_die_int(){
+  \echo "^c"
+  _backup_die
+}
+_backup_die(){
+  if ! [[ -z $1 ]]; then
+    echo_error  "$@"
+  fi
+  \echo \ ${red}Aborting!${reset}
+  _backup_teardown
+  exit 1
+}
+
+# TODO - this process will be redone to work another way, I'm pondering processing a text file.
+# FIXME/TODO - hard-coded for now, until I solve the UUID => regular partition type problem.
+#_backup_go \
+  #/dev/sda1 \
+  #/dev/sdb5 \
+  #` # `
+
+_backup_go \
+  ` # sda1 ` \
+  9b0bc44a-d8c1-4630-be6d-da90a1f311d7 \
+  /dev/sdb5 \
+  ` # `
+
+
+# TODO - this process will be redone to work another way, I'm pondering processing a text file.
+# For now my testing and code are using UUIDs.
+#_backup_go \
+  #` # sda1 ` \
+  #9b0bc44a-d8c1-4630-be6d-da90a1f311d7 \
+  #` # sdb5 ` \
+  #0d94abe1-9439-491a-8ddd-7558ccf5ede1 \
+  #` # `
 
 
 
@@ -181,17 +167,6 @@ _backup_rsync(){
     $1 \
     $2
 }
-
-
-_backup_teardown(){
-  \umount   /mnt/backup_source/*  &>  /dev/null
-  \umount   /mnt/backup_target/*  &>  /dev/null
-  \rmdir   /mnt/backup_source/*  &>  /dev/null
-  \rmdir   /mnt/backup_target/*  &>  /dev/null
-  \rmdir   /mnt/backup_*
-}
-
-
 
 
 _backup_go(){
@@ -265,8 +240,6 @@ _backup_some_number() {
 
 
 
-# TODO:  This is obsolete, isn't it?
-# _backup_initialize_esata
 # TODO:  $1 needs serious sanity-checking.
 if [ -z $1 ]; then
 
@@ -305,6 +278,8 @@ exit 0
 # Disabled, as it's really inconvenient when I'm doing testing.
 #\hdparm -Y $external
 
+
+
 # TODO:  This is obsolete, from when I used the eSATA dock.
 _backup_initialize_esata(){
   # NOTE:  The number will change depending upon which USB port the eSATA bay was plugged into.  So let's just scan everything.
@@ -318,6 +293,7 @@ _backup_initialize_esata(){
   # \sleep 2
 
   for i in c d e f g h i j k l m n o p q r s t u v w x y z; do
+    # FIXME: This is pretty blind, I should mount it (and see that the mount works) and check for a control file.
     if [ -b /dev/sd${i}7 ]; then
       external=/dev/sd$i
       \echo "${bullet} External drive found at $external"
@@ -330,6 +306,7 @@ _backup_initialize_esata(){
   # get/set acoustic management (0-254, 128: quiet, 254: fast)
   #\hdparm -M 254 $external
 }
+
 
 
 # MBR TODO:
@@ -345,6 +322,10 @@ _backup_mbr(){
 }
 # MBR TODO:
 #_backup_mbr /dev/sda  $external
+
+# Save and restore partitioning:
+#sfdisk /dev/hdd -O hdd-partition-sectors.save
+#sfdisk /dev/hdd -I hdd-partition-sectors.save
 
 
 _backup_unison(){
