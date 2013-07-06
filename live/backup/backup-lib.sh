@@ -4,7 +4,16 @@
 # When mounting read-write, mount with risky performance options.
 #   - Anything I mount for writing will be more-or-less exclusively mounted by this script.
 #   - Writing is only being done to a location where its contents don't matter so much.
-partition_type_83_mount_options=nouser,noatime,data=writeback,barrier=0,nobh
+# Problem 1 - I need to research and properly understand such options.
+# Problem 2 - The options are different per filesystem.
+#             So I could have partition type 83, ext4 or btrfs, which have different mount options.
+#partition_type_83_mount_options=nouser,noatime,data=writeback,barrier=0,nobh
+# nobarrier exists, but they give a healthy warning.
+#partition_type_83_mount_options=nouser,noatime,nobh
+# This seems universal.  
+# Actually, btrfs didn't list nouser as of 2013-07-05.  But I see mentions of it elsewhere.
+#   https://btrfs.wiki.kernel.org/index.php/Mount_options
+partition_type_83_mount_options=nouser,noatime
 
 
 
@@ -116,7 +125,7 @@ _check_if_sdx_is_mounted(){
 # note that  `\mountpoint`  does the reverse of this.  Given  /  it'll say something like  /dev/sda1
 _find_mount_point(){
   _check_if_sdx_is_mounted  $1
-  if [ $? -eq 1 ]; then
+  if [ $? -ne 0 ]; then
     _backup_die  "_find_mount_point() is being used on something that's not actually mounted: "  $1
   fi
   __=$( \mount  |  \grep  $1  |  \cut  -d' '  -f3  )
@@ -131,7 +140,11 @@ _fsck_if_not_mounted() {
     # TODO - needs to be live-tested.
     echo_info  "$1 is "  'not mounted'  ', performing fsck.'
     \fsck  $1
-    err  $?
+    __=$?
+    if [ $__ -eq 8 ]; then
+      _backup_die  'fsck gave error ' 8 ', perhaps you need to install btrfs-tools or another similar package.'
+    fi
+    err  $__
   else
     echo_info  "$1 is "  'mounted' ', skipping fsck.'
   fi
@@ -274,13 +287,16 @@ _smart_mount() {
       83)
         echo_info  'Processing '  'Linux'  ' (e.g. ext2, ext3, ext4) partition.'
         _check_if_sdx_is_mounted  $one
-        if [[ $__ -eq 1 ]]; then
+        if [[ $? -eq 1 ]]; then
           # not mounted
+# ++++++++++++++++++++
+# Disabled for testing
+# ++++++++++++++++++++
+          #_fsck_if_not_mounted  $one
           # /dev/sda1  =>  sda1
           _basename  "$one"
           local  smart_mount_working_directory="$working_directory/$__".mountpoint
           \mkdir  --parents  "$smart_mount_working_directory"
-          _fsck_if_not_mounted  $one
           if [[ $two = 'rw' ]]; then
             echo_info  'mounting '  "$one"  ' read-write.'
             \mount  -o $partition_type_83_mount_options,rw  $one  "$smart_mount_working_directory"  ;  err  $?
@@ -331,16 +347,40 @@ _backup_teardown(){
   echo_info  'Performing teardown...'
 
   # Might be useful for debugging
-  #\df \
-    #` # --human-readable ` \
-    #--print-type \
-    #` # `
-  #\ls  --almost-all  -l  $working_directory
+  \echo
+  echo_info  'The contents of ' $working_directory ' is:'
+  # note - I use tail because I don't want "total" displayed.
+  #        Whatever the hell that means.
+  \ls  --almost-all  -l  $working_directory | \tail --lines +2
+  \echo
+  \df \
+    ` # --human-readable ` \
+    --print-type \
+    ` # `
+  \echo
+  \mount | \grep  --color  $working_directory
+  \echo
 
-  # This will say fun things like  "/ has been unmounted" when working with the root turned into a bind point.
-  # util-linux 2.20.1  does not list  --verbose , but it works.  How odd, broken documentation and it's not even a GNU package.
+  # note/todo - Then working with the root turned into a bind point - this will say fun things like
+  #   "/ has been unmounted"
+  #   instead of
+  #   "/mnt/_backup.23131/23131.bindpoint has been unmounted"
+  #
+  # note/fixme - For some reason, calling  \umount *  once doesn't work.  The bindpoint stays mounted!
+  #   This also doesn't work:
+  #     for dir in $working_directory/*; do
+  #       \umount  --verbose  $dir
+  #     done
+  #   .. calling it twice works.  Fucked if I know what's going on.
+  #
+  # note/todo - util-linux 2.20.1  does not list  \mount --verbose  (or any verbosity), but it works.  How odd, broken documentation and it's not even a GNU package.
   \umount  --verbose  $working_directory/*
+  \echo
+  \umount  --verbose  $working_directory/*
+  \echo
 
-  \rmdir   --verbose  $working_directory/*  ;  err  $?
-  \rmdir   --verbose  $working_directory    ;  err  $?
+  # Using err within _backup_teardown is a bad idea which could lead to an infinite loop.
+  # So I'm using it after _backup_teardown() gets called.
+  \rmdir   --verbose  $working_directory/* # ;  err  $?
+  \rmdir   --verbose  $working_directory   # ;  err  $?
 }
