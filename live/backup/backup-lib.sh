@@ -152,6 +152,7 @@ _fsck_if_not_mounted() {
 
 
 
+# TODO - it's ok to depend on coreutils!
 # TODO - It would be nice to have a  readlink  replacement for bash, but that seems horribly complicated.  Why in the fuck isn't it just an option with  `ls`  ?  Oh right, it's GNU.
 #   filename -> ../../sda1            =>   ../../sda1
 # Even if the filename is stupid, it works.
@@ -164,6 +165,7 @@ _readlink_lazily(){
 
 
 
+# TODO - it's ok to depend on coreutils!
 # yields the part after the last slash.
 # http://mintaka.sdsu.edu/GF/bibliog/latex/debian/bash.html
 _basename(){
@@ -248,11 +250,15 @@ _detect_partition_type(){
 # Given a /dev/sdx , a UUID (TODO) or a directory (TODO), process it appropriately, and return a directory of files.
 # note - dead/data-migration-lib.sh has smartmount() , which has some ancient code that may be good.
 _smart_mount() {
+  \echo
+  echo_info  'smart_mount() ' "$1  $2  $3"
   # $1 is something to mount/process
   # $2 is 'ro' or 'rw', for read-only and read-write.
+  # $3 is an arbitrary name to include in the mount point(s).
 
   local  one=$1
   local  two=$2
+  local  identifier=$3
   __=''
 
   if [[ -z $one ]]; then
@@ -281,9 +287,52 @@ _smart_mount() {
   {
   if [[ $type = 'sdx' ]]; then
     _detect_partition_type  $one
-    echo_info  'Partition type is '  "$__"
-    case  $__  in
+    local  partition_type=$__
+    echo_info  'Partition type is '  "$partition_type"
+    case  $partition_type  in
       # TODO - more partition types.
+      f)
+        # TODO - needs to be reviewed
+        echo_error  'This is an extended partition thingy.'
+      ;;
+      0)
+        # TODO - needs to be reviewed
+        echo_error  'This is hit a partition.'
+        return 0
+      ;;
+      7)
+        # TODO - needs to be reviewed
+        echo_info  'Processing '  'HPFS/NTFS'  ' (e.g. Windows) partition.'
+        echo_error  'This code has not been rewritten and tested, aborting.'
+        # Using `ntfsmount` because `mount` doesn't allow read-write access.
+        # http://www.linux-ntfs.org
+        if [ "x$3" = "xsource" ]; then
+          # regular mount is read-only
+          # Better not mount read-only, so that I can have a proper date.txt
+          #\mount /dev/$1$2 /mnt/$3/$2
+  #        \ntfsmount /dev/$1$2 /mnt/$3/$2
+
+  # r-w functionality seems to be built-in in Lubuntu 10.10 and may actually make `mount` better than `ntfsmount`.
+          \mount /dev/$1$2 /mnt/$3/$2
+        else
+  #        \ntfsmount /dev/$1$2 /mnt/$3/$2
+  # r-w functionality seems to be built-in in Lubuntu 10.10 and may actually make `mount` better than `ntfsmount`.
+          \mount /dev/$1$2 /mnt/$3/$2
+        fi
+        err $?
+        # I've seen the following error occur when I was browsing the mounted filesystem as a regular user.
+        # The script completely bombed out and nothing was triggered after this rsync failure
+        # This was due to the destination running out of space.
+        # FIXME:  Check for free space somehow?  Sigh, this shouldn't be needed!
+        #   rsync: writefd_unbuffered failed to write 4 bytes to socket [sender]: Broken pipe (32)
+        #   rsync: connection unexpectedly closed (84216 bytes received so far) [sender]
+        #   rsync error: error in rsync protocol data stream (code 12) at io.c(600) [sender=3.0.6]
+      ;;
+      82)
+        # TODO - needs to be reviewed
+        # TODO - Can people legitimately have data on a "Solaris" partition?  So perhaps this ought to process it to differentiate between swap and solaris?
+        echo_error  'This is a '  'Linux Swap / Solaris'  ' partition.'
+      ;;
       83)
         echo_info  'Processing '  'Linux'  ' (e.g. ext2, ext3, ext4) partition.'
         _check_if_sdx_is_mounted  $one
@@ -295,7 +344,9 @@ _smart_mount() {
           #_fsck_if_not_mounted  $one
           # /dev/sda1  =>  sda1
           _basename  "$one"
-          local  smart_mount_working_directory="$working_directory/$__".mountpoint
+          # \mktemp  is part of GNU coreutils.
+          local  smart_mount_working_directory=$( \mktemp  --directory  --suffix=.$identifier.mountpoint  --tmpdir=$working_directory )
+
           \mkdir  --parents  "$smart_mount_working_directory"
           if [[ $two = 'rw' ]]; then
             echo_info  'mounting '  "$one"  ' read-write.'
@@ -309,16 +360,18 @@ _smart_mount() {
         # mounted already, or mounted just now.
 
         # Give some decent output..
-        \df  --human-readable  --print-type | \grep $one
-        #_readlink_lazily  /dev/disk/by-uuid/$source  ; _basename   $__  ; \df  --human-readable  --print-type | \grep $__
+        echo_info  'Some info on '  "$one"  '..'
+        \df  --human-readable  --print-type | \grep  $one
 
         _find_mount_point  $one
         one=$__
         local  type='directory'
       ;;
       *)
-        echo_error  "\sfdisk -c /dev/$source  $target  returned"  "$partition_type"
-        _backup_die  "I don't know how to mount that"  'Exiting.'
+        echo_error  "\sfdisk -c /dev/$one  $two  returned"  "$partition_type"
+        echo_info  "This script does not know how to handle that."
+        echo_info  "Don't worry though, it's not too hard to add support for new types."
+        echo_error  'Aborting.'
       ;;
     esac
   fi
@@ -329,14 +382,16 @@ _smart_mount() {
     _backup_die  'big fat problem with'  '_smart_mount()'
   fi
 
-  local  smart_mount_working_directory="$working_directory/$$".bindpoint
-  \mkdir  --parents  "$smart_mount_working_directory"
+  \mkdir  --parents  "$working_directory"  ;  err  $?
+  # \mktemp  is part of GNU coreutils.
+  local  smart_mount_working_directory=$( \mktemp  --directory  --suffix=.$identifier.bindpoint  --tmpdir=$working_directory )
+  err  $?
 
   if [[ $two = 'rw' ]]; then
-    \mount  -o bind,rw  $__  "$smart_mount_working_directory"  ;  err  $?
+    \mount  -o bind,rw  $__  "$smart_mount_working_directory"  > /dev/null ;  err  $?
   fi
   if [[ $two = 'ro' ]]; then
-    \mount  -o bind,ro  $__  "$smart_mount_working_directory"  ;  err  $?
+    \mount  -o bind,ro  $__  "$smart_mount_working_directory"  > /dev/null ;  err  $?
   fi
 
   __=$smart_mount_working_directory
@@ -344,43 +399,89 @@ _smart_mount() {
 
 
 _backup_teardown(){
+  \echo
   echo_info  'Performing teardown...'
 
-  # Might be useful for debugging
-  \echo
-  echo_info  'The contents of ' $working_directory ' is:'
-  # note - I use tail because I don't want "total" displayed.
-  #        Whatever the hell that means.
-  \ls  --almost-all  -l  $working_directory | \tail --lines +2
-  \echo
-  \df \
-    ` # --human-readable ` \
-    --print-type \
-    ` # `
-  \echo
-  \mount | \grep  --color  $working_directory
-  \echo
+  if [[ $print_teardown_info = 'true' ]]; then
+    \echo
+    echo_info  'The contents of ' $working_directory ' is:'
+    # note - I use tail because I don't want "total" displayed.
+    #        Whatever the hell that means.
+    \ls  --almost-all  -l  $working_directory | \tail --lines +2
 
+    \echo
+    echo_info  'The output of '  '\df  --block-size=1  --print-type  |  \grep  --color  $working_directory' ' is:'
+    \df  --block-size=1  --print-type  |  \grep  --color  $working_directory
+
+    \echo
+    echo_info  'The output of '  '\mount  |  \grep  --color  $working_directory' ' is:'
+    \mount  |  \grep  --color  $working_directory
+  fi
+
+
+  \echo
+  echo_info  'Flushing filesystem buffers..'
+  # \sync  is part of GNU coreutils.
+  \sync
+
+  \echo
+  echo_info  'Unmounting stuff..'
   # note/todo - Then working with the root turned into a bind point - this will say fun things like
   #   "/ has been unmounted"
   #   instead of
   #   "/mnt/_backup.23131/23131.bindpoint has been unmounted"
   #
-  # note/fixme - For some reason, calling  \umount *  once doesn't work.  The bindpoint stays mounted!
-  #   This also doesn't work:
-  #     for dir in $working_directory/*; do
-  #       \umount  --verbose  $dir
-  #     done
-  #   .. calling it twice works.  Fucked if I know what's going on.
-  #
   # note/todo - util-linux 2.20.1  does not list  \mount --verbose  (or any verbosity), but it works.  How odd, broken documentation and it's not even a GNU package.
   \umount  --verbose  $working_directory/*
-  \echo
-  \umount  --verbose  $working_directory/*
-  \echo
 
-  # Using err within _backup_teardown is a bad idea which could lead to an infinite loop.
-  # So I'm using it after _backup_teardown() gets called.
-  \rmdir   --verbose  $working_directory/* # ;  err  $?
-  \rmdir   --verbose  $working_directory   # ;  err  $?
+  \echo
+  echo_info  'Removing working directories..'
+  \rmdir   --verbose  $working_directory/*
+  \rmdir   --verbose  $working_directory
+}
+
+
+
+# TODO - The exclude list should be unique, depending on what stuff I'm backing up.
+#        Perhaps what I ought to do is reference a text file located on $source .
+_backup_rsync(){
+  \echo
+  echo_info  '_backup_rsync() '  "$1  $2"
+  local  source=$1
+  local  target=$2
+  \nice  --adjustment=19  \rsync  $dry_run \
+    --exclude-from=./backup.rsync-exclude-list.txt \
+    ` # This is --archive : ` \
+    ` # --recursive --links --perms --times --group --owner --devices --specials ` \
+    ` #   Which is -rlptgoD (no -H,-A,-X) ` \
+    ` #   No --hard-links --acls --xattrs ` \
+    --archive \
+    ` # Very important! ` \
+    --hard-links \
+    ` # verbose and progress supposedly slow things down.  I'm not sure how significant they are. ` \
+    --verbose \
+    ` # This is way too slow: ` \
+    ` # --progress ` \
+    ` # Files on the target host are updated in the same storage the current version of the file occupies. ` \
+    ` # This eliminates the need to use temp files, solving a whole shitload of issues. ` \
+    --inplace \
+    ` # I don't know how or why there would be sparse files, but this supposedly deals with them intelligently. ` \
+    ` # I'm going to remove this for now, to do some more aggressive testing. ` \
+    ` # Cannot be used with --inplace ` \
+    ` # --sparse ` \
+    ` # Skip based on checksum, not mod-time & size: ` \
+    ` # --checksum ` \
+    ` # --delete ` \
+    ` # --delete-during ` \
+    ` # Deleting before doing the copying ensures that there is enough space for new files. ` \
+    ` # If --inplace is used, then that ensures that a file can be copied overtop of the backup, and extra space for a copy-on-write isn't needed. ` \
+    --delete-before \
+    ` # This is often a bad idea, and should be left to a separate system cleanup script run before a backup like this. ` \
+    ` # --delete-excluded ` \
+    ` # note - don't forget the trailing slashes, because it's that fucking stupid. ` \
+    $source/ \
+    $target/
+  # FIXME? - maybe suppress "unknown file type" errors?
+  # if [[ $? -eq whatever(24?) ]]; then \echo ; fi   # This would force an exit code of 0.
+  err  $?
 }
