@@ -481,7 +481,15 @@ _backup_rsync(){
     ` # note - don't forget the trailing slashes, because it's that fucking stupid. ` \
     $source/ \
     $target/
+
   # FIXME? - maybe suppress "unknown file type" errors?
-  # if [[ $? -eq whatever(24?) ]]; then \echo ; fi   # This would force an exit code of 0.
+
+  # Deal with files vanishing on rsync.
+  #   rsync warning: some files vanished before they could be transferred (code 24) at main.c(1070) [sender=3.0.9]
+  if [[ $? -eq 24 ]]; then
+    # Force an exit code of 0.
+    \echo
+  fi
+
   err  $?
 }
