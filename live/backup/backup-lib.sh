@@ -273,10 +273,15 @@ _smart_mount() {
 
   _distinguish_between_uuid_sdx_directory  $one
   local  type=$__
+  #if [[ $type = 'directory' ]]; then
+    ## FIXME - hackish.
+    #local  originally_a_directory='true'
+  #fi
 
   # If given a UUID, convert it to /dev/sdx format for later use.
   if [[ $type = 'uuid' ]]; then
     _convert_uuid_to_sdx  $one
+    echo_info  "$one has been found to be "  "$__"
     one=$__
     local  type='sdx'
   fi
@@ -292,18 +297,18 @@ _smart_mount() {
     case  $partition_type  in
       # TODO - more partition types.
       f)
-        # TODO - needs to be reviewed
-        echo_error  'This is an extended partition thingy.'
+        # TODO - needs to be explicitly tested.
+        _backup_die  'This is an extended partition thingy.'
       ;;
       0)
-        # TODO - needs to be reviewed
-        echo_error  'This is hit a partition.'
-        return 0
+        # TODO - needs to be explicitly tested.
+        _backup_die  'This is not a partition.'
       ;;
       7)
         # TODO - needs to be reviewed
         echo_info  'Processing '  'HPFS/NTFS'  ' (e.g. Windows) partition.'
-        echo_error  'This code has not been rewritten and tested, aborting.'
+        _backup_die  'This code has not been rewritten and tested, aborting.'
+        #
         # Using `ntfsmount` because `mount` doesn't allow read-write access.
         # http://www.linux-ntfs.org
         if [ "x$3" = "xsource" ]; then
@@ -329,25 +334,20 @@ _smart_mount() {
         #   rsync error: error in rsync protocol data stream (code 12) at io.c(600) [sender=3.0.6]
       ;;
       82)
-        # TODO - needs to be reviewed
+        # TODO - needs to be explicitly tested.
         # TODO - Can people legitimately have data on a "Solaris" partition?  So perhaps this ought to process it to differentiate between swap and solaris?
-        echo_error  'This is a '  'Linux Swap / Solaris'  ' partition.'
+        _backup_die  'This is a '  'Linux Swap / Solaris'  ' partition.'
       ;;
       83)
         echo_info  'Processing '  'Linux'  ' (e.g. ext2, ext3, ext4) partition.'
         _check_if_sdx_is_mounted  $one
         if [[ $? -eq 1 ]]; then
           # not mounted
-# ++++++++++++++++++++
-# Disabled for testing
-# ++++++++++++++++++++
-          #_fsck_if_not_mounted  $one
+          _fsck_if_not_mounted  $one
           # /dev/sda1  =>  sda1
           _basename  "$one"
-          # \mktemp  is part of GNU coreutils.
           local  smart_mount_working_directory=$( \mktemp  --directory  --suffix=.$identifier.mountpoint  --tmpdir=$working_directory )
 
-          \mkdir  --parents  "$smart_mount_working_directory"
           if [[ $two = 'rw' ]]; then
             echo_info  'mounting '  "$one"  ' read-write.'
             \mount  -o $partition_type_83_mount_options,rw  $one  "$smart_mount_working_directory"  ;  err  $?
@@ -371,7 +371,7 @@ _smart_mount() {
         echo_error  "\sfdisk -c /dev/$one  $two  returned"  "$partition_type"
         echo_info  "This script does not know how to handle that."
         echo_info  "Don't worry though, it's not too hard to add support for new types."
-        echo_error  'Aborting.'
+        _backup_die  'Aborting.'
       ;;
     esac
   fi
@@ -382,18 +382,15 @@ _smart_mount() {
     _backup_die  'big fat problem with'  '_smart_mount()'
   fi
 
-  \mkdir  --parents  "$working_directory"  ;  err  $?
-  # \mktemp  is part of GNU coreutils.
   local  smart_mount_working_directory=$( \mktemp  --directory  --suffix=.$identifier.bindpoint  --tmpdir=$working_directory )
   err  $?
 
   if [[ $two = 'rw' ]]; then
-    \mount  -o bind,rw  $__  "$smart_mount_working_directory"  > /dev/null ;  err  $?
+    \mount  -o bind,rw  $one  "$smart_mount_working_directory"  > /dev/null ;  err  $?
   fi
   if [[ $two = 'ro' ]]; then
-    \mount  -o bind,ro  $__  "$smart_mount_working_directory"  > /dev/null ;  err  $?
+    \mount  -o bind,ro  $one  "$smart_mount_working_directory"  > /dev/null ;  err  $?
   fi
-
   __=$smart_mount_working_directory
 }
 
@@ -406,7 +403,6 @@ _backup_teardown(){
     \echo
     echo_info  'The contents of ' $working_directory ' is:'
     # note - I use tail because I don't want "total" displayed.
-    #        Whatever the hell that means.
     \ls  --almost-all  -l  $working_directory | \tail --lines +2
 
     \echo
@@ -421,15 +417,14 @@ _backup_teardown(){
 
   \echo
   echo_info  'Flushing filesystem buffers..'
-  # \sync  is part of GNU coreutils.
   \sync
 
   \echo
   echo_info  'Unmounting stuff..'
-  # note/todo - Then working with the root turned into a bind point - this will say fun things like
+  # note/todo - When working with a directory (e.g. root) mounted as a bind point, unmount will say fun things like:
   #   "/ has been unmounted"
-  #   instead of
-  #   "/mnt/_backup.23131/23131.bindpoint has been unmounted"
+  #   instead of something like
+  #   "/mnt/tmp.8J96lSX74u.backup.5720/tmp.2XJXpkPgzY.target.bindpoint has been unmounted"
   #
   # note/todo - util-linux 2.20.1  does not list  \mount --verbose  (or any verbosity), but it works.  How odd, broken documentation and it's not even a GNU package.
   \umount  --verbose  $working_directory/*
@@ -490,6 +485,12 @@ _backup_rsync(){
     # Force an exit code of 0.
     \echo
   fi
+
+  # FIXME?  - During a copy, I'll get an I/O error like:
+  #   rsync: read errors mapping "/mnt/tmp.beLUxuY3F7.backup.5799/tmp.watySY6q8p.source.bindpoint/wow/_game/Data/expansion2.MPQ": Input/output error (5)
+  #
+  # To help, I could use  --partial-dir=/foo/bar  and unreadable files would stay there, for debugging.
+  # Or perhaps I could investigate some form of logging / parsing.
 
   err  $?
 }
