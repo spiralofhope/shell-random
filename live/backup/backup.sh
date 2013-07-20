@@ -99,6 +99,7 @@ if [ $(whoami) != "root" ]; then
 fi
 # DASH - `source` is unavailable.
 source  ./backup-lib.sh
+source  ./backup-configuration.sh
 _backup_die_int(){
   _backup_die  'control-c has been pressed.  Aborting!'
 }

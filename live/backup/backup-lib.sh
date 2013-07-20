@@ -1,5 +1,7 @@
 #!/usr/bin/env  sh
 
+source  ./backup-configuration.sh
+
 
 # When mounting read-write, mount with risky performance options.
 #   - Anything I mount for writing will be more-or-less exclusively mounted by this script.
@@ -10,7 +12,7 @@
 #partition_type_83_mount_options=nouser,noatime,data=writeback,barrier=0,nobh
 # nobarrier exists, but they give a healthy warning.
 #partition_type_83_mount_options=nouser,noatime,nobh
-# This seems universal.  
+# This seems universal.
 # Actually, btrfs didn't list nouser as of 2013-07-05.  But I see mentions of it elsewhere.
 #   https://btrfs.wiki.kernel.org/index.php/Mount_options
 partition_type_83_mount_options=nouser,noatime
@@ -87,18 +89,17 @@ echo_info(){
 
 
 
-# TODO - the rsync idea has not been re-integrated.
 err() {
   if [ "x$1" = "x0" ]; then
     return  $1
   fi
-  if [ "x$rsync" = "x1" ]; then
+  if [ x$rsync = x1 ]; then
     # If I've just been running `rsync`
-    if [ "x$1" = "x24" ]; then
+    if [ x$1 = x24 ]; then
       \echo  -e "${bullet} $processing - $processing - Rsync exited with code 24.  No problem."
       return  $1
     fi
-    if [ "x$1" = "x23" ]; then
+    if [ x$1 = x23 ]; then
       \echo  -e "${bullet} $processing - Rsync exited with code 23.  No problem."
       return  $1
     fi
@@ -142,7 +143,13 @@ _fsck_if_not_mounted() {
     \fsck  $1
     __=$?
     if [ $__ -eq 8 ]; then
-      _backup_die  'fsck gave error ' 8 ', perhaps you need to install btrfs-tools or another similar package.'
+      if [[ $ignore_fsck_error_8 = 'true' ]]; then
+        echo_info  'fsck gave error ' 8 ', perhaps you need to install btrfs-tools or another similar package.'
+        echo_info  '$ignore_fsck_error_8 has been set to ' true ', continuing.'
+        __=0
+      else
+        _backup_die  'fsck gave error ' 8 ', perhaps you need to install btrfs-tools or another similar package.'
+      fi
     fi
     err  $__
   else
@@ -444,6 +451,7 @@ _backup_rsync(){
   echo_info  '_backup_rsync() '  "$1  $2"
   local  source=$1
   local  target=$2
+  rsync=1
   \nice  --adjustment=19  \rsync  $dry_run \
     --exclude-from=./backup.rsync-exclude-list.txt \
     ` # This is --archive : ` \
@@ -493,4 +501,5 @@ _backup_rsync(){
   # Or perhaps I could investigate some form of logging / parsing.
 
   err  $?
+  rsync=
 }

@@ -15,7 +15,7 @@
 
 # UUID
 # See  /dev/disk/by-uuid  to determine the UUID based on  `/dev/sdx`
- 
+
 # /dev/sdx
 # The last thing you want to do is accidentally overwrite the contents of an entire partition because you added or removed a drive and the letters shifted.  Reusable scripts should refer to the UUID to be safe.
 
@@ -32,6 +32,9 @@
 # For rsync to not actually write or delete files.
 # This is essential for testing!
 #dry_run=--dry-run
+
+# In my case, this is generated when 'btrfs-tools' is not available.
+#ignore_fsck_error_8='true'
 
 # Additional output, for troubleshooting.  I like to leave it on, just in case.
 print_teardown_info='true'
