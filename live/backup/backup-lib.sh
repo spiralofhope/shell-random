@@ -247,9 +247,9 @@ _detect_partition_type(){
   # The warning I suppress is:
   #     Warning: extended partition does not start at a cylinder boundary.
   #     DOS and Linux will interpret the contents differently.
-  echo_info  "Detecting partition type with:  "  "\sfdisk  -n  --print-id  --quiet  $prefix   $suffix"
-  # e.g.                    \sfdisk  -n  --print-id  --quiet  /dev/sda  1        2> /dev/null )
-  __=$(  \sfdisk  -n  --print-id  --quiet  $prefix   $suffix  2> /dev/null )
+  echo_info  "Detecting partition type with:  "  "\sfdisk  --force  -n  --print-id  --quiet  $prefix   $suffix"
+  # e.g. \sfdisk  --force  -n  --print-id  --quiet  /dev/sda  1        2> /dev/null )
+  __=$(  \sfdisk  --force  -n  --print-id  --quiet  $prefix   $suffix  2> /dev/null )
   err  $?
 }
 

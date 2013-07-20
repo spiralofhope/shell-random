@@ -2,6 +2,29 @@
 
 # TODO URGENT -- what happens when given a nonexistent UUID/sdx/directory ?  This needs to be hardened.
 
+:<<'TODO'
+Switch from sfdisk to parted.
+
+\sfdisk -n --print-id --quiet /dev/sdc 1
+
+WARNING: GPT (GUID Partition Table) detected on '/dev/sdc'! The util sfdisk doesn't support GPT. Use GNU Parted.
+
+Use the --force flag to overrule this check.
+
+(using --force does work)
+
+----
+
+\parted /dev/sdc1 print
+
+Model: Unknown (unknown)
+Disk /dev/sdc1: 10.0GB
+Sector size (logical/physical): 512B/512B
+Partition Table: loop
+
+Number  Start  End     Size    File system  Flags
+ 1      0.00B  10.0GB  10.0GB  ext4
+TODO
 
 
 # TODO - I need to hand-check that exclusion is working as expected.
