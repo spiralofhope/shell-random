@@ -4,6 +4,9 @@
 #  \wine  ./Agent.exe --nohttpauth
 
 
+  # TODO: an easy way to swap Config.wtf files around, for raiding.
+
+
 _wow_die(){
   \echo ""
   \echo " * ^c detected, killing WoW."
@@ -15,22 +18,20 @@ trap _wow_die INT
 _wow_setup(){
   \echo  " * Setup.."
   \gksudo  -u root  "\echo"
-  ~/.config/openbox/wine.sh
+#  ~/.config/openbox/wine.sh
   \echo  " - disabling the screen saver"
   # Never kill the task.  Always ask it to exit.
   \xscreensaver-command -exit
   \echo  " - Deleting creature cache (for SilverDragon)"
   \rm  --force --verbose /l/wow/_game/Cache/WDB/enUS/creaturecache.wdb
-  # I don't think this is necessary with my newest video card.
-  # .. perhaps while raiding though.  In which case I need to adjust other
-  #    settings.. TODO: an easy way to swap Config.wtf files around.
+  # This is necessary if not using -opengl and using high settings.
   /l/bin/processor_heat.sh  --yes ; heatup=$?
 }
 
 
 _wow_run(){
   if [[ ! x$1 == "xnomumble" ]]; then
-    /l/bin/mumble.sh  $@ &
+DISPLAY=:3    /l/bin/mumble.sh  $@ &
   fi
   \echo " * Launching WoW"
 #  \sudo  \swapoff  --all
@@ -61,8 +62,24 @@ NOTES
     \echo  "Press enter when the update has concluded.."
     \read  ANSWER
   else
-    __GL_THREADED_OPTIMIZATIONS=1  WINEDEBUG=-all  WINEPREFIX=/l/wow/_wineprefix/  /usr/bin/wine \
-      /l/wow/_game/Wow-64.exe  >> /dev/null 2>&1 &
+    # running with  -opengl  will disable most of the advanced eye-candy, but will greatly improve performance.
+#    opengl=-opengl
+
+    # Launch on a new X session on display 3
+    # Control-Alt-F7/F8 will swap between the two displays.
+    \sudo  \X  :3  -ac  -terminate &
+    \sleep 2
+    #  `ck-launch-session`  resolves audio issues.
+    # I seem to be forced to use xterm.
+    # I don't know how to have xterm close.
+    DISPLAY=:3  \xterm  -e /usr/bin/ck-launch-session &
+    # Optional, but useful.
+    # I don't understand why it ignores ~/.config/openbox/* and there are no options to start with alternate configuration, to force its use.
+    DISPLAY=:3  /usr/bin/openbox  --startup &
+
+DISPLAY=:3 \
+     __GL_THREADED_OPTIMIZATIONS=1  WINEDEBUG=-all  WINEPREFIX=/l/wow/_wineprefix/  /usr/bin/wine \
+      /l/wow/_game/Wow-64.exe  $opengl  >> /dev/null 2>&1 &
   fi
   wowpid=$!
 
@@ -89,10 +106,11 @@ NOTES
 _wow_teardown(){
   \echo  " * Teardown.."
   \gksudo  -u root  "\echo"
-  ~/.config/openbox/unwine.sh && unwinepid=$!
+#  ~/.config/openbox/unwine.sh && unwinepid=$!
   \echo " - enabling the screen saver"
   \xscreensaver  -nosplash &
   \echo " - Killing any lingering processes."
+  /usr/bin/wineboot --shutdown
   /usr/bin/wineserver --kill
   \killall \
     xkill \
