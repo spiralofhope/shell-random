@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # FIXME - must not be run as root
 # FIXME - this is blind right now, but I ought to be selective..
 

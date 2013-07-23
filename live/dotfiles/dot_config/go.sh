@@ -1,3 +1,5 @@
+#!/bin/sh
+
 # FIXME - must not be run as root
 
 date=$( \date +%Y-%m-%d--%H-%M-%S )

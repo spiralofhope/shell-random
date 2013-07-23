@@ -29,7 +29,8 @@ opengl=-opengl
 # The alternate display you'd like to run things on.
 # FIXME - Occasional issues with the screen going black when using an alternate x display.  Cannot properly reproduce.
 # FIXME - having audio issues when using an alternate x display and switching back to :0  Cannot properly reproduce.
-_display=:3
+# FIXME! - Major keyboard sticking issues when using an alternate x display.  This was an old problem previously solved on :0 .. but how did I solve it?
+#_display=:3
 
 
 
@@ -102,7 +103,9 @@ _wow_run(){
 NOTES
 
     # TODO - niceness.  However, wine isn't so simple to nice.. this has to be researched carefully.
-    __GL_THREADED_OPTIMIZATIONS=1  WINEDEBUG=-all  WINEPREFIX=/l/wow/_wineprefix/  DISPLAY=$_display \
+# FIXME
+#    __GL_THREADED_OPTIMIZATIONS=1  WINEDEBUG=-all  WINEPREFIX=/l/wow/_wineprefix/  DISPLAY=$_display \
+    __GL_THREADED_OPTIMIZATIONS=1  WINEDEBUG=-all  WINEPREFIX=/l/wow/_wineprefix/ \
     /usr/bin/wine \
     /l/wow/_game/Wow-64.exe  $opengl  >> /dev/null 2>&1 &
     wowpid=$!
