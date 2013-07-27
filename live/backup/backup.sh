@@ -2,6 +2,12 @@
 
 # TODO URGENT -- what happens when given a nonexistent UUID/sdx/directory ?  This needs to be hardened.
 
+# TODO - btrfs mount flags, with compression.  Compress everything btrfs, perhaps aggressively, since it's an unused backup.  If the source is different from the target - the source is not compressed, or is compressed differently, will rsync have a hard time of things?  It could be a horrible idea..
+#        This would also have to be tested thoroughly, especially with the new i/o scheduling I've been playing with.
+
+# TODO - nofsck parameter to backup.sh, or as a configuration option/variable.
+
+
 :<<'TODO'
 Switch from sfdisk to parted.
 
@@ -24,6 +30,7 @@ Partition Table: loop
 
 Number  Start  End     Size    File system  Flags
  1      0.00B  10.0GB  10.0GB  ext4
+
 TODO
 
 
