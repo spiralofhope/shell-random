@@ -11,33 +11,30 @@ NOTES
 
 
 
-_setup() {
-  # date=$(\date --date='%F-%T')
-  date=$( \date +%Y-%m-%d--%H-%M-%S )
-  _tar=/mnt/320-data/wow-backups
-  _wow=/mnt/ssd-data/wow
-}
+# date=$(\date --date='%F-%T')
+date=$( \date +%Y-%m-%d--%H-%M-%S )
+_tar=/mnt/320-data/wow-backups
+_wow=/mnt/ssd-data/wow
 
 
 
 _wtf() {
-  source=$_wow/_game/WTF/
-  target=$_tar/settings/WTF--${date}.7z
-  \7z a -mx=9 -r $target $source
-  \ls -al $target
+  local  source=$_wow/_game/WTF/*
+  local  target=$_tar/settings/WTF--${date}.7z
+  \7z  a  -mx=9  -r  $target  $source
+  \ls  --all  -l   $target
 }
 
 
 
 _interface() {
-  source=$_wow/_game/Interface/
-  target=$_tar/addons/Interface--${date}.7z
-  \7z a -mx=9 -r $target $source
-  \ls -al $target
+  local  source=$_wow/_game/Interface/*
+  local  target=$_tar/addons/Interface--${date}.7z
+  \7z  a  -mx=9  -r  $target  $source
+  \ls  --all  -l  $target
 }
 
 
 
-_setup
 _wtf
 _interface
