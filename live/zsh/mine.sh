@@ -335,6 +335,8 @@ findinall() { findin '*' $1 ; }
 
 # Solves commandline limitations.  Hot damn.
 findqueue() {
+  #local deadbeef=1
+  
   # Case-insensitive globbing:
   \unsetopt CASE_GLOB
   # Search through directories, and read it all into an array.
@@ -369,12 +371,18 @@ findqueue() {
   for i in {1..${#files_array}}; do
     #\echo $i
     #\echo $files_array[$i]
-    \deadbeef --queue "$files_array[$i]" &
+    if [ deadbeef -eq 1 ]; then
+      \deadbeef --queue "$files_array[$i]" &
+    else
+      \audacious  --enqueue  "$files_array[$i]" &
+    fi
     #\sleep 0.1
   done
 }
 
 findplay() {
+  #local deadbeef=1
+
   \unsetopt CASE_GLOB
   # See findqueue() for the explanation of this retardation.
   if [ -z $1 ]; then
@@ -389,14 +397,30 @@ findplay() {
     files_array=( ./**/*$1\ $2\ $3\ $4*(.) )
   fi;
 
-  # Deadbeef has no functionality to just empty out its existing play list, but I can load an empty one.
-  \deadbeef /l/media/deadbeef_empty_playlist.dbpl
+  if [ deadbeef -eq 1 ]; then
+    # Deadbeef has no functionality to just empty out its existing play list, but I can load an empty one.
+    \deadbeef  /l/media/deadbeef_empty_playlist.dbpl
+  else
+    # Audacious has no functionality to just empty out its existing play list, but I can load an empty one.
+    # I chose the xspf format, although it can use .pls as well.
+    \audacious  --enqueue-to-temp  /l/media/audacious_empty_playlist.xspf &
+  fi
+  # FIXME - this seems to be random!
   for i in {1..${#files_array}}; do
     #\echo $i
     #\echo $files_array[$i]
-    \deadbeef --queue "$files_array[$i]" &
+    if [ deadbeef -eq 1 ]; then
+      \deadbeef  --queue  "$files_array[$i]" &
+    else
+      \audacious  --enqueue  "$files_array[$i]" &
+    fi
   done
-  \deadbeef --play
+
+  if [ deadbeef -eq 1 ]; then
+    \deadbeef --play
+  else
+    \audacious  --play
+  fi
 
   # I could take a random entry like this:
   #\echo $files_array[$RANDOM%$#FILES+1]

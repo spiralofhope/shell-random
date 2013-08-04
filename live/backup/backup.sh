@@ -1,5 +1,12 @@
 #!/usr/bin/env  bash
 
+# Exclude:
+# _dotfiles/home-user--dotfiles/cache/
+# firefox cache -- re-check that it's being excluded
+# chromium cache
+# midori cache
+# links, lynx, any other browser..
+
 # TODO URGENT -- what happens when given a nonexistent UUID/sdx/directory ?  This needs to be hardened.
 
 # TODO - btrfs mount flags, with compression.  Compress everything btrfs, perhaps aggressively, since it's an unused backup.  If the source is different from the target - the source is not compressed, or is compressed differently, will rsync have a hard time of things?  It could be a horrible idea..
