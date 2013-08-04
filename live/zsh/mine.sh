@@ -401,9 +401,26 @@ findplay() {
     # Deadbeef has no functionality to just empty out its existing play list, but I can load an empty one.
     \deadbeef  /l/media/deadbeef_empty_playlist.dbpl
   else
-    # Audacious has no functionality to just empty out its existing play list, but I can load an empty one.
-    # I chose the xspf format, although it can use .pls as well.
-    \audacious  --enqueue-to-temp  /l/media/audacious_empty_playlist.xspf &
+    # Audacious has no functionality to just empty out its existing play list, but I can load an empty one.  Here are three examples:
+
+:<<'AUPL'
+title=Now%20Playing
+AUPL
+
+:<<'PLS'
+[playlist]
+NumberOfEntries=0
+PLS
+
+:<<'XSPF'
+<?xml version="1.0" encoding="UTF-8"?>
+<playlist version="1" xmlns="http://xspf.org/ns/0/">
+  <title>Now Playing</title>
+  <trackList/>
+</playlist>
+XSPF
+
+    \audacious  --enqueue-to-temp  /l/media/audacious_empty_playlist.audpl &
   fi
   # FIXME - this seems to be random!
   for i in {1..${#files_array}}; do
