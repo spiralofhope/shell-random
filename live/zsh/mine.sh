@@ -368,11 +368,14 @@ findqueue() {
   #        If zsh could sanely shuffle an array.  =/
 
   # Iterate through the array.
+  # FIXME - this seems to be random!  Needs resting
+  # I could take a random entry like this:
+  #\echo $files_array[$RANDOM%$#FILES+1]
   for i in {1..${#files_array}}; do
     #\echo $i
     #\echo $files_array[$i]
-    if [ deadbeef -eq 1 ]; then
-      \deadbeef --queue "$files_array[$i]" &
+    if [[ x$deadbeef == x1 ]]; then
+      \deadbeef  --queue     "$files_array[$i]" &
     else
       \audacious  --enqueue  "$files_array[$i]" &
     fi
@@ -380,26 +383,20 @@ findqueue() {
   done
 }
 
+# TODO - yes it's possible to rig things so that playback begins when the very first item is added, but that's a bit annoying to do.  I don't understand parameters in scripting well enough to do it cleanly.  Needing to do that reveals a big issue with the player.. perhaps it's configured to scan every file for meta data.
 findplay() {
   #local deadbeef=1
 
-  \unsetopt CASE_GLOB
-  # See findqueue() for the explanation of this retardation.
-  if [ -z $1 ]; then
-    files_array=( ./**/**(.) )
-  elif [ -z $2 ]; then
-    files_array=( ./**/*$1*(.) )
-  elif [ -z $3 ]; then
-    files_array=( ./**/*$1\ $2*(.) )
-  elif [ -z $4 ]; then
-    files_array=( ./**/*$1\ $2\ $3*(.) )
-  elif [ -z $5 ]; then
-    files_array=( ./**/*$1\ $2\ $3\ $4*(.) )
-  fi;
-
-  if [ deadbeef -eq 1 ]; then
+  if [[ x$deadbeef == x1 ]]; then
     # Deadbeef has no functionality to just empty out its existing play list, but I can load an empty one.
+    # I can't give an inline example, because it's a binary file.
+    # TODO - give an inline example of a deadbeef empty playlist.  It should be possible somehow, maybe in hex or some such.
     \deadbeef  /l/media/deadbeef_empty_playlist.dbpl
+    \sleep 0.1
+    findqueue  $*
+    \deadbeef  --play
+    # I could just point to a random entry in deadbeef's playlist:
+    #\deadbeef  --random  --play
   else
     # Audacious has no functionality to just empty out its existing play list, but I can load an empty one.  Here are three examples:
 
@@ -420,29 +417,11 @@ PLS
 </playlist>
 XSPF
 
-    \audacious  --enqueue-to-temp  /l/media/audacious_empty_playlist.audpl &
-  fi
-  # FIXME - this seems to be random!
-  for i in {1..${#files_array}}; do
-    #\echo $i
-    #\echo $files_array[$i]
-    if [ deadbeef -eq 1 ]; then
-      \deadbeef  --queue  "$files_array[$i]" &
-    else
-      \audacious  --enqueue  "$files_array[$i]" &
-    fi
-  done
-
-  if [ deadbeef -eq 1 ]; then
-    \deadbeef --play
-  else
+    \audacious  --enqueue-to-temp  /l/media/audacious_empty_playlist.xspf &
+    \sleep 0.1
+    findqueue  $*
     \audacious  --play
   fi
-
-  # I could take a random entry like this:
-  #\echo $files_array[$RANDOM%$#FILES+1]
-  # Or I could just point to a random entry in deadbeef's playlist.
-  #\deadbeef --random --play
 }
 
 
