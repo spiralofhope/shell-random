@@ -1,6 +1,8 @@
 #!/usr/bin/env zsh
 
-# TODO:  Needs to be tested for a video with mp3 audio.  I don't need to unravel and transcode it.  video => mp3 => wav => mp3 is just stupid.
+# TODO -  Needs to be tested for a video with mp3 audio.  I don't need to unravel and transcode it.  video => mp3 => wav => mp3 is just stupid.
+# TODO - Use a proper temporary file.
+# TODO - temporary files are being left in the working directory and not deleted as expected.
 
 # Note that  \avconv  is a drop-in replacement for the depreciated  \ffmpeg
 
