@@ -6,7 +6,7 @@
 unpercent() {
   search=%${1}
   replace=\\${2}
-  \rename --verbose "s/${search}/${replace}/i" *
+  \rename --verbose "s/${search}/${replace}/gi" *
 }
 
 # https://en.wikipedia.org/wiki/Percent-encoding

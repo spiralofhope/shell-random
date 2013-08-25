@@ -35,7 +35,7 @@ connected(){
 
   # Voice Chat
   # TODO:  How do I get Mumble to minimize on startup?
-  /l/bin/mumble.sh
+#  /l/bin/mumble.sh
 
   # Email
   #   Can be started trayed (it gets minimized to the tray after a moment)
