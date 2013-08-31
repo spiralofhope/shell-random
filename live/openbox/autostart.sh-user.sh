@@ -41,6 +41,12 @@ connected(){
   #   Can be started trayed (it gets minimized to the tray after a moment)
   #     but only if I set the tray plugin to do that.
   \claws-mail &
+
+  # RSS reader
+  \liferea &
+  # I don't know why in the hell it won't just start up..
+  \sleep 5s
+  \liferea &
 }
 
 
