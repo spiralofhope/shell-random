@@ -34,12 +34,11 @@ trap _neverwinter_die INT
 _neverwinter_setup(){
   \echo  " * Setup.."
   \gksudo  --message "Setting up Neverwinter.."  --user root  "\echo  -n"
-# FIXME, this is only appropriate if not using another display
-#  if [[ x$_display == x ]]; then
-#    ~/.config/openbox/wine.sh
-#    \echo  " - disabling the screen saver"
-#    \xscreensaver-command  -exit
-#  fi
+  if [[ x$_display == x ]]; then
+    ~/.config/openbox/wine.sh
+    \echo  " - disabling the screen saver"
+    \xscreensaver-command  -exit
+  fi
   # May only be necessary if using high settings.
   /l/bin/processor_heat.sh  --yes ; heatup=$?
 }
@@ -115,7 +114,8 @@ NOTES
 _neverwinter_teardown(){
   \echo  " * Teardown.."
   \gksudo  --message "Tearing down Neverwinter.."  --user root  "\echo  -n"
-  # Twice, because sometimes the screen saver kicks in and it fails to grab the keyboard/mouse.  Yes, I want to actually grab the keyboard and mouse and keep a gui interface here, instead of having the user hunt for the following commandline 'sudo'.
+  # Twice, in case the screen saver kicks in and gksudo fails to grab the keyboard/mouse.
+  #   Yes, I want to actually grab the keyboard and mouse and keep a gui interface here, instead of having the user hunt for the following commandline 'sudo'.
   \gksudo  --message "Tearing down Neverwinter.."  --user root  "\echo  -n"
   if [[ x$_display == x ]]; then
     ~/.config/openbox/unwine.sh
