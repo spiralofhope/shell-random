@@ -179,7 +179,7 @@ if [ "x$1" == "xwith_lines" ]; then
       ` # No scrollbar. ` \
       +sb \
       ` # The default font can do fancy designs. ` \
-      -font default
+      -font default \
       -bg black \
       -fg gray \
       -cr darkgreen \
