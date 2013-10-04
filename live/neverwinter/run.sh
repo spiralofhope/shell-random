@@ -34,11 +34,12 @@ trap _neverwinter_die INT
 _neverwinter_setup(){
   \echo  " * Setup.."
   \gksudo  -u root  "\echo"
-  if [[ x$_display == x ]]; then
-    ~/.config/openbox/wine.sh
-    \echo  " - disabling the screen saver"
-    \xscreensaver-command  -exit
-  fi
+# FIXME, this is only appropriate if not using another display
+#  if [[ x$_display == x ]]; then
+#    ~/.config/openbox/wine.sh
+#    \echo  " - disabling the screen saver"
+#    \xscreensaver-command  -exit
+#  fi
   # May only be necessary if using high settings.
   /l/bin/processor_heat.sh  --yes ; heatup=$?
 }
@@ -54,6 +55,10 @@ _neverwinter_run(){
       #DISPLAY=$_display  /l/bin/mumble.sh  $@ &
     #fi
   #fi
+
+# FIXME - can I connect directly?  Can I join a specific channel?  Can I skip the update process?
+DISPLAY=$_display  /l/TeamSpeak/update &
+
   \echo " * Launching Neverwinter"
   #\sudo  \swapoff  --all
 
@@ -61,6 +66,7 @@ _neverwinter_run(){
   # Control-Alt-F7/F8 will swap between the two displays.
   if [[ x$_display != x ]]; then
     \sudo  \X  $_display  -ac  -terminate &
+    x_windows_pid=$!
     \sleep 2
     #  `ck-launch-session`  resolves audio issues.
     # I seem to be forced to use xterm.
@@ -125,11 +131,16 @@ _neverwinter_teardown(){
     winedevice.exe \
     wineserver \
     Agent.exe \
-    Wow.exe \
+    ` # Neverwinter-specific ` \
+    ` # TODO? - What would I have to kill to stop Neverwinter? ` \
+    Arc.exe \
+    ` # TODO? - TeamSpeak? ` \
     &> /dev/null
   if [[ $heatup -eq 1 ]]; then
     /l/bin/processor_cool.sh
   fi
+  # I don't know what applications may still be lingering.  Hopefully this will kill everything.
+  \sudo  \kill  $x_windows_pid
 }
 
 
