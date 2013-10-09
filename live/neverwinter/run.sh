@@ -55,8 +55,9 @@ _neverwinter_run(){
     #fi
   #fi
 
-# FIXME - can I connect directly?  Can I join a specific channel?  Can I skip the update process?
-DISPLAY=$_display  /l/TeamSpeak/update &
+  # FIXME - can I connect directly?  Can I join a specific channel?
+  # DISPLAY=$_display  /l/TeamSpeak/update &
+  DISPLAY=$_display  /l/TeamSpeak/ts3client_runscript.sh &
 
   \echo " * Launching Neverwinter"
   #\sudo  \swapoff  --all
@@ -113,10 +114,12 @@ NOTES
 
 _neverwinter_teardown(){
   \echo  " * Teardown.."
-  \gksudo  --message "Tearing down Neverwinter.."  --user root  "\echo -n"
-  # Twice, in case the screen saver kicks in and gksudo fails to grab the keyboard/mouse.
+  # gksudo segfaults if the screen saver kicks in and gksudo fails to grab the keyboard/mouse.
   #   Yes, I want to actually grab the keyboard and mouse and keep a gui interface here, instead of having the user hunt for the following commandline 'sudo'.
-  \gksudo  --message "Tearing down Neverwinter.."  --user root  "\echo -n"
+  false
+  until [[ $? -eq 0 ]]; do
+    \gksudo  --message "Tearing down Neverwinter.."  --user root  "\echo -n"
+  done
   if [[ x$_display == x ]]; then
     ~/.config/openbox/unwine.sh
     \echo " - enabling the screen saver"
