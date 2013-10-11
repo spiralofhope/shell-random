@@ -92,12 +92,18 @@ _neverwinter_run(){
     -enablerawinputsupport 0
   TODO - How do I have a nice it, but have the process run as a regular user?
   TODO - how can I have the command line run with \ to break things onto separate lines to make it nice and clean?
+
+  I installed via Arc, because that's forced now -- although the previous installer is said to work.
+  This is how it would normally be run:
+  "C:\Program Files (x86)\Perfect World Entertainment\Arc\Arc.exe"
+  However, since Arc is actually optional, it can go fuck itself.
 NOTES
   #__GL_THREADED_OPTIMIZATIONS=1  WINEDEBUG=-all  WINEPREFIX=$PWD/_wineprefix \
+
   # Testing:
   __GL_THREADED_OPTIMIZATIONS=1  WINEDEBUG=-all  WINEPREFIX=$PWD/_wineprefix  DISPLAY=$_display \
     /usr/bin/wine \
-    "C:\Program Files (x86)\Perfect World Entertainment\Arc\Arc.exe" \
+    "C:\Program Files (x86)\Perfect World Entertainment\Neverwinter_en\Neverwinter.exe" \
       -enablerawinputsupport 0 \
     >> /dev/null 2>&1
 
