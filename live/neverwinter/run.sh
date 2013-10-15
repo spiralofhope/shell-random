@@ -96,7 +96,7 @@ _neverwinter_run(){
   I installed via Arc, because that's forced now -- although the previous installer is said to work.
   This is how it would normally be run:
   "C:\Program Files (x86)\Perfect World Entertainment\Arc\Arc.exe"
-  However, since Arc is actually optional, it can go fuck itself.
+  However, since Arc is actually optional, I'm opting out.  Unfortunately, this forces the user to type in their password every time.  Bleh.
 NOTES
   #__GL_THREADED_OPTIMIZATIONS=1  WINEDEBUG=-all  WINEPREFIX=$PWD/_wineprefix \
 
