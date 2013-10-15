@@ -2,7 +2,7 @@
 
 
 _convert_setup() {
-  output_filename="${@/%.flac/_ .mp3}"
+  output_filename="${@/%.flac/ _.mp3}"
 }
 
 
