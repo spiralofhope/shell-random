@@ -1,7 +1,7 @@
 #!/bin/sh
 \echo "Alarm started."
 # TODO:  Is there a way to occasionaly display the remaining time?
-\sleep $1
+\sleep $*
 # Visual
 \echo "alarm" | \leafpad &
 # Audio
