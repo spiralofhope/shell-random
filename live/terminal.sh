@@ -14,13 +14,13 @@ terminal_setup() {
   \cd ~
 
 # This was for Unity Linux, possibly for Ubuntu/Lubuntu, does not apply to Gentoo/Sabayon
-  # Check for my favourite font, with a safe fallback.
-#  DISPLAY=:0.0 \xlsfonts | grep vga
-#  if [ $? -eq 1 ]; then
-#    font=-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*
-#  else
-#    font=vga
-#  fi
+# Check for my favourite font, with a safe fallback.
+DISPLAY=:0.0 \xlsfonts | grep vga
+if [ $? -eq 1 ]; then
+  font=-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*
+else
+  font=vga
+fi
 
   terminal_run=0
 }
