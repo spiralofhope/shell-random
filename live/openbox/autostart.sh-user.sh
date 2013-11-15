@@ -30,6 +30,9 @@ connected(){
   # VoIP
   #\twinkle&
 
+  # Password
+  \keepassx &
+
   \nice -n 6 \
     \firefox -P default &
 
@@ -97,8 +100,6 @@ done
 # --
 # -- No net connection required for this stuff
 # --
-
-\keepassx &
 
 # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
 $( \sleep 15 && /l/shell-random/git/live/projects.sh ) &

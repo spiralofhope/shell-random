@@ -474,7 +474,7 @@ _backup_rsync(){
     ` # --sparse ` \
     ` # Skip based on checksum, not mod-time & size: ` \
     ` # --checksum ` \
-    ` # --delete ` \
+    --delete \
     ` # --delete-during ` \
     ` # Deleting before doing the copying ensures that there is enough space for new files. ` \
     ` # If --inplace is used, then that ensures that a file can be copied overtop of the backup, and extra space for a copy-on-write isn't needed. ` \

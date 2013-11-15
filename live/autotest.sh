@@ -405,7 +405,8 @@ get_file_ext() {
         \rm  --force \
           "$AUTOTEST_DIR"/main.log~ \
           "$AUTOTEST_DIR"/mythryl.COMPILE_LOG \
-          "$AUTOTEST_DIR"/read-eval-print-loop.log~
+          "$AUTOTEST_DIR"/read-eval-print-loop.log~ \
+          "$AUTOTEST_DIR"/script.log
       }
       execute_with_debugging() {
         # TODO:  Deal with the shebang issue here too, when I figure debugging out.
@@ -417,7 +418,8 @@ get_file_ext() {
         #\cat "$AUTOTEST_DIR"/read-eval-print-loop.log~
         \rm  --force \
           "$AUTOTEST_DIR"/main.log~ \
-          "$AUTOTEST_DIR"/read-eval-print-loop.log~
+          "$AUTOTEST_DIR"/read-eval-print-loop.log~ \
+          "$AUTOTEST_DIR"/script.log
       }
       return 0
     ;;
