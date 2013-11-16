@@ -69,13 +69,13 @@ _rip_go(){
   \echo
 
 
-# This is the advice I found for the more direct way to do the ripping:
-#
-# for lower quality flash:
-# avconv -i somevideo.flv -acodec copy output.mp3
-#
-# larger videos (flv, mp4) use AAC audio:
-# avconv -i somevideo.ext -acodec copy output.aac
+  # This is some advice I found for a more direct way to do the ripping:
+  #
+  # for lower quality flash:
+  # avconv -i somevideo.flv -acodec copy output.mp3
+  #
+  # larger videos (flv, mp4) use AAC audio:
+  # avconv -i somevideo.ext -acodec copy output.aac
 
 
   # A quick hack just to get webm ripping working.
@@ -123,8 +123,8 @@ _rip_go(){
       # TODO: Check for an error code.
       # FIXME - this should probably be smarter
       if [ ! -e $working_filename.wav.mp3 ]; then
-        \echo  "Something went wrong with the encoding, aborting."
-        return 1
+        \echo  " * ERROR:  Something went wrong with the encoding, aborting."
+        return  1
       fi
 
       \echo
@@ -137,7 +137,7 @@ _rip_go(){
 
 _rip_vbrfix() {
 \echo -----------------------------------
-  \ls -al "$1"
+  \ls  -al  "$1"
 \echo -----------------------------------
   \echo  " * Fixing the mp3 length.."
   working_filename=ripping_temp.$$."$audio_codec"
@@ -164,6 +164,10 @@ _rip_teardown(){
 _rip_sanity_check  "$1"
 _rip_setup
 _rip_go            "$1"
+# TODO - This is a shitty way to deal with errors..
+if [ $? -eq 1 ]; then
+  return  1
+fi
 if [[ ! x"$mp3" == "x" ]]; then
   _rip_vbrfix        "$mp3"
 fi
