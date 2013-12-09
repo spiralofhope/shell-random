@@ -1,0 +1,17 @@
+Spread out the various parts of each file, so I only process the appropriate stuff if there is a certain sort of change.
+For example, if I create a new document, I can search through all others and convert plain text into a link to that new document.
+There is no sense in parsing through the header or footer, or certain other material.
+
+
+The last step should be to bundle everything with the header and footer.
+
+
+
+--
+
+All markup will be trivially easy to understand.
+
+Open with metadata, defining a template.
+
+
+
