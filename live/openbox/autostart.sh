@@ -1,4 +1,4 @@
-##!/bin/bash
+#!/bin/bash
 
 # FIXME - this should be runnable with zsh!
 

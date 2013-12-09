@@ -6,13 +6,13 @@
 
 
 disconnected(){
-  \echo " * Internet connection not detected."
+  \echo  " * Internet connection not detected."
   # I don't do anything special in this case.
 }
 
 
 connected(){
-  \echo " * Internet connection detected."
+  \echo  " * Internet connection detected."
 
   # IRC
   # X-Chat
@@ -33,8 +33,8 @@ connected(){
   # Password
   \keepassx &
 
-  \nice -n 6 \
-    \firefox -P default &
+  \nice  --adjustment=6 \
+    \firefox  -P default &
 
   # Voice Chat
   # TODO:  How do I get Mumble to minimize on startup?
@@ -46,9 +46,6 @@ connected(){
   \claws-mail &
 
   # RSS reader
-  \liferea &
-  # I don't know why in the hell it won't just start up..
-  \sleep 5s
   \liferea &
 }
 
@@ -66,7 +63,7 @@ if [[ $? -eq 127 || $? -eq 2 ]]; then
   disconnected
 else
   # internet=true
-  \zenity --question
+  \zenity  --question
   if [[ $? -eq 0 ]]; then
     connected
   else

@@ -113,8 +113,9 @@ err() {
 # This assumes  /dev/sdx  format.
 _check_if_sdx_is_mounted(){
   # fixme - This isn't really the way to go.
-  #         Perhaps I could:  `\cat /proc/self/mounts`  but does that pose portability concerns?
-  \mount  |  \cut  -d' '  -f1  |  \grep  --quiet  $1
+  #         Perhaps I could:  `\cat  /proc/self/mounts`  but does that pose portability concerns?
+  #\mount  |  \cut  -d' '  -f1  |  \grep  --quiet  "$1"
+  \echo  -n  $( \mount  |  \cut  -d' '  -f1  |  \grep  "$1" )" " | grep --quiet "$1"\ 
   # not mounted:  1
   #     mounted:  0
   return $?
@@ -129,7 +130,7 @@ _find_mount_point(){
   if [ $? -ne 0 ]; then
     _backup_die  "_find_mount_point() is being used on something that's not actually mounted: "  $1
   fi
-  __=$( \mount  |  \grep  $1  |  \cut  -d' '  -f3  )
+  __=$( \mount  |  \grep  $1" "  |  \cut  -d' '  -f3  )
 }
 
 
@@ -138,7 +139,6 @@ _find_mount_point(){
 _fsck_if_not_mounted() {
   _check_if_sdx_is_mounted  $1
   if [ $? -eq 1 ]; then
-    # TODO - needs to be live-tested.
     echo_info  "$1 is "  'not mounted'  ', performing fsck.'
     \fsck  $1
     __=$?
@@ -238,7 +238,9 @@ _detect_partition_type(){
   # /dev/sda1  =>  1
   # todo - bashism
 
-  regex='.*([[:digit:]]+)'
+  #regex='.*([[:digit:]]+)'
+  # Fixes an issue with sda10 being matched as 0.  I've no clue how to clean up the regex to make it less stupid, it doesn't seem to work as expected.  Fucking regexes.
+  regex='...([[:digit:]]+)'
   [[ $one =~ $regex ]]
   local  suffix=${BASH_REMATCH[1]}
 
@@ -368,7 +370,7 @@ _smart_mount() {
 
         # Give some decent output..
         echo_info  'Some info on '  "$one"  '..'
-        \df  --human-readable  --print-type | \grep  $one
+        \df  --human-readable  --print-type | \grep  $one\ 
 
         _find_mount_point  $one
         one=$__
