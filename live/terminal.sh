@@ -13,14 +13,14 @@ terminal_setup() {
   # This fixes a GNOME hotkey issue which was starting the terminal in /  I don't know if this breaks any other usage!
   \cd ~
 
-# This was for Unity Linux, possibly for Ubuntu/Lubuntu, does not apply to Gentoo/Sabayon
-# Check for my favourite font, with a safe fallback.
-DISPLAY=:0.0 \xlsfonts | grep vga
-if [ $? -eq 1 ]; then
-  font=-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*
-else
-  font=vga
-fi
+  # This was for Unity Linux, possibly for Ubuntu/Lubuntu, does not apply to Gentoo/Sabayon
+  # Check for my favourite font, with a safe fallback.
+  DISPLAY=:0.0 \xlsfonts | grep vga
+  if [ $? -eq 1 ]; then
+    font=-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*
+  else
+    font=vga
+  fi
 
   terminal_run=0
 }
