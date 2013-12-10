@@ -43,7 +43,6 @@ terminal_determination() {
 
   # http://www.afterstep.org/aterm.php
   # Zero dependencies, from what I can tell.  Even xterm has a few, on Unity Linux.
-  #if [ $? -eq 127 ]; then
   run_if_exists \
     \aterm \
       ` # Output to the window should not have it scroll to the bottom.` \
@@ -170,13 +169,13 @@ terminal_setup
 #   1) Each program can set a flag.
 #   2) When referring to the programs, pass an option to require+execute with or without with_lines-ness.
 #   It seems straightforward.. good luck, self!
-if [ "x$1" == "xwith_lines" ]; then
+if [[ "x$1" == "xwith_lines" ]]; then
   # Nuke $1
   shift
-  run_if_exists  \sakura     "$@"
   run_if_exists  \lxterminal "$@"
+  run_if_exists  \sakura     "$@"
   run_if_exists  \Terminal   "$@"
 fi
 
-# If just running things, or if none of the with_lines items exist, then attempt the whole list:
+# If not specifying with_lines, or if none of the with_lines programs above actually exist, then attempt the whole list:
 terminal_determination
