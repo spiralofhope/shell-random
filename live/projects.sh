@@ -12,14 +12,14 @@ if [ ! -f "${PROJECTS}/projects.txt" ]; then
   return  1
 fi
 
-\cd "$PROJECTS"
+\cd  "$PROJECTS"
 
 # Make sure it's the first tab.
 # I only need to "&" (background process) for the first summoning of Geany.
-\geany  ./todo.txt &
+\geany  "$PROJECTS"/todo.txt &
 # But I need to wait a bit so it actually gets a process which other files can attach to.
 \sleep  1
-\geany  ./projects.txt
+\geany  "$PROJECTS"/projects.txt
 
 # Open all the other project files.
 for i in *; do
