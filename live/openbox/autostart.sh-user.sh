@@ -98,5 +98,8 @@ done
 # -- No net connection required for this stuff
 # --
 
+# Fuck you and your desktop nonsense, you crappy program.
+\killall  pcmanfm
+
 # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
 $( \sleep 15 && /l/shell-random/git/live/projects.sh ) &
