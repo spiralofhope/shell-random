@@ -41,4 +41,4 @@ for i in *; do
 done
 
 # Switch back to that first tab
-\geany  ./todo.txt &
+\geany  "$PROJECTS"/todo.txt &
