@@ -31,7 +31,7 @@ connected(){
   #\twinkle&
 
   # Password
-  \keepassx &
+  \keepassx  /l/keepassx-passwords--linux-only.kdb  &
 
   \nice  --adjustment=6 \
     \firefox  -P default &
