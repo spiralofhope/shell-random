@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env  zsh
 
 PROJECTS="/l"
 NEW_PROJECT_MESSAGE="New project notes started `date`"
@@ -27,17 +27,25 @@ for i in *; do
   if [ ! -d $i ]; then
     continue
   fi
+  # TODO - iterate through an array, set as a variable ahead of time.
   if [[ $i == 'lost+found' ]]; then
     continue
   fi
   \echo  " * Processing $i"
+  # If there is a file, and it is 0-byte, then don't open it!
+  if [ ! -s "$i/$i.txt" ]; then
+    \echo  "skipping $i"
+    continue
+  fi
   if [ ! -f $i/$i.txt ]; then
     \echo  "   New project, inserting message:\n   $NEW_PROJECT_MESSAGE"
     \echo  "$NEW_PROJECT_MESSAGE" > $i/$i.txt
   fi
-  \cat  $i/$i.txt >> /dev/null
+  # ? Unsure.  Cache the file, in case Geany decides to be stupid?
+  #\cat  $i/$i.txt >> /dev/null
   \geany  $i/$i.txt
-  \sleep  0.2
+  # I recall having issues where multiple instances of Geany would decide to pop up all over the place.  Sad.
+  #\sleep  0.2
 done
 
 # Switch back to that first tab
