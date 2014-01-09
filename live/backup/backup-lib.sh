@@ -16,6 +16,7 @@ source  ./backup-configuration.sh
 # Actually, btrfs didn't list nouser as of 2013-07-05.  But I see mentions of it elsewhere.
 #   https://btrfs.wiki.kernel.org/index.php/Mount_options
 partition_type_83_mount_options=nouser,noatime
+partition_type_7_mount_options=noatime
 
 
 
@@ -314,33 +315,33 @@ _smart_mount() {
         _backup_die  'This is not a partition.'
       ;;
       7)
-        # TODO - needs to be reviewed
         echo_info  'Processing '  'HPFS/NTFS'  ' (e.g. Windows) partition.'
-        _backup_die  'This code has not been rewritten and tested, aborting.'
-        #
-        # Using `ntfsmount` because `mount` doesn't allow read-write access.
-        # http://www.linux-ntfs.org
-        if [ "x$3" = "xsource" ]; then
-          # regular mount is read-only
-          # Better not mount read-only, so that I can have a proper date.txt
-          #\mount /dev/$1$2 /mnt/$3/$2
-  #        \ntfsmount /dev/$1$2 /mnt/$3/$2
+        _check_if_sdx_is_mounted  $one
+        if [[ $? -eq 1 ]]; then
+          # not mounted
+          _fsck_if_not_mounted  $one
+          # /dev/sda1  =>  sda1
+          _basename  "$one"
+          local  smart_mount_working_directory=$( \mktemp  --directory  --suffix=.$identifier.mountpoint  --tmpdir=$working_directory )
 
-  # r-w functionality seems to be built-in in Lubuntu 10.10 and may actually make `mount` better than `ntfsmount`.
-          \mount /dev/$1$2 /mnt/$3/$2
-        else
-  #        \ntfsmount /dev/$1$2 /mnt/$3/$2
-  # r-w functionality seems to be built-in in Lubuntu 10.10 and may actually make `mount` better than `ntfsmount`.
-          \mount /dev/$1$2 /mnt/$3/$2
+          if [[ $two = 'rw' ]]; then
+            echo_info  'mounting '  "$one"  ' read-write.'
+            \mount  -o $partition_type_7_mount_options,rw  $one  "$smart_mount_working_directory"  ;  err  $?
+          fi
+          if [[ $two = 'ro' ]]; then
+            echo_info  'mounting '  "$one"  ' read-only.'
+            \mount  -o $partition_type_7_mount_options,ro  $one  "$smart_mount_working_directory"  ;  err  $?
+          fi
         fi
-        err $?
-        # I've seen the following error occur when I was browsing the mounted filesystem as a regular user.
-        # The script completely bombed out and nothing was triggered after this rsync failure
-        # This was due to the destination running out of space.
-        # FIXME:  Check for free space somehow?  Sigh, this shouldn't be needed!
-        #   rsync: writefd_unbuffered failed to write 4 bytes to socket [sender]: Broken pipe (32)
-        #   rsync: connection unexpectedly closed (84216 bytes received so far) [sender]
-        #   rsync error: error in rsync protocol data stream (code 12) at io.c(600) [sender=3.0.6]
+        # mounted already, or mounted just now.
+
+        # Give some decent output..
+        echo_info  'Some info on '  "$one"  '..'
+        \df  --human-readable  --print-type | \grep  $one\ 
+
+        _find_mount_point  $one
+        one=$__
+        local  type='directory'
       ;;
       82)
         # TODO - needs to be explicitly tested.
