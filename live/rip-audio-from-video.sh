@@ -54,7 +54,7 @@ _rip_setup(){
   working_filename=ripping_temp.$$."$audio_codec"
 
   # TODO: Check for write permissions in the current directory.
-  # TODO: Check that the various working and outfiles don't exist exist (e.g. audiodump.wav)
+  # TODO: Check that the various working and outfiles don't exist (e.g. audiodump.wav)
   # TODO: There's probably a way to string everything together so I don't need a temporary file.  It might even make all of this faster!
 
 }
@@ -119,16 +119,14 @@ _rip_go(){
       \echo  $working_filename.wav "=>" $working_filename.wav.mp3
       \echo
       # -V0 is a bit silly, seeing as we're transcoding.
-      \lame  -V3  $working_filename.wav
-      # TODO: Check for an error code.
-      # FIXME - this should probably be smarter
-      if [ ! -e $working_filename.wav.mp3 ]; then
+      \lame  -V3  $working_filename.wav  $working_filename.mp3
+      if [[ $? -ne 0 || ! -e $working_filename.mp3 ]]; then
         \echo  " * ERROR:  Something went wrong with the encoding, aborting."
         return  1
       fi
 
       \echo
-      \mv  --verbose  $working_filename.wav.mp3  "$mp3"
+      \mv  --verbose  $working_filename.mp3  "$mp3"
     # *)
   esac
 }
@@ -136,9 +134,9 @@ _rip_go(){
 
 
 _rip_vbrfix() {
-\echo -----------------------------------
-  \ls  -al  "$1"
-\echo -----------------------------------
+#  \echo -----------------------------------
+#  \ls  -al  "$1"
+#  \echo -----------------------------------
   \echo  " * Fixing the mp3 length.."
   working_filename=ripping_temp.$$."$audio_codec"
 
