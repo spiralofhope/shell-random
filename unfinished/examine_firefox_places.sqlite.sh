@@ -1,5 +1,11 @@
 #!/usr/bin/env  zsh
 
+# Props to  http://id.motd.org/pivot/entry.php?id=22
+
+# Test this snippet out, to avoid the for-loop:
+#  select a.url, a.title from moz_places a, moz_bookmarks b where a.id=b.fk and b.parent=90;
+
+
 # Tested 2014-02-23 on Lubuntu 13.10, updated recently.
 
 #\sudo  \apt-get  install  sqlite3
