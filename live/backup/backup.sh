@@ -12,7 +12,6 @@
 # TODO - btrfs mount flags, with compression.  Compress everything btrfs, perhaps aggressively, since it's an unused backup.  If the source is different from the target - the source is not compressed, or is compressed differently, will rsync have a hard time of things?  It could be a horrible idea..
 #        This would also have to be tested thoroughly, especially with the new i/o scheduling I've been playing with.
 
-# TODO - nofsck parameter to backup.sh, or as a configuration option/variable.
 
 
 :<<'TODO'
@@ -156,4 +155,8 @@ _backup_die(){
 
 
 # TODO - sanity-checking on these inputs, now?
+# TODO - Using parameters in this way is stupid.  I need to have --nofsck or the like, and allow them to be passed in arbitrary order.  As of this writnig, I don't know how I would implement that and I don't really want to use someone else's library.
+if [[ $3 == nofsck ]]; then
+  _skip_fsck=1
+fi
 _backup_go  "$1"  "$2"

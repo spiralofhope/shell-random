@@ -139,7 +139,9 @@ _find_mount_point(){
 # This assumes  /dev/sdx  format.
 _fsck_if_not_mounted() {
   _check_if_sdx_is_mounted  $1
-  if [ $? -eq 1 ]; then
+  if [ $_skip_fsck -eq 1 ]; then
+    echo_info  "$1 is "  'not being fscked'  ', skipping fsck.'
+  elif [ $? -eq 1 ]; then
     echo_info  "$1 is "  'not mounted'  ', performing fsck.'
     \fsck  $1
     __=$?
@@ -154,7 +156,7 @@ _fsck_if_not_mounted() {
     fi
     err  $__
   else
-    echo_info  "$1 is "  'mounted' ', skipping fsck.'
+    echo_info  "$1 is "  'mounted'  ', skipping fsck.'
   fi
 }
 
