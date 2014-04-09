@@ -139,13 +139,13 @@ _find_mount_point(){
 # This assumes  /dev/sdx  format.
 _fsck_if_not_mounted() {
   _check_if_sdx_is_mounted  $1
-  if [ $_skip_fsck -eq 1 ]; then
+  if [[ $_skip_fsck -eq 1 ]]; then
     echo_info  "$1 is "  'not being fscked'  ', skipping fsck.'
-  elif [ $? -eq 1 ]; then
+  elif [[ $? -eq 1 ]]; then
     echo_info  "$1 is "  'not mounted'  ', performing fsck.'
     \fsck  $1
     __=$?
-    if [ $__ -eq 8 ]; then
+    if [[ $__ -eq 8 ]]; then
       if [[ $ignore_fsck_error_8 = 'true' ]]; then
         echo_info  'fsck gave error ' 8 ', perhaps you need to install btrfs-tools or another similar package.'
         echo_info  '$ignore_fsck_error_8 has been set to ' true ', continuing.'
