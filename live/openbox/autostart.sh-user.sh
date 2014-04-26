@@ -8,6 +8,9 @@
 disconnected(){
   \echo  " * Internet connection not detected."
   # I don't do anything special in this case.
+
+  # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
+  /l/shell-random/git/live/projects.sh
 }
 
 
@@ -31,8 +34,8 @@ connected(){
   #\twinkle&
 
   # Password
-  \keepassx  /l/keepassx-passwords--linux-only.kdb                                   -min  -lock &
-  \keepassx  /mnt/320/windows-data/_inbox/keepassx-passwords--linux-and-windows.kdb  -min  -lock &
+  \keepassx  /l/keepassx-passwords--linux-only.kdb                              -min  -lock &
+  \keepassx  /mnt/320/windows-data/l/keepassx-passwords--linux-and-windows.kdb  -min  -lock &
 
   \nice  --adjustment=6 \
     \firefox  -P default &
@@ -48,6 +51,9 @@ connected(){
 
   # RSS reader
   \liferea &
+
+  # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
+  $( \sleep 15 && /l/shell-random/git/live/projects.sh ) &
 }
 
 
@@ -101,6 +107,3 @@ done
 
 # Fuck you and your desktop nonsense, you crappy program.
 \killall  pcmanfm
-
-# TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-$( \sleep 15 && /l/shell-random/git/live/projects.sh ) &
