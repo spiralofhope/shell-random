@@ -18,9 +18,8 @@ for i in *; do
   # If a directory and not a symlink.
   if [ -d ~/.config/$i -a ! -L ~/.config/$i ]; then
     \mv  ~/.config/$i  ~/.config/${i}--$date
-  else
-    \ln  --force  --no-target-directory  --symbolic  $PWD/$i  ~/.config/$i
   fi
+  \ln  --force  --no-target-directory  --symbolic  $PWD/$i  ~/.config/$i
 done
 
 \echo " .. done. "
