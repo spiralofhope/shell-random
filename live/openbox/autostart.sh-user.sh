@@ -107,3 +107,8 @@ done
 
 # Fuck you and your desktop nonsense, you crappy program.
 \killall  pcmanfm
+
+# Another unnecessary thing.
+# This might be disable-able in some other manner, but I didn't bother to explore alternatives.
+\killall  ibus-daemon
+
