@@ -110,5 +110,7 @@ done
 
 # Another unnecessary thing.
 # This might be disable-able in some other manner, but I didn't bother to explore alternatives.
-\killall  ibus-daemon
+# This fucking thing is a plague that partially locks up my keyboard.
+#   \apt-get  remove  ibus
+#\killall  ibus-daemon
 
