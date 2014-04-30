@@ -136,6 +136,14 @@ terminal_determination() {
     \mrxvt \
       $@
 
+  # Simple Terminal
+  # http://st.suckless.org/
+  # Not tabbed.  Supposedly tab-able using "tabbed" http://tools.suckless.org/tabbed/ but I can't get them to work together.
+  # If I can tweak the font a little more, and get tabbing working, I think I would switch to this.
+  run_if_exists \
+    \st \
+      $0
+
   # http://roxterm.sourceforge.net/
   # This term doesn't feel right
   # Tabbed
