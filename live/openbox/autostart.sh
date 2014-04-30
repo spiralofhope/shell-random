@@ -121,19 +121,24 @@ panel_determination
 # \python /usr/bin/smart-applet &
 
 # Turn the X beep off.
-\xset b off &
+\xset  b off &
 # Or in ~/.inputrc add:
 # set bell-style none
 
 # Hide an inactive mouse.
 # Doesn't come with X
-\unclutter -root -idle 3 &
+\unclutter  -root  -idle 3 &
 
 # Fixes the hotkeys.
-~/.config/openbox/unwine.sh &
+#~/.config/openbox/unwine.sh &
 
 # launch any user-specific stuff:
 ~/.config/openbox/autostart.sh-user.sh &
+
+# A really simple screen saver/locker.
+\xautolock  -time 5  -locker slock &
+
+
 
 # this doesn't work here, but only in ~/.xsession
 # exec openbox-session
