@@ -92,12 +92,6 @@ run_tabbed_st_if_they_exist(){
 
 terminal_determination() {
 
-  # http://tools.suckless.org/tabbed/
-  # http://st.suckless.org/
-  # I do enjoy how lxterminal will spawn another terminal in the same directory.
-  # FIXME - needs a multiplexer before I'll consider it again.
-  run_tabbed_st_if_they_exist
-
   # http://www.afterstep.org/aterm.php
   # Zero dependencies, from what I can tell.  Even xterm has a few, on Unity Linux.
   run_if_exists \
@@ -158,6 +152,12 @@ terminal_determination() {
       -sl 10000 \
       -geometry 80x24+0+0 \
       $@
+
+  # http://tools.suckless.org/tabbed/
+  # http://st.suckless.org/
+  # I do enjoy how lxterminal will spawn another terminal in the same directory.
+  # screen is obnoxious to scroll back with.  It would have to be investigated before I would use it.
+  run_tabbed_st_if_they_exist
 
   # TODO:  Website
   # Bloated, but at least it can use the default system fixed width font so it looks right.
