@@ -30,9 +30,48 @@ terminal_setup() {
 
 
 run_if_exists(){
-  which  $1  >  /dev/null
+  \which  $1  >  /dev/null
   if [[ $? -eq 0 ]]; then
-    $@
+    $@ \
+    &
+    exit  0
+  fi
+}
+
+
+
+# TODO - I actually don't want to use a terminal multiplexer at all!
+# TODO - customize tabbed:
+#   control-pageup/pagedown to change tabs
+#   control-shift-pageup/pagedown to move a tab
+#   control-t to spawn a new tab
+#   alt-n to change to a specific tab
+run_tabbed_st_if_they_exist(){
+  \which  \tabbed  >  /dev/null
+  local  tabbed=$?
+  \which  \st      >  /dev/null
+  local  st=$?
+  \which  \screen  >  /dev/null
+  local  screen=$?
+  \which  \tmux    >  /dev/null
+  local  tmux=$?
+  # TODO - Figure out which one I want by default.
+  # TODO - I have notes on other terminal multiplexers.
+  if   [[ $screen -eq 0 ]]; then
+    # https://www.gnu.org/software/screen/
+    local  terminal_multiplexer=\screen
+  elif [[ $tmux   -eq 0 ]]; then
+    # http://tmux.sourceforge.net/
+    local  terminal_multiplexer=\tmux
+  fi
+  if [[ $tabbed -eq 0 && $st -eq 0 ]]; then
+    \tabbed \
+      -c     ` # Close tabbed when the last tab is closed. ` \
+      -r 2 \
+      \st \
+        -w '' \
+` #        -e $terminal_multiplexer ` \
+    &
     exit  0
   fi
 }
@@ -40,6 +79,10 @@ run_if_exists(){
 
 
 terminal_determination() {
+
+  # http://tools.suckless.org/tabbed/
+  # http://st.suckless.org/
+  run_tabbed_st_if_they_exist
 
   # http://www.afterstep.org/aterm.php
   # Zero dependencies, from what I can tell.  Even xterm has a few, on Unity Linux.
