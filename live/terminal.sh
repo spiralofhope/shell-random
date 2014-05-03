@@ -47,30 +47,56 @@ run_if_exists(){
 #   control-t to spawn a new tab
 #   alt-n to change to a specific tab
 # TODO - fix the title
+
 run_tabbed_st_if_they_exist(){
-  if [[ $( \which  \tabbed != '' ) && \
-        $( \which  \st     != '' ) ]]; then
-    # These were erratic:
-#    local  windowid=tabbed-$$
-#    local  windowid=$( mktemp  --dry-run )
-#    local  windowid=tabbed-$$-$( mktemp  --dry-run )
-    # Imperfect, but it'll do.  Depends on GNU coreutils.
-    local  windowid=$( \date  +%s )  # The number of seconds since "UNIX epoch" (1970-01-01).
-    \tabbed \
-      -c               ` # Close tabbed when the last tab is closed. ` \
-      -r 2             ` # will replace the narg th argument in command with the window id, rather than appending it to the end. ` \
-                       ` # I have no clue what this does, but it's key to making everything work.  ` \
-      \st \
-        -w $windowid   ` # Attach st to a specific window. ` \
-                       ` # I've made that window unique, so I can spawn multiple instances of tabbed+st, e.g. for multiple desktops. ` \
-    &
-    exit  0
+  \which \tabbed > /dev/null   ;   local  tabbed=$?   ;   if  [ $tabbed -ne 0 ]; then return 1; fi
+  \which \st     > /dev/null   ;   local  st=$?       ;   if  [ $st     -ne 0 ]; then return 1; fi
+
+  \which \screen > /dev/null   ;   local  screen=$?
+  \which \tmux   > /dev/null   ;   local  tmux=$?
+  if [ $screen -ne 0 ] && [ $tmux -ne 0 ]; then return 1; fi
+
+  # TODO - Figure out which one I want by default.
+  # TODO - I have notes on other terminal multiplexers.
+  if [[ $screen -eq 0 ]]; then
+    # https://www.gnu.org/software/screen/
+    # TODO - customize the scrollback
+    #   screen uses C-a ESC  --  This is the copy feature.  Sigh, GNU.
+    local terminal_multiplexer=\screen
+  elif [[ $tmux -eq 0 ]]; then
+    # http://tmux.sourceforge.net/
+    # TODO - customize the scrollback
+    #   tmux uses C-b [
+    local terminal_multiplexer=\tmux
   fi
+
+  # These were erratic:
+#  local  windowid=tabbed-$$
+#  local  windowid=$( mktemp  --dry-run )
+#  local  windowid=tabbed-$$-$( mktemp  --dry-run )
+  # Imperfect, but it'll do.  Depends on GNU coreutils.
+  local  windowid=$( \date  +%s )  # The number of seconds since "UNIX epoch" (1970-01-01).
+  \tabbed \
+    -c               ` # Close tabbed when the last tab is closed. ` \
+    -r 2             ` # will replace the narg th argument in command with the window id, rather than appending it to the end. ` \
+                     ` # I have no clue what this does, but it's key to making everything work.  ` \
+    \st \
+      -w $windowid   ` # Attach st to a specific window. ` \
+                     ` # I've made that window unique, so I can spawn multiple instances of tabbed+st, e.g. for multiple desktops. ` \
+      -e $terminal_multiplexer \
+  &
+  exit  0
 }
 
 
 
 terminal_determination() {
+
+  # http://tools.suckless.org/tabbed/
+  # http://st.suckless.org/
+  # I do enjoy how lxterminal will spawn another terminal in the same directory.
+  # FIXME - needs a multiplexer before I'll consider it again.
+  run_tabbed_st_if_they_exist
 
   # http://www.afterstep.org/aterm.php
   # Zero dependencies, from what I can tell.  Even xterm has a few, on Unity Linux.
@@ -132,12 +158,6 @@ terminal_determination() {
       -sl 10000 \
       -geometry 80x24+0+0 \
       $@
-
-  # http://tools.suckless.org/tabbed/
-  # http://st.suckless.org/
-  # I do enjoy how lxterminal will spawn another terminal in the same directory.
-  # FIXME - needs a multiplexer before I'll consider it again.
-  run_tabbed_st_if_they_exist
 
   # TODO:  Website
   # Bloated, but at least it can use the default system fixed width font so it looks right.
