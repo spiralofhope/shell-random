@@ -4,15 +4,18 @@
 
 # TODO - This can't deal with the process being run by another user and being denied permission to kill their process.
 # Yes, I could also use `pidof`, except it won't work if there are multiple instances or if there is, say, an xautolock which isn't running slock.
-local  slock_pid=$( \
+slock_pid=$( \
   \ps  ax |\
   \grep  xautolock |\
   \grep  slock |\
+  \xargs              ` # Trim whitespace ` |\
   \cut \
     -d' ' \
     -f1 \
 )
+
 \echo  'The slock pid is' $slock_pid
+
 \zenity \
   --question \
   --title='' \
