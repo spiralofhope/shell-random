@@ -92,6 +92,10 @@ run_tabbed_st_if_they_exist(){
 
 terminal_determination() {
 
+  run_if_exists \
+    \evilvte \
+      $@
+
   # http://www.afterstep.org/aterm.php
   # Zero dependencies, from what I can tell.  Even xterm has a few, on Unity Linux.
   run_if_exists \
