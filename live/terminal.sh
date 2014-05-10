@@ -1,31 +1,132 @@
-#!/bin/bash
+#!/bin/zsh
+# zsh.  Because fuck all of bash's heredoc and array bullshit.
 
-# Run through various terminals to find one that's installed.. '
 
-# Not tabbed?  Use `screen`.  There's not much point for using screen locally, in a windowed environment, unless you're REALLY tight on memory.
-#   `screen` screws up the scrollback.
-#   one optimal usage might be:  screen -a -D -R -q -T term -h 1000 -x .. but I can't get this to work for me.
-#   \xterm -fn vga -bg black -fg gray -cr darkgreen -sl 10000 -geometry 80x24+0+0 -e screen -q
+# OH FUCK ME!
+# evilvte SAYS it has a geometry feature, but it doesn't ACTUALLY have one.  Fuck right off!
+# Maybe I can force something through the window manager, but I'd want it to only be temporarily forced.  evilvte can give itself a custom WM_CLASS class and WM_CLASS name.  Maybe I can leverage that.
 
-# TODO:  Implement a universal parameter thingy, so that this script can be passed parameters and it will translate them into the appropriate format for each terminal.  This is necessary for universality.
+
+# --
+# -- terminal.sh
+# -- Run through various terminals to find one which is installed.
+# --
+
+
+
+# Is a terminal not tabbed?  Consider a terminal multiplexer like  `screen`  or  `tmux`
+#   `screen`  screws up the scrollback.
+#   One optimal usage might be:  \screen  -a  -D  -R  -q  -T term  -h 1000  -x   .. but I can't get this to work for me.
+#   \xterm  -fn vga  -bg black  -fg gray  -cr darkgreen  -sl 10000  -geometry 80x24+0+0  -e \screen -q
+
+
+
+# Sometimes the user knows what they're doing, and there's really no need for this script at all.
+if [[ "x$1" == "xFORCE" ]]; then
+  # Nuke $1
+  shift
+  \echo  "Running $@"
+  \eval  $@
+  \exit  0
+fi
 
 
 
 terminal_setup() {
-  # This fixes a GNOME hotkey issue which was starting the terminal in /  I don't know if this breaks any other usage!
+  # This fixes a GNOME hotkey issue which was starting the terminal in /
+  #   I don't know if this breaks any other usage!
   #\cd  ~
 
-  # This was for Unity Linux, possibly for Ubuntu/Lubuntu, does not apply to Gentoo/Sabayon
+  # 2014-05-10 - This bit here very old.  I'm not even installing that vga font any more.  It's been left here for reference.
+  # This was for Unity Linux, possibly for Ubuntu/Lubuntu.  Does not apply to Gentoo/Sabayon.
+  #
   # Check for my favourite font, with a safe fallback.
-  # Not sure why I originally used  DISPLAY=  here.
-  #DISPLAY=:0.0  \xlsfonts  |  \grep  vga
   \xlsfonts  |  \grep  --line-regexp  --quiet  vga
   if [[ $? -eq 1 ]]; then
     font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
   else
     font="vga"
   fi
+
+  # Note that I am unable to do  \terminal  to guarantee I'm not bumping into an alias or the like.   So instead, I am using absolute paths.
+  # TODO - expand this list.
+  terminals_without_lines=(
+    /usr/bin/evilvte
+    /usr/bin/aterm
+    /usr/bin/lxterminal
+    /usr/bin/sakura
+    /usr/bin/Terminal
+  )
+
+  terminals_with_lines=(
+    /usr/bin/evilvte
+    /usr/bin/lxterminal
+    /usr/bin/sakura
+    /usr/bin/Terminal
+	)
 }
+
+
+
+determine_which_terminal_to_run(){
+  determine_terminal_existance(){
+    for i in $1; do
+      # Trim whitespace.
+      i=$( \echo  $i | \xargs )
+      \which  $i > /dev/null
+      if [ $? -eq 0 ]; then
+        \echo  $i
+        break
+      fi
+    done
+  }
+
+  if [[ "x$1" == "xwith_lines" ]]; then
+    # Nuke $1
+    shift
+    determine_terminal_existance  $terminals_with_lines
+  else
+    determine_terminal_existance  $terminals_without_lines
+  fi
+}
+
+
+
+launch_terminal(){
+  if [[ x$1 == 'x' ]]; then
+    \echo  "ERROR:  No valid terminal was found.  Edit this script to add one."
+    \echo  "  \nano  $0"
+    exit  1
+  else
+    \echo  "Running $1"
+  fi
+
+  case $1 in
+    /usr/bin/evilvte)
+      \eval  $terminal_to_run  $@
+    ;;
+    *)
+      \echo foo
+    ;;
+  esac
+}
+
+
+
+terminal_setup
+launch_terminal  $( determine_which_terminal_to_run )
+
+
+
+exit 0
+# ---
+# ---
+# ---
+# EARLIER CODE WHICH IS HERE FOR REFERENCE AND WILL BE REPLACED
+# ---
+# ---
+# ---
+
 
 
 
@@ -243,6 +344,7 @@ terminal_setup
 if [[ "x$1" == "xwith_lines" ]]; then
   # Nuke $1
   shift
+  run_if_exists  \evilvte    "$@"
   run_if_exists  \lxterminal "$@"
   run_if_exists  \sakura     "$@"
   run_if_exists  \Terminal   "$@"
