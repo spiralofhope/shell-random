@@ -1,5 +1,7 @@
 #!/usr/bin/env  zsh
 
+# FIXME - this isn't working to start new projects for newly-created folders!
+
 PROJECTS="/l"
 NEW_PROJECT_MESSAGE="New project notes started `date`"
 
