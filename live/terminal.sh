@@ -1,11 +1,5 @@
-#!/bin/zsh
+#!/usr/bin/env  zsh
 # zsh.  Because fuck all of bash's heredoc and array bullshit.
-
-
-# OH FUCK ME!
-# evilvte SAYS it has a geometry feature, but it doesn't ACTUALLY have one.  Fuck right off!
-# Maybe I can force something through the window manager, but I'd want it to only be temporarily forced.  evilvte can give itself a custom WM_CLASS class and WM_CLASS name.  Maybe I can leverage that.
-
 
 # --
 # -- terminal.sh
@@ -14,10 +8,48 @@
 
 
 
-# Is a terminal not tabbed?  Consider a terminal multiplexer like  `screen`  or  `tmux`
-#   `screen`  screws up the scrollback.
-#   One optimal usage might be:  \screen  -a  -D  -R  -q  -T term  -h 1000  -x   .. but I can't get this to work for me.
-#   \xterm  -fn vga  -bg black  -fg gray  -cr darkgreen  -sl 10000  -geometry 80x24+0+0  -e \screen -q
+# --
+# -- Is a terminal not tabbed?
+# --
+#
+# tabbed
+#
+#   http://tools.suckless.org/tabbed/
+#   Invocation notes are at the bottom of this script.
+#   TODO - customize tabbed:
+#     - Set a maximum tab width.
+#     - control-pageup/pagedown to change tabs
+#     - control-shift-pageup/pagedown to move a tab
+#     - control-t to spawn a new tab
+#     - alt-n to change to a specific tab
+#
+# (window manager)
+#
+#   Some window managers allow any arbitrary application to be tabbed.
+#   TODO - give a rough list
+
+
+
+# --
+# -- Is a terminal not tabbed?
+# -- Does a terminal not support scrollback?
+#
+#    Consider a terminal multiplexer.
+#    TODO - I have notes on other terminal multiplexers.
+#
+# tmux
+#
+#   http://tmux.sourceforge.net/
+#   TODO - customize the scrollback
+#     uses C-b [
+#
+# screen
+#
+#   https://www.gnu.org/software/screen/
+#   TODO - customize the scrollback
+#     uses C-a ESC  --  This is the copy feature.  Sigh, GNU.
+#   One optimal invocation might be:  \screen  -a  -D  -R  -q  -T term  -h 1000  -x   .. but I can't get this to work for me.
+#     \xterm  -fn vga  -bg black  -fg gray  -cr darkgreen  -sl 10000  -geometry 80x24+0+0  -e \screen -q
 
 
 
@@ -25,10 +57,16 @@
 if [[ "x$1" == "xFORCE" ]]; then
   # Nuke $1
   shift
-  \echo  "Running $@"
+  \echo  "Force-running $@"
   \eval  $@
   \exit  0
 fi
+
+
+
+trim_whitespace() {
+  \echo  $1 | \xargs
+}
 
 
 
@@ -45,34 +83,45 @@ terminal_setup() {
   if [[ $? -eq 1 ]]; then
     font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
   else
+    # If this fallback fails, terminals have a default in place.
     font="vga"
   fi
 
-  # Note that I am unable to do  \terminal  to guarantee I'm not bumping into an alias or the like.   So instead, I am using absolute paths.
-  # TODO - expand this list.
+  # Note that I am unable to do something like  \terminal_name  to guarantee I'm not bumping into an alias or the like.
+  #   So instead, I am using absolute paths.
+  #   TODO - Figure out how to use  \terminal_name
   terminals_without_lines=(
-    /usr/bin/evilvte
     /usr/bin/aterm
     /usr/bin/lxterminal
     /usr/bin/sakura
     /usr/bin/Terminal
+    /usr/bin/gnome-terminal
+    /usr/bin/Terminal
+    /usr/bin/terminal
+    /usr/bin/lilyterm
+    /usr/bin/mrxvt
+    /usr/bin/roxterm
+    /usr/bin/terminator
+    /usr/bin/st
+    Eterm
+    /usr/bin/evilvte
   )
 
   terminals_with_lines=(
-    /usr/bin/evilvte
     /usr/bin/lxterminal
     /usr/bin/sakura
     /usr/bin/Terminal
+    /usr/bin/evilvte
+    /usr/bin/st
 	)
 }
 
 
 
-determine_which_terminal_to_run(){
-  determine_terminal_existance(){
-    for i in $1; do
-      # Trim whitespace.
-      i=$( \echo  $i | \xargs )
+determine_which_terminal_to_run() {
+  determine_terminal_existance() {
+    for i in $@; do
+      i=$( \echo  $( trim_whitespace  $i ) )
       \which  $i > /dev/null
       if [ $? -eq 0 ]; then
         \echo  $i
@@ -92,151 +141,177 @@ determine_which_terminal_to_run(){
 
 
 
-launch_terminal(){
+launch_terminal() {
   if [[ x$1 == 'x' ]]; then
     \echo  "ERROR:  No valid terminal was found.  Edit this script to add one."
-    \echo  "  \nano  $0"
     exit  1
   else
     \echo  "Running $1"
   fi
 
-  case $1 in
+  # The below two lines let me use $i to refer to $1 and $@ to refer to $2 $3 $4 etc.
+  #   TODO - is there a $2* or some such?
+  i=$1
+  shift
+  case $i in
+
+    /usr/bin/aterm)
+      # aterm
+      # http://www.afterstep.org/aterm.php
+      # Tabbed
+      # TODO - Does this thing actually have *no* dependencies?
+      \eval  $i \
+        ` # Output to the window should not have it scroll to the bottom.` \
+        -si \
+        ` # No visual bell. ` \
+        +vb \
+        ` # No scrollbar. ` \
+        +sb \
+        ` # The default font can do fancy designs. ` \
+        ` # -font default ` \
+        ` # My font addition ` \
+        -fn $font \
+        -bg black \
+        -fg gray \
+        -cr darkgreen \
+        -sl 10000 \
+        -geometry 80x24+0+0 \
+        $@
+    ;;
+
+    Eterm)
+      # Eterm
+      # http://www.eterm.org/
+      # Tabbed
+      # TODO - font
+      # TODO - geometry
+      # Has dependencies.. I don't want to use it.
+      \eval  $i  $@
+    ;;
+
     /usr/bin/evilvte)
-      \eval  $terminal_to_run  $@
+      # evilvte
+      # TODO - website
+      # Tabbed
+      # TODO - font
+      # TODO - geometry
+      # evilvte CLAIMS to have a geometry feature, but it doesn't ACTUALLY have one!
+      #   Maybe I can force something through the window manager, but I'd want it to only be temporarily forced.  evilvte can give itself a custom WM_CLASS class and WM_CLASS name.  Maybe I can leverage that.
+      \eval  $i  $@
     ;;
-    *)
-      \echo foo
+
+    /usr/bin/gnome-terminal)
+      # TODO - name
+      # TODO - Website
+      # Bloated, but at least it can use the default system fixed width font so it looks right.
+      # Tabbed
+      # TODO - font
+      \eval  $i \
+      --geometry 80x24+0+0 \
+      $@
     ;;
-  esac
-}
 
+    /usr/bin/lilyterm)
+      # TODO - name
+      # http://lilyterm.luna.com.tw/
+      # Tabbed
+      # TODO - font
+      # TODO - geometry
+      \eval  $i  $@
+    ;;
 
+    /usr/bin/lxterminal)
+      # LXTerminal
+      # http://wiki.lxde.org/en/LXTerminal
+      # http://sourceforge.net/projects/lxde/files/LXTerminal%20%28terminal%20emulator%29/
+      # Tabbed
+      #   New tabs are opened in the same directory as the current tab.
+      # I cannot set a font at the command line.
+      \eval  $i \
+        --geometry=80x24 \
+        $@
+    ;;
 
-terminal_setup
-launch_terminal  $( determine_which_terminal_to_run )
+    /usr/bin/mrxvt)
+      # TODO - name
+      # http://materm.sourceforge.net/wiki/
+      # (Formerly materm)
+      # TODO - my options from the Zaurus
+      # Tabbed
+      # TODO - font
+      # TODO - geometry
+      \eval  $i  $@
+    ;;
 
+    /usr/bin/roxterm)
+      # TODO - name
+      # http://roxterm.sourceforge.net/
+      # Tabbed
+      # TODO - font selection
+      # TODO - geometry
+      # This term doesn't feel right
+      \eval  $i  $@
+    ;;
 
-
-exit 0
-# ---
-# ---
-# ---
-# EARLIER CODE WHICH IS HERE FOR REFERENCE AND WILL BE REPLACED
-# ---
-# ---
-# ---
-
-
-
-
-run_if_exists(){
-  if [[ $( \which $1 ) != '' ]]; then
-    $@ \
-    &
-    exit  0
-  fi
-}
-
-
-
-# FIXME - before this commit were terminal multiplexer notes.  st doesn't support scrollback, so I need a multiplexer with one.
-# TODO - customize tabbed:
-#   Set a maximum tab width.
-#   control-pageup/pagedown to change tabs
-#   control-shift-pageup/pagedown to move a tab
-#   control-t to spawn a new tab
-#   alt-n to change to a specific tab
-# TODO - fix the title
-
-run_tabbed_st_if_they_exist(){
-  \which \tabbed > /dev/null   ;   local  tabbed=$?   ;   if  [ $tabbed -ne 0 ]; then return 1; fi
-  \which \st     > /dev/null   ;   local  st=$?       ;   if  [ $st     -ne 0 ]; then return 1; fi
-
-  \which \screen > /dev/null   ;   local  screen=$?
-  \which \tmux   > /dev/null   ;   local  tmux=$?
-  if [ $screen -ne 0 ] && [ $tmux -ne 0 ]; then return 1; fi
-
-  # TODO - Figure out which one I want by default.
-  # TODO - I have notes on other terminal multiplexers.
-  if [[ $screen -eq 0 ]]; then
-    # https://www.gnu.org/software/screen/
-    # TODO - customize the scrollback
-    #   screen uses C-a ESC  --  This is the copy feature.  Sigh, GNU.
-    local terminal_multiplexer=\screen
-  elif [[ $tmux -eq 0 ]]; then
-    # http://tmux.sourceforge.net/
-    # TODO - customize the scrollback
-    #   tmux uses C-b [
-    local terminal_multiplexer=\tmux
-  fi
-
-  # These were erratic:
-#  local  windowid=tabbed-$$
-#  local  windowid=$( mktemp  --dry-run )
-#  local  windowid=tabbed-$$-$( mktemp  --dry-run )
-  # Imperfect, but it'll do.  Depends on GNU coreutils.
-  local  windowid=$( \date  +%s )  # The number of seconds since "UNIX epoch" (1970-01-01).
-  \tabbed \
-    -c               ` # Close tabbed when the last tab is closed. ` \
-    -r 2             ` # will replace the narg th argument in command with the window id, rather than appending it to the end. ` \
-                     ` # I have no clue what this does, but it's key to making everything work.  ` \
-    \st \
-      -w $windowid   ` # Attach st to a specific window. ` \
-                     ` # I've made that window unique, so I can spawn multiple instances of tabbed+st, e.g. for multiple desktops. ` \
-      -e $terminal_multiplexer \
-  &
-  exit  0
-}
-
-
-
-terminal_determination() {
-
-  run_if_exists \
-    \evilvte \
-      $@
-
-  # http://www.afterstep.org/aterm.php
-  # Zero dependencies, from what I can tell.  Even xterm has a few, on Unity Linux.
-  run_if_exists \
-    \aterm \
-      ` # Output to the window should not have it scroll to the bottom.` \
-      -si \
-      ` # No visual bell. ` \
-      +vb \
-      ` # No scrollbar. ` \
-      +sb \
-      ` # The default font can do fancy designs. ` \
-      ` # -font default ` \
-      ` # My font addition ` \
-      -fn $font \
-      -bg black \
-      -fg gray \
-      -cr darkgreen \
-      -sl 10000 \
-      -geometry 80x24+0+0 \
-      $@
-
-  # http://wiki.lxde.org/en/LXTerminal
-  # http://sourceforge.net/projects/lxde/files/LXTerminal%20%28terminal%20emulator%29/
-  # New tabs are opened in the same directory as the current tab.
-  run_if_exists \
-    \lxterminal \
-      --geometry=80x24 \
-      $@
-
-  # http://pleyades.net/david/sakura.php
-  # Tabbed
-  # when using bash as the default shell, the prompt doesn't immediately appear.  zsh works fine.
-  run_if_exists \
-    \sakura \
+    /usr/bin/sakura)
+      # Sakura
+      # http://pleyades.net/david/sakura.php
+      # Tabbed
+      # When using bash as the default shell, the prompt doesn't immediately appear.
+      #   zsh works fine.
+      # TODO - font
+      \eval  $i \
       --geometry 80x24+1+1 \
       $@
+    ;;
 
-  # http://invisible-island.net/xterm/
-  run_if_exists \
-    \xterm \
+    /usr/bin/st)
+      # Simple Terminal
+      # http://st.suckless.org/
+      # Not tabbed.
+      # TODO - font
+      # TODO - geometry
+      # TODO - The title does not change when the current working directory is changed.
+      #        I have been unable to fix this.
+      \eval  $i  $@
+    ;;
+
+    /usr/bin/Terminal)
+      # TODO - name
+      # TODO - Website
+      # Tabbed
+      # TODO - font
+      \eval  $i \
+      --geometry 80x24+0+0 \
+      $@
+    ;;
+
+    /usr/bin/terminal)
+      # TODO - name
+      # TODO - Website
+      # Tabbed
+      # TODO - font
+      \eval  $i \
+      --geometry 80x24+0+0 \
+      $@
+    ;;
+
+    /usr/bin/terminator)
+      # Terminator
+      # http://software.jessies.org/terminator/
+      # Tabbed
+      # Holy shit, their geometry is pixel based, not character based like everyone else in the universe.
+      #\terminator --geometry 80x24+0+0 $@
+      \eval  $i \
+        --geometry +0+0 \
+        $@
+    ;;
+
+    /usr/bin/xterm)
+      # TODO - name
+      # http://invisible-island.net/xterm/
+      # Tabbed
+      \eval  $i \
         ` # Output to the window should not have it scroll to the bottom.` \
       -si \
         ` # No visual bell. ` \
@@ -257,98 +332,58 @@ terminal_determination() {
       -sl 10000 \
       -geometry 80x24+0+0 \
       $@
+    ;;
 
-  # http://tools.suckless.org/tabbed/
-  # http://st.suckless.org/
-  # I do enjoy how lxterminal will spawn another terminal in the same directory.
-  # screen is obnoxious to scroll back with.  It would have to be investigated before I would use it.
-  run_tabbed_st_if_they_exist
-
-  # TODO:  Website
-  # Bloated, but at least it can use the default system fixed width font so it looks right.
-  # Tabbed
-  run_if_exists \
-    \gnome-terminal \
-      --geometry 80x24+0+0 \
-      $@
-
-  # TODO:  Website
-  # Tabbed
-  run_if_exists \
-    \Terminal \
-      --geometry 80x24+0+0 \
-      $@
-
-  # TODO:  Website
-  # Tabbed
-  run_if_exists \
-    \terminal \
-      --geometry 80x24+0+0 \
-      $@
-
-  # http://lilyterm.luna.com.tw/
-  # Tabbed
-  run_if_exists \
-    \lilyterm \
-      $@
-
-  # http://materm.sourceforge.net/wiki/
-  # (Formerly materm)
-  # FIXME: my options from the Zaurus
-  # Tabbed
-  run_if_exists \
-    \mrxvt \
-      $@
-
-  # Simple Terminal
-  # http://st.suckless.org/
-  # Not tabbed.  Supposedly tab-able using "tabbed" http://tools.suckless.org/tabbed/ but I can't get them to work together.
-  # If I can tweak the font a little more, and get tabbing working, I think I would switch to this.
-  run_if_exists \
-    \st \
-      $0
-
-  # http://roxterm.sourceforge.net/
-  # This term doesn't feel right
-  # Tabbed
-  run_if_exists \
-    \roxterm \
-      $@
-
-  # http://software.jessies.org/terminator/
-  # Tabbed
-  # Holy shit, their geometry is pixel based, not character based like everyone else in the universe.
-  #\terminator --geometry 80x24+0+0 $@
-  run_if_exists \
-    \terminator \
-      --geometry +0+0 \
-      $@
-
-  # http://www.eterm.org/
-  # Has dependencies.. I won't want to use it.
-  #run_if_exists \
-  #  \Eterm
+    *)
+      \echo  ''
+    ;;
+  esac
 }
 
 
 
-# --
-# -- Begin
-# --
-
 terminal_setup
-# TODO:  This can be redone.  The knowledge of "with_lines-ness" can be moved up into the individual programs.
-#   1) Each program can set a flag.
-#   2) When referring to the programs, pass an option to require+execute with or without with_lines-ness.
-#   It seems straightforward.. good luck, self!
-if [[ "x$1" == "xwith_lines" ]]; then
-  # Nuke $1
-  shift
-  run_if_exists  \evilvte    "$@"
-  run_if_exists  \lxterminal "$@"
-  run_if_exists  \sakura     "$@"
-  run_if_exists  \Terminal   "$@"
-fi
+terminal_to_run=$( \echo  $( determine_which_terminal_to_run ) )
+launch_terminal  $terminal_to_run
 
-# If not specifying with_lines, or if none of the with_lines programs above actually exist, then attempt the whole list:
-terminal_determination
+
+
+exit $?
+# --
+# -- TODO - tabbed st
+# --
+# This code worked when it was created, but that was for a different edition of terminal.sh
+
+# st doesn't support scrollback, so I need a multiplexer for that.
+run_tabbed_st_if_they_exist() {
+  \which \tabbed > /dev/null   ;   local  tabbed=$?   ;   if  [ $tabbed -ne 0 ]; then return 1; fi
+  \which \st     > /dev/null   ;   local  st=$?       ;   if  [ $st     -ne 0 ]; then return 1; fi
+
+  \which \screen > /dev/null   ;   local  screen=$?
+  \which \tmux   > /dev/null   ;   local  tmux=$?
+  if [ $screen -ne 0 ] && [ $tmux -ne 0 ]; then return 1; fi
+
+  # TODO - Figure out which one I want by default.
+  if [[ $screen -eq 0 ]]; then
+    local terminal_multiplexer=\screen
+  elif [[ $tmux -eq 0 ]]; then
+    local terminal_multiplexer=\tmux
+  fi
+
+  # These were erratic:
+  #   local  windowid=tabbed-$$
+  #   local  windowid=$( \mktemp  --dry-run )
+  #   local  windowid=tabbed-$$-$( \mktemp  --dry-run )
+  # This is imperfect, but it'll do.  Depends on GNU coreutils.
+  local  windowid=$( \date  +%s )  # The number of seconds since "UNIX epoch" (1970-01-01).
+  \tabbed \
+    -c               ` # Close tabbed when the last tab is closed. ` \
+    -r 2             ` # will replace the narg th argument in command with the window id, rather than appending it to the end. ` \
+                     ` # I have no clue what this does, but it's key to making everything work.  ` \
+    \st \
+      -w $windowid   ` # Attach st to a specific window. ` \
+                     ` # I've made that window unique, so I can spawn multiple instances of tabbed+st, e.g. for multiple desktops. ` \
+      -e $terminal_multiplexer \
+  &
+  exit  0
+}
