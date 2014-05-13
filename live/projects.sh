@@ -29,10 +29,6 @@ for i in *; do
   if [ ! -d $i ]; then
     continue
   fi
-  # TODO - iterate through an array, set as a variable ahead of time.
-  if [[ $i == 'lost+found' ]]; then
-    continue
-  fi
   \echo  " * Processing $i"
   # If there is a file, and it is 0-byte, then don't open it!
   if [ ! -s "$i/$i.txt" ]; then
