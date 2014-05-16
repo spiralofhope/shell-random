@@ -88,7 +88,7 @@ fi
 
 
 # launch any user-specific stuff:
-~/.config/openbox/autostart.sh-user.sh &
+~/.config/openbox/autostart.sh-applications.sh &
 
 
 
