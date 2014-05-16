@@ -10,7 +10,7 @@ disconnected(){
   # I don't do anything special in this case.
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  \sh  -c /l/shell-random/git/live/projects.sh
+  /l/shell-random/git/live/projects.sh
 }
 
 
@@ -102,12 +102,11 @@ done
 
 
 # --
-# -- No net connection required for this stuff
+# -- No net connection required for stuff down here.
 # --
 
-# Fuck you and your desktop nonsense, you crappy program.
-\killall  --quiet  pcmanfm
 
-# This fucking thing is a plague that partially locks up my keyboard.
-#   \apt-get  remove  ibus
-\killall  --quiet  ibus-daemon
+# An initial terminal
+# \xterm  -fn 9x15  -bg black  -fg gray  -sl 10000  -geometry 80x24+0+0 &
+# \Terminal  --geometry 80x24+10+10 &
+# /l/shell-random/git/live/terminal.sh
