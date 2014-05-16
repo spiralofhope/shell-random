@@ -23,8 +23,7 @@ editor_setup() {
   \geany  "$PROJECTS"/todo.txt &
   # I need to make sure the geany process is running, otherwise another attempt to run geany may open a separate instance of it.
   # FIXME - is there a more graceful way to do this?  I just want to wait that a pid exists.
-  # I don't seem to need this, so it's disabled for now.
-  # \sleep  1
+#  \sleep  1
   # Make sure projects.txt is the second tab.
   \geany  "$PROJECTS"/projects.txt &
 }
