@@ -10,7 +10,7 @@ disconnected(){
   # I don't do anything special in this case.
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/shell-random/git/live/projects.sh
+  /l/shell-random/git/live/projects.sh &
 }
 
 
