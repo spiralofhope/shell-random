@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env  sh
 
 # The global settings are: /etc/xdg/openbox/autostart.sh
 # The local master settings are: /home/user/.config/openbox/autostart.sh
@@ -10,8 +10,7 @@ disconnected(){
   # I don't do anything special in this case.
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  # FIXME - this sort of thing isn't working, and I don't know why.
-  /l/shell-random/git/live/projects.sh
+  \sh  -c /l/shell-random/git/live/projects.sh
 }
 
 
@@ -66,13 +65,13 @@ connected(){
 \ping  -n -q -w 2  example.com  &> /dev/null
 # TODO - there ought to be a better way to do this..
 # ping not found || ping doesn't find a connection
-if [[ $? -eq 127 || $? -eq 2 ]]; then
+if [ $? -eq 127 || $? -eq 2 ]; then
   # internet=false
   disconnected
 else
   # internet=true
   \zenity  --question
-  if [[ $? -eq 0 ]]; then
+  if [ $? -eq 0 ]; then
     connected
   else
     # zenity not found || user said no
@@ -87,9 +86,9 @@ OLD_METHOD
 # --
 
 for interface in $( \ls /sys/class/net/ | \grep  --invert-match  lo ); do
-  if [[ $( \cat /sys/class/net/$interface/carrier ) = 1 ]]; then
+  if [ $( \cat /sys/class/net/$interface/carrier ) = 1 ]; then
     \zenity --question
-    if [[ $? -eq 0 ]]; then
+    if [ $? -eq 0 ]; then
       connected
     else
       # zenity not found || user said no
@@ -107,11 +106,8 @@ done
 # --
 
 # Fuck you and your desktop nonsense, you crappy program.
-\killall  pcmanfm
+\killall  --quiet  pcmanfm
 
-# Another unnecessary thing.
-# This might be disable-able in some other manner, but I didn't bother to explore alternatives.
 # This fucking thing is a plague that partially locks up my keyboard.
 #   \apt-get  remove  ibus
-#\killall  ibus-daemon
-
+\killall  --quiet  ibus-daemon
