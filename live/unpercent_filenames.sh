@@ -1,13 +1,25 @@
-# TODO - edit this so that I can ./unpercent filename.ext
+#!/usr/bin/env  zsh
+
+
+
+# FIXME - can this run under vanilla sh ?
+# TODO - test case(s)
+# TODO - rework this so that I can ./unpercent filename.ext
+
+
 
 # This can be used like:
 # for i in *; do cd "$i"; unpercent "$i"/* ; cd - ; done
+
+
 
 unpercent() {
   search=%${1}
   replace=\\${2}
   \rename --verbose "s/${search}/${replace}/gi" *
 }
+
+
 
 # https://en.wikipedia.org/wiki/Percent-encoding
 
@@ -33,7 +45,7 @@ unpercent 5D \]
 
 # Character data
 
-unpercent 20 \   # space
+unpercent 20 \   # a space
 unpercent 22 \"
 unpercent 25 \%
 unpercent 2D \-
@@ -48,4 +60,3 @@ unpercent 7B \{
 unpercent 7C \|
 unpercent 7D \}
 unpercent 7E \~
-
