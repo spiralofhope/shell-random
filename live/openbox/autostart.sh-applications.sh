@@ -5,16 +5,16 @@
 # Then this file is run..
 
 
-disconnected(){
+disconnected() {
   \echo  " * Internet connection not detected."
   # I don't do anything special in this case.
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/shell-random/git/live/projects.sh &
+  /l/shell-random/git/live/projects.sh
 }
 
 
-connected(){
+connected() {
   \echo  " * Internet connection detected."
 
   # IRC
@@ -53,7 +53,7 @@ connected(){
   #\liferea &
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  $( \sleep 15 && /l/shell-random/git/live/projects.sh ) &
+  /l/shell-random/git/live/projects.sh
 }
 
 

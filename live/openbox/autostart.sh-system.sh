@@ -93,7 +93,7 @@ fi
 
 
 # launch any user-specific stuff:
-~/.config/openbox/autostart.sh-applications.sh &
+\setsid  ~/.config/openbox/autostart.sh-applications.sh &
 
 
 
