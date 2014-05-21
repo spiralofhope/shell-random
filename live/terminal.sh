@@ -58,7 +58,7 @@ if [[ "x$1" == "xFORCE" ]]; then
   # Nuke $1
   shift
   \echo  "Force-running $@"
-  \eval  $@
+  \setsid  $@ &
   \exit  0
 fi
 
@@ -160,7 +160,7 @@ launch_terminal() {
       # http://www.afterstep.org/aterm.php
       # Tabbed
       # TODO - Does this thing actually have *no* dependencies?
-      \eval  $i \
+      \setsid  $i \
         ` # Output to the window should not have it scroll to the bottom.` \
         -si \
         ` # No visual bell. ` \
@@ -176,7 +176,7 @@ launch_terminal() {
         -cr darkgreen \
         -sl 10000 \
         -geometry 80x24+0+0 \
-        $@
+        $@ &
     ;;
 
     Eterm)
@@ -186,7 +186,7 @@ launch_terminal() {
       # TODO - font
       # TODO - geometry
       # Has dependencies.. I don't want to use it.
-      \eval  $i  $@
+      \setsid  $i  $@ &
     ;;
 
     /usr/bin/evilvte)
@@ -197,7 +197,7 @@ launch_terminal() {
       # TODO - geometry
       # evilvte CLAIMS to have a geometry feature, but it doesn't ACTUALLY have one!
       #   Maybe I can force something through the window manager, but I'd want it to only be temporarily forced.  evilvte can give itself a custom WM_CLASS class and WM_CLASS name.  Maybe I can leverage that.
-      \eval  $i  $@
+      \setsid  $i  $@ &
     ;;
 
     /usr/bin/gnome-terminal)
@@ -206,9 +206,9 @@ launch_terminal() {
       # Bloated, but at least it can use the default system fixed width font so it looks right.
       # Tabbed
       # TODO - font
-      \eval  $i \
+      \setsid  $i \
       --geometry 80x24+0+0 \
-      $@
+      $@ &
     ;;
 
     /usr/bin/lilyterm)
@@ -217,7 +217,7 @@ launch_terminal() {
       # Tabbed
       # TODO - font
       # TODO - geometry
-      \eval  $i  $@
+      \setsid  $i  $@ &
     ;;
 
     /usr/bin/lxterminal)
@@ -227,9 +227,9 @@ launch_terminal() {
       # Tabbed
       #   New tabs are opened in the same directory as the current tab.
       # I cannot set a font at the command line.
-      \eval  $i \
+      \setsid  $i \
         --geometry=80x24 \
-        $@
+        $@ &
     ;;
 
     /usr/bin/mrxvt)
@@ -240,7 +240,7 @@ launch_terminal() {
       # Tabbed
       # TODO - font
       # TODO - geometry
-      \eval  $i  $@
+      \setsid  $i  $@ &
     ;;
 
     /usr/bin/roxterm)
@@ -250,7 +250,7 @@ launch_terminal() {
       # TODO - font selection
       # TODO - geometry
       # This term doesn't feel right
-      \eval  $i  $@
+      \setsid  $i  $@ &
     ;;
 
     /usr/bin/sakura)
@@ -260,9 +260,9 @@ launch_terminal() {
       # When using bash as the default shell, the prompt doesn't immediately appear.
       #   zsh works fine.
       # TODO - font
-      \eval  $i \
+      \setsid  $i \
       --geometry 80x24+1+1 \
-      $@
+      $@ &
     ;;
 
     /usr/bin/st)
@@ -273,7 +273,7 @@ launch_terminal() {
       # TODO - geometry
       # TODO - The title does not change when the current working directory is changed.
       #        I have been unable to fix this.
-      \eval  $i  $@
+      \setsid  $i  $@ &
     ;;
 
     /usr/bin/Terminal)
@@ -281,9 +281,9 @@ launch_terminal() {
       # TODO - Website
       # Tabbed
       # TODO - font
-      \eval  $i \
+      \setsid  $i \
       --geometry 80x24+0+0 \
-      $@
+      $@ &
     ;;
 
     /usr/bin/terminal)
@@ -291,9 +291,9 @@ launch_terminal() {
       # TODO - Website
       # Tabbed
       # TODO - font
-      \eval  $i \
+      \setsid  $i \
       --geometry 80x24+0+0 \
-      $@
+      $@ &
     ;;
 
     /usr/bin/terminator)
@@ -302,16 +302,16 @@ launch_terminal() {
       # Tabbed
       # Holy shit, their geometry is pixel based, not character based like everyone else in the universe.
       #\terminator --geometry 80x24+0+0 $@
-      \eval  $i \
+      \setsid  $i \
         --geometry +0+0 \
-        $@
+        $@ &
     ;;
 
     /usr/bin/xterm)
       # TODO - name
       # http://invisible-island.net/xterm/
       # Tabbed
-      \eval  $i \
+      \setsid  $i \
         ` # Output to the window should not have it scroll to the bottom.` \
       -si \
         ` # No visual bell. ` \
@@ -331,7 +331,7 @@ launch_terminal() {
       -cr darkgreen \
       -sl 10000 \
       -geometry 80x24+0+0 \
-      $@
+      $@ &
     ;;
 
     *)
