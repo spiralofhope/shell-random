@@ -55,10 +55,10 @@ get_char() {
 
 
 case "$1" in
-  '-y'|'--yes')
+  '-y'|'--yes'|'')
     _processor_heat
   ;;
-  '')
+  '-p'|'--prompt')
     # FIXME - I have no idea how to get the enter key, with this reworked version.
     \echo  'Heat up the processor(s)? [Y/n]'
     case $( get_char ) in
@@ -71,7 +71,7 @@ case "$1" in
     esac
   ;;
   *)
-    \echo  '--yes, or -y to automatically heat the processor(s) up'
-    \echo  'Or nothing to prompt for it.'
+    \echo  '--yes, -y or nothing to automatically heat the processor(s) up'
+    \echo  '--prompt, or -p to prompt the user'
   ;;
 esac
