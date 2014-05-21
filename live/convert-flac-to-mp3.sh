@@ -1,5 +1,12 @@
 #!/bin/bash
+
+
+
 # TODO - figure out how to convert to ogg.  My passing attempt failed and I gave up too easily.
+
+# If the dumbass source made one big .flac file without splitting it first,
+# and you have a .cue file to work with, then convert it via this script, then:
+#   \mp3splt  -c file.cue  bigfile.mp3
 
 
 
