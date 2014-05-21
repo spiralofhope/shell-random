@@ -10,7 +10,7 @@ disconnected(){
   # I don't do anything special in this case.
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/shell-random/git/live/projects.sh
+  /l/shell-random/git/live/projects.sh &
 }
 
 
@@ -37,8 +37,7 @@ connected(){
   \keepassx  /l/keepassx-passwords--linux-only.kdb                              -min  -lock &
   \keepassx  /mnt/320/windows-data/l/keepassx-passwords--linux-and-windows.kdb  -min  -lock &
 
-  \nice  --adjustment=6 \
-    \firefox  -P default &
+  /l/Firefox/default
 
   # Voice Chat
   # TODO:  How do I get Mumble to minimize on startup?
@@ -50,7 +49,8 @@ connected(){
   \claws-mail &
 
   # RSS reader
-  \liferea &
+  # Slated to be replaced by.. anything.  Fucking thing can't even open its gui when run once.  Has to be run twice.
+  #\liferea &
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
   $( \sleep 15 && /l/shell-random/git/live/projects.sh ) &
@@ -62,7 +62,7 @@ connected(){
 # -- Internet connection test
 # --
 # example.com is supposed to be provided by the ISP.
-\ping  -n -q -w 2  example.com  &> /dev/null
+\ping  -n  -q  -w 2  example.com  &> /dev/null
 # TODO - there ought to be a better way to do this..
 # ping not found || ping doesn't find a connection
 if [ $? -eq 127 || $? -eq 2 ]; then
@@ -85,9 +85,9 @@ OLD_METHOD
 # -- Network connection test
 # --
 
-for interface in $( \ls /sys/class/net/ | \grep  --invert-match  lo ); do
+for interface in $( \ls /sys/class/net/  |  \grep  --invert-match  lo ); do
   if [ $( \cat /sys/class/net/$interface/carrier ) = 1 ]; then
-    \zenity --question
+    \zenity  --question
     if [ $? -eq 0 ]; then
       connected
     else

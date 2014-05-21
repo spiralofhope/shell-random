@@ -76,15 +76,20 @@ fi
 \killall  --quiet  ibus-daemon
 
 
-# Start the bottom panel
-(
-  ` # Based on fbpanel ` \
-  \lxpanel & ||\
-  \fbpanel & ||\
-  ` # May be a bit bloated.. ` \
-  \xfce4-panel & ||\
-  \tint2 & \
-) &
+
+# TODO - given an array of strings, run the first program found.
+# `setsid`  is to force it to run in its own session, so that there's no lingering zsh process.
+  \setsid  \lxpanel &
+if [ $? -ne 0 ]; then
+  \setsid  \fbpanel &
+fi
+if [ $? -ne 0 ]; then
+  \setsid  \xfce4-panel &
+fi
+if [ $? -ne 0 ]; then
+  \setsid  \tint2 &
+fi
+
 
 
 # launch any user-specific stuff:
