@@ -79,11 +79,11 @@ fi
 # Start the bottom panel
 (
   ` # Based on fbpanel ` \
-  \lxpanel ||\
-  \fbpanel ||\
+  \lxpanel & ||\
+  \fbpanel & ||\
   ` # May be a bit bloated.. ` \
-  \xfce4-panel ||\
-  \tint2 \
+  \xfce4-panel & ||\
+  \tint2 & \
 ) &
 
 
