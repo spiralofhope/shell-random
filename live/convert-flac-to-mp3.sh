@@ -1,23 +1,26 @@
-#!/bin/bash
+#!/usr/bin/env  bash
 
 
 
 # TODO - figure out how to convert to ogg.  My passing attempt failed and I gave up too easily.
 
-# If the dumbass source made one big .flac file without splitting it first,
-# and you have a .cue file to work with, then convert it via this script, then:
-#   \mp3splt  -c file.cue  bigfile.mp3
-
+# If the source is one big .flac file, and you have a .cue file to work with.
+#   1.  Convert it via this script
+#   2.  Split the mp3:
+#     \sudo  \apt-get  install  mp3splt
+#     \mp3splt  -c file.cue  bigfile.mp3
+#   [Yes, it's mp3splt and not mp3split, because that would make too much sense.]
 
 
 _convert_flac_to_mp3() {
-  \echo  "Note:  Adding _ to identify this as a transcoded item."
+  \echo  'Note:  Adding _ to identify this as a transcoded item.'
   # Note that  \avconv  is a drop-in replacement for the depreciated  \ffmpeg
   \avconv \
     -i "$1" \
     -qscale:a 0 \
     "$2"
   if [[ $? -ne 0 ]]; then
+    \echo  'pausing..'
     read  __
   fi
 }
@@ -25,7 +28,7 @@ _convert_flac_to_mp3() {
 
 
 _convert_vbrfix() {
-  \echo  " * Fixing the mp3 length.."
+  \echo  ' * Fixing the mp3 length..'
   working_filename=ripping_temp.$$."$audio_codec"
 
   \vbrfix  -always  -makevbr  "$1"  $working_filename
@@ -36,11 +39,11 @@ _convert_vbrfix() {
 
 
 
-if [[ $1 == "" ]]; then
+if [ -z $1 ]; then
   for i in *.flac; do
     # Seems like a straightforward way to bail out.
     if [[ $i == "*.flac" ]]; then
-      \echo  "ERROR:  No .flac files found."
+      \echo  'ERROR:  No .flac files found.'
       continue
     fi
     output_filename="${i/%.flac/ _.mp3}"
