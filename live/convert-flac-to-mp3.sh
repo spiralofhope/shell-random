@@ -13,6 +13,7 @@
 
 
 _convert_flac_to_mp3() {
+  \echo  ''
   \echo  'Note:  Adding _ to identify this as a transcoded item.'
   # Note that  \avconv  is a drop-in replacement for the depreciated  \ffmpeg
   \avconv \
@@ -28,6 +29,7 @@ _convert_flac_to_mp3() {
 
 
 _convert_vbrfix() {
+  \echo  ''
   \echo  ' * Fixing the mp3 length..'
   working_filename=ripping_temp.$$."$audio_codec"
 
@@ -40,6 +42,8 @@ _convert_vbrfix() {
 
 
 if [ -z $1 ]; then
+  \echo  ''
+  \echo  ' * Converting all flac files in the current directory..'
   for i in *.flac; do
     # Seems like a straightforward way to bail out.
     if [[ $i == "*.flac" ]]; then
