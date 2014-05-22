@@ -34,8 +34,8 @@ connected() {
   #\twinkle&
 
   # Password
-  \keepassx  /l/keepassx-passwords--linux-only.kdb                              -min  -lock &
   \keepassx  /mnt/320/windows-data/l/keepassx-passwords--linux-and-windows.kdb  -min  -lock &
+  \keepassx  /l/keepassx-passwords--linux-only.kdb                              -min  -lock &
 
   /l/Firefox/default
 
