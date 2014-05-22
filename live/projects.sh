@@ -17,8 +17,17 @@ setup() {
 
 
 
+cache_file() {
+  \cat  "$1"  > /dev/null
+}
+
+
+
 # Run before any other project text file is opened.
 editor_setup() {
+  cache_file  "$PROJECTS"/todo.txt
+  cache_file  "$PROJECTS"/projects.txt
+
   # Make sure todo.txt is the first tab.
   \geany  "$PROJECTS"/todo.txt &
   # I need to make sure the geany process is running, otherwise another attempt to run geany may open a separate instance of it.
@@ -45,17 +54,11 @@ editor_open_file() {
 
 
 process_projects() {
-  if [ -d "$PROJECTS" ]; then
-    # do nothing
-    \echo  -n  ''
-  else
+  if [ ! -d "$PROJECTS" ]; then
     \echo  "ERROR:  \"${PROJECTS}\" does not exist!"
     return  1
   fi
-  if [ -f "${PROJECTS}/projects.txt" ]; then
-    # do nothing
-    \echo  -n  ''
-  else
+  if [ ! -f "${PROJECTS}/projects.txt" ]; then
     \echo  "ERROR:  \"${PROJECTS}/projects.txt\" does not exist!"
     return  1
   fi
@@ -63,14 +66,19 @@ process_projects() {
   \cd  "$PROJECTS"
 
   for i in *; do
+    if   [ ! -d "$i" ]; then
+      continue
+    elif [ ! -f "$i/$i".txt ]; then
+      cache_file  "$1"
+    fi
+  done
+
+  for i in *; do
     \echo  " * Processing $i"
 
     # This also works for symbolic links which point to a directory.
     # FIXME - clarify the above statement.
-    if [ -d "$i" ]; then
-      # do nothing
-      \echo  -n  ''
-    else
+    if [ ! -d "$i" ]; then
       \echo  "skipping non-directory $i"
       continue
     fi
@@ -84,10 +92,7 @@ process_projects() {
       fi
     fi
 
-    if [ -f "$i/$i".txt ]; then
-      # do nothing
-      \echo  -n  ''
-    else
+    if [ ! -f "$i/$i".txt ]; then
       \echo  "   New project $i, inserting message:\n   $NEW_PROJECT_MESSAGE"
       \echo  "$NEW_PROJECT_MESSAGE" > "$i/$i.txt"
     fi
