@@ -172,7 +172,8 @@ DOCUMENTATION
         mcd "$BASENAME"
         tar -xvvf ../"$FILE"
       ;;
-      zip)
+      zip|xpi)
+        # xpi is used for Mozilla Firefox addons.
         # touch 1 ; zip 1.zip 1 ; rm -f 1
         mcd "$BASENAME"
         unzip ../"$FILE"
