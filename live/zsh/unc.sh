@@ -146,7 +146,7 @@ DOCUMENTATION
             # --keep = Explicitly keep the original file.
             # Using bzcat because bzip2 will try to extract to the same directory as the archive.
             bzcat --keep --verbose ../"$FILE" > ./"$BASENAME"
-        ;;
+          ;;
         esac
       ;;
       gz) # check more:
@@ -164,7 +164,25 @@ DOCUMENTATION
             mcd "$BASENAME"
             # --to-stdout and the redirect are done so that the original file is kept.
             gzip --decompress --to-stdout ../"$FILE" > ./"$BASENAME"
-        ;;
+          ;;
+        esac
+      ;;
+      Z)
+        EXTENSION="${BASENAME##*.}"
+        case $EXTENSION in
+          tar) # .tar.Z
+            # touch 1 ; tar -cf 1.tar 1 ; gzip 1.tar ; rm -f 1
+            # strip out .tar
+            BASENAME="${BASENAME%.*}"
+            mcd "$BASENAME"
+            tar -xvvzf ../"$FILE"
+          ;;
+          *) # .Z
+            # touch 1 ; gzip 1
+            mcd "$BASENAME"
+            # --to-stdout and the redirect are done so that the original file is kept.
+            gzip --decompress --to-stdout ../"$FILE" > ./"$BASENAME"
+          ;;
         esac
       ;;
       tar)
