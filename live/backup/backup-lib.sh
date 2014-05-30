@@ -87,8 +87,9 @@ echo_error(){
 
 
 
+# FIXME - I don't know how to do something like $3*
 echo_info(){
-  \echo  \ ${yellow}info${reset} \ - $1${yellow}$2${reset}$3
+  \echo  \ ${yellow}info${reset} \ - $1${yellow}$2${reset}$3$4$5$6$7$8$9
 }
 
 
@@ -421,11 +422,13 @@ _backup_teardown(){
     \ls  --almost-all  -l  $working_directory | \tail --lines +2
 
     \echo
-    echo_info  'The output of '  '\df  --block-size=1  --print-type  |  \grep  --color  $working_directory' ' is:'
+    echo_info  'The output of '  '\df  --block-size=1  --print-type  |  \grep  --color '  $working_directory ' is:'
     \df  --block-size=1  --print-type  |  \grep  --color  $working_directory
+    echo_info  'The output of '  '\df  --block-size=1  --human-readable  --print-type  |  \grep  --color '  $working_directory ' is:'
+    \df  --block-size=1  --human-readable  --print-type  |  \grep  --color  $working_directory
 
     \echo
-    echo_info  'The output of '  '\mount  |  \grep  --color  $working_directory' ' is:'
+    echo_info  'The output of '  '\mount  |  \grep  --color '  $working_directory  ' is:'
     \mount  |  \grep  --color  $working_directory
   fi
 
