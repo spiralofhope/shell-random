@@ -2,7 +2,8 @@
 
 
 
-# TODO - figure out how to convert to ogg.  My passing attempt failed and I gave up too easily.
+# TODO - Figure out how to convert to ogg.  My passing attempt failed and I gave up too easily.
+# TODO - Adapt this to convert .ape files.  It seems that the avconv string will work.
 
 # If the source is one big .flac file, and you have a .cue file to work with.
 #   1.  Convert it via this script
