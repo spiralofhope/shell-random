@@ -12,8 +12,8 @@ ziprepair() {
   file=ziprepair.$$.zip
   dir="$1".ziprepair.$$
   \echo  y | \zip  --fixfix "$1"  --out $file
-  \mkdir  $dir
-  \cd  $dir
+  \mkdir  "$dir"
+  \cd  "$dir"
   \unzip  -o  ../$file
   \cd  -
   \rm  --force  $file
