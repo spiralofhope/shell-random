@@ -100,3 +100,7 @@ fi
 # --
 # this doesn't work here, but only in ~/.xsession
 # exec openbox-session
+
+
+# Force-load .Xdefaults, for aterm's colour preferences.
+\xrdb  -load ~/.Xdefaults

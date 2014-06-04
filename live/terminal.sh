@@ -170,6 +170,7 @@ launch_terminal() {
         ` # The default font can do fancy designs. ` \
         ` # -font default ` \
         ` # My font addition ` \
+        ` # This is not necessary if  aterm*font:  has been set in ~/.Xdefaults but it is nice to do here because of the default fallback. ` \
         -fn $font \
         -bg black \
         -fg gray \
