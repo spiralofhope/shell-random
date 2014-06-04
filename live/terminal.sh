@@ -91,7 +91,6 @@ terminal_setup() {
   #   So instead, I am using absolute paths.
   #   TODO - Figure out how to use  \terminal_name
   terminals_without_lines=(
-    /usr/bin/aterm
     /usr/bin/lxterminal
     /usr/bin/sakura
     /usr/bin/Terminal
@@ -105,6 +104,7 @@ terminal_setup() {
     /usr/bin/st
     Eterm
     /usr/bin/evilvte
+    /usr/bin/aterm
   )
 
   terminals_with_lines=(
@@ -158,8 +158,11 @@ launch_terminal() {
     /usr/bin/aterm)
       # aterm
       # http://www.afterstep.org/aterm.php
-      # Tabbed
+      # Not tabbed
       # TODO - Does this thing actually have *no* dependencies?
+      # In maintenance mode since 2007-08-01.
+      # No unicode support.  They recommend using rxvt-unicode
+      # Slow scrolling.
       \setsid  $i \
         ` # Output to the window should not have it scroll to the bottom.` \
         -si \
