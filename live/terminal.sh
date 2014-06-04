@@ -71,26 +71,26 @@ trim_whitespace() {
 
 
 terminal_setup() {
-  # This fixes a GNOME hotkey issue which was starting the terminal in /
-  #   I don't know if this breaks any other usage!
-  #\cd  ~
-
-  # 2014-05-10 - This bit here very old.  I'm not even installing that vga font any more.  It's been left here for reference.
-  # This was for Unity Linux, possibly for Ubuntu/Lubuntu.  Does not apply to Gentoo/Sabayon.
-  #
   # Check for my favourite font, with a safe fallback.
-  \xlsfonts  |  \grep  --line-regexp  --quiet  vga
-  if [[ $? -eq 1 ]]; then
-    font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
-  else
-    # If this fallback fails, terminals have a default in place.
+  # Unicode vga font.  Looks like shit when bold though.
+  font="-bolkhov-vga-medium-r-normal--16-160-75-75-c-80-iso10646-1"
+  \xlsfonts  |  \grep  --line-regexp  --quiet  $font
+  if  [[ $? -eq 1 ]]; then
+    # This is the vga font taken from DOSEmu.  Non-unicode.
     font="vga"
+    \xlsfonts  |  \grep  --line-regexp  --quiet  $font
+    if  [[ $? -eq 1 ]]; then
+      # This should be available on a default install.
+      font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
+    fi
+    # Most terminals have a default fallback font in place.  Most.  I'm looking at you, urxvt.
   fi
 
   # Note that I am unable to do something like  \terminal_name  to guarantee I'm not bumping into an alias or the like.
   #   So instead, I am using absolute paths.
   #   TODO - Figure out how to use  \terminal_name
   terminals_without_lines=(
+    /usr/bin/rxvt-unicode
     /usr/bin/lxterminal
     /usr/bin/sakura
     /usr/bin/Terminal
@@ -99,6 +99,7 @@ terminal_setup() {
     /usr/bin/terminal
     /usr/bin/lilyterm
     /usr/bin/mrxvt
+    /usr/bin/rxvt
     /usr/bin/roxterm
     /usr/bin/terminator
     /usr/bin/st
@@ -108,12 +109,13 @@ terminal_setup() {
   )
 
   terminals_with_lines=(
+    /usr/bin/rxvt-unicode
     /usr/bin/lxterminal
     /usr/bin/sakura
     /usr/bin/Terminal
     /usr/bin/evilvte
     /usr/bin/st
-	)
+  )
 }
 
 
@@ -255,6 +257,21 @@ launch_terminal() {
       # TODO - geometry
       # This term doesn't feel right
       \setsid  $i  $@ &
+    ;;
+
+    /usr/bin/rxvt)
+      # rxvt
+      # http://www.rxvt.org/
+      # rxvt is an alias to rxvt-unicode when rxvt-unicode is installed.
+      # I make changes to ~/.Xdefaults for things like fonts.
+      \setsid  $i  $@ &
+    ;;
+
+    /usr/bin/rxvt-unicode|/usr/bin/urxvt)
+      # urxvt / rxvt-unicode
+      # http://software.schmorp.de/pkg/rxvt-unicode
+      # This dumbass terminal does not have a proper fallback if I use an invalid font.
+      \setsid  $i  -fn $font  $@ &
     ;;
 
     /usr/bin/sakura)
