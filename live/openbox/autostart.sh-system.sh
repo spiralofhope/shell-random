@@ -102,5 +102,9 @@ fi
 # exec openbox-session
 
 
-# Force-load .Xdefaults, for aterm's colour preferences.
+# Force-load .Xdefaults, for rxvt-unicode's colour preferences.
 \xrdb  -load ~/.Xdefaults
+
+# Start the rxvt-unicode daemon
+# After it's started, the client can be launched with `urxvtc`.
+\urxvtd  --fork  --opendisplay  --quiet

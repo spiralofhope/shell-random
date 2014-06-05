@@ -271,11 +271,11 @@ launch_terminal() {
       # urxvt / rxvt-unicode
       # http://software.schmorp.de/pkg/rxvt-unicode
       # This dumbass terminal does not have a proper fallback if I use an invalid font.
-   \setsid  \urxvtc  -fn $font  "$@" &
-   if [ $? -eq 2 ]; then
-      \urxvtd -q -o -f
-      \setsid  $i  -fn $font  "$@" &
-   fi
+      \setsid  \urxvtc  -fn $font  "$@" &
+      if [ $? -eq 2 ]; then
+        \urxvtd  --fork  --opendisplay  --quiet
+        \setsid  $i  -fn $font  "$@" &
+      fi
     ;;
 
     /usr/bin/sakura)
