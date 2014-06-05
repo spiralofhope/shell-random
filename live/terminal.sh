@@ -57,8 +57,8 @@
 if [[ "x$1" == "xFORCE" ]]; then
   # Nuke $1
   shift
-  \echo  "Force-running $@"
-  \setsid  $@ &
+  \echo  "Force-running "$@""
+  \setsid  "$@" &
   \exit  0
 fi
 
@@ -122,7 +122,7 @@ terminal_setup() {
 
 determine_which_terminal_to_run() {
   determine_terminal_existance() {
-    for i in $@; do
+    for i in "$@"; do
       i=$( \echo  $( trim_whitespace  $i ) )
       \which  $i > /dev/null
       if [ $? -eq 0 ]; then
@@ -151,7 +151,7 @@ launch_terminal() {
     \echo  "Running $1"
   fi
 
-  # The below two lines let me use $i to refer to $1 and $@ to refer to $2 $3 $4 etc.
+  # The below two lines let me use $i to refer to $1 and "$@" to refer to $2 $3 $4 etc.
   #   TODO - is there a $2* or some such?
   i=$1
   shift
@@ -182,7 +182,7 @@ launch_terminal() {
         -cr darkgreen \
         -sl 10000 \
         -geometry 80x24+0+0 \
-        $@ &
+        "$@" &
     ;;
 
     Eterm)
@@ -192,7 +192,7 @@ launch_terminal() {
       # TODO - font
       # TODO - geometry
       # Has dependencies.. I don't want to use it.
-      \setsid  $i  $@ &
+      \setsid  $i  "$@" &
     ;;
 
     /usr/bin/evilvte)
@@ -203,7 +203,7 @@ launch_terminal() {
       # TODO - geometry
       # evilvte CLAIMS to have a geometry feature, but it doesn't ACTUALLY have one!
       #   Maybe I can force something through the window manager, but I'd want it to only be temporarily forced.  evilvte can give itself a custom WM_CLASS class and WM_CLASS name.  Maybe I can leverage that.
-      \setsid  $i  $@ &
+      \setsid  $i  "$@" &
     ;;
 
     /usr/bin/gnome-terminal)
@@ -214,7 +214,7 @@ launch_terminal() {
       # TODO - font
       \setsid  $i \
       --geometry 80x24+0+0 \
-      $@ &
+      "$@" &
     ;;
 
     /usr/bin/lilyterm)
@@ -223,7 +223,7 @@ launch_terminal() {
       # Tabbed
       # TODO - font
       # TODO - geometry
-      \setsid  $i  $@ &
+      \setsid  $i  "$@" &
     ;;
 
     /usr/bin/lxterminal)
@@ -235,7 +235,7 @@ launch_terminal() {
       # I cannot set a font at the command line.
       \setsid  $i \
         --geometry=80x24 \
-        $@ &
+        "$@" &
     ;;
 
     /usr/bin/mrxvt)
@@ -246,7 +246,7 @@ launch_terminal() {
       # Tabbed
       # TODO - font
       # TODO - geometry
-      \setsid  $i  $@ &
+      \setsid  $i  "$@" &
     ;;
 
     /usr/bin/roxterm)
@@ -256,7 +256,7 @@ launch_terminal() {
       # TODO - font selection
       # TODO - geometry
       # This term doesn't feel right
-      \setsid  $i  $@ &
+      \setsid  $i  "$@" &
     ;;
 
     /usr/bin/rxvt)
@@ -264,14 +264,18 @@ launch_terminal() {
       # http://www.rxvt.org/
       # rxvt is an alias to rxvt-unicode when rxvt-unicode is installed.
       # I make changes to ~/.Xdefaults for things like fonts.
-      \setsid  $i  $@ &
+      \setsid  $i  "$@" &
     ;;
 
     /usr/bin/rxvt-unicode|/usr/bin/urxvt)
       # urxvt / rxvt-unicode
       # http://software.schmorp.de/pkg/rxvt-unicode
       # This dumbass terminal does not have a proper fallback if I use an invalid font.
-      \setsid  $i  -fn $font  $@ &
+   \setsid  \urxvtc  -fn $font  "$@" &
+   if [ $? -eq 2 ]; then
+      \urxvtd -q -o -f
+      \setsid  $i  -fn $font  "$@" &
+   fi
     ;;
 
     /usr/bin/sakura)
@@ -283,7 +287,7 @@ launch_terminal() {
       # TODO - font
       \setsid  $i \
       --geometry 80x24+1+1 \
-      $@ &
+      "$@" &
     ;;
 
     /usr/bin/st)
@@ -294,7 +298,7 @@ launch_terminal() {
       # TODO - geometry
       # TODO - The title does not change when the current working directory is changed.
       #        I have been unable to fix this.
-      \setsid  $i  $@ &
+      \setsid  $i  "$@" &
     ;;
 
     /usr/bin/Terminal)
@@ -304,7 +308,7 @@ launch_terminal() {
       # TODO - font
       \setsid  $i \
       --geometry 80x24+0+0 \
-      $@ &
+      "$@" &
     ;;
 
     /usr/bin/terminal)
@@ -314,7 +318,7 @@ launch_terminal() {
       # TODO - font
       \setsid  $i \
       --geometry 80x24+0+0 \
-      $@ &
+      "$@" &
     ;;
 
     /usr/bin/terminator)
@@ -322,10 +326,10 @@ launch_terminal() {
       # http://software.jessies.org/terminator/
       # Tabbed
       # Holy shit, their geometry is pixel based, not character based like everyone else in the universe.
-      #\terminator --geometry 80x24+0+0 $@
+      #\terminator --geometry 80x24+0+0 "$@"
       \setsid  $i \
         --geometry +0+0 \
-        $@ &
+        "$@" &
     ;;
 
     /usr/bin/xterm)
@@ -352,7 +356,7 @@ launch_terminal() {
       -cr darkgreen \
       -sl 10000 \
       -geometry 80x24+0+0 \
-      $@ &
+      "$@" &
     ;;
 
     *)
