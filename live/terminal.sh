@@ -54,10 +54,10 @@
 
 
 # Sometimes the user knows what they're doing, and there's really no need for this script at all.
-if [[ "x$1" == "xFORCE" ]]; then
+if [[ "x$1" == 'xFORCE' ]]; then
   # Nuke $1
   shift
-  \echo  "Force-running "$@""
+  \echo  "Force-running \"$@\""
   \setsid  "$@" &
   \exit  0
 fi
@@ -73,15 +73,15 @@ trim_whitespace() {
 terminal_setup() {
   # Check for my favourite font, with a safe fallback.
   # Unicode vga font.  Looks like shit when bold though.
-  font="-bolkhov-vga-medium-r-normal--16-160-75-75-c-80-iso10646-1"
+  font='-bolkhov-vga-medium-r-normal--16-160-75-75-c-80-iso10646-1'
   \xlsfonts  |  \grep  --line-regexp  --quiet  $font
   if  [[ $? -eq 1 ]]; then
     # This is the vga font taken from DOSEmu.  Non-unicode.
-    font="vga"
+    font='vga'
     \xlsfonts  |  \grep  --line-regexp  --quiet  $font
     if  [[ $? -eq 1 ]]; then
       # This should be available on a default install.
-      font="-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*"
+      font='-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*'
     fi
     # Most terminals have a default fallback font in place.  Most.  I'm looking at you, urxvt.
   fi
@@ -132,7 +132,7 @@ determine_which_terminal_to_run() {
     done
   }
 
-  if [[ "x$1" == "xwith_lines" ]]; then
+  if [[ "x$1" == 'xwith_lines' ]]; then
     # Nuke $1
     shift
     determine_terminal_existance  $terminals_with_lines
@@ -144,8 +144,8 @@ determine_which_terminal_to_run() {
 
 
 launch_terminal() {
-  if [[ x$1 == 'x' ]]; then
-    \echo  "ERROR:  No valid terminal was found.  Edit this script to add one."
+  if [[ "x$1" == 'x' ]]; then
+    \echo  'ERROR:  No valid terminal was found.  Edit this script to add one.'
     exit  1
   else
     \echo  "Running $1"
@@ -153,9 +153,9 @@ launch_terminal() {
 
   # The below two lines let me use $i to refer to $1 and "$@" to refer to $2 $3 $4 etc.
   #   TODO - is there a $2* or some such?
-  i=$1
+  i="$1"
   shift
-  case $i in
+  case "$i" in
 
     /usr/bin/aterm)
       # aterm
@@ -271,11 +271,19 @@ launch_terminal() {
       # urxvt / rxvt-unicode
       # http://software.schmorp.de/pkg/rxvt-unicode
       # This dumbass terminal does not have a proper fallback if I use an invalid font.
-      \setsid  \urxvtc  -fn $font  "$@" &
-      if [ $? -eq 2 ]; then
+
+      \pidof  urxvtd
+      if [ $? -ne 0 ]; then
         \urxvtd  --fork  --opendisplay  --quiet
-        \setsid  $i  -fn $font  "$@" &
       fi
+      \setsid  \urxvtc  -fn $font  "$@" &
+
+       #The recommended method doesn't seem happy..
+      #\setsid  \urxvtc  -fn $font  "$@" &
+      #if [ $? -eq 2 ]; then
+        #\urxvtd  --fork  --opendisplay  --quiet
+        #\setsid  \urxvtc  -fn $font  "$@" &
+      #fi
     ;;
 
     /usr/bin/sakura)
@@ -368,8 +376,8 @@ launch_terminal() {
 
 
 terminal_setup
-terminal_to_run=$( \echo  $( determine_which_terminal_to_run ) )
-launch_terminal  $terminal_to_run
+terminal_to_run="$( \echo  $( determine_which_terminal_to_run ) )"
+launch_terminal  "$terminal_to_run"
 
 
 

@@ -17,20 +17,30 @@ disconnected() {
 connected() {
   \echo  " * Internet connection detected."
 
+  #
   # IRC
+  #
+
   # X-Chat
   #   It's already configured to auto-connect to servers and join channels.
   #   --minimize=2  =  Minimize to the tray
   #\xchat --minimize=2 &
-  # WeeChat
-  #   Pops up top-left with no window decorations.
-  #   I don't know where this script went.  Oh well.
-  #~/bin/weechat.sh &
 
+  # WeeChat
+  /l/shell-random/git/live/terminal.sh  FORCE \
+    \urxvtc \
+      -geometry 239x64 \
+      +sb                   ` # Remove the scroll bar ` \
+      -e \weechat
+
+  #
   # Instant Messaging
+  #
   #\empathy &
 
+  #
   # VoIP
+  #
   #\twinkle&
 
   # Password
