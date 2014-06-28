@@ -42,6 +42,8 @@ if [ $? -eq 1 ]; then
       \kill  $xautolock_pid
       # Disable monitor power saving.
       \xset  -dpms
+      \xset  s off
+      \setterm  -blank 0
     ;;
   esac
 else
@@ -55,6 +57,8 @@ else
       \xset  +dpms
       # 180 seconds = 5 minutes
       \xset  dpms 0 0 180 \
+      \xset  s on
+      \setterm  -blank 5
     ;;
   *)
     \echo  'slock is already running.  Doing nothing.'
