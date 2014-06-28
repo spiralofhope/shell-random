@@ -11,44 +11,46 @@
 # TODO - make this universal for bash/zsh (shopt/setopt) or just use `find` in a nice way..
 # TODO: Proper pass/fail test cases?
 delme() {
-  until [ "sky" = "falling" ]; do
+  until [ 'sky' = 'falling' ]; do
 #     if [ ! "$#" -eq 0 ]; then \echo "This script does not accept parameters." ; break ; fi
-    if [ "$PWD" = "/" ]; then \echo "Are you insane, trying to delete root?" ; break ; fi
+    if [ "$PWD" = '/' ]; then \echo  'Are you insane, trying to delete root?' ; break ; fi
 
     MYDIR="$PWD"
-    \cd -P ../
+    # TODO - Is there a long form?
+    \cd  -P  ../
     # If it's blank, don't even prompt!
     # TODO: Remember the state of shopt and restore it after this script.
     # bash:
     # shopt -s dotglob
     # zsh:
     \setopt dotglob
-    ANSWER=`ls "$MYDIR"/* 2> /dev/null`
+    ANSWER=$( \ls "$MYDIR"/* 2> /dev/null )
     ERROR=$?
-    if [ "$ANSWER" = "" ] || [ $ERROR -ne 0 ]; then
+    if [ "$ANSWER" = '' ] || [ $ERROR -ne 0 ]; then
       \rmdir "$MYDIR"
-      \echo Auto-deleted...
+      \echo  'Auto-deleted...'
     else
-      \echo -n "deltree $MYDIR/? [yes/NO]:  "
+      \echo  -n  "deltree $MYDIR/? [yes/NO]:  "
       # DANGER DANGER DANGER.. heh
-      if [ "$1" = "-f" ]; then
-        ANSWER="y"
+      if [ "$1" = '-f' ]; then
+        ANSWER='y'
       else
         \read ANSWER
       fi
       if [[ "$ANSWER" =~ '^(y)' ]]; then
-        \rm -frv "$MYDIR"
-        \echo Deleted...
+        \rm  --force  --recursive  --verbose  "$MYDIR"
+        \echo  'Deleted...'
       else
-        \echo Aborting...
-        \cd -P "$MYDIR"
+        \echo  'Aborting...'
+        # TODO - Is there a long form?
+        \cd  -P  "$MYDIR"
         break
       fi
     fi
 
     # Check if the rmdir or rm worked completely.
     # No need to be verbose here, since any error would get echoed to the terminal anyways.
-    if [ -d "$MYDIR" ]; then cd "$MYDIR" ; fi
+    if [ -d "$MYDIR" ]; then cd  "$MYDIR" ; fi
 
     # .tar.gz and the like will extract into a similar name
     # If I decide to nuke the directory, then prompt to nuke the file too.
@@ -59,21 +61,21 @@ delme() {
     # bash:
     # shopt -s dotglob
     # zsh:
-    setopt dotglob
+    setopt  dotglob
     for i in "$MYDIR".* ; do
       # Don't let this loop iterate if there's no success.
       if [ "$i" = "$MYDIR"'.*' ]; then continue ; fi
-      ANSWER="no"
-      echo -n "Also delete $i? [yes/NO]:  "
-      if [ "$1" = "-f" ]; then
-        ANSWER="n"
+      ANSWER='no'
+      \echo  -n  "Also delete $i? [yes/NO]:  "
+      if [ "$1" = '-f' ]; then
+        ANSWER='n'
       else
-        read ANSWER
+        \read  ANSWER
       fi
       if [[ "$ANSWER" =~ '^(y)' ]]; then
-        rm -fv "$i"
+        \rm  --force  --verbose  "$i"
       else
-        echo Aborting...
+        \echo  'Aborting...'
       fi
     done
 
@@ -82,22 +84,22 @@ done
 }
 
 delme_test() {
-  delme_temp=/tmp/delme.$PPID
-  mkdir "$delme_temp"
-  cd "$delme_temp"
+  delme_temp=/tmp/delme.$$
+  \mkdir  "$delme_temp"
+  \cd  "$delme_temp"
   # The test "archive" to be deleted when its associated directory is killed
   # togglable to test similar archive deletion
-#  echo :> delme_killme.tar.gz
-#  echo :> delme_killme.tar
-  mkdir   delme_killme
-  cd      delme_killme
+#  \echo :> delme_killme.tar.gz
+#  \echo :> delme_killme.tar
+  \mkdir   delme_killme
+  \cd      delme_killme
   # togglable to test empty directories
 #  echo :> somefile
-  delme
-  cd /tmp
+  \delme
+  \cd  /tmp
   # togglable
-  rm -rf "$delme_temp"
-#  ls "$delme_temp"
+  \rm  --force  --recursive  "$delme_temp"
+#  \ls  "$delme_temp"
 }
-# clear
+# \clear
 # test

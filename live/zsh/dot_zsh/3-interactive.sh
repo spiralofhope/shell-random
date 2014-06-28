@@ -1,15 +1,5 @@
 : << IDEAS
-TODO
-
-Check out http://dotfiles.org/~brendano/.zshrc
-
-alias  screen='TERM=screen screen'  # http://ubuntuforums.org/showthread.php?t=90910
-# no spelling corrections  (man zshbuiltins)
-alias  mv='nocorrect mv'
-alias  cp='nocorrect cp'
-alias  mkdir='nocorrect mkdir'
-alias  rm='nocorrect rm'
-
+  TODO - Check out http://dotfiles.org/~brendano/.zshrc
 IDEAS
 
 

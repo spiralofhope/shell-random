@@ -1,67 +1,84 @@
-alias autotest="/l/shell-random/git/live/autotest.sh"
+: << IDEAS
+  alias  screen='TERM=screen screen'  # http://ubuntuforums.org/showthread.php?t=90910
+IDEAS
 
-alias smartgui="su -c \"smart --gui\""
 
-alias ssfm='zsh -c "export LS_COLORS=\"no=00:fi=00:di=00;36:ln=00;35:pi=40;33:so=00;35:bd=40;33;01:cd=40;33;01:or=00;05;37;41:mi=00;05;37;41:ex=00;32:*.cmd=00;32:*.exe=00;32:*.com=00;32:*.btm=00;32:*.bat=00;32:*.sh=00;32:*.csh=00;32:*.tar=00;31:*.tgz=00;31:*.arj=00;31:*.taz=00;31:*.lzh=00;31:*.rar=00;31:*.zip=00;31:*.z=00;31:*.Z=00;31:*.gz=00;31:*.bz2=00;31:*.bz=00;31:*.tz=00;31:*.rpm=00;31:*.cpio=00;31:*.torrent=00;31:*.jpg=00;35:*~.jpg=00;33:*.gif=00;35:*.bmp=00;35:*.xbm=00;35:*.xpm=00;35:*.png=00;35:*.tif=00;35:*~.mp3=00;03:*~.ogg=00;03:*~.flv=00;03:*~.ape=00;03:*~.flv=00;03:*~.mpg=00;03:*~.wmv=00;03:*.part=00;03:\";ssfm"'
-alias sfm=ssfm
-alias shoes="~/shoes/dist/shoes"
 
-# Ubuntu.  TODO: Make this unversal:
-alias su="sudo $SHELL"
-alias cd="\cd -P"
-alias ..="cd .."
-alias cd..="cd .."
-alias cf="\cd /mnt/cf"
-alias sd="\cd /mnt/sd"
-alias d="ls"
-alias l="ls"
-alias la="ls -a"
-alias ll="ls -l"
-alias ls="\ls --classify --show-control-chars --color=auto --group-directories-first"
-alias lsd="ls -d *"
-alias s="\cd .."
-alias cp="\cp -i"
-alias md="\mkdir"
-alias mv="\mv -i"
-alias rd="\rmdir"
-# alias rm="\rm -i"
-alias grep="\grep --color"
-#alias mc=". /usr/share/mc/bin/mc-wrapper.sh"
-alias df="\df -h -x supermount"
-alias du="\du -h"
-alias less="less -r"
-# To be improved:
-alias killjobs="\kill -9 `jobs -p`"
+# TODO - Works for Ubuntu.  Make this universal.
+alias  su="\sudo  $SHELL"
+
+# FIXME - is there a long form for -P ?  There is no `man cd`
+alias  cd='\cd  -P'
+alias  ..='\cd  ..'
+alias  cd..='\cd  ..'
+alias  cf='\cd  /mnt/cf'
+alias  sd='\cd  /mnt/sd'
+
+alias  ls='\ls  --classify  --show-control-chars  --color=auto  --group-directories-first'
+lsd() { 
+  if [ -z $1 ]; then
+    ls  --directory  --indicator-style=none  *
+  else
+    ls  --directory  --indicator-style=none  $@
+  fi
+}
+
+alias  cp='nocorrect  \cp  --interactive'
+
+alias  mkdir='nocorrect  \mkdir'
+alias  md='mkdir'
+
+alias  mv='nocorrect  \mv  --interactive'
+
+alias  rd='\rmdir'
+
+#alias  rm='nocorrect  \rm  --interactive'
+# Making rm smarter so it can remove directories too.  Fuck you, GNU.
+rm() {
+  if [ -d $1 ] && [ ! -L $1 ]; then
+    \rmdir  --verbose  "$1"
+  else
+    # I can't use \rm here, because it somehow still uses rm()
+    nocorrect  /bin/rm  --interactive  "$@"
+  fi
+}
+
+alias  grep='\grep --color'
+
+# This used to have  --exclude-type supermount
+alias  df='\df  --human-readable'
+
+alias  du='\du  --human-readable'
+
+# Has  --raw-control-chars  earlier, but let's see if this is tidier.
+alias  less='\less  --RAW-CONTROL-CHARS'
+#alias less='\less  --force  --RAW-CONTROL-CHARS  --quit-if-one-screen  $@'
 # --follow-name would allow the file to be edited and less will automatically display changes.
-LESS=" --force --ignore-case --long-prompt --no-init --silent --status-column --tilde --window=-2"
+LESS=' --force  --ignore-case  --long-prompt  --no-init  --silent  --status-column  --tilde  --window=-2'
 export LESS
-#alias less="/usr/bin/less  -F -f -R $@"
+
+# TODO - Improve
+alias killjobs='\kill  -9  $( \jobs -p )'
+
+alias cls='\clear'
+
+
 
 # Suffix aliases
-alias -s txt=medit
-alias -s pdf=xpdf
-# Holy shit this has caused so many issues, what was I thinking?
-#alias -s sh=zsh
+alias  -s txt=medit
+alias  -s pdf=xpdf
+
+
 
 # MIME is possible, but I can't figure it out.
 # autoload -U zsh-mime-setup
 # zsh-mime-setup
 
-# May need tweaking if I need to pass $@ parameters quoted..
-# alias mount="/home/user/bin/mount.sh $@"
+
+
+# Ruby / shoes
+# alias shoes="~/shoes/dist/shoes"
 
 # Slackware 12.2
-#alias slapt-get='slapt-get --prompt'
-
-: << IDEAS
-
-if ls --color  &>/dev/null; then
-  ls_opt="--color" # gnu (linux)
-else
-  ls_opt="-G"      # mac
-  #ls_opt="-F"
-fi
-alias ls="ls $ls_opt"
-
-IDEAS
+#alias  slapt-get='slapt-get  --prompt'
 

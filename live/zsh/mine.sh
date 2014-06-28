@@ -1,11 +1,14 @@
-# TODO:  rename this file.  Move it into lib.sh?
+# TODO - Rename this file.  Move it into lib.sh?
+
+
 
 be_root_or_die() {
-  if [ $(whoami) != "root" ]; then
+  if [ $(whoami) != 'root' ]; then
     \echo  "ERROR:  You're not root!"
     exit  1
   fi
 }
+
 
 
 ziprepair() {
@@ -21,11 +24,12 @@ ziprepair() {
 }
 
 
-# as in re-source.
-resource() {
+
+re_source() {
   for i in /l/shell-random/git/live/zsh/*.sh
     source $i
 }
+
 
 
 # What the fuck was this for, anyways?
@@ -38,12 +42,14 @@ DISABLED_rmln() {
 }
 
 
+
 # 1.tar.bz2 => tar.bz2 (good, but...)
 #   it also does 1.test.test.tar.bz2 => test.test.tar.bz2 (bad idea!)
 # EXT=${AUTOTEST_FILE#*.}
 # 1.tar.bz2 => bz2 (better!)
 # Is this problematic code for other shells?
 #EXT=${AUTOTEST_FILE##*.}
+
 
 
 # TODO - count the number of files in subdirectories.
@@ -109,6 +115,8 @@ c() {
   fi
 }
 
+
+
 edit() {
   # I'm in X, I'm at the raw console and X is launched.
   \geany --new-instance $@ > /dev/null 2>&1
@@ -118,6 +126,7 @@ edit() {
   fi
 }
 alias mcedit="\mcedit --colors editnormal=lightgrey,black"
+
 
 
 # TODO: implement 'global' with find
@@ -165,6 +174,8 @@ globaldirs() {
 #   \cd $b
 # }
 
+
+
 # Find and enter the highest numbered directory
 # FIXME - this doesn't work to go to 0.0.99 instead of 0.0.1
 cdv() {
@@ -176,7 +187,10 @@ cdv() {
   \cd `\ls -1d */ | \grep '[0-9]*\.[0-9]*\.[0-9]' | \sed 's/\///' | \tail -n 1`
 }
 
-NOWAY-umount() {
+
+
+: << NO_WAY
+umount() {
   if [ "$#" = "0" ] || [ "$1" = "--help" ]; then
     /bin/umount "$@"
   else
@@ -189,9 +203,13 @@ NOWAY-umount() {
     fi
   fi
 }
+NO_WAY
+
+
 
 # Make and change into a directory:
 mcd() { \mkdir "$1" && \cd "$1" ; }
+
 
 
 # FIXME: I don't understand why I cannot call this ls()
@@ -213,6 +231,7 @@ dir() {
         --quiet
     ` # `
 }
+
 
 
 # A proper dir command!
@@ -284,7 +303,9 @@ EOF
 }
 
 
+
 # DOS-style `dir /ad`
+# See also the alias lsd
 ddir() {
   OLD_LANG="$LANG"
   export LANG="C"
@@ -298,6 +319,7 @@ ddir() {
   export LANG="$OLD_LANG"
   OLD_LANG=
 }
+
 
 
 # File/Directory-finding helpers.  Saves keystrokes.
@@ -331,6 +353,7 @@ findin() {
 }
 # TODO: parameter-sanity?
 findinall() { findin '*' $1 ; }
+
 
 
 # Solves commandline limitations.  Hot damn.
@@ -383,6 +406,8 @@ findqueue() {
   done
 }
 
+
+
 # TODO - yes it's possible to rig things so that playback begins when the very first item is added, but that's a bit annoying to do.  I don't understand parameters in scripting well enough to do it cleanly.  Needing to do that reveals a big issue with the player.. perhaps it's configured to scan every file for meta data.
 findplay() {
   #local deadbeef=1
@@ -426,7 +451,7 @@ XSPF
 
 
 
-# TODO: Do I actually use this anywhere?
+# TODO - Do I actually use this anywhere?
 # if a file exists, act on it.
 # warning: Your command won't prompt!  (so rm will nuke files)
 ifexists() {
@@ -434,6 +459,8 @@ ifexists() {
     "$1" "$2"
   fi
 }
+
+
 
 searchstring() {
   unset searchstring_success
@@ -492,6 +519,8 @@ searchstring_right_r() {
   done
 }
 
+
+
 divide() {
   # Just simple for now.  Elsewhere I have more complex code that's more thorough
   isnumber() {
@@ -527,6 +556,8 @@ break
 done
 }
 
+
+
 position_from_right_to_left() {
   until [ "sky" = "falling" ]; do
   if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ]; then \echo "Needs two parameters: a string and a number"; break ; fi
@@ -545,11 +576,14 @@ position_from_right_to_left() {
   done
 }
 
+
+
 insert_character() {
   unset searchstring_success
-  until [ "sky" = "falling" ]; do
+  until [ 'sky' = 'falling' ]; do
   # 2 parameters, no blanks, first parameter  must be one character.
-  if [ ! "$#" -eq 3 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ "$3" = "" ] || [ `expr length $1` -gt 1 ]; then \echo "Needs three parameters: a character, a string and a position"; break ; fi
+  # I should use -z and not = ''
+  if [ ! "$#" -eq 3 ] || [ "$1" = '' ] || [ "$2" = '' ] || [ "$3" = '' ] || [ $( \expr length $1 ) -gt 1 ]; then \echo  'Needs three parameters: a character, a string and a position'; break ; fi
   expr $3 + 1 &> /dev/null ; result=$?
   if [ $result -ne 0 ]; then \echo $3 is not a number. ; break ; fi
   character="$1"
@@ -571,9 +605,10 @@ insert_character() {
 
 replace_character() {
   unset searchstring_success
-  until [ "sky" = "falling" ]; do
+  until [ 'sky' = 'falling' ]; do
   # 2 parameters, no blanks, first parameter  must be one character.
-  if [ ! "$#" -eq 3 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ "$3" = "" ] || [ `expr length $1` -gt 1 ]; then \echo "Needs three parameters: a character, a string and a position"; break ; fi
+  # I should use -z and not = ''
+  if [ ! "$#" -eq 3 ] || [ "$1" = '' ] || [ "$2" = '' ] || [ "$3" = '' ] || [ $( \expr length $1 ) -gt 1 ]; then \echo  'Needs three parameters: a character, a string and a position'; break ; fi
   expr $3 + 1 &> /dev/null ; result=$?
   if [ $result -ne 0 ]; then \echo $3 is not a number. ; break ; fi
   character="$1"
@@ -597,10 +632,12 @@ replace_character() {
 }
 
 
+
 multiply() {
-  until [ "sky" = "falling" ]; do
-    if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] ; then \echo "Needs two parameters"; break ; fi
-    if [ ! `isnumber $1` -eq 0 ] || [ ! `isnumber $2` -eq 0 ] ; then \echo "Needs two numbers"; break; fi
+  until [ 'sky' = 'falling' ]; do
+  # I should use -z and not = ''
+    if [ ! "$#" -eq 2 ] || [ "$1" = '' ] || [ "$2" = '' ] ; then \echo  'Needs two parameters'; break ; fi
+    if [ ! $( isnumber $1 ) -eq 0 ] || [ ! $( isnumber $2 ) -eq 0 ] ; then \echo  'Needs two numbers'; break; fi
     a=$1
     b=$2
 
@@ -612,39 +649,25 @@ multiply() {
     sum=$(( $a_nodot * $b_nodot ))
 
     # Learn the position of "." in each.
-    a_dotloc=`searchstring_right_r "." $a`
-    b_dotloc=`searchstring_right_r "." $b`
+    a_dotloc=$( searchstring_right_r  '.'  $a )
+    b_dotloc=$( searchstring_right_r  '.'  $b )
 
     # Add one to it, to get its position in human terms.
     # If there was no dot (-1) then make it 0.
-    if [ $a_dotloc -gt "-1" ]; then ((a_dotloc--)) ; else a_dotloc=0 ; fi
-    if [ $b_dotloc -gt "-1" ]; then ((b_dotloc--)) ; else b_dotloc=0 ; fi
+    if [ $a_dotloc -gt '-1' ]; then ((a_dotloc--)) ; else a_dotloc=0 ; fi
+    if [ $b_dotloc -gt '-1' ]; then ((b_dotloc--)) ; else b_dotloc=0 ; fi
 
-    # add the two positions of "." together
+    # add the two positions of '.' together
     dotloc=$(( $a_dotloc + $b_dotloc ))
 
     # insert "." into $sum
     # But first I must learn the proper insertion location.  Convert from from-right to the standard from-left.
-    dotloc=`position_from_right_to_left $sum $dotloc`
+    dotloc=$( position_from_right_to_left  $sum  $dotloc )
 
-    # insert a "." into $sum, but not at the end
-    if [ $dotloc -ne ${#sum} ]; then sum=`insert_character "." "$sum" $dotloc` ; fi
+    # insert a '.' into $sum, but not at the end
+    if [ $dotloc -ne ${#sum} ]; then sum=$( insert_character  '.'  "$sum"  $dotloc ) ; fi
 
     \echo $sum
   break
   done
-}
-
-# TODO:  Is this working?
-# - rm should be smarter, and remove directories too.  Check if a directory and then just use rmdir.  =p
-# -- Auto-remove empty directories (with no subdirectories)
-rm() {
-  # Be aware that if you alias rm, it'll muck this up.
-#   \echo "$#"
-  if [ "$#" = "1" ] && [ -d "$1" ]; then
-#     \rmdir --ignore-fail-on-non-empty "$1"
-    \rmdir -v "$1"
-  else
-    /bin/rm -i "$@"
-  fi
 }

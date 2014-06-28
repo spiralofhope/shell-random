@@ -87,9 +87,10 @@ setopt  glob
 # Append a trailing ‘/’ to all directory names resulting from filename generation (globbing). 
 setopt  mark_dirs
 
+# Try to avoid the message:  'zsh: no matches found...'
 # If a pattern for filename generation has no matches, print an error, instead of leaving it unchanged in the argument list.
 # This also applies to file expansion of an initial ‘~’ or ‘=’. 
-setopt  nomatch
+setopt  no_nomatch
 
 
 
@@ -189,6 +190,10 @@ setopt  long_list_jobs
 # --
 # --  setopt:  Shell Emulation
 # --
+
+# Causes field splitting to be performed on unquoted parameter expansions.
+# Note that this option has nothing to do with word splitting.
+setopt  sh_word_split
 
 
 
