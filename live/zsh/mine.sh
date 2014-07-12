@@ -307,17 +307,11 @@ EOF
 # DOS-style `dir /ad`
 # See also the alias lsd
 ddir() {
-  OLD_LANG="$LANG"
-  export LANG="C"
-  \ls -1d --indicator none --color $(
-    find -maxdepth 1 -type d \
-      ! -name .
-  ) \
-  | \sort \
-  | \sed -e 's/\.\///' \
-  | \less -r
-  export LANG="$OLD_LANG"
-  OLD_LANG=
+  OLD_LC_COLLATE="$LC_COLLATE"
+  \export  LC_COLLATE=C
+  \ls  -1  --color  --directory  *  .* | \less  --raw-control-char
+  \export  LC_COLLATE="$OLD_LC_COLLATE"
+  OLD_LC_COLLATE=
 }
 
 
