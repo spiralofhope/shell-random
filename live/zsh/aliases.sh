@@ -15,7 +15,7 @@ alias  cf='\cd  /mnt/cf'
 alias  sd='\cd  /mnt/sd'
 
 alias  ls='\ls  --classify  --show-control-chars  --color=auto  --group-directories-first'
-lsd() { 
+lsd() {
   if [ -z $1 ]; then
     ls  --directory  --indicator-style=none  *
   else
