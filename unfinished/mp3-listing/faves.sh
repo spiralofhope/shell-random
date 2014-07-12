@@ -32,6 +32,6 @@ fi
 \echo  '* Building Favourites list:  '  $faves
 \echo  ''
 \find  $mp3dir/  -name '*~.mp3'  -exec \
-  \ln --symbolic {} --target-directory=$faves/ \;
+  \ln  --symbolic {} --target-directory=$faves/ \;
 \echo  ''
 \echo  'done.'

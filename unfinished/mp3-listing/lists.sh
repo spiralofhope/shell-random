@@ -27,7 +27,7 @@ go() {
 
   # FIXME: Something is wrong here..  =/
   \find  -L  $music_dirs_list  -name \""$2\""  -exec \
-    \ln -s --target-directory="$list_dir"/"$1"/ $3{} \;
+    \ln  --symbolic  --target-directory="$list_dir"/"$1"/ $3{} \;
 }
 
 
