@@ -305,14 +305,18 @@ EOF
 
 
 # DOS-style `dir /ad`
-# See also the alias lsd
 ddir() {
   OLD_LC_COLLATE="$LC_COLLATE"
   \export  LC_COLLATE=C
-  \ls  -1  --color  --directory  *  .* | \less  --raw-control-char
+  if [ -z $1 ]; then
+    \ls  -1  --color  --directory  *  .* | \less  --raw-control-char
+  else
+    \ls  -1  --color  --directory  $@ | \less  --raw-control-char
+  fi
   \export  LC_COLLATE="$OLD_LC_COLLATE"
   OLD_LC_COLLATE=
 }
+alias lsd=ddir
 
 
 
