@@ -1,16 +1,17 @@
 # This won't work because the collection is too large!
-echo "* Building flat/"
-echo "* Building flat/ -- NOTE: Any file that is mentioned here is a duplicate filename."
+\echo  '* Building flat/'
+\echo  '* Building flat/ -- NOTE: Any file that is mentioned here is a duplicate filename.'
 
-cd ../
+\cd  ../
 # ~DO:  if exist
 # This will fail <----------------------
 # A ruby solution would work!
-rm -rf ./flat/
-mkdir ./flat/
+\rm  --force  --recursive  ./flat/
+\mkdir  ./flat/
 
-echo "* Building flat/ -- tested"
-find ../music   -name \*.mp3 -exec ln -s ../{} --target-directory=./flat/ \;
+\echo  '* Building flat/ -- tested'
+\find  ../music  -name \*.mp3  -exec \
+  \ln  --symbolic ../{} --target-directory=./flat/ \;
 
 # echo "* Building flat/ -- untested"
 # find ../untested -name \*.mp3 -exec ln -s ../{} --target-directory=./flat/ \;

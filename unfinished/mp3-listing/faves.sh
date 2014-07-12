@@ -1,15 +1,15 @@
-mp3dir="/home/user/media/music/sorted/ /home/user/media/music/unsorted-tested"
+mp3dir='/home/user/media/music/sorted/ /home/user/media/music/unsorted-tested'
 builtdir=/home/user/media/_built
 faves=$builtdir/favourites
 
 
-echo "* Building Favourites/"
+\echo  '* Building Favourites/'
 
 if [ -e $builtdir ] ; then
-  echo "  .. $builtdir exists"
+  \echo  "  .. $builtdir exists"
 else
-  echo "  ERROR: Misconfigured faves $builtdir:  " $builtdir
-  echo "exiting."
+  \echo  "  ERROR: Misconfigured faves $builtdir:  "  $builtdir
+  \echo  'exiting.'
   exit
 fi
 
@@ -20,18 +20,18 @@ fi
 #fi
 
 if [ -e $faves/ ] ; then
-  echo "  .. deleting old favourites directory:  " $faves
-  rm -rf $faves/
+  \echo  '  .. deleting old favourites directory:  '  $faves
+  \rm  --force  --recursive  $faves/
 else
-  echo "  .. favourites directory doesn't exist yet:  " $faves
+  \echo  "  .. favourites directory doesn't exist yet:  " $faves
 fi
 
-echo "  .. making new favourites directory:  " $faves
-mkdir $faves/
+\echo  '  .. making new favourites directory:  '  $faves
+\mkdir $faves/
 
-echo "* Building Favourites list:  " $faves
-echo ""
-find $mp3dir/ -name '*~.mp3' -exec ln --symbolic {} --target-directory=$faves/ \;
-echo ""
-echo "done."
-
+\echo  '* Building Favourites list:  '  $faves
+\echo  ''
+\find  $mp3dir/  -name '*~.mp3'  -exec \
+  \ln --symbolic {} --target-directory=$faves/ \;
+\echo  ''
+\echo  'done.'
