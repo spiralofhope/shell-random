@@ -1,3 +1,11 @@
+#!/usr/bin/env  sh
+
+
+
+# I'm not really sure what I was getting at here.  Why would lists be useful?  In case of hard drive failure?  That's what backups are for.
+
+
+
 \echo  '* Building the texts'
 \cd  ../
 
