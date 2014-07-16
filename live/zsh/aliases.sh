@@ -56,7 +56,7 @@ alias killjobs='\kill  -9  $( \jobs -p )'
 alias cls='\clear'
 
 # Go fuck yourself, drive.
-alias eject='\eject  -i 0 ; \eject'
+alias eject='\eject  -i 0 >/dev/null ; \eject'
 
 
 
