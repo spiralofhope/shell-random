@@ -17,3 +17,6 @@
 
 # Additional output, for troubleshooting.  I like to leave it on, just in case.
 print_teardown_info='true'
+
+# The rsync list of files to exclude.
+backup_rsync_exclude_list='backup.rsync-exclude-list.txt'

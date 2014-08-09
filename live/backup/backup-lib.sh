@@ -5,7 +5,6 @@
 source  ./backup-configuration.sh
 
 
-
 # When mounting read-write, mount with risky performance options.
 #   - Anything I mount for writing will be more-or-less exclusively mounted by this script.
 #   - Writing is only being done to a location where its contents don't matter so much.
@@ -464,7 +463,7 @@ _backup_rsync(){
   local  target=$2
   rsync=1
   \nice  --adjustment=19  \rsync  $dry_run \
-    --exclude-from=./backup.rsync-exclude-list.txt \
+    --exclude-from=$backup_rsync_exclude_list \
     ` # This is --archive : ` \
     ` # --recursive --links --perms --times --group --owner --devices --specials ` \
     ` #   Which is -rlptgoD (no -H,-A,-X) ` \
