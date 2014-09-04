@@ -669,3 +669,17 @@ multiply() {
   break
   done
 }
+
+
+
+_jpegoptimize() {
+  \touch  "zz--  jpegoptim -m$1"
+  \jpegoptim  -m$1  *
+  \exit
+}
+jpegoptim50() {
+  _jpegoptimize 50
+}
+jpegoptim80() {
+  _jpegoptimize 80
+}
