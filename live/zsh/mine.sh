@@ -677,9 +677,8 @@ _jpegoptimize() {
   \jpegoptim  -m$1  *
   \exit
 }
-jpegoptim50() {
-  _jpegoptimize 50
-}
-jpegoptim80() {
-  _jpegoptimize 80
-}
+jpegoptim50() { _jpegoptimize 50 }
+jpegoptim80() { _jpegoptimize 80 }
+jpegoptim85() { _jpegoptimize 85 }
+jpegoptim90() { _jpegoptimize 90 }
+jpegoptim95() { _jpegoptimize 95 }
