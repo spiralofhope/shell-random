@@ -673,7 +673,7 @@ multiply() {
 
 
 _jpegoptimize() {
-  if [ ! $2 == "label_false" ]; then
+  if [ -z $2 ] || ! [ $2 == "label_false" ]; then
     \touch  "zz--  jpegoptim -m$1"
   fi
   \jpegoptim  -m$1  *
