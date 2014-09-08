@@ -21,7 +21,9 @@ get_pid_of_1_2() {
 kill_slock_and_disable_power_saving() {
   # Disable monitor power saving.
   \xset  -dpms
+  # Disable screen blanking for virtual consoles.
   \xset  s off
+  # Disable screen blanking.
   \setterm  -blank 0
   # Kill xautolock, preventing slock from being triggered.
   if ! [ -z $xautolock_pid ]; then
@@ -38,9 +40,12 @@ kill_slock_and_disable_power_saving() {
 enable_slock_and_power_saving() {
   # Enable monitor power saving.
   \xset  +dpms
+  # Enable screen blanking for virtual consoles.
+  \xset  s on
+  # Disable screen blanking (via APM if available) for virtual consoles.
   # 180 seconds = 5 minutes
   \xset  dpms 0 0 180
-  \xset  s on
+  # Blank the screen after 5 minutes.
   \setterm  -blank 5
   if [ -z $xautolock_pid ]; then
     \echo  "slock wasn't running.  Starting it."
