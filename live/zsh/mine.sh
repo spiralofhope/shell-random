@@ -320,6 +320,7 @@ alias lsd=ddir
 
 
 
+# TODO? - update this using the style of findreplace
 # File/Directory-finding helpers.  Saves keystrokes.
 # uses grep to colour.
 findfile() {
