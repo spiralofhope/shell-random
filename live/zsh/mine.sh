@@ -329,7 +329,7 @@ findfile() {
   \sed 's/$/"/' |\
   \grep --colour=always -i "$1"
 }
-finddir()  {
+finddir() {
   # TODO: parameter-sanity
   \find -type d -iname \*"$1"\* |\
   \sed 's/^/"/'|\
@@ -351,6 +351,18 @@ findin() {
 }
 # TODO: parameter-sanity?
 findinall() { findin '*' $1 ; }
+
+findreplace() {
+  if [ -z $3 ]; then
+    \echo "Usage:  $0 search replace [file|wildcard]."
+    \return 1
+  fi
+  local search=$1
+  local replace=$2
+  shift
+  shift
+  \sed  -i "s/$search/$replace/g" $@
+}
 
 
 
