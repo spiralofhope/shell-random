@@ -421,10 +421,10 @@ _backup_teardown(){
     \ls  --almost-all  -l  $working_directory | \tail --lines +2
 
     \echo
-    echo_info  'The output of '  '\df  --block-size=1  --print-type  |  \grep  --color '  $working_directory ' is:'
-    \df  --block-size=1  --print-type  |  \grep  --color  $working_directory
-    echo_info  'The output of '  '\df  --block-size=1  --human-readable  --print-type  |  \grep  --color '  $working_directory ' is:'
-    \df  --block-size=1  --human-readable  --print-type  |  \grep  --color  $working_directory
+    echo_info  'The output of '  '\df  --block-size=1  --print-type                   |  \grep  --color '  $working_directory ' is:'
+    \df  --block-size=1  --print-type                    |  \grep  --color  $working_directory
+    echo_info  'The output of '  '\df  --block-size=1  --print-type  --human-readable |  \grep  --color '  $working_directory ' is:'
+    \df  --block-size=1  --print-type  --human-readable  |  \grep  --color  $working_directory
 
     \echo
     echo_info  'The output of '  '\mount  |  \grep  --color '  $working_directory  ' is:'
