@@ -18,8 +18,8 @@ source  ./backup-configuration.sh
 # Actually, btrfs didn't list nouser as of 2013-07-05.  But I see mentions of it elsewhere.
 #   https://btrfs.wiki.kernel.org/index.php/Mount_options
 partition_type_83_mount_options=nouser,noatime,nodiratime
-# This is for btrfs, but seems to work without error under ext4:
-partition_type_83_mount_options=nouser,noatime,nodiratime,compress=lzo
+# This is for btrfs:
+#partition_type_83_mount_options=nouser,noatime,nodiratime,compress=lzo
 partition_type_7_mount_options=noatime,nodiratime
 
 
@@ -288,6 +288,7 @@ _smart_mount() {
     _backup_die  "_smart_mount() was called with an improper second parameter (either 'ro' or 'rw')."
   fi
 
+
   _distinguish_between_uuid_sdx_directory  $one
   local  type=$__
   #if [[ $type = 'directory' ]]; then
@@ -344,7 +345,7 @@ _smart_mount() {
 
         # Give some decent output..
         echo_info  'Some info on '  "$one"  '..'
-        \df  --human-readable  --print-type | \grep  $one\ 
+        \df  --human-readable  --print-type | \grep  $one
 
         _find_mount_point  $one
         one=$__
@@ -378,7 +379,7 @@ _smart_mount() {
 
         # Give some decent output..
         echo_info  'Some info on '  "$one"  '..'
-        \df  --human-readable  --print-type | \grep  $one\ 
+        \df  --human-readable  --print-type | \grep  $one
 
         _find_mount_point  $one
         one=$__
@@ -401,6 +402,7 @@ _smart_mount() {
 
   local  smart_mount_working_directory=$( \mktemp  --directory  --suffix=.$identifier.bindpoint  --tmpdir=$working_directory )
   err  $?
+
 
   if [[ $two = 'rw' ]]; then
     \mount  -o bind,rw  $one  "$smart_mount_working_directory"  > /dev/null ;  err  $?
