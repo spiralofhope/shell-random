@@ -11,14 +11,16 @@ source  ./backup-configuration.sh
 # Problem 1 - I need to research and properly understand such options.
 # Problem 2 - The options are different per filesystem.
 #             So I could have partition type 83, ext4 or btrfs, which have different mount options.
-#partition_type_83_mount_options=nouser,noatime,data=writeback,barrier=0,nobh
+#partition_type_83_mount_options=nouser,noatime,nodiratime,data=writeback,barrier=0,nobh
 # nobarrier exists, but they give a healthy warning.
 #partition_type_83_mount_options=nouser,noatime,nobh
 # This seems universal.
 # Actually, btrfs didn't list nouser as of 2013-07-05.  But I see mentions of it elsewhere.
 #   https://btrfs.wiki.kernel.org/index.php/Mount_options
-partition_type_83_mount_options=nouser,noatime
-partition_type_7_mount_options=noatime
+partition_type_83_mount_options=nouser,noatime,nodiratime
+# This is for btrfs, but seems to work without error under ext4:
+partition_type_83_mount_options=nouser,noatime,nodiratime,compress=lzo
+partition_type_7_mount_options=noatime,nodiratime
 
 
 
