@@ -76,3 +76,13 @@ print_teardown_info='true'
 # TODO (code/example, see my run/terminal scripts) - if you want to perform multiple backups, and you want to stop between them, then you can check $? and act appropriately.
 
 # TODO (find my notes) - output logging
+
+# Note that if you need to have customized rsync exclude lists, there isn't an environment variable (yet).  Try doing something hackish like.
+\cp  \
+  'backup.rsync-exclude-list--one.txt' \
+  'backup.rsync-exclude-list.txt'
+./backup.sh  /path/to/source-directory/  /path/to/target-directory/
+\cp  \
+  'backup.rsync-exclude-list--two.txt' \
+  'backup.rsync-exclude-list.txt'
+./backup.sh  /path/to/source-directory/  /path/to/target-directory/
