@@ -21,7 +21,8 @@ partition_type_83_mount_options=nouser,noatime,nodiratime
 # compress=lzo is for btrfs
 partition_type_83_mount_options=nouser,noatime,nodiratime,compress=lzo
 partition_type_7_mount_options=noatime,nodiratime
-
+# `mount -s`  for sloppy mounting which ignores unsupported options does not solve this problem.
+# One idea is to use  `parted`  .. there is  `parted --list --script`  but it's really truly awfully messy.  Is there an easier way to get information on a particular partition?  The man page is useless, as expected with GNU software.
 
 
 # Taken from zsh/colors.sh
@@ -334,11 +335,11 @@ _smart_mount() {
 
           if [[ $two = 'rw' ]]; then
             echo_info  'mounting '  "$one"  ' read-write.'
-            \mount  -o $partition_type_7_mount_options,rw  $one  "$smart_mount_working_directory"  ;  err  $?
+            \mount  --options $partition_type_7_mount_options,rw  $one  "$smart_mount_working_directory"  ;  err  $?
           fi
           if [[ $two = 'ro' ]]; then
             echo_info  'mounting '  "$one"  ' read-only.'
-            \mount  -o $partition_type_7_mount_options,ro  $one  "$smart_mount_working_directory"  ;  err  $?
+            \mount  --options $partition_type_7_mount_options,ro  $one  "$smart_mount_working_directory"  ;  err  $?
           fi
         fi
         # mounted already, or mounted just now.
@@ -368,11 +369,11 @@ _smart_mount() {
 
           if [[ $two = 'rw' ]]; then
             echo_info  'mounting '  "$one"  ' read-write.'
-            \mount  -o $partition_type_83_mount_options,rw  $one  "$smart_mount_working_directory"  ;  err  $?
+            \mount  --options $partition_type_83_mount_options,rw  $one  "$smart_mount_working_directory"  ;  err  $?
           fi
           if [[ $two = 'ro' ]]; then
             echo_info  'mounting '  "$one"  ' read-only.'
-            \mount  -o $partition_type_83_mount_options,ro  $one  "$smart_mount_working_directory"  ;  err  $?
+            \mount  --option $partition_type_83_mount_options,ro  $one  "$smart_mount_working_directory"  ;  err  $?
           fi
         fi
         # mounted already, or mounted just now.
@@ -405,10 +406,10 @@ _smart_mount() {
 
 
   if [[ $two = 'rw' ]]; then
-    \mount  -o bind,rw  $one  "$smart_mount_working_directory"  > /dev/null ;  err  $?
+    \mount  --options bind,rw  $one  "$smart_mount_working_directory"  > /dev/null ;  err  $?
   fi
   if [[ $two = 'ro' ]]; then
-    \mount  -o bind,ro  $one  "$smart_mount_working_directory"  > /dev/null ;  err  $?
+    \mount  --options bind,ro  $one  "$smart_mount_working_directory"  > /dev/null ;  err  $?
   fi
   __=$smart_mount_working_directory
 }
