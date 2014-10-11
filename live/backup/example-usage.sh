@@ -77,7 +77,8 @@ print_teardown_info='true'
 
 # TODO (find my notes) - output logging
 
-# Note that if you need to have customized rsync exclude lists, there isn't an environment variable (yet).  Try doing something hackish like.
+# Note that if you need to have customized rsync exclude lists, there isn't an environment variable (yet).  Try doing something hackish like this:
+# Be aware that if you ^c out of backup.sh, it will not continue the below example code.
 \cp  \
   'backup.rsync-exclude-list--one.txt' \
   'backup.rsync-exclude-list.txt'
