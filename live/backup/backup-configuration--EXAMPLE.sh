@@ -1,4 +1,4 @@
-#!/usr/bin/env  bash
+#!/usr/bin/env  sh
 
 
 
@@ -21,4 +21,4 @@
 print_teardown_info='true'
 
 # The rsync list of files to exclude.
-backup_rsync_exclude_list='backup.rsync-exclude-list.txt'
+backup_rsync_exclude_list='./backup.rsync-exclude-list.txt'

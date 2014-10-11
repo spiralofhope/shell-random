@@ -1,1 +1,1 @@
-/l/backup-configuration.sh
+/l/backup/backup-configuration.sh

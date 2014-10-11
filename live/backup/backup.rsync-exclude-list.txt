@@ -1,1 +1,1 @@
-/l/backup.rsync-exclude-list.txt
+/l/backup/backup.rsync-exclude-list.txt

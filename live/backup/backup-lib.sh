@@ -18,8 +18,8 @@ source  ./backup-configuration.sh
 # Actually, btrfs didn't list nouser as of 2013-07-05.  But I see mentions of it elsewhere.
 #   https://btrfs.wiki.kernel.org/index.php/Mount_options
 partition_type_83_mount_options=nouser,noatime,nodiratime
-# This is for btrfs:
-#partition_type_83_mount_options=nouser,noatime,nodiratime,compress=lzo
+# compress=lzo is for btrfs
+partition_type_83_mount_options=nouser,noatime,nodiratime,compress=lzo
 partition_type_7_mount_options=noatime,nodiratime
 
 
