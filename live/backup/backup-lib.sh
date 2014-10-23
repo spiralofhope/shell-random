@@ -19,7 +19,7 @@ source  ./backup-configuration.sh
 #   https://btrfs.wiki.kernel.org/index.php/Mount_options
 partition_type_83_mount_options=nouser,noatime,nodiratime
 # compress=lzo is for btrfs
-partition_type_83_mount_options=nouser,noatime,nodiratime,compress=lzo
+#partition_type_83_mount_options=nouser,noatime,nodiratime,compress=lzo
 partition_type_7_mount_options=noatime,nodiratime
 # `mount -s`  for sloppy mounting which ignores unsupported options does not solve this problem.
 # One idea is to use  `parted`  .. there is  `parted --list --script`  but it's really truly awfully messy.  Is there an easier way to get information on a particular partition?  The man page is useless, as expected with GNU software.
