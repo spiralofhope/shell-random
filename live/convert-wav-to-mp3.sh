@@ -3,12 +3,13 @@
 
 source=$1
 # TODO - remove the .wav
-target="$1_.mp3"
+target="$1 =_.mp3"
 
 
 
 _convert() {
   \echo  'Note:  Adding _ to identify this as a transcoded item.'
+  \echo  'Note:  Adding = to identify this as self-created mp3.'
   \lame  -V0  "$source"  "$target"
   if [ $? -ne 0 ]; then
     exit 1

@@ -16,6 +16,7 @@
 _convert_flac_to_mp3() {
   \echo  ''
   \echo  'Note:  Adding _ to identify this as a transcoded item.'
+  \echo  'Note:  Adding = to identify this as self-created mp3.'
   # Note that  \avconv  is a drop-in replacement for the depreciated  \ffmpeg
   \avconv \
     -i "$1" \
@@ -51,12 +52,12 @@ if [ -z $1 ]; then
       \echo  'ERROR:  No .flac files found.'
       continue
     fi
-    output_filename="${i/%.flac/ _.mp3}"
+    output_filename="${i/%.flac/ =_.mp3}"
     _convert_flac_to_mp3  "$i"  "$output_filename"
     _convert_vbrfix              "$output_filename"
   done
 else
-    output_filename="${@/%.flac/ _.mp3}"
+    output_filename="${@/%.flac/ =_.mp3}"
     _convert_flac_to_mp3  "$1"  "$output_filename"
     _convert_vbrfix             "$output_filename"
 fi
