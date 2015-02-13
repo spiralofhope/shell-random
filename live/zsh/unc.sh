@@ -168,6 +168,26 @@ DOCUMENTATION
           ;;
         esac
       ;;
+      'xz') # check more:
+        EXTENSION="${BASENAME##*.}"
+        mcd  "$BASENAME"
+        \tar  -xvJf  ../"$FILE"
+#        case $EXTENSION in
+#          'tar') # .tar.xz
+#            # strip out .tar
+#            BASENAME="${BASENAME%.*}"
+#            mcd  "$BASENAME"
+#            # TODO - it's possible to send this to stdout via -so and then pipe it through tar to do this all in one pass, possibly making the process faster or at least cleaner/safer.
+#            \7z  x  ../"$FILE"
+#            \tar  -xvvzf  ./"$BASENAME"."$EXTENSION"
+#            \rm  --force  ./"$BASENAME"."$EXTENSION"
+#          ;;
+#          *) # .xz
+#            mcd  "$BASENAME"
+#            \7z  x  ../"$FILE"
+#          ;;
+#        esac
+      ;;
       Z)
         EXTENSION="${BASENAME##*.}"
         case $EXTENSION in
