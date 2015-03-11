@@ -1,5 +1,21 @@
 #!/usr/bin/env  zsh
 
+
+# Goal:
+#
+#   - Given two installations of Firefox (a) and (b).
+#   - Manually back up both bookmark databases, named as today's date and time such as 2015-03-11__13_00_00 .
+#     --  Note: I have notes elsewhere on the date/time format generation.
+#   - Create a subfolder in (b), named as today's date and time.  See above.
+#   - Take all bookmarks from a specific subfolder, named as _outbox , in (a).
+#   - Place those bookmarks into that date+time-named subfolder in (b), named as __ .
+#   - Move all bookmarks from (a) into another subfolder, named trash.
+#     --  This is for manual review and deletion once I'm confident this script works.  NOTE:  NEVER delete bookmarks, as some version change of Firefox may change things, silently break this script and stomp on everything.
+
+# TODO - https://github.com/spiralofhope/shell-random/issues/1
+
+
+
 # Props to  http://id.motd.org/pivot/entry.php?id=22
 
 # Test this snippet out, to avoid the for-loop:
