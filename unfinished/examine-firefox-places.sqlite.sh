@@ -13,7 +13,18 @@
 #     --  This is for manual review and deletion once I'm confident this script works.  NOTE:  NEVER delete bookmarks, as some version change of Firefox may change things, silently break this script and stomp on everything.
 
 # TODO - https://github.com/spiralofhope/shell-random/issues/1
-
+#
+# http://www.commandlinefu.com/commands/view/14088/get-your-firefox-bookmarks
+#
+#sqlite3 \
+#  ~/.mozilla/firefox/*.[dD]efault/places.sqlite \
+#  "SELECT strftime('%d.%m.%Y %H:%M:%S', dateAdded/1000000, 'unixepoch', 'localtime'),url \
+#  FROM moz_places, moz_bookmarks \
+#  WHERE moz_places.id = moz_bookmarks.fk \
+#  ORDER BY dateAdded;"
+#
+# > Extracts yours bookmarks out of sqlite with the format:
+# >   dateAdded|url
 
 
 # Props to  http://id.motd.org/pivot/entry.php?id=22
