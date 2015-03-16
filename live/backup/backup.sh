@@ -12,11 +12,14 @@
 # TODO - btrfs mount flags, with compression.  Compress everything btrfs, perhaps aggressively, since it's an unused backup.  If the source is different from the target - the source is not compressed, or is compressed differently, will rsync have a hard time of things?  It could be a horrible idea..
 #        This would also have to be tested thoroughly, especially with the new i/o scheduling I've been playing with.
 
-# If a btrfs filesystem was not mounted with compression enabled:
-# It's possible to perform in-place compression to fix that.
-# TODO - What compression method this uses is unknown.
+# If a btrfs filesystem was not mounted with compression enabled, it's possible to perform in-place compression to fix that.
 # TODO - If files compressed with method a are re-compressed with method b is unknown.
-#   \btrfs  filesystem  defragment  -c  -f  -r  /mnt/
+#
+#   \sudo  \mount  /dev/sdc3  /mnt/mnt  -o defaults,noatime,nodiratime,compress=lzo
+#   \btrfs  filesystem  defragment  -clzo  -f  -r  /mnt/mnt
+#
+# TODO - What compression method this uses by default is unknown.
+#   \btrfs  filesystem  defragment  -c     -f  -r  /mnt/mnt
 
 
 
