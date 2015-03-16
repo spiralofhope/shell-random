@@ -16,10 +16,10 @@
 # TODO - If files compressed with method a are re-compressed with method b is unknown.
 #
 #   \sudo  \mount  /dev/sdc3  /mnt/mnt  -o defaults,noatime,nodiratime,compress=lzo
-#   \btrfs  filesystem  defragment  -clzo  -f  -r  /mnt/mnt
+#   \sudo  \btrfs  filesystem  defragment  -clzo  -f  -r  /mnt/mnt
 #
 # TODO - What compression method this uses by default is unknown.
-#   \btrfs  filesystem  defragment  -c     -f  -r  /mnt/mnt
+#   \sudo  \btrfs  filesystem  defragment  -c     -f  -r  /mnt/mnt
 
 
 
