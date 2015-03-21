@@ -2,7 +2,7 @@
 
 # FIXME - must not be run as root
 
-date=$( \date +%Y-%m-%d--%H-%M-%S )
+date="$( \date +%Y-%m-%d--%H-%M-%S )"
 \echo  ""
 \echo  " * Preparing home/user/ dot files and directories.."
 \mkdir  --parents  ~/.config
@@ -11,15 +11,15 @@ date=$( \date +%Y-%m-%d--%H-%M-%S )
 #   - Chromium
 
 for i in *; do
-  if [ ! -d $i ]; then
+  if [ ! -d "$i" ]; then
     continue
   fi
   # Back up any existing directories.
   # If a directory and not a symlink.
-  if [ -d ~/.config/$i -a ! -L ~/.config/$i ]; then
-    \mv  ~/.config/$i  ~/.config/${i}--$date
+  if [ -d ~/.config/"$i" -a ! -L ~/.config/"$i" ]; then
+    \mv  ~/.config/"$i"  ~/.config/"${i}"--"$date"
   fi
-  \ln  --force  --no-target-directory  --symbolic  $PWD/$i  ~/.config/$i
+  \ln  --force  --no-target-directory  --symbolic  "$PWD"/"$i"  ~/.config/"$i"
 done
 
 \echo " .. done. "
