@@ -64,6 +64,8 @@ connected() {
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
   /l/shell-random/git/live/projects.sh
+  # This is so bad, but it'll be a decent workaround.
+  \geany  /mnt/1/windows-data/l/live/_outbox--0/_outbox--0.txt
 }
 
 
