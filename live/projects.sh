@@ -2,11 +2,10 @@
 
 
 
-# sh - This will work well at the commandline.
-# sh - In Openbox, opened as a hotkey, this will open multiple instances, with the bulk being in the last one opened.
-
-# This will be erratic as all fuck with zsh.
-# This will open two instances of random shit with bash.
+# sh   - This will work well at the commandline.
+# sh   - In Openbox, opened as a hotkey, this will open multiple instances, with the bulk being in the last one opened.
+# zsh  - This will be erratic as all fuck.
+# bash - This will open two instances of random shit.
 
 
 
