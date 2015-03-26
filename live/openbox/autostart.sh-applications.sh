@@ -27,11 +27,11 @@ connected() {
   #\xchat --minimize=2 &
 
   # WeeChat
-  /l/shell-random/git/live/terminal.sh  FORCE \
-    \urxvtc \
-      -geometry 239x64 \
-      +sb                   ` # Remove the scroll bar ` \
-      -e \weechat
+#  /l/shell-random/git/live/terminal.sh  FORCE \
+#    \urxvtc \
+#      -geometry 239x64 \
+#      +sb                   ` # Remove the scroll bar ` \
+#      -e \weechat
 
   #
   # Instant Messaging
