@@ -370,7 +370,7 @@ findreplace() {
 # Solves commandline limitations.  Hot damn.
 findqueue() {
   #local deadbeef=1
-  
+
   # Case-insensitive globbing:
   \unsetopt CASE_GLOB
   # Search through directories, and read it all into an array.
@@ -405,9 +405,17 @@ findqueue() {
   # FIXME - this seems to be random!  Needs resting
   # I could take a random entry like this:
   #\echo $files_array[$RANDOM%$#FILES+1]
+  if [[ x$deadbeef == x1 ]]; then
+    # do nothing
+  else
+    \audacious  --show-main-window &
+    \sleep 0.5
+  fi
   for i in {1..${#files_array}}; do
-    #\echo $i
-    #\echo $files_array[$i]
+#    \echo --v
+#    \echo $i
+#    \echo $files_array[$i]
+#    \echo --^
     if [[ x$deadbeef == x1 ]]; then
       \deadbeef  --queue     "$files_array[$i]" &
     else
