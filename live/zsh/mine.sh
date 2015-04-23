@@ -2,6 +2,21 @@
 
 
 
+# TODO - How could I make this into something reusable?  e.g.:
+  # until false; do sudo df -h | grep /mnt/tmp ; sleep 1m ; done
+: << 'FAIL_repeat'
+repeat() {
+  __=$1
+  shift
+  until false; do
+    $( $1* )
+    sleep __
+  done
+}
+FAIL_repeat
+
+
+
 be_root_or_die() {
   if [ $(whoami) != 'root' ]; then
     \echo  "ERROR:  You're not root!"
