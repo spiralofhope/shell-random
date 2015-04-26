@@ -89,7 +89,17 @@ connected() {
       /mnt/1/windows-data/l/live/__/ \
       /l/_outbox--0/ \
   &
-  
+  # Make sure that everything is loaded up before these socket commands are sent.
+  \sleep  2
+  # I don't see how multiple socket commands can be sent in one line.  Bah.
+  # I don't know how to set the sizes of each panel.
+  \spacefm  --socket-cmd  set window_maximized true
+  \spacefm  --socket-cmd  set focused_panel 1
+  \spacefm  --socket-cmd  set focused_pane filelist
+  \spacefm  --socket-cmd  set panel1_visible true
+  \spacefm  --socket-cmd  set panel2_visible true
+  \spacefm  --socket-cmd  set panel3_visible true
+  \spacefm  --socket-cmd  set panel4_visible true
 }
 
 
