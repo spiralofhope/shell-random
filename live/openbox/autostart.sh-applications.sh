@@ -67,6 +67,29 @@ connected() {
   # This is so bad, but it'll be a decent workaround.
   \geany  /mnt/1/windows-data/l/live/__/__.txt
   \geany  /mnt/1/windows-data/l/live/_outbox--1/_outbox--1.txt
+
+
+  \spacefm \
+    --new-window \
+    --panel=1  --no-saved-tabs \
+      /mnt/1/windows-data/l/live/_outbox--1/ \
+  &
+  # Make sure that multiple spacefm windows don't spawn.
+  \sleep  1
+  \spacefm \
+    --panel=2  --no-saved-tabs  --reuse-tab \
+      /1/__/ \
+  &
+  \spacefm \
+    --panel=3  --reuse-tab \
+      /1/ \
+  &
+  \spacefm \
+    --panel=4  --reuse-tab \
+      /mnt/1/windows-data/l/live/__/ \
+      /l/_outbox--0/ \
+  &
+  
 }
 
 
