@@ -241,7 +241,7 @@ dir() {
       \less \
         --raw-control-chars \
         --no-init \
-        --quit-at-eof \
+        --QUIT-AT-EOF \
         --quit-on-intr \
         --quiet
     ` # `
