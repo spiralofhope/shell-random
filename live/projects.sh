@@ -86,6 +86,9 @@ process_projects() {
     if [ ! -d "$i" ]; then
       \echo  "skipping non-directory $i"
       continue
+    # TODO - design some other way to skip directories without needing a file in that directory.
+    elif [ "$i" = "e" ] || [ "$i" = "e_p" ]  ; then
+      continue
     fi
 
     # If there is a file, and it is 0-byte, then don't open it.
