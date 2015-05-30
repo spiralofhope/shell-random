@@ -47,7 +47,7 @@ connected() {
   \keepassx  /mnt/1/windows-data/l/live/keepassx-passwords--linux-and-windows.kdb  -min  -lock &
   \keepassx  /l/keepassx-passwords--linux-only.kdb                              -min  -lock &
 
-  /l/Firefox/go.sh default &
+  /l/e/Pale\ Moon/go.sh default &
 
   # Voice Chat
   # TODO:  How do I get Mumble to minimize on startup?
