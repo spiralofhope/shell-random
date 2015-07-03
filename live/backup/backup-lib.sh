@@ -496,7 +496,10 @@ _backup_rsync(){
     --delete-before \
     ` # This is often a bad idea, and should be left to a separate system cleanup script run before a backup like this. ` \
     ` # --delete-excluded ` \
-    ` # note - don't forget the trailing slashes, because it's that fucking stupid. ` \
+    ` # don't cross filesystem boundaries. ` \
+    ` # Important in case you have bound mountpoints, e.g.  mount --bind  or in-place eCryptfs mounts. ` \
+    ` # In the case of an eCryptfs directory which has been mounted in-place, it will skip copying from that directory and will not delete any files therein, on the target directory. ` \
+    --one-file-system \
     $source/ \
     $target/
 
