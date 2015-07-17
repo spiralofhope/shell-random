@@ -10,7 +10,7 @@ disconnected() {
   # I don't do anything special in this case.
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/shell-random/git/live/projects.sh
+  /l/shell-random/git/live/projects.sh &
 }
 
 
@@ -45,7 +45,7 @@ connected() {
 
   # Password
   \keepassx  /mnt/1/windows-data/l/live/keepassx-passwords--linux-and-windows.kdb  -min  -lock &
-  \keepassx  /l/keepassx-passwords--linux-only.kdb                              -min  -lock &
+  \keepassx  /l/keepassx-passwords--linux-only.kdb                                 -min  -lock &
 
   /l/e/Pale\ Moon/go.sh default &
 
@@ -63,7 +63,7 @@ connected() {
   #\liferea &
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/shell-random/git/live/projects.sh
+  /l/shell-random/git/live/projects.sh &
   # This is so bad, but it'll be a decent workaround.
   \geany  /mnt/1/windows-data/l/live/__/__.txt
   \geany  /mnt/1/windows-data/l/live/_outbox--1/_outbox--1.txt
