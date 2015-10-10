@@ -707,17 +707,16 @@ multiply() {
 }
 
 
-
 _jpegoptimize() {
-  if [ -z $2 ] || ! [ $2 == "label_false" ]; then
+  \jpegoptim  --max=$1  --preserve  *
+  if [ $1 -ne 100 ]; then
     \touch  "zz--  jpegoptim -m$1"
   fi
-  \jpegoptim  -m$1  *
-  \exit
 }
-jpegoptim50()  { _jpegoptimize  50 }
-jpegoptim80()  { _jpegoptimize  80 }
-jpegoptim85()  { _jpegoptimize  85 }
-jpegoptim90()  { _jpegoptimize  90 }
+
+jpegoptim100() { _jpegoptimize 100 }
 jpegoptim95()  { _jpegoptimize  95 }
-jpegoptim100() { _jpegoptimize 100  label_false }
+jpegoptim90()  { _jpegoptimize  90 }
+jpegoptim85()  { _jpegoptimize  85 }
+jpegoptim80()  { _jpegoptimize  80 }
+jpegoptim50()  { _jpegoptimize  50 }
