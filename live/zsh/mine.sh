@@ -712,6 +712,7 @@ _jpegoptimize() {
   if [ $1 -ne 100 ]; then
     \touch  "zz--  jpegoptim -m$1"
   fi
+  \exit
 }
 
 jpegoptim100() { _jpegoptimize 100 }
