@@ -2,6 +2,33 @@
 
 
 
+# This would be a nice idea to get rmdir to shut the fuck up.
+#rmdir2() {
+#for i in $i; do if [ -f "$i" ]; then \rmdir "$i"; fi; done
+#}
+deduplicate_with_directories() {
+  \echo " * fdupes start.."
+  \fdupes  -dnNr .
+  \echo " * fdupes finished"
+  #\rmdir  *
+  for i in *; do
+    if [ -d "$i" ]; then
+      \rmdir  --ignore-fail-on-non-empty  "$i"
+    fi
+  done
+  if [[ $(ls . -1|wc -l) -eq 0 ]]; then
+    \mv  */* .
+#    \rmdir  *
+    for i in *; do
+      if [ -d "$i" ]; then
+        \rmdir  --ignore-fail-on-non-empty  "$i"
+      fi
+  done
+  fi
+}
+
+
+
 # TODO - How could I make this into something reusable?  e.g.:
   # until false; do sudo df -h | grep /mnt/tmp ; sleep 1m ; done
 : << 'FAIL_repeat'
@@ -721,3 +748,23 @@ jpegoptim90()  { _jpegoptimize  90 }
 jpegoptim85()  { _jpegoptimize  85 }
 jpegoptim80()  { _jpegoptimize  80 }
 jpegoptim50()  { _jpegoptimize  50 }
+
+
+
+# TODO - deduplicate this
+vbrfixit() {
+  if [ -z $1 ]; then
+    for i in *; do
+      \echo ----- "$i"
+      if [ -f "$i" ]; then
+        \vbrfix  -always  "$i"  out
+        \mv  --force  out  "$i"
+      fi
+    done
+  else
+    if [ -f "$i" ]; then
+      \vbrfix  -always  "$i"  out
+      \mv  --force  out  "$i"
+    fi
+  fi
+}
