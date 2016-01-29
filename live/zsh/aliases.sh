@@ -3,16 +3,18 @@
 # --
 
 
-alias  ..='  \cd  -P  ..'
-alias  cd..='\cd  -P  ..'
+# zshism:  nocorrect
 alias  cp='nocorrect  \cp  --interactive'
-alias  ls='\ls  --classify  --show-control-chars  --color=auto  --group-directories-first'
-alias  md='mkdir'
 alias  mv='nocorrect  \mv  --interactive'
-# TODO - Works for Ubuntu.  Make this universal.
-#alias  su="\sudo  $SHELL"
-# Universal?
-alias  su="\sudo  $( \basename  $( \readlink  /proc/$$/exe ) )"
+alias  rm='nocorrect  \rm  --interactive'
+alias  mkdir='nocorrect  \mkdir'
+# bash-windows does not support --group-directories-first
+alias  ls='\ls  --classify  --show-control-chars  --color=auto  --group-directories-first'
+
+
+
+
+# TODO -- working from here, to migrate from 'zsh' to 'bash and zsh'
 
 
 
@@ -72,27 +74,16 @@ rm() {
 # --
 
 
-alias  cls='\clear'
 # This used to have  --exclude-type supermount
 alias  df='\df  --human-readable'
-alias  du='\du  --human-readable'
 # Go fuck yourself, drive.
 alias  eject='\eject  -i 0 ; \eject'
+# bash-windows does not support --color
 alias  grep='\grep --color'
 
 # TODO - What was I trying to achieve with this?
 # TODO - Improve
 #alias  killjobs='\kill  -9  $( \jobs -p )'
-
-# Had  --raw-control-chars  in the past, and this version was thought to be tidier.  I don't notice any issues.
-alias  less='\less  --RAW-CONTROL-CHARS'
-#alias  less='\less  --force  --RAW-CONTROL-CHARS  --quit-if-one-screen  $@'
-# --follow-name would allow the file to be edited and less will automatically display changes.
-LESS=' --force  --ignore-case  --long-prompt  --no-init  --silent  --status-column  --tilde  --window=-2'
-export LESS
-
-alias  mkdir='nocorrect  \mkdir'
-alias  rd='\rmdir'
 
 # TODO? - What does this do?
 # alias  screen='TERM=screen screen'  # http://ubuntuforums.org/showthread.php?t=90910
@@ -117,3 +108,14 @@ alias  -s pdf=xpdf
 # MIME is possible, but I can't figure it out.
 # autoload -U zsh-mime-setup
 # zsh-mime-setup
+
+
+
+# --
+# -- Linux console Applications
+# --
+
+# TODO - Works for Ubuntu.  Make this universal.
+#alias  su="\sudo  $SHELL"
+# Universal?
+alias  su="\sudo  $( \basename  $( \readlink  /proc/$$/exe ) )"

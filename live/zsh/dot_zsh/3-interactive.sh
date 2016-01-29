@@ -107,10 +107,13 @@ fi
 
 
 # Load additional scripting and settings.
-source  $zshdir/lib.sh
-for i in $zshdir/*.sh; do
+# This needs to be loaded first.
+source  "$zshdir"/lib.sh
+source  "$zshdir/../bash and zsh"/*.sh
+for i in "$zshdir"/*.sh; do
   # skip my working file..
 #   if [ ! "$i" = "/home/user/bin/zsh/temp.sh" ]; then source $i ; fi
+  # This is already loaded.  Don't load it twice.
   if [ $i = $zshdir/lib.sh ]; then
     continue
   fi
