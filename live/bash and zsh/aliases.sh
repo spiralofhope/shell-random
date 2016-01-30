@@ -4,8 +4,7 @@
 #   GNU bash, version 3.1.20(4)-release (i686-pc-msys)
 
 
-# I don't have a more straightforward way to put directories first, but  -X  works ok.
-alias  ls='\ls  -1  --almost-all  --color=auto  -X'
+alias  ls='\ls  -1  --classify  --color=auto  --group-directories-first  --show-control-chars'
 alias  cp='\cp  --interactive'
 alias  mv='\mv  --interactive'
 alias  rm='\rm  --interactive'

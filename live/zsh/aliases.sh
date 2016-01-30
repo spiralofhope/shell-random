@@ -15,8 +15,6 @@ alias  cp='nocorrect  \cp  --interactive'
 alias  mv='nocorrect  \mv  --interactive'
 alias  rm='nocorrect  \rm  --interactive'
 alias  mkdir='nocorrect  \mkdir'
-# bash-windows does not support --group-directories-first
-alias  ls='\ls  --classify  --show-control-chars  --color=auto  --group-directories-first'
 
 
 

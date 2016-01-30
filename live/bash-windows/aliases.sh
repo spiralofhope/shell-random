@@ -1,11 +1,6 @@
-# bash-windows tested 2016-01-29 on Windows 10, updated recently
-#   GNU bash, version 3.1.20(4)-release (i686-pc-msys)
-
-
-
-# TODO - bash-windows does not support  --group-directories-first
-alias  ls='\ls  --classify  --show-control-chars  --color=auto'
-
+# Tested 2016-01-30 on Windows 10, updated recently
+# git version 2.7.0.windows.1
+# GNU bash, version 4.3.42(5)-release (x86_64-pc-msys)
 
 
 # --
