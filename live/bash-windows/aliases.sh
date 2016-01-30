@@ -3,7 +3,7 @@
 
 
 
-# TODO - Does not support  --group-directories-first
+# TODO - bash-windows does not support  --group-directories-first
 alias  ls='\ls  --classify  --show-control-chars  --color=auto'
 
 

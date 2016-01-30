@@ -10,6 +10,8 @@ alias  cp='\cp  --interactive'
 alias  mv='\mv  --interactive'
 alias  rm='\rm  --interactive'
 alias  md='\mkdir'
+# -P  Do not follow symbolic links
+alias  cd='\cd  -P'
 alias  ..='  \cd  -P  ..'
 alias  cd..='\cd  -P  ..'
 alias  du='\du  --human-readable'

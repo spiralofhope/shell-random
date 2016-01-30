@@ -1,3 +1,7 @@
+# Note that `setopt` is a zshism
+
+
+
 # ZSH Options
 #   http://zsh.sourceforge.net/Doc/Release/Options.html
 

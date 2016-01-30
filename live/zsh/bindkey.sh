@@ -1,3 +1,7 @@
+# Note that `bindkey` is a zshism
+
+
+
 # FIXME? - This was noted as being broken under aterm.
 #   1) Who cares about aterm
 #   2) Is it actually broken under my current term(s)?

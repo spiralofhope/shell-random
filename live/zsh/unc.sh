@@ -1,3 +1,7 @@
+# TODO - Keep this as a separate .sh and just have an alias refer to it.  Dumbass.  Then move this script elsewhere.
+# TODO - Rework things to check for bash-windows and use alternate executables.
+
+
 unc() {
 : <<'COMMENTBLOCK'
 TODO:  Complete some documentation
@@ -5,6 +9,14 @@ TODO:  Consider other archivers
 TODO:  Build a full list of archivers in here, and list the tested version numbers, testing date and author/website ?
 TODO:  Use the existing colour functionality I've already made.  Check if the functionality found within here ought to be imported into that other work.
 COMMENTBLOCK
+
+
+  FILE="$1"
+  EXTENSION="${FILE##*.}"
+  BASENAME="${FILE%.*}"
+
+
+  mcd() { \mkdir "$1" && \cd "$1" ; }
 
 
   reset_colour() {
@@ -48,12 +60,15 @@ COMMENTBLOCK
   plightgrey()   { printf  "\x1b\x5b0;37;40m$1" ; reset_colour ; }
   pwhite()       { printf  "\x1b\x5b1;37;40m$1" ; reset_colour ; }
 
+
   error() {
     pred ERROR:
     \echo  "  \""$FILE"\" $1"
     \echo  ''
     help
   }
+
+
   error_plain() {
     pred ERROR:
     \echo  "  $1"
@@ -61,9 +76,6 @@ COMMENTBLOCK
     help
   }
 
-  FILE="$1"
-  EXTENSION="${FILE##*.}"
-  BASENAME="${FILE%.*}"
 
   # Main loop
   # TODO - Isn't there a better way to do this?

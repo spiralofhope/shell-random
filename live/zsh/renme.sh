@@ -1,3 +1,6 @@
+# TODO - Keep this as a separate .sh and just have an alias refer to it.  Dumbass.
+
+
 # Rename the current directory
 # This seems to work under vanilla shell.
 
