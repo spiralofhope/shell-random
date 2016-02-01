@@ -494,12 +494,16 @@ _backup_rsync(){
     ` # Deleting before doing the copying ensures that there is enough space for new files. ` \
     ` # If --inplace is used, then that ensures that a file can be copied overtop of the backup, and extra space for a copy-on-write isn't needed. ` \
     --delete-before \
-    ` # This is often a bad idea, and should be left to a separate system cleanup script run before a backup like this. ` \
-    ` # --delete-excluded ` \
-    ` # don't cross filesystem boundaries. ` \
+    ` # This a bad idea unless you --dry-run to make sure everything works well. ` \
+    --delete-excluded \
+    ` # Checked for moved files.  This would be wonderful, but --delete-before would conflict.` \
+    ` # --fuzzy ` \
+    ` # Do not cross filesystem boundaries. ` \
     ` # Important in case you have bound mountpoints, e.g.  mount --bind  or in-place eCryptfs mounts. ` \
     ` # In the case of an eCryptfs directory which has been mounted in-place, it will skip copying from that directory and will not delete any files therein, on the target directory. ` \
     --one-file-system \
+    ` # Skip files that are newer on the receiver. ` \
+    --update \
     $source/ \
     $target/
 
