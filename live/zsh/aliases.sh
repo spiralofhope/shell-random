@@ -27,8 +27,6 @@ alias  mkdir='nocorrect  \mkdir'
 # Universal?
 alias  su="\sudo  $( \basename  $( \readlink  /proc/$$/exe ) )"
 
-# This used to have  --exclude-type supermount
-alias  df='\df  --human-readable'
 # Go fuck yourself, drive.
 alias  eject='\eject  -i 0 ; \eject'
 # bash-windows does not support --color
