@@ -216,6 +216,8 @@ source  "/c/l/live/shell-random/git/live/bash-windows"/*.sh
 #for i in  "/c/l/live/shell-random/git/live/bash and zsh"/*.sh; do  source "$i"  ;done
 #for i in  "/c/l/live/shell-random/git/live/bash-windows"/*.sh; do  source "$i"  ;done
 
-\cd  ~
+if [ "$PWD" == "/" ]; then
+  \cd  ~
+fi
 \df  --human-readable
 
