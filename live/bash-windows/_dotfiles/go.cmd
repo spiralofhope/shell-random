@@ -2,45 +2,51 @@
 
 ::  For each directory and file found, make a symlink to a specified directory.
 ::
-::  Tested 2016-01-31 on Windows 10, updated recently.
+::  Tested 2016-02-11 on Windows 10, updated recently.
 ::
 ::    http://blog.spiralofhope.com/13539
 
 
 
-::  I have no idea why this won't work:
-::  It does work at the commandline (run as admin) but not from windows explorer if I run this go.cmd script that way.
-::SET  "SOURCE=%CD%"
-SET  "SOURCE=C:\l\live\shell-random\git\live\bash-windows\_dotfiles"
+SET  "SOURCE=%~dp0"
 SET  "TARGET=C:\Users\user"
 
 
 
-:: http://stackoverflow.com/questions/1894967/how-to-request-administrator-access-inside-a-batch-file
-:: https://sites.google.com/site/eneerge/scripts/batchgotadmin
-:-------------------------------------
-REM  --> Check for permissions
->nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+:: ----
+:: Elevate privileges
+:: ----
+::   http://blog.spiralofhope.com?p=13553
+::   https://stackoverflow.com/questions/7044985
+:checkPrivileges
+NET FILE 1>NUL 2>NUL
+if '%errorlevel%' == '0' ( goto gotPrivileges ) else ( goto getPrivileges )
 
-REM --> If error flag set, we do not have admin.
-if '%errorlevel%' NEQ '0' (
-    echo Requesting administrative privileges...
-    goto UACPrompt
-) else ( goto gotAdmin )
+:getPrivileges
+if '%1'=='ELEV' (echo ELEV & shift /1 & goto gotPrivileges)
+ECHO.
+ECHO **************************************
+ECHO Invoking UAC for Privilege Escalation
+ECHO **************************************
 
-:UACPrompt
-    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
-    set params = %*:"=""
-    echo UAC.ShellExecute "cmd.exe", "/c %~s0 %params%", "", "runas", 1 >> "%temp%\getadmin.vbs"
+setlocal DisableDelayedExpansion
+set "batchPath=%~0"
+setlocal EnableDelayedExpansion
+ECHO Set UAC = CreateObject^("Shell.Application"^) > "%temp%\OEgetPrivileges.vbs"
+ECHO args = "ELEV " >> "%temp%\OEgetPrivileges.vbs"
+ECHO For Each strArg in WScript.Arguments >> "%temp%\OEgetPrivileges.vbs"
+ECHO args = args ^& strArg ^& " "  >> "%temp%\OEgetPrivileges.vbs"
+ECHO Next >> "%temp%\OEgetPrivileges.vbs"
+ECHO UAC.ShellExecute "!batchPath!", args, "", "runas", 1 >> "%temp%\OEgetPrivileges.vbs"
+"%SystemRoot%\System32\WScript.exe" "%temp%\OEgetPrivileges.vbs" %*
+exit /B
 
-    "%temp%\getadmin.vbs"
-    del "%temp%\getadmin.vbs"
-    exit /B
+:gotPrivileges
+if '%1'=='ELEV' shift /1
+setlocal & pushd .
+cd /d %~dp0
+:: ----
 
-:gotAdmin
-    pushd "%CD%"
-    CD /D "%~dp0"
-:--------------------------------------
 
 
 ::  Directories
@@ -57,4 +63,3 @@ FOR      %%i  in  ( * )  DO (
     mklink            "%TARGET%\%%i"  "%SOURCE%\%%i"
   )
 )
-pause
