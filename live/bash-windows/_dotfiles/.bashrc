@@ -215,3 +215,7 @@ source  "/c/l/live/shell-random/git/live/bash-windows"/*.sh
 # I don't know how to reproduce it properly, but bash-windows doesn't always seem happy about using `source` with a wildcard.
 #for i in  "/c/l/live/shell-random/git/live/bash and zsh"/*.sh; do  source "$i"  ;done
 #for i in  "/c/l/live/shell-random/git/live/bash-windows"/*.sh; do  source "$i"  ;done
+
+\cd  ~
+\df  --human-readable
+

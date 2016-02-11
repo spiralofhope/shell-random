@@ -11,15 +11,13 @@
 ::  I have no idea why this won't work:
 ::  It does work at the commandline (run as admin) but not from windows explorer if I run this go.cmd script that way.
 ::SET  "SOURCE=%CD%"
-SET  "SOURCE=C:\l\live\_dotfiles\Users_username"
+SET  "SOURCE=C:\l\live\shell-random\git\live\bash-windows\_dotfiles"
 SET  "TARGET=C:\Users\user"
 
 
 
-:: BatchGotAdmin
-::   http://stackoverflow.com/questions/1894967/how-to-request-administrator-access-inside-a-batch-file
-::   https://sites.google.com/site/eneerge/scripts/batchgotadmin
-::   http://blog.spiralofhope.com/13553
+:: http://stackoverflow.com/questions/1894967/how-to-request-administrator-access-inside-a-batch-file
+:: https://sites.google.com/site/eneerge/scripts/batchgotadmin
 :-------------------------------------
 REM  --> Check for permissions
 >nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
@@ -45,7 +43,6 @@ if '%errorlevel%' NEQ '0' (
 :--------------------------------------
 
 
-
 ::  Directories
 FOR  /D  %%i  in  ( *.* )  DO (
   ECHO  * Processing %SOURCE%\%%i
@@ -60,3 +57,4 @@ FOR      %%i  in  ( * )  DO (
     mklink            "%TARGET%\%%i"  "%SOURCE%\%%i"
   )
 )
+pause
