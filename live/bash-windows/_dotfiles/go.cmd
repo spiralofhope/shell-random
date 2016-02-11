@@ -18,6 +18,7 @@ SET  "TARGET=C:\Users\user\"
 :: ----
 ::   http://blog.spiralofhope.com?p=13553
 ::   https://stackoverflow.com/questions/7044985
+::     http://stackoverflow.com/a/12264592/1190568
 :checkPrivileges
 NET FILE 1>NUL 2>NUL
 if '%errorlevel%' == '0' ( goto gotPrivileges ) else ( goto getPrivileges )
