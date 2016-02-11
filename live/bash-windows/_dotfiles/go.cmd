@@ -9,7 +9,7 @@
 
 
 SET  "SOURCE=%~dp0"
-SET  "TARGET=C:\Users\user"
+SET  "TARGET=C:\Users\user\"
 
 
 
@@ -49,17 +49,18 @@ cd /d %~dp0
 
 
 
+CD %SOURCE%
 ::  Directories
 FOR  /D  %%i  in  ( *.* )  DO (
-  ECHO  * Processing %SOURCE%\%%i
-  ECHO               %TARGET%\%%i
-  mklink  /J        "%TARGET%\%%i"  "%SOURCE%\%%i"
+  ECHO    * Processing %SOURCE%%%i
+  ECHO                 %TARGET%%%i
+  mklink  /J          "%TARGET%%%i"  "%SOURCE%%%i"
 )
 ::  Files
-FOR      %%i  in  ( * )  DO (
+FOR      %%i  in  ( *.* )  DO (
   IF NOT  "%%i"=="go.cmd"  (
-    ECHO  * Processing %SOURCE%\%%i
-    ECHO               %TARGET%\%%i
-    mklink            "%TARGET%\%%i"  "%SOURCE%\%%i"
+    ECHO  * Processing %SOURCE%%%i
+    ECHO               %TARGET%%%i
+    mklink            "%TARGET%%%i"  "%SOURCE%%%i"
   )
 )
