@@ -33,3 +33,5 @@ alias  geany="${PFx}/Geany/bin/Geany.exe"
 # 7zip compression, filename.7z
 # http://www.7-zip.org/
 alias  7z="${PFx}/7-Zip/7z.exe"
+
+alias rename='/c/l/live/shell-random/git/live/rename.pl'

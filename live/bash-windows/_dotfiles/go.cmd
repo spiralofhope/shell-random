@@ -8,6 +8,7 @@
 
 
 
+::  This requires a trailing slash.
 SET  "SOURCE=%~dp0"
 SET  "TARGET=C:\Users\user\"
 
