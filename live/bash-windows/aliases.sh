@@ -35,3 +35,5 @@ alias  geany="${PFx}/Geany/bin/Geany.exe"
 alias  7z="${PFx}/7-Zip/7z.exe"
 
 alias rename='/c/l/live/shell-random/git/live/rename.pl'
+
+alias alarm='/c/l/live/shell-random/git/live/bash-windows/scripts/alarm.sh'
