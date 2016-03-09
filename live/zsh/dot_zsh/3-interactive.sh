@@ -107,17 +107,29 @@ fi
 
 
 # Load additional scripting and settings.
+
+# Apparently I can't source wildcards on 
+#   zsh 5.0.2 (x86_64-pc-linux-gnu)
+# e.g.
+#   source  "$zshdir"/*.sh
+# .. because it messes up colours.sh, for some reason.
+
 source  "$zshdir/../bash and zsh"/lib.sh
-source  "$zshdir/../bash and zsh"/*.sh
+
+for i in "$zshdir/../bash and zsh"/*.sh; do
+  if [ $i = "$zshdir/../bash and zsh"/lib.sh ]; then
+    continue
+  fi
+  source  "$i"
+done
+
 source  "$zshdir"/lib.sh
-source  "$zshdir"/*.sh
-# Meh.
-#for i in "$zshdir"/*.sh; do
-  ## skip my working file..
-##   if [ ! "$i" = "/home/user/bin/zsh/temp.sh" ]; then source $i ; fi
-  ## This is already loaded.  Don't load it twice.
-  #if [ $i = $zshdir/lib.sh ]; then
-    #continue
-  #fi
-  #source  "$i"
-#done
+
+for i in "$zshdir"/*.sh; do
+  # skip my working file..
+#   if [ ! "$i" = "/home/user/bin/zsh/temp.sh" ]; then source $i ; fi
+  if [ $i = $zshdir/lib.sh ]; then
+    continue
+  fi
+  source  "$i"
+done
