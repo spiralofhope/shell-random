@@ -28,9 +28,9 @@
 # -- General settings
 # --
 export  GIT_DIRECTORY='/c/l/live/Git_For_Windows'
-export  PATH=${PATH}";${GIT_DIRECTORY}/bin"
-# I cannot fathom why this wouldn't work..
-# export  PATH=${PATH}";/c/l/live/shell-random/git/live/"
+export  PATH="${PATH}:${GIT_DIRECTORY}/bin"
+export  PATH="${PATH}:/c/l/live/shell-random/git/live/"
+export  PATH="${PATH}:/c/l/live/shell-random/git/live/bash-windows/scripts/"
 PF='/c/Program\ Files'
 PFx="${PF}\ \(x86\)"
 
