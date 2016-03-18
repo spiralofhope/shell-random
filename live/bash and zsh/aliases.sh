@@ -14,8 +14,6 @@ alias  cd='\cd  -P'
 alias  ..='  \cd  -P  ..'
 alias  cd..='\cd  -P  ..'
 alias  du='\du  --human-readable'
-# This used to have  --exclude-type supermount
-alias  df='\df  --human-readable'
 alias  cls='\clear'
 alias  more='less  --quit-at-eof  --quit-if-one-screen'
 alias  less='\less  --RAW-CONTROL-CHARS'
