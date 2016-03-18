@@ -92,6 +92,11 @@ fi
 
 
 
+# Passwords
+\keepassx  /mnt/1/windows-data/l/live/keepassx-passwords--linux-and-windows.kdb  -min  -lock &
+\keepassx  /l/e/keepassx-passwords--linux-only.kdb                               -min  -lock &
+
+
 # launch any user-specific stuff:
 \setsid  ~/.config/openbox/autostart.sh-applications.sh &
 

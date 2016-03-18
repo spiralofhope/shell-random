@@ -36,41 +36,44 @@ connected() {
 #      +sb                   ` # Remove the scroll bar ` \
 #      -e \weechat
 
+
   #
   # Instant Messaging
   #
   #\empathy &
 
+
   #
   # VoIP
   #
   #\twinkle&
-
-  # Password
-  \keepassx  /mnt/1/windows-data/l/live/keepassx-passwords--linux-and-windows.kdb  -min  -lock &
-  \keepassx  /l/e/keepassx-passwords--linux-only.kdb                               -min  -lock &
-
-  /l/e/Pale\ Moon/go.sh default &
-
-  # Voice Chat
   # TODO:  How do I get Mumble to minimize on startup?
 #  /l/bin/mumble.sh
 
+
+  #
+  # Web browser
+  #
+  /l/e/Pale\ Moon/go.sh default &
+
+
+  #
   # Email
+  #
   #   Can be started trayed (it gets minimized to the tray after a moment)
   #     but only if I set the tray plugin to do that.
   \claws-mail &
 
+  #
   # RSS reader
+  #
   # Slated to be replaced by.. anything.  Fucking thing can't even open its gui when run once.  Has to be run twice.
   #\liferea &
 
-  # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/shell-random/git/live/projects.sh &
-  # This is so bad, but it'll be a decent workaround.
-  \geany  /mnt/1/windows-data/l/live/__/__.txt &
-  \geany  /mnt/1/windows-data/l/live/_outbox--1/_outbox--1.txt &
 
+  #
+  # File manager
+  #
   \spacefm \
     --panel=1 \
     --new-window \
@@ -78,6 +81,13 @@ connected() {
     --reuse-tab \
     /l/ &
 
+
+  # Notes
+  # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
+  /l/shell-random/git/live/projects.sh &
+  # This is so bad, but it'll be a decent workaround.
+  \geany  /mnt/1/windows-data/l/live/__/__.txt &
+  \geany  /mnt/1/windows-data/l/live/_outbox--1/_outbox--1.txt &
 }
 
 
