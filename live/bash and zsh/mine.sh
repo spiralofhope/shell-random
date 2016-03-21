@@ -19,6 +19,3 @@ _df_sorted(){
 }
 alias  df='_df_sorted 5'    # sorted by mountpoint
 alias  df='_df_sorted 1'    # sorted by filesystem
-
-
-
