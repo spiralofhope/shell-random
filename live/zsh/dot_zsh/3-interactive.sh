@@ -133,3 +133,12 @@ for i in "$zshdir"/*.sh; do
   fi
   source  "$i"
 done
+
+
+
+# I so frequently check for disk space that I ought to do it automatically.
+if [ "$PWD" == "$HOME" ]; then
+  # Using the fancy df alias
+  df
+  \echo
+fi
