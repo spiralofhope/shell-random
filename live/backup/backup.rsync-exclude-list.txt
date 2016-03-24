@@ -1,1 +1,1 @@
-IntxLNK/
+/l/backup/backup.rsync-exclude-list.txt
