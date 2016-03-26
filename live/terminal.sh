@@ -264,7 +264,22 @@ launch_terminal() {
       # http://www.rxvt.org/
       # rxvt is an alias to rxvt-unicode when rxvt-unicode is installed.
       # I make changes to ~/.Xdefaults for things like fonts.
-      \setsid  $i  "$@" &
+      \setsid  $i \
+        ` # Output to the window should not have it scroll to the bottom.` \
+      -si \
+        ` # No visual bell. ` \
+      +vb \
+        ` # No scrollbar. ` \
+      +sb \
+        ` # Jump scrolling.  Normally, text is scrolled one line at a time; this option allows xterm to move multiple lines at a time so that it does not fall as far behind. Its use is strongly recommended since it makes xterm much faster when scanning through large amounts of text. ` \
+      -j \
+      -fn $font \
+      -bg black \
+      -fg gray \
+      -cr darkgreen \
+      -sl 10000 \
+      -geometry 80x24+0+0 \
+      "$@" &
     ;;
 
     /usr/bin/rxvt-unicode|/usr/bin/urxvt)
