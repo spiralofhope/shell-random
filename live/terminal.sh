@@ -74,11 +74,11 @@ terminal_setup() {
   # Check for my favourite font, with a safe fallback.
   # Unicode vga font.  Looks like shit when bold though.
   font='-bolkhov-vga-medium-r-normal--16-160-75-75-c-80-iso10646-1'
-  \xlsfonts  |  \grep  --line-regexp  --quiet  $font
+  \xlsfonts  |  \grep  --line-regexp  --quiet  --  $font
   if  [[ $? -eq 1 ]]; then
     # This is the vga font taken from DOSEmu.  Non-unicode.
     font='vga'
-    \xlsfonts  |  \grep  --line-regexp  --quiet  $font
+    \xlsfonts  |  \grep  --line-regexp  --quiet  --  $font
     if  [[ $? -eq 1 ]]; then
       # This should be available on a default install.
       font='-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*'
@@ -256,6 +256,13 @@ launch_terminal() {
       # TODO - font selection
       # TODO - geometry
       # This term doesn't feel right
+      \setsid  $i  "$@" &
+    ;;
+
+    /usr/bin/xfce4-terminal)
+      # TODO - name, comes with the xfce desktop
+      # TODO - website
+      # Tabbed
       \setsid  $i  "$@" &
     ;;
 
