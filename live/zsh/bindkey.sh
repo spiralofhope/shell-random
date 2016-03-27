@@ -101,19 +101,21 @@ bindkey  -s  '^X'  '^@^[[1;5C^A\ef\e" ^@'                               # contro
 
 
 
-__=slackware
-#__=lubuntu
-case "$__" in
-  slackware)
-    # 2016-03-26 - Slackware, zsh 5.0.2 (i486-slackware-linux-gnu)
+# This seems to be the Right Way to handle edge cases
+case $TERM in
+  xterm)
     bindkey  '^?'       backward-kill-word                                  # control-backspace
     bindkey  '^[[H'     beginning-of-line                                   # home
     bindkey  '^[[F'     end-of-line                                         # end
   ;;
-  lubuntu)
-    # 2016-03-26 - Lubuntu, (zsh version not recorded)
+
+  linux)
     bindkey  '^[OH'     beginning-of-line                                   # home
     bindkey  '^[OF'     end-of-line                                         # end
     bindkey  '^H'       backward-kill-word                                  # control-backspace
+  ;;
+
+  *)
+    echo foo
   ;;
 esac
