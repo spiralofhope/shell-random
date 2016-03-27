@@ -82,7 +82,13 @@ bindkey  '^[[1;5D'  backward-word                                       # contro
 # vi-forward-word would respect word bounderies.
 bindkey  '^[[1;5C'  forward-word                                        # control-right
 # vi-backward-kill-word would respect word bounderies.
-bindkey  '^H'       backward-kill-word                                  # control-backspace
+
+# 2016-03-26 - PASS on Lubuntu, perhaps it was it's version of zsh.
+# 2016-03-26 - FAIL on Slackware, zsh 5.0.2 (i486-slackware-linux-gnu)
+#bindkey  '^H'       backward-kill-word                                  # control-backspace
+# 2016-03-26 - PASS on Slackware, zsh 5.0.2 (i486-slackware-linux-gnu)
+bindkey  '^?'       backward-kill-word                                  # control-backspace
+
 # There is no vi-kill-word ..  =/
 bindkey  '^[[3;5~'  kill-word                                           # control-delete
 
