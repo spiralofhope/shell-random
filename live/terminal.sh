@@ -90,6 +90,7 @@ terminal_setup() {
   #   So instead, I am using absolute paths.
   #   TODO - Figure out how to use  \terminal_name
   terminals_without_lines=(
+    /usr/bin/xterm
     /usr/bin/rxvt-unicode
     /usr/bin/lxterminal
     /usr/bin/sakura
@@ -109,6 +110,7 @@ terminal_setup() {
   )
 
   terminals_with_lines=(
+    /usr/bin/xterm
     /usr/bin/rxvt-unicode
     /usr/bin/lxterminal
     /usr/bin/sakura
