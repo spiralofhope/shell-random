@@ -1,10 +1,5 @@
 # Note that `bindkey` is a zshism
-
-
-
-# FIXME? - This was noted as being broken under aterm.
-#   1) Who cares about aterm
-#   2) Is it actually broken under my current term(s)?
+# NOTE: It's control-v and a key combination to learn the binding.
 
 
 
@@ -27,9 +22,15 @@ IDEAS
 
 
 
-# NOTE: It's control-v and a key combination to learn the binding.
-
-# Erase all existing bindkeys with:
+# To erase all existing bindkeys
+  # Zefram <zefram@xxxxxxxx>
+  # http://www.zsh.org/mla/users/2000/msg00180.html
+  #   You almost certainly don't want to delete keymap main.  To create a
+  #   completely new keymap, create one with "bindkey  -N", giving it a new name,
+  #   then you can add to it as much as you want while it's not selected.
+  #   *Then* use "bindkey  -A" to make "main" a link to your new keymap.
+  #   (And presuming that you want to save the keymap permanently, use "bindkey -L"
+  #   to dump the keymap in the form of the commands needed to poulate it.)
 # bindkey  -N    foo  .safe
 # bindkey  -A    foo  main
 # bindkey  -L
@@ -38,17 +39,6 @@ IDEAS
 # bindkey  -R    "^K"-"^L"      self-insert
 # bindkey  "^M"  accept-line
 # bindkey  -R    "^N"-"\M-^?"   self-insert
-
-
-
-# Zefram <zefram@xxxxxxxx>
-# http://www.zsh.org/mla/users/2000/msg00180.html
-#   You almost certainly don't want to delete keymap main.  To create a
-#   completely new keymap, create one with "bindkey  -N", giving it a new name,
-#   then you can add to it as much as you want while it's not selected.
-#   *Then* use "bindkey  -A" to make "main" a link to your new keymap.
-#   (And presuming that you want to save the keymap permanently, use "bindkey -L"
-#   to dump the keymap in the form of the commands needed to poulate it.)
 
 
 
@@ -73,31 +63,57 @@ typeset  -g  -A  key
 #bindkey  '^[[B'     down-line-or-history                                # down
 
 bindkey  '^[[3~'    delete-char                                         # delete
-bindkey  '^[OH'     beginning-of-line                                   # home
-bindkey  '^[OF'     end-of-line                                         # end
+
+
 bindkey  '^[[5~'    up-line-or-search                                   # pageup (matching history)
 bindkey  '^[[6~'    down-line-or-search                                 # pagedown (matching history)
-# vi-backward-word would respect word bounderies.
 bindkey  '^[[1;5D'  backward-word                                       # control-left
-# vi-forward-word would respect word bounderies.
 bindkey  '^[[1;5C'  forward-word                                        # control-right
-# vi-backward-kill-word would respect word bounderies.
 
-# 2016-03-26 - PASS on Lubuntu, perhaps it was it's version of zsh.
-# 2016-03-26 - FAIL on Slackware, zsh 5.0.2 (i486-slackware-linux-gnu)
-#bindkey  '^H'       backward-kill-word                                  # control-backspace
-# 2016-03-26 - PASS on Slackware, zsh 5.0.2 (i486-slackware-linux-gnu)
-bindkey  '^?'       backward-kill-word                                  # control-backspace
-
-# There is no vi-kill-word ..  =/
 bindkey  '^[[3;5~'  kill-word                                           # control-delete
 
-# alt-backspace - impossible
-#bindkey  '^[^?'     vi-backward-kill-word
+# alt-backspace appears to be impossible
+# I hear that xterm can be configured with changes in ~/.Xresources, but I have no will to pursue any of this.
+#bindkey  '^È'       backward-kill-word                                  # alt-backspace
+#bindkey  '^[^?'     vi-backward-kill-word                               # alt-backspace
+
 # kill-word does not respect word bounderies.
 #bindkey  '^[[3;3~'  kill-word
 #bindkey  '^[[3;5~'  delete-word-forward                                 # alt-delete
 
+
 # Quote everything after the first parameter:
 # TODO - This turns the mark on, and it shouldn't.  I wasn't able to figure out how to stop that, but I don't care much.
+# Use case
+#   somecommand 
+#   (paste)
+#   somecommand This is a string
+#   ^X
+#   somecommand 'This is a string'
 bindkey  -s  '^X'  '^@^[[1;5C^A\ef\e" ^@'                               # control-x
+
+
+# Respect word bounderies with:
+# vi-backward-word 
+# vi-forward-word
+# vi-backward-kill-word
+# There is no vi-kill-word ..  =/
+
+
+
+__=slackware
+#__=lubuntu
+case "$__" in
+  slackware)
+    # 2016-03-26 - Slackware, zsh 5.0.2 (i486-slackware-linux-gnu)
+    bindkey  '^?'       backward-kill-word                                  # control-backspace
+    bindkey  '^[[H'     beginning-of-line                                   # home
+    bindkey  '^[[F'     end-of-line                                         # end
+  ;;
+  lubuntu)
+    # 2016-03-26 - Lubuntu, (zsh version not recorded)
+    bindkey  '^[OH'     beginning-of-line                                   # home
+    bindkey  '^[OF'     end-of-line                                         # end
+    bindkey  '^H'       backward-kill-word                                  # control-backspace
+  ;;
+esac
