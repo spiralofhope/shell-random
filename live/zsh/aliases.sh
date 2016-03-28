@@ -38,6 +38,3 @@ alias  grep='\grep --color'
 
 # TODO? - What does this do?
 # alias  screen='TERM=screen screen'  # http://ubuntuforums.org/showthread.php?t=90910
-
-# Slackware 12.2
-#alias  slapt-get='slapt-get  --prompt'
