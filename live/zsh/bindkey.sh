@@ -109,15 +109,15 @@ case $TERM in
     bindkey  '^[[F'     end-of-line                                         # end
   ;;
 
-  linux)
-    bindkey  '^[OH'     beginning-of-line                                   # home
-    bindkey  '^[OF'     end-of-line                                         # end
-    bindkey  '^H'       backward-kill-word                                  # control-backspace
-  ;;
-
   rxvt-unicode-256color)
     bindkey  '^[[7~'    beginning-of-line                                   # home
     bindkey  '^[[8~'    end-of-line                                         # end
+    bindkey  '^H'       backward-kill-word                                  # control-backspace
+  ;;
+
+  linux)
+    bindkey  '^[OH'     beginning-of-line                                   # home
+    bindkey  '^[OF'     end-of-line                                         # end
     bindkey  '^H'       backward-kill-word                                  # control-backspace
   ;;
 
