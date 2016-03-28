@@ -90,8 +90,10 @@ terminal_setup() {
   #   So instead, I am using absolute paths.
   #   TODO - Figure out how to use  \terminal_name
   terminals_without_lines=(
-    /usr/bin/xterm
+    /usr/bin/urxvt
     /usr/bin/rxvt-unicode
+    /usr/bin/rxvt
+    /usr/bin/mrxvt
     /usr/bin/lxterminal
     /usr/bin/sakura
     /usr/bin/Terminal
@@ -99,24 +101,24 @@ terminal_setup() {
     /usr/bin/Terminal
     /usr/bin/terminal
     /usr/bin/lilyterm
-    /usr/bin/mrxvt
-    /usr/bin/rxvt
     /usr/bin/roxterm
     /usr/bin/terminator
     /usr/bin/st
     Eterm
     /usr/bin/evilvte
     /usr/bin/aterm
+    /usr/bin/xterm
   )
 
   terminals_with_lines=(
-    /usr/bin/xterm
+    /usr/bin/urxvt
     /usr/bin/rxvt-unicode
     /usr/bin/lxterminal
     /usr/bin/sakura
     /usr/bin/Terminal
     /usr/bin/evilvte
     /usr/bin/st
+    /usr/bin/xterm
   )
 }
 
@@ -269,6 +271,8 @@ launch_terminal() {
     ;;
 
     /usr/bin/rxvt)
+      # Under Slackware 14.1, it sets "xterm" as its terminal, but it doesn't act properly and zsh/bindkeys will be unhappy.
+
       # rxvt
       # http://www.rxvt.org/
       # rxvt is an alias to rxvt-unicode when rxvt-unicode is installed.
@@ -295,19 +299,13 @@ launch_terminal() {
       # urxvt / rxvt-unicode
       # http://software.schmorp.de/pkg/rxvt-unicode
       # This dumbass terminal does not have a proper fallback if I use an invalid font.
+      font='-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*'
 
-      \pidof  urxvtd
-      if [ $? -ne 0 ]; then
+      \setsid  \urxvtc  -fn $font  "$@"
+      if [ $? -eq 2 ]; then
         \urxvtd  --fork  --opendisplay  --quiet
+        \setsid  \urxvtc  -fn $font  "$@"
       fi
-      \setsid  \urxvtc  -fn $font  "$@" &
-
-       #The recommended method doesn't seem happy..
-      #\setsid  \urxvtc  -fn $font  "$@" &
-      #if [ $? -eq 2 ]; then
-        #\urxvtd  --fork  --opendisplay  --quiet
-        #\setsid  \urxvtc  -fn $font  "$@" &
-      #fi
     ;;
 
     /usr/bin/sakura)
