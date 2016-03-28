@@ -24,6 +24,7 @@ setup() {
   # Place them in the order you would prefer them, with the most preferred at the top.
   # These should be full paths to a file, to be safe.
   programs_list=(
+    /usr/bin/slock
     /usr/bin/xlock
     /usr/bin/xscreensaver-command
   )
@@ -55,6 +56,30 @@ launch_program() {
   i="$1"
   shift
   case "$i" in
+
+    /usr/bin/slock)
+      # 2016-03-28, on Slackware 14.1:
+      # Turn off the screen
+      # Set it to happen after 5s -- 0 is not valid. 
+      # 0 would be bad, because it would constantly be trying to turn off the screen while inputting the password for slock, which is weird.  2 works but is still too short for my liking.
+      \xset  dpms 0 0 5
+      \slock
+      \xset  dpms 0 0 180
+      /l/shell-random/git/live/slock-capital-punishment.sh  on
+
+      # 2016-03-26, on Lubuntu (version not recorded):
+      # Thanks to jokobm for the hint
+      # https://bbs.archlinux.org/viewtopic.php?pid=903057#p903057
+      #\xset  dpms 0 0 5 \
+      #( \
+        #` # Immediately password-protect the screen. ` \
+        #\slock  && \
+        #` # After slock terminates, ` \
+        #` # Restore the dpms timeout setting to 5m. ` \
+        #/l/shell-random/git/live/slock-capital-punishment.sh  on \
+      #) &
+
+    ;;
 
     /usr/bin/xlock)
       \setsid  $i \
