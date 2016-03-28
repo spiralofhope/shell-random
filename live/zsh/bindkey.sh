@@ -103,7 +103,7 @@ bindkey  -s  '^X'  '^@^[[1;5C^A\ef\e" ^@'                               # contro
 
 # This seems to be the Right Way to handle edge cases
 case $TERM in
-  xterm)
+  xterm|screen-256color)
     bindkey  '^?'       backward-kill-word                                  # control-backspace
     bindkey  '^[[H'     beginning-of-line                                   # home
     bindkey  '^[[F'     end-of-line                                         # end
@@ -116,6 +116,6 @@ case $TERM in
   ;;
 
   *)
-    echo foo
+    echo 'WARNING:  This edge case has not been planned-for.'
   ;;
 esac
