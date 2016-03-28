@@ -115,7 +115,13 @@ case $TERM in
     bindkey  '^H'       backward-kill-word                                  # control-backspace
   ;;
 
+  rxvt-unicode-256color)
+    bindkey  '^[[7~'    beginning-of-line                                   # home
+    bindkey  '^[[8~'    end-of-line                                         # end
+    bindkey  '^H'       backward-kill-word                                  # control-backspace
+  ;;
+
   *)
-    echo 'WARNING:  This edge case has not been planned-for.'
+    echo 'WARNING:  This $TERM edge case has not been planned-for: ' $TERM
   ;;
 esac
