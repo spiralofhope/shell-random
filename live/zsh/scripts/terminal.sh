@@ -72,6 +72,7 @@ trim_whitespace() {
 
 terminal_setup() {
   # Check for my favourite font, with a safe fallback.
+  font='-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*'
   # Unicode vga font.  Looks like shit when bold though.
   font='-bolkhov-vga-medium-r-normal--16-160-75-75-c-80-iso10646-1'
   \xlsfonts  |  \grep  --line-regexp  --quiet  --  $font
