@@ -300,12 +300,15 @@ launch_terminal() {
       # urxvt / rxvt-unicode
       # http://software.schmorp.de/pkg/rxvt-unicode
       # This dumbass terminal does not have a proper fallback if I use an invalid font.
-      font='-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*'
+      # See ~/.Xresources
+      # A decent one is:
+      #font='-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*'
+      #\setsid  \urxvtc  -fn $font  "$@"
 
-      \setsid  \urxvtc  -fn $font  "$@"
+      \setsid  \urxvtc  "$@"
       if [ $? -eq 2 ]; then
         \urxvtd  --fork  --opendisplay  --quiet
-        \setsid  \urxvtc  -fn $font  "$@"
+        \setsid  \urxvtc  "$@"
       fi
     ;;
 
