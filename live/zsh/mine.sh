@@ -10,10 +10,13 @@
 # All instances of 'su' will be "under one roof", to avoid multiple instances of a root window.  Because that's terribly insecure.
 # 2016-03-29 - Slackware 14.1
 su() {
-  \sudo  \screen  -X setenv currentdir `\pwd`
-  \sudo  \screen  -X eval 'chdir $currentdir' screen
+  \sudo  $1  \screen  -X setenv currentdir `\pwd`
+  \sudo  $1  \screen  -X eval 'chdir $currentdir' screen
   # This logs out of any existing instance of root.
-  \sudo  \screen -A  -D -RR
+  \sudo  $1  \screen -A  -D -RR
+}
+sul() {
+  su  '--login'
 }
 
 

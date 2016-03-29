@@ -25,7 +25,7 @@ alias  mkdir='nocorrect  \mkdir'
 # 2016-03-26 - Lubuntu (version not recorded)
 # 2016-03-28 - Slackware 14.1
 #alias  su="\sudo  $( \basename  $( \readlink  /proc/$$/exe ) )"
-alias  sul='\sudo  \su  --login'
+#alias  sul='\sudo  \su  --login'
 
 # Go fuck yourself, drive.
 alias  eject='\eject  -i 0 ; \eject'
