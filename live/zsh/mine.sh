@@ -2,6 +2,22 @@
 
 
 
+# 2016-03-26 - Lubuntu (version not recorded)
+# 2016-03-28 - Slackware 14.1
+#alias  su="\sudo  $( \basename  $( \readlink  /proc/$$/exe ) )"
+#alias  sul='\sudo  \su  --login'
+
+# All instances of 'su' will be "under one roof", to avoid multiple instances of a root window.  Because that's terribly insecure.
+# 2016-03-29 - Slackware 14.1
+su() {
+  \sudo  \screen  -X setenv currentdir `\pwd`
+  \sudo  \screen  -X eval 'chdir $currentdir' screen
+  # This logs out of any existing instance of root.
+  \sudo  \screen -A  -D -RR
+}
+
+
+
 # This would be a nice idea to get rmdir to shut the fuck up.
 #rmdir2() {
 #for i in $i; do if [ -f "$i" ]; then \rmdir "$i"; fi; done
