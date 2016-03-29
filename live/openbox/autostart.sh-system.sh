@@ -76,6 +76,14 @@ fi
 \killall  --quiet  ibus-daemon
 
 
+# Force-load .Xdefaults, for rxvt-unicode's colour preferences.
+\xrdb  -load ~/.Xdefaults
+
+
+# Start the rxvt-unicode daemon
+# After it's started, the client can be launched with `urxvtc`.
+\urxvtd  --fork  --opendisplay  --quiet
+
 
 # TODO - given an array of strings, run the first program found.
 # `setsid`  is to force it to run in its own session, so that there's no lingering zsh process.
@@ -91,7 +99,7 @@ if [ $? -ne 0 ]; then
 fi
 
 
-
+sleep 0.3
 # Passwords
 \keepassx  /mnt/1/windows-data/l/live/keepassx-passwords--linux-and-windows.kdb  -min  -lock &
 \keepassx  /l/e/keepassx-passwords--linux-only.kdb                               -min  -lock &
@@ -101,15 +109,6 @@ fi
 \setsid  ~/.config/openbox/autostart.sh-applications.sh &
 
 
-
 # --
 # this doesn't work here, but only in ~/.xsession
 # exec openbox-session
-
-
-# Force-load .Xdefaults, for rxvt-unicode's colour preferences.
-\xrdb  -load ~/.Xdefaults
-
-# Start the rxvt-unicode daemon
-# After it's started, the client can be launched with `urxvtc`.
-\urxvtd  --fork  --opendisplay  --quiet
