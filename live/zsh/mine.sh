@@ -394,20 +394,28 @@ finddir() {
   \grep --colour=always -i "$1"
 }
 findin() {
-  # TODO: parameter-sanity
-  if [ "x$1" = "x" ]; then
-    \echo "Give a filename, or * to search through all files."
-  elif [ "x$1" = "x*" ]; then
-    \find -type f -iname \*"$1"\* -print0 |\
-      \xargs -r0 \
-      \grep --colour=always -Fi -e "$2"
+  __=$1
+  shift
+  if [ -z $1 ]; then
+    \echo "Usage:
+
+$0  <directory>  <string>
+
+
+Multiple unquoted words are valid
+  $0 . this is an example
+
+If you do anything fancy, quote!
+  $0 . 'asterisk * example'
+"
   else
-    # TODO
-    \echo "TODO"
+    \find  $__  -type f  -print0  -iname  \'"$*"\' |\
+      \xargs  -r0 \
+      \grep  --colour=always  -Fi  -e "$*"
   fi
 }
 # TODO: parameter-sanity?
-findinall() { findin '*' $1 ; }
+findinall() { findin ./ "$*" ; }
 
 findreplace() {
   if [ -z $3 ]; then
