@@ -42,8 +42,13 @@ fi
 
 
 # Turn on the numlock
-# wtf, doesn't seem to work anymore..
-# 2014-05-16 this necessity seems to be gone under Lubuntu, 14.04 updated recently.
+# 2016-03-30, on Slackware 14.1
+#   installed with  `slpkg  -s sbo  numlockx`
+\numlockx &
+# (date not recorded), on Lubuntu (version not recoded)
+#   wtf, doesn't seem to work anymore..
+# 2014-05-16, on Lubuntu 14.04
+#   This necessity seems to be gone.
 #\enable_X11_numlock on &
 
 
