@@ -35,7 +35,7 @@ deduplicate_with_directories() {
       \rmdir  --ignore-fail-on-non-empty  "$i"
     fi
   done
-  if [[ $(ls . -1|wc -l) -eq 0 ]]; then
+  if [[ $( \ls . -1  |  \wc  --lines ) -eq 0 ]]; then
     \mv  */* .
 #    \rmdir  *
     for i in *; do
@@ -64,7 +64,7 @@ FAIL_repeat
 
 
 be_root_or_die() {
-  if [ $(whoami) != 'root' ]; then
+  if [ $( \whoami ) != 'root' ]; then
     \echo  "ERROR:  You're not root!"
     exit  1
   fi
@@ -75,7 +75,7 @@ be_root_or_die() {
 ziprepair() {
   file=ziprepair.$$.zip
   dir="$1".ziprepair.$$
-  \echo  y | \zip  --fixfix "$1"  --out $file
+  \echo  y  |  \zip  --fixfix "$1"  --out $file
   \mkdir  "$dir"
   \cd  "$dir"
   \unzip  -o  ../$file
@@ -88,7 +88,7 @@ ziprepair() {
 
 re_source() {
   for i in /l/shell-random/git/live/zsh/*.sh
-    source $i
+    source  $i
 }
 
 
@@ -96,10 +96,10 @@ re_source() {
 # What the fuck was this for, anyways?
 DISABLED_rmln() {
   # TODO:  Sanity checking
-  rmln_target=$( basename $1 )
-  \echo $rmln_target
-  \rm --interactive=once --recursive --verbose $rmln_target
-  \ln --symbolic --verbose $1 .
+  rmln_target=$( \basename $1 )
+  \echo  $rmln_target
+  \rm  --interactive=once  --recursive  --verbose $rmln_target
+  \ln  --symbolic  --verbose $1 .
 }
 
 
@@ -122,57 +122,57 @@ DISABLED_rmln() {
 # FIXME - `du` fails when doing something like `c foo*` where one of the directories of foo* has a space in it.
 c() {
   c_count() {
-    local count=$( \ls -1 "$1" | \wc -l )
-    local count=$( comma $count )
-    \echo $count
+    local  count=$( \ls -1 "$1" | \wc -l )
+    local  count=$( comma $count )
+    \echo  $count
   }
   c_size() {
     # The size of those files (and subdirectories - FIXME)
-    local size="$( \du --bytes --summarize \"$1\" )"
+    local  size="$( \du --bytes --summarize \"$1\" )"
     # Everything before the space.
     # I don't know why I can't make this ${ ${ and it must be ${${
-    local size=${$( \echo "$size" )[1]}
-    local size=$( comma $size )
-    \echo $size
+    local  size=${$( \echo "$size" )[1]}
+    local  size=$( comma $size )
+    \echo  $size
   }
   c_samecheck(){
     if [ $1 == $2 ]; then
-      #\echo "  same"
+      #\echo  "  same"
     else
-      \echo "  DIFFERENT"
+      \echo  "  DIFFERENT"
     fi
   }
 
   if [ -z $1 ]; then
-    local count=$(c_count ./)
-    \echo "$count files."
+    local  count=$( c_count ./ )
+    \echo  "$count files."
 
-    local size=$(c_size ./)
-    \echo "$size bytes."
+    local  size=$( c_size ./ )
+    \echo  "$size bytes."
   elif [ -z $2 ]; then
-    \echo "For $1"
+    \echo  "For $1"
 
-    local count=$(c_count "$1")
-    \echo "$count files."
+    local  count=$( c_count "$1" )
+    \echo  "$count files."
 
-    local size=$(c_size $1)
-    \echo "$size bytes."
+    local  size=$( c_size $1 )
+    \echo  "$size bytes."
   elif ! [ -z $2 ]; then
-    local count_one=$(c_count "$1")
-    local count_two=$(c_count "$2")
-    \echo "Files:"
+    local  count_one=$( c_count "$1" )
+    local  count_two=$( c_count "$2" )
+    \echo  "Files:"
     \echo -e "  $1: \t $count_one"
     \echo -e "  $2: \t $count_two"
     c_samecheck $count_one $count_two
 
     \echo
 
-    local size_one=$(c_size "$1")
-    local size_two=$(c_size "$2")
-    \echo "Size:"
+    local  size_one=$( c_size "$1" )
+    local  size_two=$( c_size "$2" )
+    \echo  "Size:"
     \echo -e "  $1: \t $size_one"
     \echo -e "  $2: \t $size_two"
-    c_samecheck $size_one $size_two
+    c_samecheck  $size_one  $size_two
   fi
 }
 
@@ -180,13 +180,13 @@ c() {
 
 edit() {
   # I'm in X, I'm at the raw console and X is launched.
-  \geany --new-instance $@ > /dev/null 2>&1
+  \geany --new-instance  $@ > /dev/null 2>&1
   if [ "$?" != "0" ]; then
     # X is not launched at all.  It might be sitting at the login screen though.
-    \mcedit --colors editnormal=lightgrey,black $@
+    \mcedit  --colors  editnormal=lightgrey,black  $@
   fi
 }
-alias mcedit="\mcedit --colors editnormal=lightgrey,black"
+alias mcedit="\mcedit  --colors  editnormal=lightgrey,black"
 
 
 
@@ -202,10 +202,10 @@ alias mcedit="\mcedit --colors editnormal=lightgrey,black"
   #done
 #}
 global() {
-  \echo "use **"
+  \echo  "use **"
 }
 globaldirs() {
-  \echo "use **/"
+  \echo  "use **/"
 }
 #globaldirs() {
   #EXEC="$@"
@@ -245,7 +245,7 @@ cdv() {
     \cd "$1"
   fi
   # Translation:  Only directories | only n.n.n format | remove trailing slash.| only the last entry
-  \cd `\ls -1d */ | \grep '[0-9]*\.[0-9]*\.[0-9]' | \sed 's/\///' | \tail -n 1`
+  \cd $( \ls  -1  --directory */ | \grep  '[0-9]*\.[0-9]*\.[0-9]' | \sed  's/\///' | \tail  --lines=1 )
 }
 
 
@@ -305,7 +305,7 @@ TODO_dir() {
   file_sizes=
   file_sizes_commas=
   file_sizes_width=
-  ls_options="-g --no-group -l --numeric-uid-gid -v --color --group-directories-first ${@}"
+  ls_options="-g  --no-group  -l  --numeric-uid-gid  -v  --color  --group-directories-first  ${@}"
   # FIXME: Why is the first file size left-aligned?
   # IDEA: Only display files.  I'd have to adapt the `find` code from ddir.
 
@@ -314,25 +314,25 @@ TODO_dir() {
 # FUCK, fixme - doesn't work with stuff with spaces in it, or with directories with a space in them?  Or maybe directories with not much stuff in them..
   file_sizes=$(
     \ls $ls_options \
-      | \cut -b15- \
-      | \cut -d"-" -f1 \
+      | \cut  --bytes=15- \
+      | \cut  --delimiter="-"  --fields=1 \
       | \rev \
-      | \cut -b6- \
-      | \sed -e 's/ //g' \
+      | \cut  --bytes=6- \
+      | \sed  --expression='s/ //g' \
       | \rev
   )
   file_sizes_commas=comma($file_sizes)
   file_sizes_width=$(
     \ls $ls_options \
-      | \cut -b15- \
-      | \cut -d"-" -f1 \
+      | \cut  --bytes=15- \
+      | \cut  --delimiter="-" --fields=1 \
       | \rev \
-      | \cut -b6- \
-      | \sed -e 's/ //g' \
+      | \cut  --bytes=6- \
+      | \sed  --expression='s/ //g' \
       | \rev \
-      | \sort -g \
-      | \sed -e :a -e 's/\(.*[0-9]\)\([0-9]\{3\}\)/\1,\2/;ta' \
-      | \tail -n 1
+      | \sort  --general-numeric-sort \
+      | \sed  --expression=:a -e 's/\(.*[0-9]\)\([0-9]\{3\}\)/\1,\2/;ta' \
+      | \tail  --lines=1
   )
   file_sizes_width=${#file_sizes_width}
 read -d '' file_sizes <<EOF
@@ -346,13 +346,16 @@ EOF
 
   file_names=$(
     \ls $ls_options \
-      | \cut -b15- \
-      | \cut -d":" -f2- \
-      | \cut -b4- \
-      | sed '1d'
+      | \cut  --bytes=15- \
+      | \cut  --delimiter=":" --fields=2- \
+      | \cut  --bytes=4- \
+      | \sed  '1d'
   )
   # Yay for process substitution!  This puts the two columns side-by-side.
-  \paste <( \printf '%s' "$file_sizes") <( \printf '%s' "$file_names") | \less --raw-control-chars --HILITE-UNREAD --QUIT-AT-EOF
+  \paste \
+    <( \printf  '%s'  "$file_sizes" ) \
+    <( \printf  '%s'  "$file_names" ) |\
+      \less  --raw-control-chars  --HILITE-UNREAD  --QUIT-AT-EOF
 
 
 #\echo "$new_file_sizes"
@@ -367,7 +370,7 @@ ddir() {
   if [ -z $1 ]; then
     \ls  -1  --color  --directory  *  .* | \less  --raw-control-char
   else
-    \ls  -1  --color  --directory  $@ | \less  --raw-control-char
+    \ls  -1  --color  --directory  $*    | \less  --raw-control-char
   fi
   \export  LC_COLLATE="$OLD_LC_COLLATE"
   OLD_LC_COLLATE=
@@ -381,17 +384,17 @@ alias lsd=ddir
 # uses grep to colour.
 findfile() {
   # TODO: parameter-sanity
-  \find -type f -iname \*"$1"\* |\
-  \sed 's/^/"/'|\
-  \sed 's/$/"/' |\
-  \grep --colour=always -i "$1"
+  \find  -type f  -iname  \*"$1"\* |\
+  \sed  's/^/"/'|\
+  \sed  's/$/"/' |\
+  \grep  --colour=always  --ignore-case  "$1"
 }
 finddir() {
   # TODO: parameter-sanity
-  \find -type d -iname \*"$1"\* |\
-  \sed 's/^/"/'|\
-  \sed 's/$/"/' |\
-  \grep --colour=always -i "$1"
+  \find  -type d  -iname  \*"$1"\* |\
+  \sed  's/^/"/' |\
+  \sed  's/$/"/' |\
+  \grep  --colour=always -i "$1"
 }
 findin() {
   __=$1
@@ -419,14 +422,14 @@ findinall() { findin ./ "$*" ; }
 
 findreplace() {
   if [ -z $3 ]; then
-    \echo "Usage:  $0 search replace [file|wildcard]."
-    \return 1
+    \echo  "Usage:  $0 search replace [file|wildcard]."
+    \return  1
   fi
-  local search=$1
-  local replace=$2
+  local  search=$1
+  local  replace=$2
   shift
   shift
-  \sed  -i "s/$search/$replace/g" $@
+  \sed  --in-place  "s/$search/$replace/g"  $*
 }
 
 
@@ -473,7 +476,7 @@ findqueue() {
     # do nothing
   else
     \audacious  --show-main-window &
-    \sleep 0.5
+    \sleep  0.5
   fi
   for i in {1..${#files_array}}; do
 #    \echo --v
@@ -500,7 +503,7 @@ findplay() {
     # I can't give an inline example, because it's a binary file.
     # TODO - give an inline example of a deadbeef empty playlist.  It should be possible somehow, maybe in hex or some such.
     \deadbeef  /l/media/deadbeef_empty_playlist.dbpl
-    \sleep 0.1
+    \sleep  0.1
     findqueue  $*
     \deadbeef  --play
     # I could just point to a random entry in deadbeef's playlist:
@@ -526,7 +529,7 @@ PLS
 XSPF
 
     \audacious  --enqueue-to-temp  /l/media/audacious_empty_playlist.xspf &
-    \sleep 0.1
+    \sleep  0.1
     findqueue  $*
     \audacious  --play
   fi
@@ -547,13 +550,14 @@ ifexists() {
 
 searchstring() {
   unset searchstring_success
+  # TODO - I really need to stop doing this.
   until [ "sky" = "falling" ]; do
   # 2 parameters, no blanks, first parameter  must be one character.
   if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ `expr length $1` -gt 1 ]; then \echo "Needs two parameters: a character, and a string"; break ; fi
   character="$1"
   string="$2"
   # Iterate through the string.
-  for i in $(seq 0 $((${#string} - 1))); do
+  for i in $( \seq  0  $( ( ${#string} - 1 ) ) ); do
     # Checking that location in the string, see if the character matches.
     # I should convert this into an 'until' so it makes sense to me, and it halts on the first success.
     if [ "${string:$i:1}" = "$character" ]; then searchstring_success=$i ; fi
@@ -565,9 +569,10 @@ searchstring() {
 
 searchstring_right_l() {
   unset searchstring_success
+  # TODO - I really need to stop doing this.
   until [ "sky" = "falling" ]; do
   # 2 parameters, no blanks, first parameter  must be one character.
-  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ `expr length $1` -gt 1 ]; then \echo "Needs two parameters: a character, and a string"; break ; fi
+  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ $( \expr length $1 ) -gt 1 ]; then \echo "Needs two parameters: a character, and a string"; break ; fi
   character="$1"
   string="$2"
 
@@ -587,7 +592,7 @@ searchstring_right_r() {
   unset searchstring_success
   until [ "sky" = "falling" ]; do
   # 2 parameters, no blanks, first parameter  must be one character.
-  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ `expr length $1` -gt 1 ]; then \echo "Needs two parameters: a character, and a string"; break ; fi
+  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] || [ $( \expr length $1 ) -gt 1 ]; then \echo "Needs two parameters: a character, and a string"; break ; fi
   character="$1"
   string="$2"
   position=0
@@ -597,7 +602,7 @@ searchstring_right_r() {
     ((position++))
     ((length--))
   done
-  if [ ! "$searchstring_success" = "" ]; then \echo $searchstring_success ; else \echo "-1" ; fi
+  if [ ! "$searchstring_success" = "" ]; then \echo  $searchstring_success ; else \echo "-1" ; fi
   break
   done
 }
@@ -617,7 +622,9 @@ divide() {
   # Since "exit" also exits xterm, I do this to allow "break" to end this procedure.
   until [ "sky" = "falling" ]; do
   if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] ; then \echo "Needs two parameters"; break ; fi
-  if [ ! `isnumber $1` -eq 0 ] || [ ! `isnumber $2` -eq 0 ] ; then \echo "Needs two numbers"; break; fi
+  # FIXME - \isnumber doesn't exist on Slackware 14.1
+  #         Maybe it existed in my previous Lubuntu installation, but I haven't used this in a long time.
+  if [ ! $( \isnumber $1 ) -eq 0 ] || [ ! $( \isnumber $2 ) -eq 0 ] ; then \echo "Needs two numbers"; break; fi
 
   left=$1
   right=$2
@@ -654,7 +661,7 @@ position_from_right_to_left() {
     ((iteration++))
     ((length--))
   done
-  \echo $iteration
+  \echo  $iteration
   break
   done
 }
@@ -680,8 +687,7 @@ insert_character() {
     ((i++))
     if [ $i -eq $position ]; then newstring=$newstring$character ; fi
   done
-  \echo $newstring
-
+  \echo  $newstring
   break
   done
 }
@@ -708,7 +714,7 @@ replace_character() {
     fi
     ((i++))
   done
-  \echo $newstring
+  \echo  $newstring
 
   break
   done
@@ -803,7 +809,7 @@ cd() {
 #    # do nothing
 #    \echo -n ''
 #  else
-#    \cd  $@
+#    \cd  $*
 #    return  $!
 #  fi
 #
@@ -833,12 +839,12 @@ DISABLED_cd
 # Making rm smarter so it can remove directories too.  Fuck you, GNU.
 # TODO? - Know when there are contents in directories to delete them?  It doesn't seem right to do this..
 rm() {
-  # TODO? - Shouldn't this loop through $@ and rmdir any directories?
+  # TODO? - Shouldn't this loop through $* and rmdir any directories?
   if [ -d $1 ] && [ ! -L $1 ]; then
     \rmdir  --verbose  "$1"
   else
     # I can't use \rm here, because it somehow still uses rm()
-    nocorrect  /bin/rm  --interactive  "$@"
+    nocorrect  /bin/rm  --interactive  "$*"
   fi
 }
 DISABLED_rm
