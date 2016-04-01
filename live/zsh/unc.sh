@@ -128,6 +128,10 @@ DOCUMENTATION
         #\xz  --decompress  ../"$FILE"
         #\tar  -xvvf  "$FILE"
       #;;
+      'txz')
+        mcd  "$BASENAME"
+        \tar  -xvvf  ../"$FILE"
+      ;;
       'tbz2')
         # I could probably test with something like:
         # \touch 1 ; \tar -cf 1.tar 1 ; \bzip2 1.tar ; \rm -f 1 ; \mv 1.tar.bzip2 1.tbz2
