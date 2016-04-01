@@ -2,13 +2,13 @@
 
 
 
-# 2016-03-26 - Lubuntu (version not recorded)
-# 2016-03-28 - Slackware 14.1
+# 2016-03-26, on Lubuntu (version not recorded)
+# 2016-03-28, on Slackware 14.1
 #alias  su="\sudo  $( \basename  $( \readlink  /proc/$$/exe ) )"
 #alias  sul='\sudo  \su  --login'
 
 # All instances of 'su' will be "under one roof", to avoid multiple instances of a root window.  Because that's terribly insecure.
-# 2016-03-29 - Slackware 14.1
+# 2016-03-29, on Slackware 14.1
 su() {
   \sudo  $1  \screen  -X setenv currentdir `\pwd`
   \sudo  $1  \screen  -X eval 'chdir $currentdir' screen
@@ -17,6 +17,20 @@ su() {
 }
 sul() {
   su  '--login'
+}
+# Let root become the user.
+# Basically the reverse of the above.
+# TODO - tweak this to make a sort of `sudouser`
+# 2016-04-01, on Slackware 14.1
+suu() {
+  if [ -z $1 ]; then
+    \sudo  -u user  $SHELL
+  else
+    \sudo  $*
+  fi
+}
+suul() {
+  suu  '--login  -u user'
 }
 
 
