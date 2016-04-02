@@ -5,6 +5,9 @@ IDEAS
 
 zshdir=/l/shell-random/git/live/zsh
 PATH=$PATH:/l/shell-random/git/live/
+PATH=$PATH:/l/shell-random/git/live/sh/scripts/
+PATH=$PATH:/l/shell-random/git/live/bash/scripts/
+PATH=$PATH:/l/shell-random/git/live/zsh/scripts/
 
 HISTFILE=~/.zsh/histfile
 HISTSIZE=10000
