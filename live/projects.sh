@@ -70,6 +70,8 @@ process_projects() {
 
   \cd  "$PROJECTS"
 
+  # Make 'for' case-insensitive
+  LC_COLLATE=en_US ; export LC_COLLATE
   for i in *; do
     if   [ ! -d "$i" ]; then
       continue
