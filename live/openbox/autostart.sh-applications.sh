@@ -10,13 +10,7 @@ disconnected() {
   # I don't do anything special in this case.
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/shell-random/git/live/projects.sh &
-  # This is so bad, but it'll be a decent workaround.
-# This doesn't work..
-#  wait ${ \pidof projects.sh }
-# This isn''t working properly.. on first boot it''ll usually spawn additional geany windows
-#  \geany  /mnt/1/windows-data/l/live/__/__.txt
-#  \geany  /mnt/1/windows-data/l/live/_outbox--1/_outbox--1.txt
+  /l/shell-random/git/live/sh/scripts/projects.sh &
 }
 
 
@@ -87,10 +81,7 @@ connected() {
 
   # Notes
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/shell-random/git/live/projects.sh &
-  # This is so bad, but it'll be a decent workaround.
-  \geany  /mnt/1/windows-data/l/live/__/__.txt &
-  \geany  /mnt/1/windows-data/l/live/_outbox--1/_outbox--1.txt &
+  /l/shell-random/git/live/sh/scripts/projects.sh &
 }
 
 
