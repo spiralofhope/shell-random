@@ -114,8 +114,8 @@ OLD_METHOD
 # --
 
 for interface in $( \ls /sys/class/net/  |  \grep  --invert-match  lo ); do
-  if [ $( \cat /sys/class/net/$interface/carrier ) = 1 ]; then
-    __=$( /mnt/1/linux-data/e/shell-random/git/live/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' )
+  if [ $( \cat /sys/class/net/$interface/carrier ) -eq 1 ]; then
+    __=$( /mnt/1/linux-data/e/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' )
     if [ $__ -eq 0 ]; then
       connected
     else

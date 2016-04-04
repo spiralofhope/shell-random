@@ -2,7 +2,7 @@
 
 
 
-flash_pid=$( \sudo  \pidof plugin-container )
+flash_pid=$( \sudo  /sbin/pidof  plugin-container )
 
 if [ $? -eq 0 ]; then
   \kill  $flash_pid
