@@ -30,16 +30,17 @@ editor_setup() {
   cache_file  /mnt/1/windows-data/l/live/_outbox--0/_outbox--0.txt
   cache_file  /mnt/1/windows-data/l/live/_outbox--1/_outbox--1.txt
 
-  # Make sure todo.txt is the first tab.
-  \geany  "$PROJECTS"/todo.txt &
   # I need to make sure the geany process is running, otherwise another attempt to run geany may open a separate instance of it.
   # FIXME - is there a more graceful way to do this?  I just want to wait that a pid exists.
-  \sleep  1
-  # Make sure projects.txt is the second tab.
-  \geany  "$PROJECTS"/projects.txt
-  \geany  /l/_outbox--0/_outbox--0.txt
-  \geany  /mnt/1/windows-data/l/live/_outbox--0/_outbox--0.txt
-  \geany  /mnt/1/windows-data/l/live/_outbox--1/_outbox--1.txt
+  \sleep  2
+  \geany &
+
+  # Ensuring the first two tabs are these:
+  \geany  "$PROJECTS"/todo.txt &
+  \geany  "$PROJECTS"/projects.txt &
+  \geany  /l/_outbox--0/_outbox--0.txt &
+  \geany  /mnt/1/windows-data/l/live/_outbox--0/_outbox--0.txt &
+  \geany  /mnt/1/windows-data/l/live/_outbox--1/_outbox--1.txt &
 }
 
 
