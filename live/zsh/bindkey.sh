@@ -103,7 +103,7 @@ bindkey  -s  '^X'  '^@^[[1;5C^A\ef\e" ^@'                               # contro
 
 # This seems to be the Right Way to handle edge cases
 case $TERM in
-  xterm|screen-256color)
+  xterm)
     bindkey  '^?'       backward-kill-word                                  # control-backspace
     bindkey  '^[[H'     beginning-of-line                                   # home
     bindkey  '^[[F'     end-of-line                                         # end
@@ -118,6 +118,13 @@ case $TERM in
   linux)
     bindkey  '^[OH'     beginning-of-line                                   # home
     bindkey  '^[OF'     end-of-line                                         # end
+    bindkey  '^H'       backward-kill-word                                  # control-backspace
+  ;;
+  
+  screen|screen-256color)
+    bindkey  '^?'       backward-delete-char                                # backspace
+    bindkey  '^[[1~'    beginning-of-line                                   # home
+    bindkey  '^[[4~'    end-of-line                                         # end
     bindkey  '^H'       backward-kill-word                                  # control-backspace
   ;;
 
