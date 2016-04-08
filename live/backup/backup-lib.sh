@@ -331,15 +331,23 @@ _smart_mount() {
           _fsck_if_not_mounted  $one
           # /dev/sda1  =>  sda1
           _basename  "$one"
-          local  smart_mount_working_directory=$( \mktemp  --directory  --suffix=.$identifier.mountpoint  --tmpdir=$working_directory )
+          # 2016-03-26 - GNU coreutils mktemp, last tested on Lubuntu 14.04.4 LTS
+          smart_mount_working_directory=$( \mktemp  --directory  --suffix=.$identifier.mountpoint  --tmpdir=$working_directory  2>/dev/null )
+          if [[ $? == 1 ]]; then
+            # 2016-04-07 - OpenBSD 2.1 mktemp, tested on Slackware 14.1
+            smart_mount_working_directory=$( \mktemp -d $working_directory.$identifier.bindpoint.XXXXXX )
+            err  $?
+          fi
 
           if [[ $two = 'rw' ]]; then
             echo_info  'mounting '  "$one"  ' read-write.'
-            \mount  --options $partition_type_7_mount_options,rw  $one  "$smart_mount_working_directory"  ;  err  $?
+            \mount  --options $partition_type_7_mount_options,rw  $one  "$smart_mount_working_directory"
+            err  $?
           fi
           if [[ $two = 'ro' ]]; then
             echo_info  'mounting '  "$one"  ' read-only.'
-            \mount  --options $partition_type_7_mount_options,ro  $one  "$smart_mount_working_directory"  ;  err  $?
+            \mount  --options $partition_type_7_mount_options,ro  $one  "$smart_mount_working_directory"
+            err  $?
           fi
         fi
         # mounted already, or mounted just now.
@@ -365,15 +373,22 @@ _smart_mount() {
           _fsck_if_not_mounted  $one
           # /dev/sda1  =>  sda1
           _basename  "$one"
-          local  smart_mount_working_directory=$( \mktemp  --directory  --suffix=.$identifier.mountpoint  --tmpdir=$working_directory )
+          smart_mount_working_directory=$( \mktemp  --directory  --suffix=.$identifier.mountpoint  --tmpdir=$working_directory  2>/dev/null )
+          if [[ $? == 1 ]]; then
+            # 2016-04-07 - OpenBSD 2.1 mktemp, tested on Slackware 14.1
+            smart_mount_working_directory=$( \mktemp -d $working_directory.$identifier.bindpoint.XXXXXX )
+            err  $?
+          fi
 
           if [[ $two = 'rw' ]]; then
             echo_info  'mounting '  "$one"  ' read-write.'
-            \mount  --options $partition_type_83_mount_options,rw  $one  "$smart_mount_working_directory"  ;  err  $?
+            \mount  --options $partition_type_83_mount_options,rw  $one  "$smart_mount_working_directory" 
+            err  $?
           fi
           if [[ $two = 'ro' ]]; then
             echo_info  'mounting '  "$one"  ' read-only.'
-            \mount  --option $partition_type_83_mount_options,ro  $one  "$smart_mount_working_directory"  ;  err  $?
+            \mount  --option $partition_type_83_mount_options,ro  $one  "$smart_mount_working_directory"
+            err  $?
           fi
         fi
         # mounted already, or mounted just now.
@@ -396,20 +411,26 @@ _smart_mount() {
   fi
   }
 
+
   # Reaching here, things should already be in directory form.
   if [[ $type != 'directory' ]]; then
     _backup_die  'big fat problem with'  '_smart_mount()'
   fi
-
-  local  smart_mount_working_directory=$( \mktemp  --directory  --suffix=.$identifier.bindpoint  --tmpdir=$working_directory )
-  err  $?
-
+  smart_mount_working_directory=$( \mktemp  --directory  --suffix=.$identifier.bindpoint  --tmpdir=$working_directory  2>/dev/null )
+  # The above will always return 0 if it's "local smart_mount_working_directory=(etc)"  ..  Go figure.
+  if [[ $? == 1 ]]; then
+    # 2016-04-07 - OpenBSD 2.1 mktemp, tested on Slackware 14.1
+    smart_mount_working_directory=$( \mktemp -d $working_directory.$identifier.bindpoint.XXXXXX )
+    err  $?
+  fi
 
   if [[ $two = 'rw' ]]; then
-    \mount  --options bind,rw  $one  "$smart_mount_working_directory"  > /dev/null ;  err  $?
+    \mount  --options bind,rw  $one  "$smart_mount_working_directory"  > /dev/null
+    err  $?
   fi
   if [[ $two = 'ro' ]]; then
-    \mount  --options bind,ro  $one  "$smart_mount_working_directory"  > /dev/null ;  err  $?
+    \mount  --options bind,ro  $one  "$smart_mount_working_directory"  > /dev/null
+    err  $?
   fi
   __=$smart_mount_working_directory
 }

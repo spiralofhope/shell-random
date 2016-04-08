@@ -124,9 +124,14 @@ _backup_go(){
   echo_info   ''  '----------------------------------------------------------------------'
   echo_info   ''  "$source => $target"
 
-  # todo? - should this be configurable?
-  working_directory=$( \mktemp  --directory  --suffix=.backup.$$  --tmpdir=/mnt )
-  err  $?
+  # TODO? - Should the working directory be configurable?
+  # 2016-03-26 - GNU coreutils mktemp, last tested on Lubuntu 14.04.4 LTS
+  working_directory=$( \mktemp  --directory  --suffix=.backup.$$  --tmpdir=/mnt  2>/dev/null )
+  if [[ $? == 1 ]]; then
+    # 2016-04-07 - OpenBSD 2.1 mktemp, tested on Slackware 14.1
+    working_directory=$( \mktemp -d /tmp/tmp.XXXXXX )
+    err  $?
+  fi
 
   _smart_mount  $source  'ro'  'source'  ;  source=$__
   _smart_mount  $target  'rw'  'target'  ;  target=$__
