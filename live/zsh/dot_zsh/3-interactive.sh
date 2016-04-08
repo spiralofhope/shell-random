@@ -74,7 +74,7 @@ chpwd() {
     sun-cmd)
       print -Pn "\e]l%~\e\\"
     ;;
-    *xterm*|rxvt(-unicode)|(dt|k|E)term)
+    *xterm*|rxvt(-unicode)|(dt|k|E)term|screen)
       print -Pn "\e]2;%~\a"
     ;;
   esac
