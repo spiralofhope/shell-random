@@ -16,7 +16,9 @@ screensaver_enable() {
   \xset  +dpms
   \xset  dpms 0 0 295
   # 5 minutes to activation.
-  \xautolock  -time 5  -locker '/mnt/1/linux-data/e/shell-random/git/live/sh/scripts/screensaver-yesno.sh  "locknow"' &
+  # `readlink`  is to get the full path of _this_ script.
+  # There are ways around using  `readlink`  if this ends up being a problem for others.  See https://stackoverflow.com/questions/4774054/
+  \xautolock  -time 5  -locker "`\readlink -f $0` 'locknow'" &
   \echo        enabled
 }
 
