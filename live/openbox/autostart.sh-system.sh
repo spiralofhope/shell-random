@@ -31,8 +31,7 @@ if [ $? -ne 0 ]; then
   \xscreensaver  -no-splash > /dev/null &
 fi
 # A really simple screen saver/locker.
-# FIXME? - Maybe this should be \slock
-\xautolock  -time 5  -locker slock &
+\xautolock  -time 5  -locker \slock &
 
 
 # TODO - Maybe just some hotkeys for audio control.
