@@ -9,9 +9,6 @@ screensaver_enable() {
   screensaver_disable
   # 5 minutes to activation.
   \xautolock  -time 5  -locker '/mnt/1/linux-data/e/shell-random/git/live/sh/scripts/screensaver-yesno.sh  "locknow"' &
-#  \xautolock  -time 5  -locker '\xset  +dpms  ;  \xset  dpms 0 0 5  ;  \slock  \xset  dpms 0 0 300' &
-#  # 5 minutes to turn off the monitor.
-#  #\xset  dpms 0 0 300
   \echo        enabled
 }
 
@@ -32,10 +29,10 @@ screensaver_disable() {
 screensaver_locknow() {
   screensaver_disable
   \xset  +dpms
-  \xset  dpms 0 0 5
-  # I've seen no combination of this work.
-  #\slock  \xset  dpms 0 0 300
+  # 7 seconds to screen power off
+  \xset  dpms 0 0 7
   \slock
+  # 5 minutes to screen power off
   \xset  dpms 0 0 300
   screensaver_enable
 }
