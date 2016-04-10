@@ -7,6 +7,10 @@
 
 screensaver_enable() {
   screensaver_disable
+  # ~5 minutes to screen power off
+  # I make it a little bit less, to give me a moment to cancel the screen saver.
+  \xset  +dpms
+  \xset  dpms 0 0 295
   # 5 minutes to activation.
   \xautolock  -time 5  -locker '/mnt/1/linux-data/e/shell-random/git/live/sh/scripts/screensaver-yesno.sh  "locknow"' &
   \echo        enabled
@@ -28,12 +32,11 @@ screensaver_disable() {
 
 screensaver_locknow() {
   screensaver_disable
-  \xset  +dpms
   # 7 seconds to screen power off
+  # 5 also works, but it takes a little too long to wake most screens up.
+  \xset  +dpms
   \xset  dpms 0 0 7
   \slock
-  # 5 minutes to screen power off
-  \xset  dpms 0 0 300
   screensaver_enable
 }
 
