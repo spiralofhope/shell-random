@@ -42,17 +42,22 @@ screensaver_locknow() {
 
 
 
-if [[ x$1 == 'xenable' ]]; then
-  screensaver_enable
-elif [[ x$1 == 'xdisable' ]]; then
-  screensaver_disable
-elif [[ x$1 == 'xlocknow' ]]; then
-  screensaver_locknow
-else
-  __=`/mnt/1/linux-data/e/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable screen saver?'`
-  if [[ $__ == 0 ]]; then
+case $1 in
+  enable)
     screensaver_enable
-  else
+  ;;
+  disable)
     screensaver_disable
-  fi
-fi
+  ;;
+  locknow)
+    screensaver_locknow
+  ;;
+  *)
+    __=`/mnt/1/linux-data/e/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable screen saver?'`
+    if [[ $__ == 0 ]]; then
+      screensaver_enable
+    else
+      screensaver_disable
+    fi
+  ;;
+esac
