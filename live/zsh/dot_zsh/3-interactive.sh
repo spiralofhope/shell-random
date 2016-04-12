@@ -8,6 +8,11 @@ PATH=$PATH:/l/shell-random/git/live/
 PATH=$PATH:/l/shell-random/git/live/sh/scripts/
 PATH=$PATH:/l/shell-random/git/live/bash/scripts/
 PATH=$PATH:/l/shell-random/git/live/zsh/scripts/
+if [ $( whoami ) = root ]; then
+  PATH=$PATH:/sbin/
+  PATH=$PATH:/usr/sbin/
+else
+fi
 
 HISTFILE=~/.zsh/histfile
 HISTSIZE=10000

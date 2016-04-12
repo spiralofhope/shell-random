@@ -40,5 +40,5 @@ alias  grep='\grep --color'
 # alias  screen='TERM=screen screen'  # http://ubuntuforums.org/showthread.php?t=90910
 
 alias  pm-suspend='\sudo  /usr/sbin/pm-suspend'
-alias  reboot='    \sudo  /usr/sbin/reboot'
-alias  poweroff='  \sudo  /usr/sbin/poweroff'
+alias  reboot='    \sudo  /sbin/reboot'
+alias  poweroff='  \sudo  /sbin/poweroff'
