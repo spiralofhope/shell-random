@@ -30,6 +30,7 @@
 export  GIT_DIRECTORY='/c/l/live/Git_For_Windows'
 export  PATH="${PATH}:${GIT_DIRECTORY}/bin"
 export  PATH="${PATH}:/c/l/live/shell-random/git/live/"
+export  PATH="${PATH}:/c/l/live/shell-random/git/live/sh/scripts/"
 export  PATH="${PATH}:/c/l/live/shell-random/git/live/bash-windows/scripts/"
 PF='/c/Program\ Files'
 PFx="${PF}\ \(x86\)"
