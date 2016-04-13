@@ -35,7 +35,7 @@ _findhelper_find_file_contents() {
     \grep  --colour=always  --fixed-strings  --ignore-case  --regexp="$*"
 }
 # TODO: parameter-sanity?
-findinall() { findin ./ "$*" ; }
+#findinall() { findin ./ "$*" ; }
 
 
 
