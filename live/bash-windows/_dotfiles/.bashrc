@@ -28,9 +28,11 @@
 # -- General settings
 # --
 export  GIT_DIRECTORY='/c/l/live/Git_For_Windows'
+export  shell_random='/c/l/live/shell-random/git'
 export  PATH="${PATH}:${GIT_DIRECTORY}/bin"
-export  PATH="${PATH}:/c/l/live/shell-random/git/live/"
-export  PATH="${PATH}:/c/l/live/shell-random/git/live/bash-windows/scripts/"
+export  PATH="${PATH}:$shell_random/live/"
+export  PATH="${PATH}:$shell_random/live/sh/scripts/"
+export  PATH="${PATH}:$shell_random/live/bash-windows/scripts/"
 PF='/c/Program\ Files'
 PFx="${PF}\ \(x86\)"
 
@@ -210,13 +212,15 @@ export  PROMPT_COMMAND='echo -ne  "\033]0;$PWD\007"'
 
 
 
-source  "/c/l/live/shell-random/git/live/bash and zsh"/lib.sh
-source  "/c/l/live/shell-random/git/live/bash and zsh"/*.sh
-source  "/c/l/live/shell-random/git/live/bash-windows"/lib.sh
-source  "/c/l/live/shell-random/git/live/bash-windows"/*.sh
-# I don't know how to reproduce it properly, but bash-windows doesn't always seem happy about using `source` with a wildcard.
-#for i in  "/c/l/live/shell-random/git/live/bash and zsh"/*.sh; do  source "$i"  ;done
-#for i in  "/c/l/live/shell-random/git/live/bash-windows"/*.sh; do  source "$i"  ;done
+sourceallthat() {
+  source  "$1"/lib.sh
+  for i in "$1"/*.sh; do
+    source  "$i"
+  done
+}
+sourceallthat  "$shell_random/live/sh"
+sourceallthat  "$shell_random/live/bash-windows"
+sourceallthat  "$shell_random/live/bash and zsh"
 
 
 
