@@ -8,9 +8,9 @@ if [ -f ~/.zkbd/$TERM-$VENDOR-$OSTYPE ]; then
   source ~/.zkbd/$TERM-$VENDOR-$OSTYPE
   [[ -n ${key[Backspace]} ]] && bindkey  "${key[Backspace]}" backward-delete-char
   [[ -n ${key[Home]} ]] && bindkey  "${key[Home]}" beginning-of-line
-  [[ -n ${key[PageUp]} ]] && bindkey  "${key[PageUp]}" up-line-or-history
   [[ -n ${key[Delete]} ]] && bindkey  "${key[Delete]}" delete-char
   [[ -n ${key[End]} ]] && bindkey  "${key[End]}" end-of-line
+  [[ -n ${key[PageUp]} ]] && bindkey  "${key[PageUp]}" up-line-or-history
   [[ -n ${key[PageDown]} ]] && bindkey  "${key[PageDown]}" down-line-or-history
   [[ -n ${key[Up]} ]] && bindkey  "${key[Up]}" up-line-or-search
   [[ -n ${key[Up]} ]] && bindkey  "${key[Up]}" up-line-or-search
@@ -64,9 +64,13 @@ typeset  -g  -A  key
 
 bindkey  '^[[3~'    delete-char                                         # delete
 
+# (old binding)
+#bindkey  '^[[5~'    up-line-or-search                                   # pageup (matching history)
+#bindkey  '^[[6~'    down-line-or-search                                 # pagedown (matching history)
+# These should properly go through history:
+bindkey  '^[[5~'    history-beginning-search-backward                   # pageup (matching history)
+bindkey  '^[[6~'    history-beginning-search-forward                    # pagedown (matching history)
 
-bindkey  '^[[5~'    up-line-or-search                                   # pageup (matching history)
-bindkey  '^[[6~'    down-line-or-search                                 # pagedown (matching history)
 bindkey  '^[[1;5D'  backward-word                                       # control-left
 bindkey  '^[[1;5C'  forward-word                                        # control-right
 
