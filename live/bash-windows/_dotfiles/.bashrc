@@ -229,3 +229,16 @@ if [ "$PWD" == "/" ]; then
   \cd  ~
 fi
 \df  --human-readable
+echo
+
+
+
+\echo -n " * Testing internet connection... "
+# example.com is supposed to be provided by the ISP.
+\ping  -n  -q  -w 2  example.com  &> /dev/null
+# ping not found || ping doesn't find a connection
+if [[ $? -eq 127 || $? -eq 2 ]]; then
+  \echo  "[FAIL]"
+ else
+  \echo  "[ok]"
+fi
