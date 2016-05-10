@@ -39,3 +39,6 @@ alias rename='/c/l/live/shell-random/git/live/rename.pl'
 alias alarm='/c/l/live/shell-random/git/live/bash-windows/scripts/alarm.sh'
 
 alias rsync='/c/l/live/Git_For_Windows/bin/cwRsync/rsync.exe'
+
+alias addons='\cd  /c/l/live/World_of_Warcraft/_dotfiles/Interface/AddOns'
+

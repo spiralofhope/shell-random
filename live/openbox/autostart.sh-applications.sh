@@ -85,30 +85,6 @@ connected() {
 }
 
 
-:<<OLD_METHOD
-# --
-# -- Internet connection test
-# --
-# example.com is supposed to be provided by the ISP.
-\ping  -n  -q  -w 2  example.com  &> /dev/null
-# TODO - there ought to be a better way to do this..
-# ping not found || ping doesn't find a connection
-if [ $? -eq 127 || $? -eq 2 ]; then
-  # internet=false
-  disconnected
-else
-  # internet=true
-  \zenity  --question
-  if [ $? -eq 0 ]; then
-    connected
-  else
-    # zenity not found || user said no
-    exit 1
-  fi
-fi
-OLD_METHOD
-
-
 # --
 # -- Network connection test
 # --
