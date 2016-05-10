@@ -5,6 +5,11 @@
 # ~/.config/openbox/autostart.sh-system.sh
 
 
+# Set up the second display.
+/l/shell-random/git/live/sh/scripts/dual-monitors.sh &
+
+
+
 # Fix Firefox crashes on Flash playing, and fix audio issues:
 # Disabled 2014-05-16, as I'm unsure if this is necessary.
 #export  XLIB_SKIP_ARGB_VISUALS=1
