@@ -303,12 +303,13 @@ launch_terminal() {
       # See ~/.Xresources
       # A decent one is:
       #font='-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*'
+      #font='-bolkhov-vga-medium-r-normal--16-160-75-75-c-80-iso10646-1'
       #\setsid  \urxvtc  -fn $font  "$@"
 
       \setsid  \urxvtc  "$@"
       if [ $? -eq 2 ]; then
         \urxvtd  --fork  --opendisplay  --quiet
-        \setsid  \urxvtc  "$@"
+        \setsid  \urxvtc  -bg black  -fg grey  "$@"
       fi
     ;;
 
