@@ -1,8 +1,15 @@
 #!/bin/sh
 
-# FIXME - must not be run as root
 
+# FIXME - must not be run as root
+# TODO - It's stupid of me to house files and directories without their leading dot.  Untangle this.
+
+if [ -z $1 ]; then
+  dot='.'
+fi
 date="$( \date +%Y-%m-%d--%H-%M-%S )"
+
+
 \echo  ""
 \echo  " * Preparing home/user/ dot files.."
 for i in *; do
@@ -11,10 +18,10 @@ for i in *; do
   fi
   # Back up any existing files.
   # If a file and not a symlink.
-  if [ -f ~/."$i" -a ! -L ~/."$i" ]; then
-    \mv  ~/."$i"  ~/."${i}"--"$date"
+  if [ -f ~/"$dot""$i" -a ! -L ~/"$dot""$i" ]; then
+    \mv  ~/"$dot""$i"  ~/"$dot""${i}"--"$date"
   fi
-  \ln  --force  --no-target-directory  --symbolic  "$PWD"/"$i"  ~/."$i"
+  \ln  --force  --no-target-directory  --symbolic  "$PWD"/"$i"  ~/"$dot""$i"
 done
 
 
@@ -26,10 +33,10 @@ for i in *; do
   fi
   # Back up any existing directories.
   # If a directory and not a symlink.
-  if [ -d ~/."$i" -a ! -L ~/."$i" ]; then
-    \mv  ~/."$i"  ~/."${i}"--"$date"
+  if [ -d ~/"$dot""$i" -a ! -L ~/"$dot""$i" ]; then
+    \mv  ~/"$dot""$i"  ~/"$dot""${i}"--"$date"
   fi
-  \ln  --force  --no-target-directory  --symbolic  "$PWD"/"$i"  ~/."$i"
+  \ln  --force  --no-target-directory  --symbolic  "$PWD"/"$i"  ~/"$dot""$i"
 done
 
 
