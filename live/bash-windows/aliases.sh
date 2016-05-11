@@ -21,7 +21,7 @@ alias svn="${PF}/TortoiseSVN/bin/svn.exe"
 
 # Mercurial, version control
 # http://mercurial.selenic.com/wiki/Download
-alias  hg="${PF}/Mercurial/hg.exe"
+alias  hg="${PF}/\TortoiseHg/hg.exe"
 
 # Midnight Commander, file thingy
 # http://www.midnight-commander.org/
