@@ -18,13 +18,6 @@
 
 
 # --
-# GIT BASH QUIRKS
-# --
-# (nothing noted yet)
-
-
-
-# --
 # -- General settings
 # --
 export  GIT_DIRECTORY='/c/l/live/Git_For_Windows'
