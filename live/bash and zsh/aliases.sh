@@ -4,7 +4,6 @@
 #   GNU bash, version 3.1.20(4)-release (i686-pc-msys)
 
 
-alias  ls='\ls  -1  --classify  --color=auto  --group-directories-first  --show-control-chars'
 alias  cp='\cp  --interactive'
 alias  mv='\mv  --interactive'
 alias  rm='\rm  --interactive'

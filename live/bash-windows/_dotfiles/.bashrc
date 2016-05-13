@@ -130,6 +130,7 @@ HISTFILESIZE=2000
 shopt -s checkwinsize
 
 
+# TODO - all of this should be exported elsewhere.
 esc=""
 
 # Foreground colour

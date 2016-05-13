@@ -3,6 +3,7 @@
 # GNU bash, version 4.3.42(5)-release (x86_64-pc-msys)
 
 
+alias  ls='\ls  -1  --all  --classify  --color=auto  --show-control-chars  -X'
 alias  addons='\cd  /c/l/live/World_of_Warcraft/_dotfiles/Interface/AddOns'
 
 
@@ -17,7 +18,7 @@ alias  addons='\cd  /c/l/live/World_of_Warcraft/_dotfiles/Interface/AddOns'
 # http://vijayparsi.wordpress.com/2012/03/07/nano-with-mingw32-for-msysgit/
 #   \curl -L -O http://www.nano-editor.org/dist/v2.2/NT/nano-2.2.6.zip
 # It doesn't work on this present 64-bit setup
-#alias   nano="${GIT_DIRECTORY}/bin/nano/nano.exe  --autoindent  --nowrap  --tabsize=2  --tabstospaces"
+#alias  nano="${GIT_DIRECTORY}/bin/nano/nano.exe  --autoindent  --nowrap  --tabsize=2  --tabstospaces"
 
 # Fdupes, duplicate file checker/deleter
 # TODO
