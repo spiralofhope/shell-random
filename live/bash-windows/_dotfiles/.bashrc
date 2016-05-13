@@ -1,5 +1,5 @@
-# bash-windows, tested 2016-01-31 on Windows 10, updated recently.
-# GNU bash, version 3.1.20(4)-release (i686-pc-msys)
+# bash-windows, tested 2016-05-13 on Windows 10, updated recently.
+# GNU bash, version 4.3.42(5)-release (x86_64-pc-msys)
 
 
 # --
