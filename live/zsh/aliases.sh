@@ -11,6 +11,7 @@ alias  -s txt=medit
 alias  -s pdf=xpdf
 
 # --  Aliases for builtins
+alias  ls='\ls  -1  --all  --classify  --color=auto  --group-directories-first  --show-control-chars'
 alias  cp='nocorrect  \cp  --interactive'
 alias  mv='nocorrect  \mv  --interactive'
 alias  rm='nocorrect  \rm  --interactive'
