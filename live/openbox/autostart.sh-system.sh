@@ -6,8 +6,8 @@
 
 
 # Set up the second display.
+# FIXME - why the fuck isn't this working?
 /l/shell-random/git/live/sh/scripts/dual-monitors.sh &
-
 
 
 # Fix Firefox crashes on Flash playing, and fix audio issues:
