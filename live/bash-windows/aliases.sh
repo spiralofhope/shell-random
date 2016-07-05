@@ -4,7 +4,10 @@
 
 
 alias  ls='\ls  -1  --all  --classify  --color=auto  --show-control-chars  -X'
+
+# World of Warcraft
 alias  addons='\cd  /c/l/live/World_of_Warcraft/_dotfiles/Interface/AddOns'
+alias     wow='\cd  /c/l/live/World_of_Warcraft'
 
 
 
