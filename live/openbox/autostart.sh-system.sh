@@ -110,8 +110,7 @@ fi
 
 sleep 0.3
 # Passwords
-\keepassx  /mnt/1/windows-data/l/live/keepassx-passwords--linux-and-windows.kdb  -min  -lock &
-\keepassx  /l/e/keepassx-passwords--linux-only.kdb                               -min  -lock &
+/l/shell-random/git/live/sh/scripts/keepassx-restart.sh &
 
 
 # launch any user-specific stuff:
