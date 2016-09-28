@@ -69,6 +69,12 @@ connected() {
 
 
   #
+  # BitTorrent
+  #
+  \transmission-gtk &
+
+
+  #
   # File manager
   #
   \spacefm \
@@ -82,6 +88,8 @@ connected() {
   # Notes
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
   /l/shell-random/git/live/sh/scripts/projects.sh &
+
+
 }
 
 
