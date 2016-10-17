@@ -22,6 +22,7 @@ NET FILE 1>NUL 2>NUL & IF ERRORLEVEL 1 (
 
 
 
+%SOURCE:~0,2%
 CD %SOURCE%
 ::  Directories
 FOR  /D  %%i  in  ( *.* )  DO (
