@@ -6,8 +6,8 @@
 alias  ls='\ls  -1  --all  --classify  --color=auto  --show-control-chars  -X'
 
 # World of Warcraft
-alias  addons='\cd  /c/l/live/World_of_Warcraft/_dotfiles/Interface/AddOns'
-alias     wow='\cd  /c/l/live/World_of_Warcraft'
+alias  addons='\cd  /g/l/live/World_of_Warcraft/_dotfiles/Interface/AddOns'
+alias     wow='\cd  /g/l/live/World_of_Warcraft'
 
 
 
@@ -44,9 +44,9 @@ alias  mc="${PFx}/Midnight\ Commander/mc.exe"
 # http://www.7-zip.org/
 alias  7z="${PF}/7-Zip/7z.exe"
 
-alias  rename='/c/l/live/shell-random/git/live/rename.pl'
+alias  rename='${shell_random}/live/rename.pl'
 
-alias  rsync='/c/l/live/Git_For_Windows/bin/cwRsync/rsync.exe'
+alias  rsync='${GIT_DIRECTORY}/bin/cwRsync/rsync.exe'
 
 
 
