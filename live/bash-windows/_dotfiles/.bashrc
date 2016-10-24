@@ -6,7 +6,7 @@
 # TODO
 # --
 # be able to ls|less and keep color
-# clean up /g/l/live/shell-random/git/dead/bash/ and don't forget to export it into the 1 shell-random/git
+# clean up /d/l/live/shell-random/git/dead/bash/ and don't forget to export it into the 1 shell-random/git
 # TODO - export all of this into a more current configuration setup.
 
 
@@ -20,8 +20,8 @@
 # --
 # -- General settings
 # --
-export  GIT_DIRECTORY='/g/l/live/Git_For_Windows'
-export  shell_random='/g/l/live/shell-random/git'
+export  GIT_DIRECTORY='/d/l/live/Git_For_Windows'
+export  shell_random='/d/l/live/shell-random/git'
 export  PATH="${PATH}:${GIT_DIRECTORY}/bin"
 export  PATH="${PATH}:$shell_random/live/"
 export  PATH="${PATH}:$shell_random/live/sh/scripts/"
