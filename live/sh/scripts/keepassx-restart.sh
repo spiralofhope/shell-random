@@ -9,5 +9,5 @@
   -min  -lock &
 
 \keepassx \
-  /l/e/keepassx-passwords--linux-only.kdb \
+  /l/keepassx-passwords--linux-only.kdb \
   -min  -lock &
