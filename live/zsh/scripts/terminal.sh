@@ -75,6 +75,7 @@ terminal_setup() {
   font='-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*'
   # Unicode vga font.  Looks like shit when bold though.
   font='-bolkhov-vga-medium-r-normal--16-160-75-75-c-80-iso10646-1'
+  # TODO - `xlsfonts` may not always exist.
   \xlsfonts  |  \grep  --line-regexp  --quiet  --  $font
   if  [[ $? -eq 1 ]]; then
     # This is the vga font taken from DOSEmu.  Non-unicode.
@@ -302,14 +303,25 @@ launch_terminal() {
       # This dumbass terminal does not have a proper fallback if I use an invalid font.
       # See ~/.Xresources
       # A decent one is:
-      #font='-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*'
-      #font='-bolkhov-vga-medium-r-normal--16-160-75-75-c-80-iso10646-1'
-      #\setsid  \urxvtc  -fn $font  "$@"
-
-      \setsid  \urxvtc  "$@"
+      \which xlsfonts > /dev/null
+      if [ $? -eq 1 ]; then
+        # See `man 7 urxvt` for more on fonts, but not that much more.. so good luck.
+        #font='-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*'
+        #font='-bolkhov-vga-medium-r-normal--16-160-75-75-c-80-iso10646-1'
+        font='xft:Bitstream Vera Sans Mono:pixelsize=13:autoalias=false'
+        #font='xft:Bitstream Vera Sans Mono:pixelsize=12:autohint=true:autoalias=false'
+        #font='xft:Bitstream Vera Sans Mono'
+        \setsid  \urxvtc  -fn $font  "$@"
+      else
+        \setsid  \urxvtc  "$@"
+      fi
       if [ $? -eq 2 ]; then
         \urxvtd  --fork  --opendisplay  --quiet
         \setsid  \urxvtc  -bg black  -fg grey  "$@"
+      fi
+      if [ $? -ne 0 ]; then
+        # Just fucking work..
+        \setsid  \urxvtc  -fn 'xft:'
       fi
     ;;
 
