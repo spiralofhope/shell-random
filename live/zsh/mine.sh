@@ -3,9 +3,9 @@
 
 \which  sudo > /dev/null
 if [ $? -eq 0 ]; then
-  _have_sudo='true'
+  _sudo_exists='true'
 else
-  _have_sudo='false'
+  _sudo_exists='false'
 fi
 
 
@@ -18,7 +18,7 @@ fi
 # All instances of 'su' will be "under one roof", to avoid multiple instances of a root window.  Because that's terribly insecure.
 # 2016-03-29, on Slackware 14.1
 su() {
-  if [ _have_sudo == 'true' ]; then
+  if [ $_sudo_exists = 'true' ]; then
     \sudo  $1  \screen  -X setenv currentdir `\pwd`
     \sudo  $1  \screen  -X eval 'chdir $currentdir' screen
     # This logs out of any existing instance of root.
@@ -49,10 +49,9 @@ suul() {
 
 
 # 2016-10-29, on Porteus-LXQt-v3.1-i486
-# Note that the placement of this block is intentionally down here.
-if [ _have_sudo == 'false' ]; then
+if [ $_sudo_exists = 'false' ]; then
   sudo() {
-    /bin/su  -c "$@"
+    /bin/su  -c $*
   }
 fi
 
