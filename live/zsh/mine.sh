@@ -1,6 +1,14 @@
 # TODO - Rename this file.  Move it into lib.sh?
 
 
+\which  sudo > /dev/null
+if [ $? -eq 0 ]; then
+  _have_sudo='true'
+else
+  _have_sudo='false'
+fi
+
+
 
 # 2016-03-26, on Lubuntu (version not recorded)
 # 2016-03-28, on Slackware 14.1
@@ -10,8 +18,7 @@
 # All instances of 'su' will be "under one roof", to avoid multiple instances of a root window.  Because that's terribly insecure.
 # 2016-03-29, on Slackware 14.1
 su() {
-  \which  sudo > /dev/null
-  if [ $? -eq 0 ]; then
+  if [ _have_sudo == 'true' ]; then
     \sudo  $1  \screen  -X setenv currentdir `\pwd`
     \sudo  $1  \screen  -X eval 'chdir $currentdir' screen
     # This logs out of any existing instance of root.
@@ -43,8 +50,7 @@ suul() {
 
 # 2016-10-29, on Porteus-LXQt-v3.1-i486
 # Note that the placement of this block is intentionally down here.
-\which  sudo > /dev/null
-if [ $? -ne 0 ]; then
+if [ _have_sudo == 'false' ]; then
   sudo() {
     /bin/su  -c "$@"
   }
