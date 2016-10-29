@@ -10,13 +10,19 @@
 # All instances of 'su' will be "under one roof", to avoid multiple instances of a root window.  Because that's terribly insecure.
 # 2016-03-29, on Slackware 14.1
 su() {
-  \sudo  $1  \screen  -X setenv currentdir `\pwd`
-  \sudo  $1  \screen  -X eval 'chdir $currentdir' screen
-  # This logs out of any existing instance of root.
-  \sudo  $1  \screen -A  -D -RR
+  \which  sudo > /dev/null
+  if [ $? -eq 0 ]; then
+    \sudo  $1  \screen  -X setenv currentdir `\pwd`
+    \sudo  $1  \screen  -X eval 'chdir $currentdir' screen
+    # This logs out of any existing instance of root.
+    \sudo  $1  \screen -A  -D -RR
+  else
+    # 2016-10-29, on Porteus-LXQt-v3.1-i486
+    /bin/su
+  fi
 }
 sul() {
-  su  '--login'
+  /bin/su  '--login'
 }
 # Let root become the user.
 # Basically the reverse of the above.
@@ -32,6 +38,17 @@ suu() {
 suul() {
   suu  '--login  -u user'
 }
+
+
+
+# 2016-10-29, on Porteus-LXQt-v3.1-i486
+# Note that the placement of this block is intentionally down here.
+\which  sudo > /dev/null
+if [ $? -ne 0 ]; then
+  sudo() {
+    /bin/su  -c "$@"
+  }
+fi
 
 
 
