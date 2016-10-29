@@ -2,7 +2,7 @@
 
 # Sometimes keepassx refuses to show on the taskbar (lxpanel)
 
-\killall keepassx
+\killall  --quiet  keepassx
 
 \keepassx \
   /mnt/1/windows-data/l/live/keepassx-passwords--linux-and-windows.kdb \
