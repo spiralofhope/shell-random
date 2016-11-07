@@ -147,6 +147,11 @@ DOCUMENTATION
         mcd  "$BASENAME"
         \7za  x  ../"$FILE"
       ;;
+      'iso')
+        mcd  "$BASENAME"
+        # Maybe other software can extract it, but 7zip works.
+        \7z  x  ../"$FILE"
+      ;;
       'bz2') # check more:
         EXTENSION="${BASENAME##*.}"
         case "$EXTENSION" in
