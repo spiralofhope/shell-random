@@ -108,28 +108,41 @@ bindkey  -s  '^X'  '^@^[[1;5C^A\ef\e" ^@'                               # contro
 # This seems to be the Right Way to handle edge cases
 case $TERM in
   xterm)
-    bindkey  '^?'       backward-kill-word                                  # control-backspace
-    bindkey  '^[[H'     beginning-of-line                                   # home
-    bindkey  '^[[F'     end-of-line                                         # end
+    #bindkey  '^?'       backward-kill-word                              # control-backspace
+    bindkey  '^[[H'     beginning-of-line                               # home
+    bindkey  '^[[F'     end-of-line                                     # end
+
+    # 2016-11-26 - Devuan
+    bindkey  '^H'       backward-kill-word                              # control-backspace
+    bindkey  'ÿ'        backward-kill-word                              # alt-backspace
+    bindkey  '^?'       backward-delete-char                            # backspace
   ;;
 
-  rxvt-unicode-256color)
-    bindkey  '^[[7~'    beginning-of-line                                   # home
-    bindkey  '^[[8~'    end-of-line                                         # end
-    bindkey  '^H'       backward-kill-word                                  # control-backspace
+  rxvt-unicode|rxvt-unicode-256color)
+    # rxvt-unicode = 'urxvt' (urxvtd / urxvtc)
+    bindkey  '^[[7~'    beginning-of-line                               # home
+    bindkey  '^[[8~'    end-of-line                                     # end
+    #bindkey  '^H'       backward-kill-word                              # control-backspace
+
+    # 2016-11-26 - Devuan
+    bindkey  ''       backward-kill-word                              # control-backspace
   ;;
 
-  linux)
-    bindkey  '^[OH'     beginning-of-line                                   # home
-    bindkey  '^[OF'     end-of-line                                         # end
-    bindkey  '^H'       backward-kill-word                                  # control-backspace
+  linux)    # The raw console
+    bindkey  '^[OH'     beginning-of-line                               # home
+    bindkey  '^[OF'     end-of-line                                     # end
+    bindkey  '^H'       backward-kill-word                              # control-backspace
+
+    # 2016-11-26 - Devuan
+    bindkey  '^[[D'  backward-word                                      # control-left
+    bindkey  '^[[C'  forward-word                                       # control-right
   ;;
   
   screen|screen-256color)
-    bindkey  '^?'       backward-delete-char                                # backspace
-    bindkey  '^[[1~'    beginning-of-line                                   # home
-    bindkey  '^[[4~'    end-of-line                                         # end
-    bindkey  '^H'       backward-kill-word                                  # control-backspace
+    bindkey  '^?'       backward-delete-char                            # backspace
+    bindkey  '^[[1~'    beginning-of-line                               # home
+    bindkey  '^[[4~'    end-of-line                                     # end
+    bindkey  '^H'       backward-kill-word                              # control-backspace
   ;;
 
   *)
