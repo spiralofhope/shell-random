@@ -406,9 +406,10 @@ ddir() {
   OLD_LC_COLLATE="$LC_COLLATE"
   \export  LC_COLLATE=C
   if [ -z $1 ]; then
-    \ls  -1  --color  --directory  *  .* | \less  --raw-control-char
+    \ls  -1  --color  --directory  *  .* | \less  --raw-control-char  --QUIT-AT-EOF
+
   else
-    \ls  -1  --color  --directory  $*    | \less  --raw-control-char
+    \ls  -1  --color  --directory  $*    | \less  --raw-control-char  --QUIT-AT-EOF
   fi
   \export  LC_COLLATE="$OLD_LC_COLLATE"
   OLD_LC_COLLATE=
