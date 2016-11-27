@@ -10,7 +10,7 @@ disconnected() {
   # I don't do anything special in this case.
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/shell-random/git/live/sh/scripts/projects.sh &
+  /l/e/shell-random/git/live/sh/scripts/projects.sh &
 }
 
 
@@ -27,7 +27,7 @@ connected() {
   #\xchat --minimize=2 &
 
   # WeeChat
-#  /l/shell-random/git/live/terminal.sh  FORCE \
+#  /l/e/shell-random/git/live/terminal.sh  FORCE \
 #    \urxvtc \
 #      -geometry 239x64 \
 #      +sb                   ` # Remove the scroll bar ` \
@@ -87,7 +87,7 @@ connected() {
 
   # Notes
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/shell-random/git/live/sh/scripts/projects.sh &
+  /l/e/shell-random/git/live/sh/scripts/projects.sh &
 
 
 }
@@ -120,4 +120,4 @@ done
 # An initial terminal
 # \xterm  -fn 9x15  -bg black  -fg gray  -sl 10000  -geometry 80x24+0+0 &
 # \Terminal  --geometry 80x24+10+10 &
-# /l/shell-random/git/live/terminal.sh
+# /l/e/shell-random/git/live/terminal.sh
