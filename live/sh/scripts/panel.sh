@@ -1,5 +1,7 @@
 #!/usr/bin/env  sh
 
+# 2016-11-26 on Devuan
+
 # TODO - given an array of strings, run the first program found.
 # `setsid`  is to force it to run in its own session, so that there's no lingering zsh process.
 echo "trying lxpanel"
