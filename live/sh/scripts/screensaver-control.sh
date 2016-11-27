@@ -1,7 +1,7 @@
 #!/usr/bin/env  sh
 
-
-# 2016-03-29, on Slackware 14.1
+# 2016-11-26, on Devuan
+# 2016-11-28, on Slackware 14.1
 # 2016-03-26, on Lubuntu (version not recorded)
 #             /l/shell-random/git/live/slock-capital-punishment.sh
 # I've also used

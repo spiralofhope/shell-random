@@ -73,7 +73,8 @@ trim_whitespace() {
 terminal_setup() {
   # Check for my favourite font, with a safe fallback.
   font='-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*'
-  # Unicode vga font.  Looks like shit when bold though.
+  # Unicode vga font, installed via 'unicode-vga/u_vga16.pcf.sh'
+  # Note - If this looks like shit when bold, make sure ~/.Xresources is there.
   font='-bolkhov-vga-medium-r-normal--16-160-75-75-c-80-iso10646-1'
   # TODO - `xlsfonts` may not always exist.
   \xlsfonts  |  \grep  --line-regexp  --quiet  --  $font
@@ -302,21 +303,33 @@ launch_terminal() {
       # http://software.schmorp.de/pkg/rxvt-unicode
       # This dumbass terminal does not have a proper fallback if I use an invalid font.
       # See ~/.Xresources
-      # A decent one is:
-      \which xlsfonts > /dev/null
+
+      \killall  -0  urxvtd
       if [ $? -eq 1 ]; then
-        # See `man 7 urxvt` for more on fonts, but not that much more.. so good luck.
-        #font='-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*'
-        #font='-bolkhov-vga-medium-r-normal--16-160-75-75-c-80-iso10646-1'
-        font='xft:Bitstream Vera Sans Mono:pixelsize=13:autoalias=false'
-        #font='xft:Bitstream Vera Sans Mono:pixelsize=12:autohint=true:autoalias=false'
-        #font='xft:Bitstream Vera Sans Mono'
-        \setsid  \urxvtc  -fn $font  "$@"
-      else
-        \setsid  \urxvtc  "$@"
-      fi
-      if [ $? -eq 2 ]; then
+        \echo "urxvtd is not running, running it"
         \urxvtd  --fork  --opendisplay  --quiet
+      fi
+
+      \which xlsfonts > /dev/null
+      if [ $? -eq 0 ]; then
+        \echo "I can probably use a font, trying.."
+        # Note - See `man 7 urxvt` for more on fonts, but not that much more.. so good luck.
+        # 2016-11-24 - on Devuan  =  Linux devuan 3.16.0-4-686-pae #1 SMP Debian 3.16.36-1+deb8u2 (2016-10-19) i686 
+
+        # 2016-11-24 - on Devuan
+        #font='-*-fixed-medium-*-*-*-14-*-*-*-*-*-*-*'
+        # 2016-11-24 - on Devuan after 'unicode-vga' is installed.
+        # Note - If this looks like shit when bold, make sure ~/.Xresources is there.
+        #font='-bolkhov-vga-medium-r-normal--16-160-75-75-c-80-iso10646-1'
+        # 2016-11-24 - on Slackware 14.1
+        #font='xft:Bitstream Vera Sans Mono:pixelsize=13:autoalias=false'
+        # 2016-11-24 - on Devuan
+        #font='xft:Bitstream Vera Sans Mono:pixelsize=12:autohint=true:autoalias=false'
+        # 2016-11-24 - on Devuan
+        #font='xft:Bitstream Vera Sans Mono'
+        \setsid  \urxvtc  -fn $font  -bg black  -fg grey  "$@"
+      else
+        \echo "I doubt I can use a font, skipping.."
         \setsid  \urxvtc  -bg black  -fg grey  "$@"
       fi
       if [ $? -ne 0 ]; then

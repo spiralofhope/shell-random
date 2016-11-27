@@ -214,15 +214,17 @@ c() {
 
 
 
-edit() {
-  # I'm in X, I'm at the raw console and X is launched.
-  \geany --new-instance  $@ > /dev/null 2>&1
-  if [ "$?" != "0" ]; then
-    # X is not launched at all.  It might be sitting at the login screen though.
-    \mcedit  --colors  editnormal=lightgrey,black  $@
-  fi
-}
-alias mcedit="\mcedit  --colors  editnormal=lightgrey,black"
+alias mcedit='\mcedit  --colors  editnormal=lightgrey,black'
+alias edit='/usr/bin/sanos-simple-text-editor'
+
+#edit() {
+  ## I'm in X, I'm at the raw console and X is launched.
+  #\geany --new-instance  $@ > /dev/null 2>&1
+  #if [ "$?" != "0" ]; then
+    ## X is not launched at all.  It might be sitting at the login screen though.
+    #mcedit  $@
+  #fi
+#}
 
 
 
