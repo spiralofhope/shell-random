@@ -5,9 +5,13 @@
 \killall  --quiet  keepassx
 
 \keepassx \
-  /mnt/1/windows-data/l/live/keepassx-passwords--linux-and-windows.kdb \
+  /mnt/1/data-windows/l/live/keepassx-passwords--windows.kdb \
   -min  -lock &
 
 \keepassx \
-  /l/keepassx-passwords--linux-only.kdb \
+  /mnt/1/data-windows/l/live/keepassx-passwords--linux-and-windows.kdb \
+  -min  -lock &
+
+\keepassx \
+  /l/e/keepassx-passwords--linux-only.kdb \
   -min  -lock &
