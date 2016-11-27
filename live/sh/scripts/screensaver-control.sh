@@ -62,8 +62,8 @@ case $1 in
     screensaver_locknow
   ;;
   *)
-    __=`/mnt/1/linux-data/e/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable screen saver?'`
-    if [[ $__ == 0 ]]; then
+    __=`/1/e/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable screen saver?'`
+    if [ $__ = 0 ]; then
       screensaver_enable
     else
       screensaver_disable
