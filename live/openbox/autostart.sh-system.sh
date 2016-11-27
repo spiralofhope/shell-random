@@ -7,7 +7,7 @@
 
 # Set up the second display.
 # FIXME - why the fuck isn't this working?
-/l/shell-random/git/live/sh/scripts/dual-monitors.sh &
+/l/e/shell-random/git/live/sh/scripts/dual-monitors.sh &
 
 
 # Fix Firefox crashes on Flash playing, and fix audio issues:
@@ -94,23 +94,12 @@ fi
 \urxvtd  --fork  --opendisplay  --quiet
 
 
-# TODO - given an array of strings, run the first program found.
-# `setsid`  is to force it to run in its own session, so that there's no lingering zsh process.
-  \setsid  \lxpanel &
-if [ $? -ne 0 ]; then
-  \setsid  \fbpanel &
-fi
-if [ $? -ne 0 ]; then
-  \setsid  \xfce4-panel &
-fi
-if [ $? -ne 0 ]; then
-  \setsid  \tint2 &
-fi
+/l/e/shell-random/git/live/sh/scripts/panel.sh &
 
 
 sleep 0.3
 # Passwords
-/l/shell-random/git/live/sh/scripts/keepassx-restart.sh &
+/l/e/shell-random/git/live/sh/scripts/keepassx-restart.sh &
 
 
 # launch any user-specific stuff:
