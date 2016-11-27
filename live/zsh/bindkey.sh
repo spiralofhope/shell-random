@@ -51,7 +51,7 @@ typeset  -g  -A  key
 # These notes are old.  things seem to be different now:
 # FIXME - alt-backspace and ^backspace are both the same!
 # So maybe somehow rig a function up to the backspace key to use some external program which can see if alt/ctrl were held down?
-# Or better yet, I think I can have ~/.Xresources specify what the key does.  At the console, control-backspace is ^_, which is different from X.  Maybe I can force a different keycode to pop out with control-backspace in an xterm, and then I can have zsh pick that up and use it.  Check out the bottom of http://zshwiki.org/home/zle/bindkeys
+# Or better yet, I think I can have ~/.Xresources specify what the key does.  At the tty, control-backspace is ^_, which is different from X.  Maybe I can force a different keycode to pop out with control-backspace in an xterm, and then I can have zsh pick that up and use it.  Check out the bottom of http://zshwiki.org/home/zle/bindkeys
 # Also consider control-shift-backspace to delete to the beginning of the line
 
 # I've uncommented only the things I required.  The above typeset seems to be good for most things.
@@ -128,7 +128,7 @@ case $TERM in
     bindkey  ''       backward-kill-word                              # control-backspace
   ;;
 
-  linux)    # The raw console
+  linux)   # The raw tty console
     bindkey  '^[OH'     beginning-of-line                               # home
     bindkey  '^[OF'     end-of-line                                     # end
     bindkey  '^H'       backward-kill-word                              # control-backspace
@@ -137,15 +137,23 @@ case $TERM in
     bindkey  '^[[D'  backward-word                                      # control-left
     bindkey  '^[[C'  forward-word                                       # control-right
   ;;
-  
-  screen|screen-256color)
+
+  screen|screen-256color)   # The program 'screen'
     bindkey  '^?'       backward-delete-char                            # backspace
     bindkey  '^[[1~'    beginning-of-line                               # home
     bindkey  '^[[4~'    end-of-line                                     # end
     bindkey  '^H'       backward-kill-word                              # control-backspace
   ;;
 
+  screen.linux)   # The program 'screen', at the tty
+# These won't work, because left/right are the same as control-left/right !
+#    bindkey '^[OD'      backward-word                                   # control-left
+#    bindkey '^[OC'      forward-word                                    # control-right
+    bindkey  '^H'       backward-kill-word                              # alt-backspace
+  ;;
+
   *)
     echo 'WARNING:  This $TERM edge case has not been planned-for: ' $TERM
   ;;
 esac
+# OC
