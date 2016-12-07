@@ -16,10 +16,7 @@
 
 setup() {
   \echo  " * begin"
-  projects_directory="/l"
-  windows_projects_directory="/mnt/1/data-windows/live"
   NEW_PROJECT_MESSAGE="New project notes started `date`"
-  \cd  "$projects_directory"
   # Case-insensitivity.
   LC_COLLATE=en_US ; export LC_COLLATE
   # IFS (Internal Field Separator), change to a carriage return.
@@ -29,7 +26,9 @@ setup() {
 
 
 build_array_of_directories() {
-  for i in *; do
+  if [ -z $1 ]; then continue; fi
+  for i in $1/*; do
+    if [ -z "$i" ]; then continue; fi
     # Skip non-directories
     # Note that this will not skip symlinks.
     if ! [ -d "$i" ]; then
@@ -42,61 +41,61 @@ build_array_of_directories() {
     # Technically I shouldn't be adding a \r to the beginning of the array, but it doesn't seem to matter.
     array_of_directories="$array_of_directories`printf \"\r\"`$i"
   done
-  #\echo  "$array_of_directories"
-
+  #echo --v
   #for i in $array_of_directories; do
-    #echo ++$i
+    #echo $i
   #done
-  #return 0
+  #echo --^
+  #return
 }
 
 
 build_array_of_files() {
-  for i in $array_of_directories; do
+  if [ -z "$1" ]; then continue; fi
+  # $1 is an array of directories
+  for i in $1; do
     if [ -z $i ]; then continue; fi
-    i="$i/$i.txt"
-
+    file="$i/` \basename  "$i" `".txt
     # Create files as necessary
     # TODO? - Skip files in an array of exclusions
     # TODO - check if this will work properly with symlinks.
-    if ! [ -f "$i" ]; then
+    if ! [ -f "$file" ]; then
       \echo .
       \echo  "   New project $i, inserting message:"
       \echo  "$NEW_PROJECT_MESSAGE"
       \echo .
-      \touch  "$i"
-      \echo  "$NEW_PROJECT_MESSAGE" >> "$i"
+      \touch  "$file"
+      \echo  "$NEW_PROJECT_MESSAGE" >> "$file"
     fi
-    local  size_of_file=` \stat  --printf="%s"  "$i"  |  \cut -f 1 `
+    local  size_of_file=` \stat  --printf="%s"  "$file"  |  \cut -f 1 `
     if [ "$size_of_file" = "0" ] ; then
-      \echo  "skipping 0-byte $i"
+      \echo  "skipping 0-byte $file"
       continue
     fi
-    #\echo  "processing - $i"
-    array_of_files="$array_of_files`printf \"\r\"`$i"
+    \echo  "processing - $file"
+    array_of_files="$array_of_files`printf \"\r\"`$file"
   done
-  #\echo  $array_of_files
-
+  #echo --v
   #for i in $array_of_files; do
-    #echo ++$i
+    #echo $i
   #done
-  #return 0
-}
-
-
-process_array_of_files() {
-  # Ensure these are the first tabs:
-  # TODO? - Yes this could be made cleaner, but at this point I don't give a fuck.
-  array_of_files="todo.txt`printf \"\r\"`projects.txt`printf \"\r\"`_outbox--0/_outbox--0.txt`printf \"\r\"`$windows_projects_directory/_outbox--0/_outbox--0.txt`printf \"\r\"`$windows_projects_directory/_outbox--1/_outbox--1.txt`printf \"\r\"`$array_of_files"
-
-  # Switch to the first tab:
-  array_of_files="$array_of_files`printf \"\r\"`todo.txt"
+  #echo --^
+  #return
 }
 
 
 open_array_of_files() {
   #echo  \geany  $array_of_files
-  \geany  $array_of_files
+  #\geany  $array_of_files
+  \geany  --new-instance \
+    /l/e/__/__.txt \
+    /l/e/projects.txt \
+    /l/e/_outbox--0/_outbox--0.txt \
+    /mnt/1/data-windows/live/_outbox--0/_outbox--0.txt \
+    /mnt/1/data-windows/live/_outbox--1/_outbox--1.txt \
+    $array_of_files \
+    /l/e/__/__.txt \
+  &
 }
 
 
@@ -113,8 +112,10 @@ teardown() {
 # --
 
 setup
-build_array_of_directories
-build_array_of_files
-process_array_of_files
+build_array_of_directories  /l
+build_array_of_directories  /l/e
+build_array_of_directories  /mnt/1/data-windows/live
+build_array_of_files  "$array_of_directories"
+
 open_array_of_files
 teardown
