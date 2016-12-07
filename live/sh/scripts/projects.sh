@@ -17,7 +17,7 @@
 setup() {
   \echo  " * begin"
   projects_directory="/l"
-  windows_projects_directory="/mnt/1/windows-data/l/live"
+  windows_projects_directory="/mnt/1/data-windows/live"
   NEW_PROJECT_MESSAGE="New project notes started `date`"
   \cd  "$projects_directory"
   # Case-insensitivity.
@@ -32,7 +32,7 @@ build_array_of_directories() {
   for i in *; do
     # Skip non-directories
     # Note that this will not skip symlinks.
-    if ! [[ -d "$i" ]]; then
+    if ! [ -d "$i" ]; then
       \echo  "skipping non-directory  $i"
       continue
     fi
@@ -53,13 +53,13 @@ build_array_of_directories() {
 
 build_array_of_files() {
   for i in $array_of_directories; do
-    if [[ $i == "" ]]; then continue; fi
+    if [ -z $i ]; then continue; fi
     i="$i/$i.txt"
 
     # Create files as necessary
     # TODO? - Skip files in an array of exclusions
     # TODO - check if this will work properly with symlinks.
-    if ! [[ -f "$i" ]]; then
+    if ! [ -f "$i" ]; then
       \echo .
       \echo  "   New project $i, inserting message:"
       \echo  "$NEW_PROJECT_MESSAGE"
@@ -68,7 +68,7 @@ build_array_of_files() {
       \echo  "$NEW_PROJECT_MESSAGE" >> "$i"
     fi
     local  size_of_file=` \stat  --printf="%s"  "$i"  |  \cut -f 1 `
-    if [[ $size_of_file == 0 ]] ; then
+    if [ "$size_of_file" = "0" ] ; then
       \echo  "skipping 0-byte $i"
       continue
     fi
