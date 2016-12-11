@@ -27,9 +27,8 @@ _processor_heat() {
   # `hardinfo` will prove that the CPU settings will change.
 
   for i in $( \seq 0 $( get_the_number_of_processors ) ); do
-    \sudo  \echo -n ''
     \echo  '   heating up processor' $i
-    \sudo  \cpufreq-set  --cpu $i  --governor performance
+    \cpufreq-set  --cpu $i  --governor performance
     pid=$!
   done
 }
@@ -54,24 +53,28 @@ get_char() {
 
 
 
-case "$1" in
-  '-y'|'--yes'|'')
-    _processor_heat
-  ;;
-  '-p'|'--prompt')
-    # FIXME - I have no idea how to get the enter key, with this reworked version.
-    \echo  'Heat up the processor(s)? [Y/n]'
-    case $( get_char ) in
-      'y')
-        _processor_heat
-      ;;
-      *)
-        \echo  '(skipped)'
-      ;;
-    esac
-  ;;
-  *)
-    \echo  '--yes, -y or nothing to automatically heat the processor(s) up'
-    \echo  '--prompt, or -p to prompt the user'
-  ;;
-esac
+if ! [ $USER = 'root' ]; then
+  /bin/su  -c  $0
+else
+  case "$1" in
+    '-y'|'--yes'|'')
+      _processor_heat
+    ;;
+    '-p'|'--prompt')
+      # FIXME - I have no idea how to get the enter key, with this reworked version.
+      \echo  'Heat up the processor(s)? [Y/n]'
+      case $( get_char ) in
+        'y')
+          _processor_heat
+        ;;
+        *)
+          \echo  '(skipped)'
+        ;;
+      esac
+    ;;
+    *)
+      \echo  '--yes, -y or nothing to automatically heat the processor(s) up'
+      \echo  '--prompt, or -p to prompt the user'
+    ;;
+  esac
+fi

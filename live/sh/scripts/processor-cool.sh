@@ -28,9 +28,12 @@ case $( get_the_number_of_processors ) in
 esac
 
 
-# `hardinfo` will prove that the CPU settings will change.
-for i in $( \seq 0 $( get_the_number_of_processors ) ); do
-  \sudo  \echo -n ''
-  \echo  '   cooling down processor' $i
-  \sudo  \cpufreq-set  --cpu $i  --governor ondemand
-done
+if ! [ $USER = 'root' ]; then
+  /bin/su  -c  $0
+else
+  # `hardinfo` will prove that the CPU settings will change.
+  for i in $( \seq 0 $( get_the_number_of_processors ) ); do
+    \echo  '   cooling down processor' $i
+    \cpufreq-set  --cpu $i  --governor ondemand
+  done
+fi
