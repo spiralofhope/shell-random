@@ -35,7 +35,8 @@ else
   # `hardinfo` will prove that the CPU settings will change.
   for i in $( \seq 0 $( get_the_number_of_processors ) ); do
     \echo  '   chilling processor' $i
-  #  \cpufreq-set  --cpu $i  --governor powersave
+    \cpufreq-set  --cpu $i  --governor powersave
   done
 fi
 
+# cpufreq-set --max 300Mhz
