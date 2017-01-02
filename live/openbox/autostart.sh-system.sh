@@ -109,3 +109,8 @@ sleep 0.3
 # --
 # this doesn't work here, but only in ~/.xsession
 # exec openbox-session
+
+
+# Kill the summoning process so I don't have a lingering shell..
+# .. doesn't work the way I thought..
+# \kill -9 ` \cat /tmp/zsh-launching-startx.ppid `
