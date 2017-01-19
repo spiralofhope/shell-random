@@ -30,6 +30,24 @@ _rip_setup(){
   # Tested and works for an AAC-audio video, like with most music videos on YouTube.
   # match mode for everything tagged with (audio)
   # for i in *\(audio\)*; do ~/bin/rip-audio-from-video.sh "$i" aac "$i".mp3; done
+  #
+  #
+
+  # 2017-01-19 tested on Devuan with libav-tools, lame
+  \which  \avconv > /dev/null
+  if ! [ $? = 0 ]; then
+    \echo 'ERROR:  avconv not found'
+    \echo 'on Devuan, do:'
+    \echo 'apt-get install libav-tools'
+    exit 1
+  fi
+  \which  \lame > /dev/null
+  if ! [ $? = 0 ]; then
+    \echo 'ERROR:  lame not found'
+    \echo 'on Devuan, do:'
+    \echo 'apt-get install lame'
+    exit 1
+  fi
 
 
   # Learn the codec being used:
