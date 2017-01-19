@@ -1,3 +1,7 @@
+#!/usr/bin/env  bash
+
+
+
 # Generates blank emails for testing.
 # Generates 44,000 valid-but-empty emails for testing.
 
