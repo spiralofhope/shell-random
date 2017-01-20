@@ -2,7 +2,7 @@
 
 # http://ubuntuforums.org/showthread.php?t=860064
 # heindsight
-# http://ubuntuforums.org/showpost.php?s=d12e850665a723157f04195bae3c563d&p=6782987&postcount=7
+# http://ubuntuforums.org/showpost.php?p=6782987&postcount=7
 
 #DEBUGING:
 #set -x
