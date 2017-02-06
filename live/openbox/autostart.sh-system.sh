@@ -97,7 +97,7 @@ fi
 /l/e/shell-random/git/live/sh/scripts/panel.sh &
 
 
-sleep 0.3
+\sleep 0.3
 # Passwords
 /l/e/shell-random/git/live/sh/scripts/keepassx-restart.sh &
 

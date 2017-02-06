@@ -1,5 +1,8 @@
 #!/usr/bin/env  zsh
 
+# requires imagemagick
+
+
 # TODO - the **/*.png should be the responsibility of the user at the commandline, not this script.  Mimic the other thing I did with that other script that one time (at band camp)
 
 # WARNING - This will blindly destroy animated PNGs!
@@ -7,7 +10,6 @@
 
 # The original which I used on the commandline:
 #   for i in **/*.png; convert "$i" "$i".jpg ; jpegoptim **/*.png.jpg -p ; rename 's/\.png\.jpg/\.jpg/' **/*.jpg ; rm -f **/*.png
-
 
 
 _die_on_failure(){
