@@ -5,8 +5,8 @@
 # Note that 7-zip does not store the owner/group of the file.
 
 
-date_and_time=` \date  --utc  +'%Y-%m-%d-%H-%M' `
-filename="$1 - $date_and_time".7z
+date_and_time=` \date  --utc  +'%Y-%m-%d_%H-%M' `
+filename="$1"_"$date_and_time".7z
 
 echo \7z  a  \
   ` # maximum compression ` \
