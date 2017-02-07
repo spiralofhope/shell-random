@@ -8,7 +8,7 @@
 date_and_time=` \date  --utc  +'%Y-%m-%d_%H-%M' `
 filename="$1"_"$date_and_time".7z
 
-echo \7z  a  \
+\7z  a  \
   ` # maximum compression ` \
   -mx9 \
   "$filename" \
