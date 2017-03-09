@@ -1,4 +1,5 @@
 #!/usr/bin/env  sh
+# 2017-03-07, on Devuan 1.0.0-beta
 # 2016-04-26, on Slackware 14.1
 # 2016-05-09, on Lubuntu 14.04.4 LTS or thereabouts
 
