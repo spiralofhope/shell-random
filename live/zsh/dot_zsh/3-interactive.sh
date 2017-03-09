@@ -150,7 +150,3 @@ if [ "$PWD" == "$HOME" ]; then
   df
   \echo
 fi
-
-
-
-\setfont  Uni2-VGA16.psf.gz
