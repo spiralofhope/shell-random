@@ -17,6 +17,10 @@ fi
 HISTFILE=~/.zsh/histfile
 HISTSIZE=10000
 SAVEHIST=10000
+# Neither of these work to let me prepend a command with a space and have it not commit a command to the histfile.
+#   https://www.reddit.com/r/commandline/comments/4knoj4/
+# HISTCONTROL=ignoredups:ignorespace
+# HISTCONTROL=ignoreboth
 
 # Change the highlight colour.  Underlining doesn't seem to work.
 zle_highlight=(region:bg=red special:underline)
