@@ -14,6 +14,8 @@ if [ -z $1 ]; then
     # Extend the little screen to its left.
     # Note that the main screen is the little one.
 
+    # Turn it on
+    \xrandr  --output VGA-1  --auto
     # This puts the little screen on the left:
     # xrandr  --output DVI-D-1  --pos 1080x0
     # This puts the little screen on the right:
