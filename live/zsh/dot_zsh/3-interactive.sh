@@ -3,7 +3,7 @@
 IDEAS
 
 
-zshdir=/l/e/shell-random/git/live/zsh
+zshdir=/l/shell-random/git/live/zsh
 PATH=$PATH:/l/e/shell-random/git/live/
 PATH=$PATH:/l/e/shell-random/git/live/sh/scripts/
 PATH=$PATH:/l/e/shell-random/git/live/bash/scripts/
