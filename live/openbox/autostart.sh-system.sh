@@ -7,7 +7,7 @@
 
 # Set up the second display.
 # FIXME - why the fuck isn't this working?
-/l/e/shell-random/git/live/sh/scripts/dual-monitors.sh &
+/l/shell-random/git/live/sh/scripts/dual-monitors.sh &
 
 
 # Fix Firefox crashes on Flash playing, and fix audio issues:
@@ -94,12 +94,12 @@ fi
 \urxvtd  --fork  --opendisplay  --quiet
 
 
-/l/e/shell-random/git/live/sh/scripts/panel.sh &
+/l/shell-random/git/live/sh/scripts/panel.sh &
 
 
 \sleep 0.3
 # Passwords
-/l/e/shell-random/git/live/sh/scripts/keepassx-restart.sh &
+/l/shell-random/git/live/sh/scripts/keepassx-restart.sh &
 
 
 # launch any user-specific stuff:

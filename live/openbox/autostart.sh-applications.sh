@@ -10,7 +10,7 @@ disconnected() {
   # I don't do anything special in this case.
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/e/shell-random/git/live/sh/scripts/projects.sh &
+  /l/shell-random/git/live/sh/scripts/projects.sh &
 }
 
 
@@ -27,7 +27,7 @@ connected() {
   #\xchat --minimize=2 &
 
   # WeeChat
-#  /l/e/shell-random/git/live/terminal.sh  FORCE \
+#  /l/shell-random/git/live/terminal.sh  FORCE \
 #    \urxvtc \
 #      -geometry 239x64 \
 #      +sb                   ` # Remove the scroll bar ` \
@@ -51,7 +51,7 @@ connected() {
   #
   # Web browser
   #
-  /l/e/Pale\ Moon/go.sh default &
+  /l/Pale\ Moon/go.sh default &
 
 
   #
@@ -87,7 +87,7 @@ connected() {
 
   # Notes
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/e/shell-random/git/live/sh/scripts/projects.sh &
+  /l/shell-random/git/live/sh/scripts/projects.sh &
 
 
 }
@@ -100,7 +100,7 @@ connected() {
 for interface in $( \ls /sys/class/net/  |  \grep  --invert-match  lo ); do
   if [ $( \cat /sys/class/net/$interface/carrier ) -eq 1 ]; then
     ~/vpn.sh
-    __=$( /l/e/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' )
+    __=$( /l/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' )
     if [ $__ -eq 0 ]; then
       connected
     else
@@ -121,4 +121,4 @@ done
 # An initial terminal
 # \xterm  -fn 9x15  -bg black  -fg gray  -sl 10000  -geometry 80x24+0+0 &
 # \Terminal  --geometry 80x24+10+10 &
-# /l/e/shell-random/git/live/terminal.sh
+# /l/shell-random/git/live/terminal.sh
