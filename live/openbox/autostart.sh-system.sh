@@ -100,8 +100,10 @@
 #
 # https://keepassxc.org/
 # https://github.com/magkopian/keepassxc-debian/releases
-/usr/bin/keepassxc  /l/KeePassXC--passwords.kdbx &
-/usr/bin/keepassxc  /mnt/1/data-windows/live/KeePassXC--passwords.kdbx &
+# It can be set to load previous databases on startup, but I like this..
+/usr/bin/keepassxc  \
+  /l/KeePassXC--passwords.kdbx \
+  /mnt/1/data-windows/live/KeePassXC--passwords.kdbx &
 
 # launch any user-specific stuff:
 ~/.config/openbox/autostart.sh-applications.sh &
