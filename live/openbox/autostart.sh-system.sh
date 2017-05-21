@@ -94,12 +94,14 @@
 
 /l/shell-random/git/live/sh/scripts/panel.sh &
 
-# FIXME - 'sleep' is a stupid way to ensure the panel has been launched before adding keepassx.
-#\sleep 0.3
 # Passwords
-#/l/shell-random/git/live/sh/scripts/keepassx-restart.sh &
-
-
+# FIXME - 'sleep' is a stupid way to ensure the panel has been launched before adding keepassx.  May not apply to keepassxc
+# \sleep 0.3
+#
+# https://keepassxc.org/
+# https://github.com/magkopian/keepassxc-debian/releases
+/usr/bin/keepassxc  /l/KeePassXC--passwords.kdbx &
+/usr/bin/keepassxc  /mnt/1/data-windows/live/KeePassXC--passwords.kdbx &
 
 # launch any user-specific stuff:
 ~/.config/openbox/autostart.sh-applications.sh &
