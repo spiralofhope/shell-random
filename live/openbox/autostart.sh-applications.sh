@@ -5,8 +5,8 @@
 # Then this file is run..
 
 
-disconnected() {
-  \echo  " * Internet connection not detected."
+
+_connected_false() {
   # I don't do anything special in this case.
 
   # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
@@ -14,24 +14,23 @@ disconnected() {
 }
 
 
-connected() {
-  \echo  " * Internet connection detected."
 
+_connected_true() {
   #
-  # IRC
+  # IRC, X-Chat
   #
-
-  # X-Chat
   #   It's already configured to auto-connect to servers and join channels.
   #   --minimize=2  =  Minimize to the tray
   #\xchat --minimize=2 &
 
-  # WeeChat
-#  /l/shell-random/git/live/terminal.sh  FORCE \
-#    \urxvtc \
-#      -geometry 239x64 \
-#      +sb                   ` # Remove the scroll bar ` \
-#      -e \weechat
+  #
+  # IRC, WeeChat
+  #
+  #/l/shell-random/git/live/terminal.sh  FORCE \
+  #  \urxvtc \
+  #    -geometry 239x64 \
+  #    +sb                   ` # Remove the scroll bar ` \
+  #    -e \weechat
 
 
   #
@@ -45,7 +44,7 @@ connected() {
   #
   #\twinkle&
   # TODO:  How do I get Mumble to minimize on startup?
-#  /l/bin/mumble.sh
+  #/l/bin/mumble.sh
 
 
   #
@@ -93,21 +92,23 @@ connected() {
 }
 
 
+
 # --
 # -- Network connection test
 # --
 
 for interface in $( \ls /sys/class/net/  |  \grep  --invert-match  lo ); do
   if [ $( \cat /sys/class/net/$interface/carrier ) -eq 1 ]; then
-    ~/vpn.sh
+    \echo  " * Internet connection detected."
     __=$( /l/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' )
     if [ $__ -eq 0 ]; then
-      connected
+      _connected_true
     else
       exit 1
     fi
   else
-    disconnected
+    \echo  " * Internet connection not detected."
+    _connected_false
   fi
 done
 
