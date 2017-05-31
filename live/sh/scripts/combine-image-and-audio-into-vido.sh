@@ -18,3 +18,9 @@ _output_filename="$3"
   -shortest  \
   -acodec copy  \
   "$_output_filename"
+
+
+# Slideshow - (Untested) - I believe an input image filename would work with "some_image%d.png" for a series, like
+# some_image1.png
+# some_image2.png
+# some_image3.png
