@@ -4,6 +4,11 @@
 # 2016-05-09, on Lubuntu 14.04.4 LTS or thereabouts
 
 
+
+# More advanced stuff:
+# https://ubuntuforums.org/showthread.php?t=240150
+
+
 # Fix the resolution of the big screen
 \xrandr  --output DVI-D-1  --mode 1920x1080  --pos 0x0
 
