@@ -88,13 +88,13 @@ open_array_of_files() {
   #echo  \geany  $array_of_files
   #\geany  $array_of_files
   \geany  --new-instance \
-    /l/e/__/__.txt \
-    /l/e/projects.txt \
-    /l/e/_outbox--0/_outbox--0.txt \
+    /l/__/__.txt \
+    /l/projects.txt \
+    /l/_outbox--0/_outbox--0.txt \
     /mnt/1/data-windows/live/_outbox--0/_outbox--0.txt \
     /mnt/1/data-windows/live/_outbox--1/_outbox--1.txt \
     $array_of_files \
-    /l/e/__/__.txt \
+    /l/__/__.txt \
   &
 }
 
@@ -113,7 +113,6 @@ teardown() {
 
 setup
 build_array_of_directories  /l
-build_array_of_directories  /l/e
 build_array_of_directories  /mnt/1/data-windows/live
 build_array_of_files  "$array_of_directories"
 
