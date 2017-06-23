@@ -424,26 +424,49 @@ get_file_ext() {
       return 0
     ;;
     "sh") # *nix shell scripting languages
-      if [ "x$MYSHELL" = "xzsh4" ]; then MYSHELL="zsh"; fi
-      # Check for the shebang
-      local head="`\head --lines=1 \"$AUTOTEST_FILE\"`"
-      case $head in
-        "/usr/bin/env bash" | "/usr/bin/env  bash" | "#!/bin/bash" | "#!/usr/local/bin/bash")
-        MYSHELL=bash
-      ;;
-        "/usr/bin/env zsh"  | "/usr/bin/env  zsh"  | "#!/bin/zsh"  | "#!/usr/local/bin/zsh")
-        MYSHELL=zsh
-      ;;
+      # Check for a shebang:
+      local head="` \head --lines=1 \"$AUTOTEST_FILE\" `"
+      case "$head" in
+        "#!/usr/bin/env bash" | "#!/usr/bin/env  bash" | "#!/bin/bash" | "#!/usr/local/bin/bash" )  MYSHELL=bash ;;
+        "#!/usr/bin/env dash" | "#!/usr/bin/env  dash" | "#!/bin/dash" | "#!/usr/local/bin/dash" )  MYSHELL=dash ;;
+        "#!/usr/bin/env sh"   | "#!/usr/bin/env  sh"   | "#!/bin/sh"   | "#!/usr/local/bin/sh"   )  MYSHELL=sh   ;;
+        "#!/usr/bin/env zsh"  | "#!/usr/bin/env  zsh"  | "#!/bin/zsh"  | "#!/usr/local/bin/zsh"  )  MYSHELL=zsh  ;;
       *)
-        # May not be a good idea.. hrm.
-        MYSHELL=zsh
-        \echo  " * This is assumed to be a shell script, and further assumed to be zsh."
+        \echo  "The file either:"
+        \echo  "  - has no shebang"
+        \echo  "  - or this script has not been programmed to use it"
+        if  \test  -n  "$SHELL"; then
+          \echo  "\$SHELL has been set to:  $SHELL"
+          case "$SHELL" in
+            # TODO/FIXME - It's possible for there to be other paths I need to work with.  I just don't care.
+            "/bin/bash" ) MYSHELL=bash ;;
+            "/bin/dash" ) MYSHELL=dash ;;
+            "/bin/sh"   ) MYSHELL=sh   ;;
+            "/bin/zsh"  ) MYSHELL=zsh  ;;
+            *)
+              ansi_echo  "While \$SHELL has been set, this script has not been programmed to use it."
+              \echo      "Don't fret, it's not too hard to hack this script to add functionality."
+              \echo      "To add support, edit this script and:"
+              \echo      "  1. Search for ERROR01 and edit the code just above it."
+              \echo      "  2. Also search for "\''case "$MYSHELL" in'\'" and edit that code."
+              \echo      "Falling back to sh."
+              MYSHELL=sh
+          esac
+        else
+          # While I could manually use `which` and test for other shells, I'm not going to bother.
+          \echo      "\$SHELL has not been set."
+          ansi_echo  "What the hell is wrong with you?"
+          \echo      "Falling back to sh."
+          MYSHELL=sh
+        fi
       esac
+      \echo  "Using $MYSHELL"
+      # ----------------------------------------------------------------
       case "$MYSHELL" in
         "bash")
           execute() {
             #source "$AUTOTEST_FILE" ; RESULT="$?"
-            \bash "$AUTOTEST_FILE" ; RESULT="$?"
+            \bash  "$AUTOTEST_FILE" ; RESULT="$?"
           }
           execute_with_debugging() {
             # TODO: I should remember and then restore it, but how?
@@ -452,7 +475,25 @@ get_file_ext() {
             set  +x
           }
         ;;
-        "zsh" | "zsh5")
+        "dash" )
+          execute() {
+            \dash  -c  "$AUTOTEST_FILE" ; RESULT="$?"
+          }
+          execute_with_debugging() {
+            ansi_echo  "debugging is not supported"
+            execute
+          }
+        ;;
+        "sh" )
+          execute() {
+            \sh  -c  "$AUTOTEST_FILE" ; RESULT="$?"
+          }
+          execute_with_debugging() {
+            ansi_echo  "debugging is not supported"
+            execute
+          }
+        ;;
+        "zsh" | "zsh4" | "zsh5")
           execute() {
             source  "$AUTOTEST_FILE" ; RESULT="$?"
           }
@@ -464,13 +505,13 @@ get_file_ext() {
           }
         ;;
         *)
-          \echo  ""
+          \echo      ""
           ansi_echo  "ERROR:  Your shell is not supported:  $MYSHELL"
-          \echo  "Don't fret, it's not too hard to hack this script to add functionality."
-          \echo  "To add support, edit this script and:"
-          \echo  "  1. Search for this error message and edit this code."
-          \echo  "  2. Also search for "\''case "$MYSHELL" in'\'" and edit that code."
-          \echo  ""
+          \echo      "Don't fret, it's not too hard to hack this script to add functionality."
+          \echo      "To add support, edit this script and:"
+          \echo      "  1. Search for ERROR02 and edit the code just above it."
+          \echo      "  2. Also search for "\''case "$MYSHELL" in'\'" and edit that code."
+          \echo      ""
           break
       esac
       return  0
