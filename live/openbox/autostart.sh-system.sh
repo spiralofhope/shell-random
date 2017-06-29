@@ -5,6 +5,12 @@
 # ~/.config/openbox/autostart.sh-system.sh
 
 
+
+# Fix the resolution of the big screen
+\xrandr  --output DVI-D-1  --mode 1920x1080  --pos 0x0
+
+
+
 # Fix Firefox crashes on Flash playing, and fix audio issues:
 # Disabled 2014-05-16, as I'm unsure if this is necessary.
 #export  XLIB_SKIP_ARGB_VISUALS=1
@@ -29,7 +35,7 @@
 
 # This complexity is to prevent screen blanking if xscreensaver is run a second time.  What idiocy..
 #\pidof  xscreensaver
-#if [ $? -ne 0 ]; then
+#if [ "$?" -ne 0 ]; then
 #  \xscreensaver  -no-splash > /dev/null &
 #fi
 

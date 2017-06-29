@@ -1,5 +1,7 @@
 #!/usr/bin/env  sh
 
+
+
 # The global settings are: /etc/xdg/openbox/autostart.sh
 # The local master settings are: /home/user/.config/openbox/autostart.sh
 # Then this file is run..
@@ -8,9 +10,7 @@
 
 _connected_false() {
   # I don't do anything special in this case.
-
-  # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/shell-random/git/live/sh/scripts/projects.sh &
+  \echo .
 }
 
 
@@ -82,13 +82,6 @@ _connected_true() {
     --no-saved-tabs \
     --reuse-tab \
     /l/ &
-
-
-  # Notes
-  # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-  /l/shell-random/git/live/sh/scripts/projects.sh &
-
-
 }
 
 
@@ -97,21 +90,31 @@ _connected_true() {
 # -- Network connection test
 # --
 
-for interface in $( \ls /sys/class/net/  |  \grep  --invert-match  lo ); do
-  if [ $( \cat /sys/class/net/$interface/carrier ) -eq 1 ]; then
+_connected=
+# 'lo' is localhost
+for interface in ` \ls /sys/class/net/  |  \grep  --invert-match  lo `; do
+  \echo "Processing $interface"
+  _result=` \cat /sys/class/net/"$interface"/carrier `
+  \echo  "$_result"
+  if [ "$_result" = '1' ]; then
+    _connected='true'
     \echo  " * Internet connection detected."
-    __=$( /l/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' )
-    if [ $__ -eq 0 ]; then
-      _connected_true
-    else
-      exit 1
-    fi
   else
     \echo  " * Internet connection not detected."
-    _connected_false
   fi
 done
 
+if [ "$_connected" = 'true' ]; then
+  __=` /l/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' `
+  if [ "$__" -eq 0 ]; then
+    _connected_true
+    \echo .
+  else
+    exit 1
+  fi
+else
+  _connected_false
+fi
 
 
 # --
@@ -123,3 +126,9 @@ done
 # \xterm  -fn 9x15  -bg black  -fg gray  -sl 10000  -geometry 80x24+0+0 &
 # \Terminal  --geometry 80x24+10+10 &
 # /l/shell-random/git/live/terminal.sh
+
+
+
+# Notes
+# TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
+/l/shell-random/git/live/sh/scripts/projects.sh &
