@@ -304,7 +304,8 @@ launch_terminal() {
       # This dumbass terminal does not have a proper fallback if I use an invalid font.
       # See ~/.Xresources
 
-      \killall  -0  urxvtd
+      # Learn if the process exists and is owned by the current user.
+      \killall  --user $( \whoami )  -0  urxvtd
       if [ $? -eq 1 ]; then
         \echo "urxvtd is not running, running it"
         \urxvtd  --fork  --opendisplay  --quiet
