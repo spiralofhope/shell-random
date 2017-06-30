@@ -12,5 +12,4 @@ if [ $( \whoami ) = root ]; then
   __  /dev/sdb
 else
   # do nothing
-  \echo  .
 fi

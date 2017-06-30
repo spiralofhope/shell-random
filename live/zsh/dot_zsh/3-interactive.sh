@@ -13,7 +13,6 @@ if [ $( \whoami ) = root ]; then
   PATH=$PATH:/usr/sbin/
 else
   # do nothing
-  \echo  .
 fi
 
 HISTFILE=~/.zsh/histfile
@@ -97,7 +96,7 @@ chpwd
 # http://www.zsh.org/mla/workers/1996/msg00191.html
 if [[ $( \whoami ) = *\) ]]; then
   # We are remote
-  \echo  .
+  # Do nothing
 else
   DISPLAY=${DISPLAY:-:0.0}
 fi
