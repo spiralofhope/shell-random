@@ -62,12 +62,12 @@ initializeANSI() {
 initializeANSI
 
 #cat << EOF
-#${yellowf}This is a phrase in yellow${redb} and red${reset}
-#${boldon}This is bold${ulon} this is italics${reset} bye bye
+#${yellow}This is a phrase in yellow ${redb}and red${reset}
+#${boldon}This is bold ${ulon}and underlined${reset} normal
 #${italicson}This is italics${italicsoff} and this is not
 #${ulon}This is ul${uloff} and this is not
 #${invon}This is inv${invoff} and this is not
-#${yellowf}${redb}Warning I${yellowb}${redf}Warning II${reset}
+#${yellow}${redb}Warning I ${yellowb}${red}Warning II${reset}
 #EOF
 
 #cat << EOF
