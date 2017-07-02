@@ -369,7 +369,7 @@ get_file_ext() {
         #/usr/bin/mythryl should only be invoked via ''#!...'' line in a script!
         #/usr/bin/mythryl  "$AUTOTEST_FILE" ; RESULT="$?"
         # Check for the shebang
-        local  head="$( \head  --lines=1  \"$AUTOTEST_FILE\" )"
+        local  head=$( \head  --lines=1  "$AUTOTEST_FILE" )
         local  mythryl_shebang="#!/usr/bin/mythryl"
         if ! [[ $head == $mythryl_shebang ]]; then
           #\echo  "no shebang?"
@@ -425,7 +425,7 @@ get_file_ext() {
     ;;
     "sh") # *nix shell scripting languages
       # Check for a shebang:
-      local head="` \head --lines=1 \"$AUTOTEST_FILE\" `"
+      local head=$( \head --lines=1 "$AUTOTEST_FILE" )
       case "$head" in
         "#!/usr/bin/env bash" | "#!/usr/bin/env  bash" | "#!/bin/bash" | "#!/usr/local/bin/bash" )  MYSHELL=bash ;;
         "#!/usr/bin/env dash" | "#!/usr/bin/env  dash" | "#!/bin/dash" | "#!/usr/local/bin/dash" )  MYSHELL=dash ;;
@@ -477,18 +477,22 @@ get_file_ext() {
         ;;
         "dash" )
           execute() {
-            \dash  -c  "$AUTOTEST_FILE" ; RESULT="$?"
+            \dash  -c  \""$AUTOTEST_FILE"\" ; RESULT="$?"
           }
           execute_with_debugging() {
+            # FIXME - maybe it is.. but I'd have to check if I'm sh or dash
+            # -o verbose  -o +xtrace
             ansi_echo  "debugging is not supported"
             execute
           }
         ;;
         "sh" )
           execute() {
-            \sh  -c  "$AUTOTEST_FILE" ; RESULT="$?"
+            # Tested under dash
+            \sh  -c  \""$AUTOTEST_FILE"\" ; RESULT="$?"
           }
           execute_with_debugging() {
+            # TODO - I don't know if there are debugging-esque things I can do.  See dash, above.
             ansi_echo  "debugging is not supported"
             execute
           }
@@ -582,7 +586,7 @@ run_script() {
         execute_with_debugging
       fi
 
-      ansi_echo "--+ end [$RESULT]" `date` "+--"
+      ansi_echo "--+ end [$RESULT]" $( date ) "+--"
       if [ ! "$TIME" = "no" ]; then
         TIMESTAMP_END=$( \date +%s )
         \echo  "$(($TIMESTAMP_END - $TIMESTAMP_BEGIN)) seconds"
