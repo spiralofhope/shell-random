@@ -32,7 +32,10 @@ screensaver_disable() {
   # Disable screen blanking for virtual consoles.
   \xset  s off
   # Disable screen blanking.
+  # This does not work with rxvt-unicode.
   \setterm  -blank 0
+  # I think this sort of thing is usable for rxvt-unicode:
+  # \setterm  pointerBlank false
   # Exit xautolock, preventing slock from being triggered.
   \xautolock  -exit
   \echo       disabled
@@ -51,7 +54,7 @@ screensaver_locknow() {
 
 
 
-case $1 in
+case "$1" in
   enable)
     screensaver_enable
   ;;
@@ -62,8 +65,8 @@ case $1 in
     screensaver_locknow
   ;;
   *)
-    __=`/1/e/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable screen saver?'`
-    if [ $__ = 0 ]; then
+    __=`/l/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh  'Enable screen saver?'`
+    if [ "$__" = 0 ]; then
       screensaver_enable
     else
       screensaver_disable

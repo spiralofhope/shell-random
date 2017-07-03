@@ -5,9 +5,10 @@
 # ~/.config/openbox/autostart.sh-system.sh
 
 
-# Set up the second display.
-# FIXME - why the fuck isn't this working?
-/l/e/shell-random/git/live/sh/scripts/dual-monitors.sh &
+
+# Fix the resolution of the big screen
+\xrandr  --output DVI-D-1  --mode 1920x1080  --pos 0x0
+
 
 
 # Fix Firefox crashes on Flash playing, and fix audio issues:
@@ -28,14 +29,18 @@
 
 
 # Start the screen saver
-# Replaced by xlock.  This code is here just in case.
+
+# Just in case:
 \killall  --quiet  gnome-screensaver &
+
 # This complexity is to prevent screen blanking if xscreensaver is run a second time.  What idiocy..
-\pidof  xscreensaver
-if [ $? -ne 0 ]; then
-  \xscreensaver  -no-splash > /dev/null &
-fi
-# A really simple screen saver/locker.
+#\pidof  xscreensaver
+#if [ "$?" -ne 0 ]; then
+#  \xscreensaver  -no-splash > /dev/null &
+#fi
+
+# xautolock is a really simple monitor for inactivity.
+# slock is a really simple screen saver/locker.
 \xautolock  -time 5  -locker \slock &
 
 
@@ -67,7 +72,6 @@ fi
 
 
 # Hide an inactive mouse.
-# Doesn't come with X
 \unclutter  -root  -idle 3 &
 
 
@@ -94,16 +98,38 @@ fi
 \urxvtd  --fork  --opendisplay  --quiet
 
 
-/l/e/shell-random/git/live/sh/scripts/panel.sh &
+/l/shell-random/git/live/sh/scripts/panel.sh &
 
-
-\sleep 0.3
 # Passwords
-/l/e/shell-random/git/live/sh/scripts/keepassx-restart.sh &
-
+# FIXME - 'sleep' is a stupid way to ensure the panel has been launched before adding keepassx.  May not apply to keepassxc
+# \sleep 0.3
+#
+# https://keepassxc.org/
+# https://github.com/magkopian/keepassxc-debian/releases
+\rm  --force \
+  /l/.KeePassXC--passwords.kdbx.lock \
+  /mnt/1/data-windows/live/.KeePassXC--passwords.kdbx.lock
+# It can be set to load previous databases on startup, but I like this..
+/usr/bin/keepassxc  \
+  /l/KeePassXC--passwords.kdbx \
+  /mnt/1/data-windows/live/KeePassXC--passwords.kdbx &
 
 # launch any user-specific stuff:
-\setsid  ~/.config/openbox/autostart.sh-applications.sh &
+~/.config/openbox/autostart.sh-applications.sh &
+
+# FIXME - This is done to ensure this window pops up after the previous one.  I hate this.
+\sleep 0.3
+
+# Set up a Virtual Private Network (left to the user's creation)
+~/vpn.sh
+
+# FIXME - This is done to ensure this window pops up after the previous one.  I hate this.
+\sleep 0.3
+
+# Set up the second display.
+/l/shell-random/git/live/sh/scripts/dual-monitors.sh &
+
+
 
 
 # --

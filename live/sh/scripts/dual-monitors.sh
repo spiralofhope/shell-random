@@ -5,24 +5,28 @@
 
 
 
+# More advanced stuff:
+# https://ubuntuforums.org/showthread.php?t=240150
+
+
+# Fix the resolution of the big screen
+\xrandr  --output DVI-D-1  --mode 1920x1080  --pos 0x0
 
 if [ -z $1 ]; then
   # TODO - implement a more explicit enable/disable feature..
-  __=`/l/e/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable second monitor?'`
+  __=`/l/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable second monitor?'`
   if [ $__ = 0 ]; then
-    # Fix the resolution of the big screen
-    \xrandr  --output DVI-D-1  --mode 1920x1080
-
     # Extend the little screen to its left.
     # Note that the main screen is the little one.
 
+    # Turn it on
+    \xrandr  --output VGA-1  --auto
     # This puts the little screen on the left:
     # xrandr  --output DVI-D-1  --pos 1080x0
     # This puts the little screen on the right:
     \xrandr  --output DVI-D-1  --pos -1920x0
-  else # do nothing, for now
-    echo ''
-    # TODO - reverse things.. somehow.
+  else  # disable the second screen
+    \xrandr  --output VGA-1  --off
   fi
 else
   # Useful for shifting things around, in case I run this script twice in a row by mistake.

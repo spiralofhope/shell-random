@@ -3,20 +3,25 @@
 IDEAS
 
 
-zshdir=/l/e/shell-random/git/live/zsh
-PATH=$PATH:/l/e/shell-random/git/live/
-PATH=$PATH:/l/e/shell-random/git/live/sh/scripts/
-PATH=$PATH:/l/e/shell-random/git/live/bash/scripts/
-PATH=$PATH:/l/e/shell-random/git/live/zsh/scripts/
-if [ $( whoami ) = root ]; then
+zshdir=/l/shell-random/git/live/zsh
+PATH=$PATH:/l/shell-random/git/live/
+PATH=$PATH:/l/shell-random/git/live/sh/scripts/
+PATH=$PATH:/l/shell-random/git/live/bash/scripts/
+PATH=$PATH:/l/shell-random/git/live/zsh/scripts/
+if [ $( \whoami ) = root ]; then
   PATH=$PATH:/sbin/
   PATH=$PATH:/usr/sbin/
 else
+  # do nothing
 fi
 
 HISTFILE=~/.zsh/histfile
 HISTSIZE=10000
 SAVEHIST=10000
+# Neither of these work to let me prepend a command with a space and have it not commit a command to the histfile.
+#   https://www.reddit.com/r/commandline/comments/4knoj4/
+# HISTCONTROL=ignoredups:ignorespace
+# HISTCONTROL=ignoreboth
 
 # Change the highlight colour.  Underlining doesn't seem to work.
 zle_highlight=(region:bg=red special:underline)
@@ -33,7 +38,7 @@ export  LS_COLORS=${LS_COLORS}":*.7z=01;31"
 # Prompt
 # This block lets me copy my .zsh for the root user.
 # Test for permission.
-if [ $( whoami ) = root ]; then
+if [ $( \whoami ) = root ]; then
   local  _my_color=red
 else
   local  _my_color=blue
@@ -91,6 +96,7 @@ chpwd
 # http://www.zsh.org/mla/workers/1996/msg00191.html
 if [[ $( \whoami ) = *\) ]]; then
   # We are remote
+  # Do nothing
 else
   DISPLAY=${DISPLAY:-:0.0}
 fi
@@ -107,7 +113,7 @@ fi
 # [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"
 
 # Ruby Version Manager
-#if [[ $(whoami) == root ]]; then
+#if [ $( \whoami ) = root ]; then
 #else
 #  rvm use 1.9.2 >> /dev/null
 #fi
@@ -116,7 +122,7 @@ fi
 
 # Load additional scripting and settings.
 
-# Apparently I can't source wildcards on 
+# Apparently I can't source wildcards on:
 #   zsh 5.0.2 (x86_64-pc-linux-gnu)
 # e.g.
 #   source  "$zshdir"/*.sh
