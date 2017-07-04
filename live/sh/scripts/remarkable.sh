@@ -23,8 +23,7 @@ Tested on:
   1. Windows 10 git-bash:
      Git-2.10.1-64-bit
      GNU bash, version 4.3.46(2)-release (x86_64-pc-msys)
-  2. dash - (version not recorded)
-
+  2. dash 0.5.7-4+b1
 NOTES
 
 
