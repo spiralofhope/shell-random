@@ -16,7 +16,6 @@
 Requirements:
   touch
   date
-  expr
   dd
 
 
@@ -31,7 +30,7 @@ NOTES
 
 
 setup() {
-  _start_time=$( \expr $( \date  +%s%N ) / 1000000000 )
+  _start_time=$(( $( \date  +%s%N ) / 1000000000 ))
   _date_time=$( \date +%Y-%m-%d--%H-%M-%S )
   _filename=remarkable--"$_date_time".txt
 
@@ -63,8 +62,8 @@ go() {
       \stty  icanon echo
     }
     read_char  character_pressed
-    _current_time=$( \expr $( \date  +%s%N ) / 1000000000 )
-    _elapsed_total_seconds=$( \expr $_current_time - $_start_time )
+    _current_time=$(( $( \date  +%s%N ) / 1000000000 ))
+    _elapsed_total_seconds=$(( $_current_time - $_start_time ))
     _hh_mm_ss=$( \date -d@$_elapsed_total_seconds -u +%H:%M:%S )
     # Formatted as comma-separated values (CSV)
     _output_string="$character_pressed,$_hh_mm_ss,$_elapsed_total_seconds"
