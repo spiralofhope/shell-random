@@ -101,15 +101,18 @@
 /l/shell-random/git/live/sh/scripts/panel.sh &
 
 # Passwords
-# FIXME - 'sleep' is a stupid way to ensure the panel has been launched before adding keepassx.  May not apply to keepassxc
-# \sleep 0.3
+# FIXME - 'sleep' is a stupid way to ensure the panel has been launched before adding keepassx.
+# Maybe do an `until` and `sleep` loop to wait for `which fbpanel`?  Fork that in its own process too?
+\sleep 0.3
 #
 # https://keepassxc.org/
 # https://github.com/magkopian/keepassxc-debian/releases
+
+# FIXME - why isn't this working properly?
 \rm  --force \
   /l/.KeePassXC--passwords.kdbx.lock \
   /mnt/1/data-windows/live/.KeePassXC--passwords.kdbx.lock
-# It can be set to load previous databases on startup, but I like this..
+# It can be set to load previous databases on startup, but I prefer this..
 /usr/bin/keepassxc  \
   /l/KeePassXC--passwords.kdbx \
   /mnt/1/data-windows/live/KeePassXC--passwords.kdbx &
