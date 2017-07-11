@@ -24,6 +24,8 @@ Also search this script for 'TODO:' and 'FIXME:'
 - Consider making an autotest.sh.ini file to make things more user-serviceable.
 
 - Perhaps separate out all the specific filetype handling stuff into separate .sh or .ini files?  I don't know if that would actually make things more maintainable..
+
+- If it errors, setopt -x and re-run it! 
 TODO_LIST
 }
 
