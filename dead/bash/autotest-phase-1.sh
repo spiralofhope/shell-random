@@ -2,8 +2,6 @@
 
 
 
-# From 2009-03-29
-
 :<<'NOTES'
 = Phase one =
 

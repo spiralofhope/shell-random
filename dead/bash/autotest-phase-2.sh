@@ -2,10 +2,6 @@
 
 
 
-# From 2009-03-29
-
-
-
 bashplay() {
   autotest /home/user/bin/bashrc_includes/temp.txt
 }
