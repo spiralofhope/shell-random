@@ -2,36 +2,69 @@
 
 
 
-\echo  'Alarm started.'
-
-# TODO:  Is there a way to occasionaly display the remaining time?
-\sleep $*
+DEBUG=true
 
 
-# Visual notification.
-# TODO - I could just open a terminal, use Xdialog, zenity or some other such thing.
-\echo  'alarm' | \leafpad &
+
+_echo() {
+  if ! [ -z "$DEBUG" ]; then
+    \echo "$*"
+  fi
+}
 
 
-# Audio
-# FIXME - There is popping between notes.
-# TODO? - A mono chiptune.
-#   As I'm not a musician and simple searches have not come up with the "source" frequency/duration for each note for such music, I cannot produce anything easily.
-# TODO? - A stereo chiptune.
-#   It feels possible to essentially create two "threads", and control left and right speakers separately.
-#   Hell, more speakers are probably also possible.
-# TODO? - Experiment with multiple mono threads.  Can multiple instances of speaker-test exist and play overlapping notes simultaneously, simulating multiple channels?
-_alarm() {
-  ( \speaker-test  --frequency $1  --test sine )&
-  pid=$!
-  \sleep  0.${2}s
-  \kill  -9 $pid
+_sleep() {
+  startTime=$(     \date  --date "now"  +%s )
+  startDateTime=$( \date  --date "now"      )
+  if [ -z "$*" ]; then
+    _echo  "sleeping for 1s (default)"
+    timeToWait=1s
+  elif [ "$1" = '--date' ]; then
+    shift
+    _echo  "sleeping until $*"
+    # https://stackoverflow.com/questions/645992
+    endTime=$(   \date  --date "$*"  +%s )
+    timeToWait=$(( $endTime - $startTime ))
+    if [ "$timeToWait" -lt 0 ]; then
+      \echo  'ERROR:  Time is in the past'
+      _echo  "sleeping for 1s (default)"
+      timeToWait=1
+    fi
+    timeToWait=${timeToWait}s
+    # TODO:  Is there a way to occasionaly display the remaining time?
+    _echo  '' $startTime 'seconds\n' $endTime 'seconds to wait\n' $timeToWait
+  else
+    _echo  "sleeping for $*"
+  fi
+  \sleep $timeToWait
+  endDateTime=$( \date )
 }
 
 
 
-_alarm  400  200
-_alarm  450  300
-_alarm  400  200
-_alarm  450  400
-_alarm  400  400
+_audio_alert() {
+  # I don't know how to make it not spam.
+  \speaker-test  --test wav  --channels 2  --nloops 1  2> /dev/null
+}
+
+
+
+# TODO - I could just open a terminal, use Xdialog, zenity or some other such thing.
+#        I could also detect for which is available.
+_visual_alert() {
+  \echo  "$*" | \leafpad &
+  _echo
+  _echo
+  _echo  "$*"
+}
+
+
+
+# ----------------------------------------------------------------------
+
+_echo  ' * Alarm started'
+_sleep  $*
+_audio_alert
+# Just in case
+\killall  -9 speaker-test 2> /dev/null
+_visual_alert  "Alarm started at:  $startDateTime  \nAlarm waited for:  $timeToWait  \nAlarm rang at:     $endDateTime"
