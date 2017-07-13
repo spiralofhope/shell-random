@@ -15,6 +15,6 @@ if    [ $_tty = '/dev/tty1' ] ||\
 #  echo $$ !> /tmp/zsh-launching-startx.ppid
 #  dtach -n /tmp/dtach.socket  \startx &
   \clear
-  \startx
+  \setsid  \startx
   \logout
 fi
