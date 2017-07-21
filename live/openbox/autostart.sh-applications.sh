@@ -50,7 +50,7 @@ _connected_true() {
   #
   # Web browser
   #
-  /l/Pale\ Moon/go.sh default &
+  /l/Pale\ Moon/go.sh  default &
 
 
   #
