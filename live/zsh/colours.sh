@@ -12,6 +12,22 @@
 initializeANSI() {
   esc=""
 
+  # Misc
+  reset="${esc}[0m"
+
+  cursor_position_save="\033[s"
+  cursor_position_restore="\033[u"
+
+  # Attributes
+  boldon="${esc}[1m"
+  boldoff="${esc}[22m"
+  italicson="${esc}[3m"
+  italicsoff="${esc}[23m"
+  ulon="${esc}[4m"
+  uloff="${esc}[24m"
+  invon="${esc}[7m"
+  invoff="${esc}[27m"
+
   # Foreground colour
   black="${esc}[30m"
   red="${esc}[31m"
@@ -34,15 +50,6 @@ initializeANSI() {
   cyanb="${esc}[46m"
   whiteb="${esc}[47m"
 
-  boldon="${esc}[1m"
-  boldoff="${esc}[22m"
-  italicson="${esc}[3m"
-  italicsoff="${esc}[23m"
-  ulon="${esc}[4m"
-  uloff="${esc}[24m"
-  invon="${esc}[7m"
-  invoff="${esc}[27m"
-
   # Foreground colour, bolded
   black_bold="${boldon}${esc}[30m"
   red_bold="${boldon}${esc}[31m"
@@ -52,11 +59,6 @@ initializeANSI() {
   purple_bold="${boldon}${esc}[35m"
   cyan_bold="${boldon}${esc}[36m"
   white_bold="${boldon}${esc}[37m"
-
-  reset="${esc}[0m"
-
-  cursor_position_save="\033[s"
-  cursor_position_restore="\033[u"
 }
 
 initializeANSI
