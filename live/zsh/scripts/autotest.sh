@@ -655,12 +655,10 @@ main_foreground() {
         \echo  "."
         "sleep" "$SLEEP"
       else
-        # spinner: save cursor position
-        \echo  -n  -e  "\033[s"
+        \echo  -n  -e  "${cursor_position_save}"
         spinner
         "sleep" "$SLEEP"
-        # spinner: restore cursor position
-        \echo  -n  -e  "\033[u"
+        \echo  -n  -e  "${cursor_position_restore}"
       fi
 
       # Check to see if the file has changed.  If so, run it.
