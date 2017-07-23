@@ -69,3 +69,22 @@ _audio_alert
 # Just in case
 \killall  -9 speaker-test 2> /dev/null
 _visual_alert  "Alarm started at:  $startDateTime  \nAlarm waited for:  $timeToWait  \nAlarm rang at:     $endDateTime"
+
+
+# To learn the number of seconds remaining, probably:
+:<<'learn'
+\ps  --user $( \whoami )  -o etimes,args  |\
+  \grep  sleep                            |\
+  \head  --lines=1                        |\
+  \sed  --expression='s/^[[:space:]]*//'  |\
+  \cut  --fields=1 --delimiter=' '
+learn
+# 
+:<<'usage'
+alarm.sh 1h &   # Remember to not close this terminal!
+# (the above command)
+# =>
+# 1             # The number of seconds it's been running.
+usage
+# FIXME - This might pick up another command with the name 'sleep'.
+#         Exactness would require knowing the process number of sleep (which is doable), then checking that specific process number.
