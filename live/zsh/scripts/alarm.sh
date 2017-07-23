@@ -35,8 +35,9 @@ _sleep() {
     _echo  '' $startTime 'seconds\n' $endTime 'seconds to wait\n' $timeToWait
   else
     _echo  "sleeping for $*"
+    timeToWait="$*"
   fi
-  \sleep $timeToWait
+  \sleep  $timeToWait
   endDateTime=$( \date )
 }
 
