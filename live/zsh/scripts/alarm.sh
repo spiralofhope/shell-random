@@ -3,6 +3,35 @@
 
 
 DEBUG=true
+SPINNER=1
+
+
+# Traditional bar-spinner with these characters:  -\|/
+# Save cursor position
+\echo -n  "\033[s"
+spinner() {
+  # Restore cursor position
+  \echo -n  "\033[u"
+  if [ -z $SPINNER ]; then return 0 ; fi
+  case $SPINNER in
+    1)
+      \echo  -n  ' - '
+      SPINNER=2
+    ;;
+    2)
+      \echo  -n  ' \ '
+      SPINNER=3
+    ;;
+    3)
+      \echo  -n  ' | '
+      SPINNER=4
+    ;;
+    *)
+      \echo  -n  ' / '
+      SPINNER=1
+    ;;
+  esac
+}
 
 
 
@@ -11,6 +40,7 @@ _echo() {
     \echo "$*"
   fi
 }
+
 
 
 _sleep() {
@@ -42,12 +72,16 @@ _sleep() {
   _elapsed_time_seconds=0
   until [ $? = 1 ]; do
     \sleep 1
+    # Show that the timer is still ticking.
+    spinner
+
     _elapsed_time_seconds=$(( $_elapsed_time_seconds + 1 ))
     _echo_every_x_seconds=10
     if [ $(( $_elapsed_time_seconds % $_echo_every_x_seconds )) -eq 0 ]; then
       # IDEA - Be fancy.  But that's likely way too annoying.  I'd have to collect all parameters to 'sleep' (like '\sleep 1h 3m 2s' )to convert them to seconds, then convert that back up to h:m:s
       # It's possible to force the user into one consistent format that's more strict than what 'sleep' allows, but that seems wrong to me.
       # If I manage fancyness, I can display the time remaining.
+      \echo  ''
       \echo  "slept for $_elapsed_time_seconds seconds out of $sleep_duration"
     fi
     \ps  --pid $_pid | \grep  sleep  > /dev/null
