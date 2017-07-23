@@ -124,7 +124,7 @@ _visual_alert  "Alarm started at:  $startDateTime  \nAlarm waited for:  $sleep_d
 
 
 
-# To learn the number of seconds remaining, probably:
+# To learn the number of seconds elapsed, probably:
 :<<'learn'
 \ps  --user $( \whoami )  -o etimes,args  |\
   \grep  sleep                            |\
