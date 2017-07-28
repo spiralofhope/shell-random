@@ -43,4 +43,6 @@ alias  grep='\grep --color'
 alias  pm-suspend='\sudo  /usr/sbin/pm-suspend'
 alias  reboot='    \sudo  /sbin/reboot'
 alias  poweroff='  \sudo  /sbin/poweroff'
-alias  b='\cd  /l/OS/current/mount/1'
+
+alias current=' \cd  /l/OS/current/'
+alias previous='\cd  /l/OS/previous/'
