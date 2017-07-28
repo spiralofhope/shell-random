@@ -2,12 +2,11 @@
 
 
 
-
 # dash 0.5.7-4+b1
 __='a'
 #__=
-if [ x"$__" = "x" ]; then echo 'variable IS NOT set'
-else                      echo 'variable IS set'
+if [ -z "$__" ]; then echo 'variable IS NOT set'
+else                  echo 'variable IS set'
 fi
 
 
