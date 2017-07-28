@@ -74,7 +74,9 @@ bindkey  '^[[6~'    history-beginning-search-forward                    # pagedo
 bindkey  '^[[1;5D'  backward-word                                       # control-left
 bindkey  '^[[1;5C'  forward-word                                        # control-right
 
-bindkey  '^[[3;5~'  kill-word                                           # control-delete
+#bindkey  '^[[3;5~'  kill-word                                           # control-delete
+bindkey  '^[[3^'  kill-word                                             # control-delete
+
 
 # alt-backspace appears to be impossible
 # I hear that xterm can be configured with changes in ~/.Xresources, but I have no will to pursue any of this.
