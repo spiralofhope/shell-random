@@ -20,8 +20,11 @@ for sig in INT QUIT HUP TERM USR1; do
 done
 trap _teardown EXIT
 _teardown() {
-  \echo  ' * Teardown signalled..'
-  \rmdir  --verbose  "$dir"
+  # NOTE - This will also be run on exit, unless you do this:
+  if [ -z "$_exiting" ]; then
+    \echo  ' * Teardown signalled..'
+    \rmdir  --verbose  "$dir"
+  fi
 }
 
 
@@ -29,6 +32,8 @@ _teardown() {
 \echo  ' * Setting up..'
 \mkdir  --verbose  "$dir"
 \echo  ' * Press ^c to test..'
+# To test the _exiting functionality:
+#sleep  1
 sleep  999
 \echo  'FAILED'
-#_teardown
+_exiting=true
