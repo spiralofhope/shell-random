@@ -91,6 +91,8 @@ open_array_of_files() {
   \geany  --new-instance \
     /l/__/__.txt \
     /l/projects.txt \
+    ` # A major project of mine which ought to be reviewed very regularly. ` \
+    /l/unplugging/unplugging.txt \
     /l/_outbox--0/_outbox--0.txt \
     /mnt/1/data-windows/live/_outbox--0/_outbox--0.txt \
     /mnt/1/data-windows/live/_outbox--1/_outbox--1.txt \
