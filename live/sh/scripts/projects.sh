@@ -15,7 +15,7 @@
 
 
 setup() {
-  \echo  " * begin"
+  \echo  ' * begin'
   NEW_PROJECT_MESSAGE="New project notes started ` \date `"
   # Case-insensitivity.
   LC_COLLATE=en_US ; export LC_COLLATE
@@ -89,13 +89,13 @@ open_array_of_files() {
   #echo  \geany  $array_of_files
   #\geany  $array_of_files
   \geany  --new-instance \
-    /l/__/__.txt \
-    /l/projects.txt \
+    '/l/__/__.txt' \
+    '/l/projects.txt' \
     ` # A major project of mine which ought to be reviewed very regularly. ` \
-    /l/unplugging/unplugging.txt \
-    /l/_outbox--0/_outbox--0.txt \
-    /mnt/1/data-windows/live/_outbox--0/_outbox--0.txt \
-    /mnt/1/data-windows/live/_outbox--1/_outbox--1.txt \
+    '/l/unplugging/unplugging.txt' \
+    '/l/_outbox--0/_outbox--0.txt' \
+    '/mnt/1/data-windows/live/_outbox--0/_outbox--0.txt' \
+    '/mnt/1/data-windows/live/_outbox--1/_outbox--1.txt' \
     $array_of_files \
     /l/__/__.txt \
   &
@@ -105,7 +105,7 @@ open_array_of_files() {
 
 teardown() {
   IFS=$IFS_original
-  \echo  " * end"
+  \echo  ' * end'
 }
 
 
@@ -115,8 +115,8 @@ teardown() {
 # --
 
 setup
-build_array_of_directories  /l
-build_array_of_directories  /mnt/1/data-windows/live
+build_array_of_directories  '/l'
+build_array_of_directories  '/mnt/1/data-windows/live'
 build_array_of_files  "$array_of_directories"
 
 open_array_of_files
