@@ -8,7 +8,8 @@
 
 # Fix the resolution of the big screen
 \xrandr  --output DVI-D-1  --mode 1920x1080  --pos 0x0
-
+# Disable the little screen by default
+\xrandr  --output VGA-1  --off
 
 
 # Fix Firefox crashes on Flash playing, and fix audio issues:
@@ -128,10 +129,6 @@
 
 # FIXME - This is done to ensure this window pops up after the previous one.  I hate this.
 \sleep 0.3
-
-# Set up the second display.
-/l/shell-random/git/live/sh/scripts/dual-monitors.sh &
-
 
 
 
