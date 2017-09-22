@@ -15,4 +15,17 @@ dual-commands.sh  geany  /some/path/foo/bar/baz.txt  /some/other/path/foo/bar/ba
 EXAMPLE
 
 
-\exec  "$1"  "${2}""${4}"  "${3}""${4}"
+:<<'test_case'
+dir1="/tmp/test 1/"
+dir2="/tmp/test 2/"
+file="some file"
+\mkdir  "$dir1" \
+        "$dir2"
+\touch  "$dir1""$file" \
+        "$dir2""$file"
+
+dual-commands.sh  \ls  "$dir1"  "$dir2"  "$file"
+
+\rm  -rf  /tmp/test*
+test_case
+"$1" "$2$4" "$3$4"
