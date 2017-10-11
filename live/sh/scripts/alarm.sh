@@ -2,16 +2,45 @@
 
 
 
+# To get ANSI working under Windows, use ansicon
+#   https://github.com/adoxa/ansicon
+# on Windows 10:
+#   1. unzip it somewhere.
+#   2. open a cmd as admin
+#   3. go to its unzipped location, to x64
+#   4. ansicon.exe -I
 DEBUG=true
 SPINNER=1
+
+# Apparently $PF vanishes for this shell..
+#if [ -z "$PF" ]; then
+  ## I'm on Linux
+  #WINDOWS=
+#else
+  #WINDOWS=true
+#fi
+
+# env ought to be smart under Linux.
+if [ "$SHELL" = '/usr/bin/bash' ]; then
+  WINDOWS=true
+else
+  # I'm on Linux
+  WINDOWS=
+fi
+
+if [ -z "$WINDOWS" ]; then
+  ESCAPE='\033'
+else
+  ESCAPE=
+fi
 
 
 # Traditional bar-spinner with these characters:  -\|/
 # Save cursor position
-\echo -n  "\033[s"
+\echo -n  "$ESCAPE[s"
 spinner() {
   # Restore cursor position
-  \echo -n  "\033[u"
+  \echo -n  "$ESCAPE[u"
   if [ -z $SPINNER ]; then return 0 ; fi
   case $SPINNER in
     1)
@@ -61,7 +90,9 @@ _sleep() {
       sleep_duration=1
     fi
     sleep_duration=${sleep_duration}s
-    _echo  '' $startTime 'seconds\n' $endTime 'seconds to wait\n' $sleep_duration
+    _echo  '' $startTime 'seconds'
+    _echo  $endTime 'seconds to wait'
+    _echo  $sleep_duration
   else
     sleep_duration="$*"
     _echo  "sleeping for $sleep_duration"
@@ -84,7 +115,11 @@ _sleep() {
       \echo  ''
       \echo  "slept for $_elapsed_time_seconds seconds out of $sleep_duration"
     fi
-    \ps  --pid $_pid | \grep  sleep  > /dev/null
+    if [ -z "$WINDOWS" ]; then
+      \ps  --pid     $_pid | \grep  sleep  > /dev/null
+    else  # cygwin
+      \ps  --process $_pid | \grep  sleep  > /dev/null
+    fi
   done
 
   endDateTime=$( \date )
@@ -93,19 +128,44 @@ _sleep() {
 
 
 _audio_alert() {
-  # I don't know how to make it not spam.
-  \speaker-test  --test wav  --channels 2  --nloops 1  2> /dev/null
+  if [ -z "$WINDOWS" ]; then
+    # I don't know how to make it not spam.
+    \speaker-test  --test wav  --channels 2  --nloops 1  2> /dev/null
+    # NOTE - this repository has earlier code for chiptune-like sound.
+  else   # Windows
+    # This does not work
+    #powershell -c echo \`a
+    # echo `a in powershell worked one time but never again.
+    # echo ^g is supposed to work
+    
+    # TODO - is there a way to do this without vlc?
+    # TODO - detect if vlc is present
+    file="C:\Windows\Media\Alarm01.wav"
+    "C:\Program Files\VideoLAN\VLC\vlc.exe" \
+      --qt-start-minimized \
+      ` # Doesn''t work: ` \
+      ` # --play-and-exit ` \
+      "$file" \
+    ` # ` &
+  fi
 }
 
 
 
-# TODO - I could just open a terminal, use Xdialog, zenity or some other such thing.
-#        I could also detect for which is available.
 _visual_alert() {
-  \echo  "$*" | \leafpad &
+  if [ -z "$WINDOWS" ]; then
+    # TODO - I could just open a terminal, use Xdialog, zenity or some other such thing.
+    # I could also detect for which is available.
+    \echo  "$*" | \leafpad &
+  else   # Windows
+    # Hackish, but don't dismiss simplicity.
+    start '' "$3"
+  fi
   _echo
   _echo
-  _echo  "$*"
+  _echo  "$1"
+  _echo  "$2"
+  _echo  "$3"
 }
 
 
@@ -115,9 +175,15 @@ _visual_alert() {
 _echo  ' * Alarm started'
 _sleep  $*
 _audio_alert
-# Just in case
-\killall  -9 speaker-test 2> /dev/null
-_visual_alert  "Alarm started at:  $startDateTime  \nAlarm waited for:  $sleep_duration  \nAlarm rang at:     $endDateTime"
+if [ -z "$WINDOWS" ]; then
+  # Just in case
+  \killall  -9 speaker-test 2> /dev/null
+fi
+_visual_alert \
+  "Alarm started at:  $startDateTime" \
+  "Alarm waited for:  $sleep_duration" \
+  "Alarm rang at:     $endDateTime" \
+` # `
 
 
 
