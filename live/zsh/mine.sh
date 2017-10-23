@@ -476,6 +476,7 @@ findreplace() {
 # Solves commandline limitations.  Hot damn.
 findqueue() {
   #local deadbeef=1
+  #local debug=true
 
   # Case-insensitive globbing:
   \unsetopt CASE_GLOB
@@ -502,28 +503,39 @@ findqueue() {
     files_array=( ./**/*$1\ $2\ $3*(.) )
   elif [ -z $5 ]; then
     files_array=( ./**/*$1\ $2\ $3\ $4*(.) )
-  fi;
+  else
+    \echo  'ERROR -----------------------------------------------------'
+  fi
+
+
+
 
   # TODO:  files_array can be shuffled here.
   #        If zsh could sanely shuffle an array.  =/
 
   # Iterate through the array.
-  # FIXME - this seems to be random!  Needs resting
+  # FIXME - this seems to be random!  Needs testing
   # I could take a random entry like this:
   #\echo $files_array[$RANDOM%$#FILES+1]
   if [[ x$deadbeef == x1 ]]; then
-    # do nothing
+    # In my original tests, I did not need to do anything.
+    #/l/OS/bin/deadbeef-0.7.2/deadbeef
   else
     \audacious  --show-main-window &
-    \sleep  0.5
+    # An unfortunate need, it seems, to prevent a billion instances from spawning.
+    # TODO - Maybe I could wait for its pid?
+    \sleep  1
   fi
   for i in {1..${#files_array}}; do
-#    \echo --v
-#    \echo $i
-#    \echo $files_array[$i]
-#    \echo --^
+    if [ $debug ]; then
+      \echo  "Processing:  $files_array[$i]"
+    fi
     if [[ x$deadbeef == x1 ]]; then
-      \deadbeef  --queue     "$files_array[$i]" &
+      # FIXME - apparently  --queue  does not work any more.  Somehow.
+      #\deadbeef  --queue     "$files_array[$i]" &
+      #\deadbeef.sh  --queue     "$files_array[$i]"
+      #\deadbeef.sh  --queue     \'"${files_array[${i}]}"\'
+      /l/OS/bin/deadbeef-0.7.2/deadbeef  --queue     \'"${files_array[${i}]}"\' &
     else
       \audacious  --enqueue  "$files_array[$i]" &
     fi
