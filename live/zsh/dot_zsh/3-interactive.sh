@@ -4,14 +4,15 @@ IDEAS
 
 
 zshdir=/l/shell-random/git/live/zsh
-PATH=$PATH:/l/shell-random/git/live/
-PATH=$PATH:/l/shell-random/git/live/sh/scripts/
-PATH=$PATH:/l/shell-random/git/live/bash/scripts/
-PATH=$PATH:/l/shell-random/git/live/zsh/scripts/
-PATH=$PATH:/l/OS/bin/
+
+PATH=/l/OS/bin:$PATH
+PATH=$PATH:/l/shell-random/git/live
+PATH=$PATH:/l/shell-random/git/live/sh/scripts
+PATH=$PATH:/l/shell-random/git/live/bash/scripts
+PATH=$PATH:/l/shell-random/git/live/zsh/scripts
 if [ $( \whoami ) = root ]; then
-  PATH=$PATH:/sbin/
-  PATH=$PATH:/usr/sbin/
+  PATH=$PATH:/sbin
+  PATH=$PATH:/usr/sbin
 else
   # do nothing
 fi
