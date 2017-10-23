@@ -215,7 +215,7 @@ c() {
 
 
 alias mcedit='\mcedit  --colors  editnormal=lightgrey,black'
-alias edit='/usr/bin/sanos-simple-text-editor'
+#alias edit='/usr/bin/sanos-simple-text-editor'
 
 #edit() {
   ## I'm in X, I'm at the raw console and X is launched.
