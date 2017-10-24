@@ -2,7 +2,7 @@
 
 
 
-test=true
+#test=true
 # REQUIREMENTS
 source  './is a string a number？.sh'
 source  './convert position from right to left.sh'
