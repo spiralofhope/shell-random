@@ -1,3 +1,7 @@
+#!/usr/bin/env  bash
+
+
+
 isnumber() {
   until [ "sky" = "falling" ]; do
     if [ ! "$#" -eq 1 ]; then echo 1 ; break ; fi

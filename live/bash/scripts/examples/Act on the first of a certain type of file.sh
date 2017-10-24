@@ -1,3 +1,7 @@
+#!/usr/bin/env  bash
+
+
+
 # New hotness
 
 # gpicview `ls *.bmp *.gif *.jpg *.png | sed q`&

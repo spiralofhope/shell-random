@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env  bash
+
+
 
 # http://www.linuxconfig.org/Bash_scripting_Tutorial#7-bash-trap-command
 

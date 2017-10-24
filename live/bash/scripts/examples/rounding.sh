@@ -1,3 +1,7 @@
+#!/usr/bin/env  bash
+
+
+
 :<<Introduction
 
 Another bit of playing that I did just to learn stuff.

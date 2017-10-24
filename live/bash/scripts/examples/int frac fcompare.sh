@@ -1,3 +1,7 @@
+#!/usr/bin/env  bash
+
+
+
 # http://groups.google.com/group/comp.os.linux.misc/browse_frm/thread/e97de27b3e32643f?hl=en&lr=&ie=UTF-8&rnum=1&prev=/groups%3Fhl%3Den%26lr%3D%26ie%3DISO-8859-1%26q%3D%2BCompare%2Bdecimal%2Bnumbers%2Bin%2Ba%2Bshell%2Bscript%26btnG%3DGoogle%2BSearch%26meta%3Dgroup%253Dcomp.os.linux.misc
 
 :<<'NOTES'

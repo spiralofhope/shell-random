@@ -1,3 +1,6 @@
+#!/usr/bin/env  bash
+
+
 
 :<<NOTE
   insert_character "c" "12345" 2

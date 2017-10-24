@@ -1,3 +1,7 @@
+#!/usr/bin/env  bash
+
+
+
 :<<NOTE
   replace_character "c" "12345" 2
   =>

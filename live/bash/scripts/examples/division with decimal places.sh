@@ -1,3 +1,7 @@
+#!/usr/bin/env  bash
+
+
+
 # Reasoning
 
 # Bash only works with whole numbers and does not return any information about a remainder from a decimal place when dividing with / and since % does not do what I want, I made this function:

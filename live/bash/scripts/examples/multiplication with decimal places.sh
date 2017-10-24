@@ -1,3 +1,7 @@
+#!/usr/bin/env  bash
+
+
+
 :<<NOTES
 Requirements:
 
