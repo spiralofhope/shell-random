@@ -16,29 +16,29 @@ Introduction
 # The one liner
 # printf is a bash builtin, and I could have done something like this:
 
-printf "%4.2f\n" 3.04501
+\printf  "%4.2f\n"  3.04501
 
 for i in 3.016 3.013 3.015 3.045 3.04501
 do
-  printf "pass - %f (%1d) => %4.2f\n" $i 2 $i
+  \printf  "pass - %f (%1d) => %4.2f\n"  "$i"  2  "$i"
 done
 
 
 # Testing:
 
-printf "%4.2f\n" 3.016
+\printf  "%4.2f\n"  3.016
 # => 3.02
 
-printf "%4.2f\n" 3.013
+\printf  "%4.2f\n"  3.013
 # => 3.01
 
-printf "%4.2f\n" 3.015
+\printf  "%4.2f\n"  3.015
 # => 3.02
 
-printf "%4.2f\n" 3.045
+\printf  "%4.2f\n"  3.045
 # => 3.05
 
-printf "%4.2f\n" 3.04501
+\printf  "%4.2f\n"  3.04501
 # => 3.05
 
 
@@ -84,7 +84,11 @@ round() {
     if [[ "$1" =~ '^([0-9]+\.)$' ]]; then
       left=${1%.*}
       # FIXME: This coding cannot deal with a bad $2 ($rounding_digit_location) since that checking is done later on!!
-      number=$( for i in {1..${#2}}; do printf 0; done )
+      number=$(
+        for i in {1..${#2}}; do
+          \printf  0
+        done
+      )
     # ".123" => "0.123"
     elif [[ "$1" =~ '^(\.[0-9]+)$' ]]; then
       left=0
@@ -202,7 +206,11 @@ round() {
 round_test() {
   result=$( round $1 $2 )
   expected=$3
-  if [ "$result" = "$expected" ]; then printf pass ; else ((fail_count++)) ; printf fail - got $result ; fi
+  if [ "$result" = "$expected" ]; then
+    \printf  'pass'
+  else ((fail_count++))
+    printf  "fail - got $result"
+  fi
   \echo  " - $1 ($2) => $3"
 }
 
