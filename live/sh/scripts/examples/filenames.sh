@@ -72,9 +72,9 @@ extension="${input##*.}"
 \echo
 \echo  'Its filename without its path or extension:'
 filename="$( \basename "$input" )"
-base_filename="${filename%.*}"
+filename_without_path_or_extension="${filename%.*}"
 # e.g.:  filenames
-\echo  "$base_filename"
+\echo  "$filename_without_path_or_extension"
 
 
 
