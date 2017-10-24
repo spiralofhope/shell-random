@@ -34,7 +34,7 @@ position_from_right_to_left() {
       ((iteration++))
       ((length--))
     done
-    \echo  $iteration
+    \echo  "$iteration"
     break
   done
 }
