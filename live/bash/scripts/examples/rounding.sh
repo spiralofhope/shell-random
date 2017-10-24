@@ -13,6 +13,7 @@ Introduction
 
 
 
+:<<'ONE_LINER'
 # The one liner
 # printf is a bash builtin, and I could have done something like this:
 
@@ -40,7 +41,7 @@ done
 
 \printf  "%4.2f\n"  3.04501
 # => 3.05
-
+ONE_LINER
 
 
 :<<NOTE
@@ -245,6 +246,7 @@ round_test_cases() {
     \echo  "$fail_count failures"
   fi
 }
+round_test_cases
 
 
 

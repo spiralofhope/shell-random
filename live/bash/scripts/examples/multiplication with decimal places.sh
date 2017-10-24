@@ -17,10 +17,10 @@ multiply() {
       \echo  'ERROR - Needs two parameters'
       break
     fi
-    #if [ ! "$( isnumber $1 )" -eq 0 ] || [ ! "$( isnumber $2 )" -eq 0 ] ; then
-      #\echo  'ERROR - Needs two numbers'
-      #break
-    #fi
+    if [ ! "$( isnumber $1 )" -eq 0 ] || [ ! "$( isnumber $2 )" -eq 0 ] ; then
+      \echo  'ERROR - Needs two numbers'
+      break
+    fi
 
     a=$1
     b=$2
