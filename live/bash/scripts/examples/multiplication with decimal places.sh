@@ -58,7 +58,9 @@ multiply() {
 
 
 
+# -----------------------------
 if [ ! $test ]; then exit 0; fi
+
 
 
 \echo
