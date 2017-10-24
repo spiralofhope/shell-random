@@ -6,7 +6,9 @@
 # While this could be used directly on a video, it will be terribly slow.  Instead:  transcode the file resulting from `rip-audio-from-video.sh`
 
 
-# 2017-10-23 - Tested on Devuan-1.0.0-jessie-i386-DVD with libav 6:11.9-1~deb8u1
+# 2017-10-23 - Tested on Devuan-1.0.0-jessie-i386-DVD with:
+#   dash 0.5.7-4
+#   libav 6:11.9-1~deb8u1
 #debug=true
 #verbose='--verbose'
 
