@@ -13,7 +13,7 @@ source  './string edit - insert a character.sh'
 
 multiply() {
   until [ 'sky' = 'falling' ]; do
-    if [ -z $1 ]; then
+    if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ]; then
       \echo  'ERROR - Needs two parameters'
       break
     fi
