@@ -18,14 +18,20 @@
 
 
 
+debug() {
+  if [ $debug ]; then
+    \echo  $*
+  fi
+}
+
+
+
 {  # source expanded path
   input="$1"
   source_file="$( \realpath "$input" )"
 
-  if [ $debug ]; then
-    \echo  'source is:'
-    \echo  "$source_file"
-  fi
+  debug  'source is:'
+  debug  "$source_file"
 }
 
 
@@ -36,10 +42,8 @@
   append=" _.mp3"
   target_file="${directory_without_file}/${filename_without_path_or_extension}${append}"
 
-  if [ $debug ]; then
-    \echo  'target is:'
-    \echo  "$target_file"
-  fi
+  debug  'target is:'
+  debug  "$target_file"
 }
 
 
@@ -62,10 +66,8 @@
   # TODO - Use a proper temporary file.
   append=.$$
   temp_filename="${target_file}${append}"
-  if [ $debug ]; then
-    \echo  'temp file is:'
-    \echo  "$temp_filename"
-  fi
+  debug  'temp file is:'
+  debug  "$temp_filename"
   \vbrfix  -makevbr  "$target_file"  "$temp_filename"
   if [ $? -eq 0 ]; then
     \mv  --force  $verbose  "$temp_filename"  "$target_file"

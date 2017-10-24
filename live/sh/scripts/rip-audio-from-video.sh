@@ -14,14 +14,20 @@
 
 
 
+debug() {
+  if [ $debug ]; then
+    \echo  $*
+  fi
+}
+
+
+
 {  # source expanded path
   input="$1"
   source_file="$( \realpath "$input" )"
 
-  if [ $debug ]; then
-    \echo  'source is:'
-    \echo  "$source_file"
-  fi
+  debug  'source is:'
+  debug  "$source_file"
 }
 
 
@@ -37,19 +43,15 @@
       \sed  --quiet  's/.* Audio: \([^,]*\).*/\1/p' \
     )"
 
-    if [ $debug ]; then
-      \echo  'audio_codec is:'
-      \echo  "$audio_codec"
-    fi
+    debug  'audio_codec is:'
+    debug  "$audio_codec"
   }
   append=".${audio_codec}"
 
   target_file="${directory_without_file}/${filename_without_path_or_extension}${append}"
 
-  if [ $debug ]; then
-    \echo  'target is:'
-    \echo  "$target_file"
-  fi
+  debug  'target is:'
+  debug  "$target_file"
 }
 
 
