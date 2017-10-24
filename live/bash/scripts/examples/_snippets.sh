@@ -5,7 +5,8 @@
 # String length:
 
 string=abc
-length=${#string} # => 3
+length="${#string}"
+# => 3
 
 
 
@@ -14,9 +15,9 @@ length=${#string} # => 3
 string=abcdefg
 if [[ "$string" =~ '(.*)cd(.*)' ]]
 then
-  echo matched
+  \echo  'matched'
 else
-  echo not matched
+  \echo  'not matched'
 fi
 
 # Creates $BASH_REMATCH for what was matched.
@@ -27,8 +28,10 @@ fi
 
 string=abcdefg
 position=4
-truncate=${string:$position} # => efgh
-echo ${string%$truncate*} # => abcd
+truncate="${string:$position}"
+# => efgh
+\echo  "${string%$truncate*}"
+# => abcd
 
 
 
@@ -37,9 +40,12 @@ echo ${string%$truncate*} # => abcd
 string=abcdefg
 position=4
 run=2
-truncate=${string:$position} # => efgh
-truncate=${string%$truncate*} # => abcd
-echo ${truncate:$run} # => cd
+truncate="${string:$position}"
+# => efgh
+truncate="${string%$truncate*}"
+# => abcd
+\echo  "${truncate:$run}"
+# => cd
 
 
 
@@ -48,12 +54,12 @@ echo ${truncate:$run} # => cd
 string=abcdefg
 match=abc
 if [[ $string =~ $match ]]; then : ; fi
-echo ${string#*$BASH_REMATCH}
+\echo  "${string#*$BASH_REMATCH}"
 
 # I dunno... something like this?
 
-string="0x01a00112 0 5745 localhost Mozilla Firefox"
-echo ${string#*`hostname`}
+string='0x01a00112 0 5745 localhost Mozilla Firefox'
+\echo  "${string#*$( \hostname )}"
 
 # This seems to work differently if string is $@ .. or using $@ directly instead of an intermediate variable..
 
@@ -65,7 +71,8 @@ echo ${string#*`hostname`}
 
 string=abcdefg
 position=2
-echo ${string:$position} # => cdefg
+\echo  "${string:$position}"
+# => cdefg
 
 
 
@@ -74,53 +81,48 @@ echo ${string:$position} # => cdefg
 string=abcdefg
 position=2
 run=2
-echo ${string:$position:$run} # => cd
+\echo  "${string:$position:$run}"
+# => cd
 
 
 
 # String extraction, from a match: 
 
 num=123.456
-echo ${num%.*} # => 123
-echo ${num#*.} # => 456
+\echo  "${num%.*}"
+# => 123
+\echo  "${num#*.}"
+# => 456
 
 
 
 # Break out of a parameter in .bashrc in xterm, without killing xterm
-
 parameter() {
-  until [ "sky" = "falling" ]; do
-    if [ ! "foo" = "bar" ]; then echo this should be the only line! ; break ; fi
-    echo this should not be seen
+  until [ 'sky' = 'falling' ]; do
+    if [ ! 'foo' = 'bar' ]; then
+      \echo  'this should be the only line!'
+      break
+    fi
+    \echo  'this should not be seen'
     break
   done 
 }
 
 
 
-# Procedures:
-
+# ----------
+# Procedures
+# ----------
 testing() {
- echo "it works!"
+  \echo  'it works!'
 }
 testing
-
 # => it works!
 
-testing() {
- echo "it works! $1"
-}
-testing "string"
 
+
+testing() {
+  \echo  "it works! $1"
+}
+testing  'string'
 # => it works! string
-
-
-
-# Pass an array to a procedure:
-
-testing() {
-  for element in ${@[@]}; do
-    echo $element
-  done
-}
-testing string "two words" 1
