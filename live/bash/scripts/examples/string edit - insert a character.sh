@@ -2,6 +2,10 @@
 
 
 
+test=true
+
+
+
 insert_character() {
   unset searchstring_success
   until [ 'sky' = 'falling' ]; do
@@ -32,6 +36,10 @@ insert_character() {
     break
   done
 }
+
+
+
+if [ ! $test ]; then exit 0; fi
 
 
 \echo  "insert_character 'c' '12345' '2'"

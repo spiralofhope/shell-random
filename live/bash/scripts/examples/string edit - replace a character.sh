@@ -2,6 +2,10 @@
 
 
 
+test=true
+
+
+
 replace_character() {
   unset searchstring_success
   until [ 'sky' = 'falling' ]; do
@@ -35,6 +39,9 @@ replace_character() {
   done
 }
 
+
+
+if [ ! $test ]; then exit 0; fi
 
 
 \echo  "replace_character 'c' '12345' '2'"
