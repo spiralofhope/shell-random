@@ -13,9 +13,9 @@ control_c()
 }
 
 # for loop from 1/10 to 10/10
-for a in $( \seq 1 10 ); do
-  \echo  "$a/10 to Exit."
+for i in $( \seq 10 1 ); do
+  \echo  "Exiting in $i"
   \sleep  1
 done
 
-\echo  "Exiting trap example." 
+\echo  'Exiting trap example."'
