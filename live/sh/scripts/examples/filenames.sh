@@ -20,48 +20,61 @@ HEREDOC
 
 
 
-\echo  ' * Working with directories:'
-\echo
+\echo  ' * Working with a file:'
+
 
 \echo
 \echo  'This file:'
 # e.g.:  ./examples/filenames.sh
 \echo  "$0"
+# This very script:
+input="$0"
+
 
 \echo
-\echo  'Its complete path:'
-\echo  'Note - This "fills out" things like ./dir/file.ext'
+\echo  'Its expanded path:'
+\echo  '  Note - This "fills out" things like ./dir/file.ext'
 # e.g.:  /some/dir/filenames.sh
-\echo  "$( \realpath "$0" )"
+expanded_filename="$( \realpath "$input" )"
+\echo  "$expanded_filename"
+
 
 \echo
 \echo  'Its directory without its file:'
 # e.g.:  ./examples
-\echo  "$( \dirname "$0" )"
+directory_without_file="$( \dirname "$input" )"
+\echo  "$directory_without_file"
+
 
 \echo
-\echo  'Its complete directory path without its file:'
-\echo  'Note - This "fills out" things like ./dir'
+\echo  'Its expanded directory path without its file:'
+\echo  '  Note - This "fills out" things like ./dir'
 # e.g.:  /some/dir'
-\echo  'Note - You might want to add a trailing slash yourself.'
-\echo  "$( \dirname $( \realpath "$0" ) )"
+\echo  '  Note - You might want to add a trailing slash yourself.'
+expanded_directory_without_file="$( \dirname $( \realpath "$input" ) )"
+\echo  "$expanded_directory_without_file"
+
 
 \echo
 \echo  'Its filename without its path:'
 # e.g.:  filenames.sh
-\echo  "$( \basename "$0" )"
+filename="$( \basename "$input" )"
+\echo  "$filename"
+
 
 \echo
 \echo  'Its extension:'
 # e.g.:  sh
-\echo  "${0##*.}"
+extension="${input##*.}"
+\echo  "$extension"
+
 
 \echo
 \echo  'Its filename without its path or extension:'
-__="$( \basename "$0" )"
-__="${__%.*}"
+filename="$( \basename "$input" )"
+base_filename="${filename%.*}"
 # e.g.:  filenames
-\echo  "$__"
+\echo  "$base_filename"
 
 
 
@@ -70,22 +83,56 @@ __="${__%.*}"
 \echo  '--'
 \echo
 \echo  ' * Working with directories:'
-\echo
+\echo  "   The following examples will use this very file's directory:"
+directory_without_file="$( \dirname "$input" )"
+example_directory="$directory_without_file"
+# e.g.  ./some/dir
+#       /path/to/some/dir
+\echo  "$example_directory"
 
 # These are simple examples, but being able to deal with more complex examples would require some heavier scripting:
 #   - Count the number of subdirectories
 #   - Show the second directory
 #   - etc.
 
-\echo  "Its directory's earliest directory is:"
-# e.g.:  ./examples
-__="$( \dirname "$0" )"
-\echo  "$( \dirname "$__" )"
 
 \echo
-\echo  "Its directory's final directory is:"
+\echo  "It's expanded path is:"
+\echo  '  Note - This "fills out" things like ./dir'
+expanded_directory="$( \realpath "$example_directory" )"
+# e.g. /path/to/some/dir
+\echo  "$expanded_directory"
+
+
+\echo
+\echo  "It's last directory is:"
+# e.g.:  dir
+last_directory="$( \basename "$example_directory" )"
+\echo  "$last_directory"
+
+
+\echo
+\echo  "It's second-last directory (not-expanded) is:"
 # e.g.:  ./examples
-__="$( \dirname "$0" )"
-\echo  "$( \basename "$__" )"
+second_last_directory="$( \dirname "$example_directory" )"
+\echo  "$second_last_directory"
+
+
+\echo
+\echo  "It's second-last directory (expanded path) is:"
+# e.g.:  ./examples
+second_last_directory="$( \dirname "$example_directory" )"
+second_last_directory_expanded="$( \realpath "$second_last_directory" )"
+\echo  "$second_last_directory_expanded"
+
+
+\echo
+\echo  "It's second-last directory (name) is:"
+# e.g. /path/to/some
+second_last_directory="$( \dirname "$example_directory" )"
+second_last_directory_expanded="$( \realpath "$second_last_directory" )"
+second_last_directory_expanded_last="$( \basename "$second_last_directory_expanded" )"
+\echo  "$second_last_directory_expanded_last"
+
 
 \echo
