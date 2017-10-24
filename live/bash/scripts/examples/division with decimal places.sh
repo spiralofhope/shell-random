@@ -2,6 +2,10 @@
 
 
 
+#test=true
+
+
+
 # Reasoning
 
 # Bash only works with whole numbers and does not return any information about a remainder from a decimal place when dividing with / and since % does not do what I want, I made this function:
@@ -12,16 +16,22 @@ divide() {
   # Just simple for now.  Elsewhere I have more complex code that's more thorough
   isnumber() {
     if expr $1 + 1 &> /dev/null ; then
-      echo "0"
+      \echo  '0'
     else
-      echo "1"
+      \echo  '1'
     fi
   }
 
   # Since "exit" also exits xterm, I do this to allow "break" to end this procedure.
   until [ "sky" = "falling" ]; do
-  if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] ; then echo "Needs two parameters"; break ; fi
-  if [ ! `isnumber $1` -eq 0 ] || [ ! `isnumber $2` -eq 0 ] ; then echo "Needs two numbers"; break; fi
+  if [ ! "$#" -eq 2 ] || [ "$1" = '' ] || [ "$2" = '' ] ; then
+    \echo  'ERROR - Needs two parameters'
+    break
+  fi
+  if [ ! `isnumber $1` -eq 0 ] || [ ! `isnumber $2` -eq 0 ] ; then
+    \echo  'ERROR - Needs two numbers'
+    break
+  fi
 
   left=$1
   right=$2
@@ -37,7 +47,7 @@ divide() {
   answer_right=${answer_right#*$answer_left}
 
   # Add a dot.  Must be combined into a variable otherwise the final echo won't work.
-  echo $answer_left"."$answer_right
+  \echo  "$answer_left"'.'"$answer_right"
 
 break
 done
@@ -45,11 +55,15 @@ done
 
 
 
-:<<Usage
+# -----------------------------
+if [ ! $test ]; then exit 0; fi
+
 
 divide 688 304
-# => 2.2631
+# =>
+# 2.2631
 
-a=`divide 688 304`;echo $a
-# => 2.2631
-Usage
+__=$( divide 688 304 )
+\echo  $__
+# =>
+# 2.2631
