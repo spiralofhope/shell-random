@@ -41,6 +41,7 @@ replace_character() {
 
 
 
+# -----------------------------
 if [ ! $test ]; then exit 0; fi
 
 
