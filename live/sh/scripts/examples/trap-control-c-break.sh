@@ -12,10 +12,10 @@ control_c()
   #exit  0
 }
 
-# for loop from 1/10 to 10/10
-for i in $( \seq 10 1 ); do
-  \echo  "Exiting in $i"
+for i in $( \seq  3  -1  1 ); do
+  \echo  "Exiting in $i.."
   \sleep  1
 done
 
+\echo
 \echo  'Exiting trap example."'
