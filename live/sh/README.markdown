@@ -1,7 +1,7 @@
 It's very likely that I'm using `dash`
 
-  http://gondor.apana.org.au/~herbert/dash/
-  https://blog.spiralofhope.com/?p=23919
+  - http://gondor.apana.org.au/~herbert/dash/
+  - https://blog.spiralofhope.com/?p=23919
 
 ----
 
