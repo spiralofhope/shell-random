@@ -14,5 +14,5 @@ zsh
 
 On Debian, you can learn their versions with:
 
-`\apt-cache  policy  bash`
-`\apt-cache  policy  zsh`
+  - `\apt-cache  policy  bash`
+  - `\apt-cache  policy  zsh`
