@@ -16,6 +16,6 @@ On Windows, you can learn the version of `bash` with:
 
 `\bash  --version`
 
-On Windows, you can learn the version of `git` with:
+On Windows, you can learn the version of `git` and the "Git for Windows" install with:
 
-TODO
+`\git  --version`
