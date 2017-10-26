@@ -1,6 +1,9 @@
 #!/bin/sh
 
 
+
+debug=true
+
 # FIXME - must not be run as root
 # TODO - It's stupid of me to house files and directories without their leading dot.  Untangle this.
 
@@ -15,6 +18,12 @@ date="$( \date +%Y-%m-%d--%H-%M-%S )"
 for i in *; do
   if [ ! -f "$i" ]; then
     continue
+  fi
+  if [ "$i" = 'go.sh' ]; then
+    continue
+  fi
+  if [ $debug ]; then
+    \echo  "$i"
   fi
   # Back up any existing files.
   # If a file and not a symlink.
