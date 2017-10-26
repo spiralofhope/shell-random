@@ -18,6 +18,7 @@ else
 fi
 
 # Keeping it out of ~/.zsh/ allows that directory's contents to be shared.
+HISTFILE=
 HISTFILE=~/.zsh_histfile
 HISTSIZE=10000
 SAVEHIST=10000
@@ -162,4 +163,11 @@ if [ "$PWD" == "$HOME" ]; then
   # Using the fancy df alias
   df
   \echo
+fi
+
+
+if [ -d '/cygwin' ]; then
+  for i in "$zshdir/../babun"/*.sh; do
+    \source  "$i"
+  done
 fi
