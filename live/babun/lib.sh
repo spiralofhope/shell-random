@@ -5,9 +5,9 @@
 
 PF=$( \realpath '/c/Program Files' )
 PFx="${PF} (x86)"
-# The Windows-style versions
-wPF=$(  \cygpath "$PF" )
-wPFx=$( \cygpath "$PFx" )
+# The Windows-style versions:
+wPF=$(  \cygpath  "$PF"  )
+wPFx=$( \cygpath  "$PFx" )
 
 
 
