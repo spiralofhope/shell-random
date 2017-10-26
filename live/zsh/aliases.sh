@@ -1,6 +1,6 @@
-# --
-# --  Zshisms
-# --
+#!/usr/bin/env  zsh
+
+
 
 # MIME is possible, but I can't figure it out.
 # autoload -U zsh-mime-setup
