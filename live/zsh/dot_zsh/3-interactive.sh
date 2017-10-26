@@ -9,16 +9,17 @@ IDEAS
 
 
 {  #  Paths
-  zshdir=/l/shell-random/git/live/zsh
+  zshdir='/l/shell-random/git/live/zsh'
 
-  PATH=/l/OS/bin:$PATH
-  PATH=$PATH:/l/shell-random/git/live
-  PATH=$PATH:/l/shell-random/git/live/sh/scripts
-  PATH=$PATH:/l/shell-random/git/live/bash/scripts
-  PATH=$PATH:/l/shell-random/git/live/zsh/scripts
-  if [ $( \whoami ) = root ]; then
-    PATH=$PATH:/sbin
-    PATH=$PATH:/usr/sbin
+  PATH='/l/OS/bin':"$PATH"
+  PATH="$PATH":'/l/shell-random/git/live'
+  PATH="$PATH":'/l/shell-random/git/live/sh/scripts'
+  PATH="$PATH":'/l/shell-random/git/live/bash/scripts'
+  PATH="$PATH":'/l/shell-random/git/live/zsh/scripts'
+  # FIXME/TODO - Babun:  Tentative testing suggests there are valid applications within, but Babun is running as user.
+  if [ $( \whoami ) = 'root' ]; then
+    PATH="$PATH":'/sbin'
+    PATH="$PATH":'/usr/sbin'
   fi
 }
 
@@ -26,8 +27,7 @@ IDEAS
 
 {  #  History
   # Keeping it out of ~/.zsh/ allows that directory's contents to be shared.
-  HISTFILE=
-  HISTFILE=~/.zsh_histfile
+  HISTFILE="~/.zsh_histfile"
   HISTSIZE=10000
   SAVEHIST=10000
   # Neither of these work to let me prepend a command with a space and have it not commit a command to the histfile.
@@ -35,9 +35,9 @@ IDEAS
   # HISTCONTROL=ignoredups:ignorespace
   # HISTCONTROL=ignoreboth
   #To save every command before it is executed (this is different from bash's history -a solution):
-  setopt inc_append_history
+  \setopt  inc_append_history
   #To retrieve the history file everytime history is called upon.
-  setopt share_history
+  \setopt  share_history
 }
 
 # Change the highlight colour.  Underlining doesn't seem to work.
@@ -45,20 +45,23 @@ zle_highlight=(region:bg=red special:underline)
 
 # The default:
 # export  WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
-export  WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+\export  WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-eval  $( \dircolors -b )
-export  LS_COLORS=${LS_COLORS}":*.7z=01;31"
+\eval  $( \dircolors -b )
+\export  LS_COLORS=${LS_COLORS}":*.7z=01;31"
 
 
 
 {  #  Prompt
-  # This block lets me copy my .zsh for the root user.
+  # A decent default prompt:
+  # autoload -U promptinit && promptinit && prompt suse
+
+  # This block lets me copy this .zshrc for the root user.
   # Test for permission.
   if [ $( \whoami ) = root ]; then
-    local  _my_color=red
+    prompt_end_color='red'
   else
-    local  _my_color=blue
+    prompt_end_color='blue'
   fi
 
 
@@ -70,23 +73,21 @@ export  LS_COLORS=${LS_COLORS}":*.7z=01;31"
     # There are other solutions for things like tmux.
 
     if [ $( \echo  "$PWD"  |  \wc  --chars ) -lt $[($COLUMNS/2)-1] ]; then
-    # This is a little odd, to allow copy-paste from whole commandlines without fucking things up.
-      PS1="%{$fg[black]%}\`# %{$reset_color%}%~ %{$fg_bold[$_my_color]%}>%{$fg_no_bold[black]%}\`;%{$reset_color%}"
+      # This is a little odd, to allow copy-paste from whole commandlines without fucking things up.
+      PS1="%{$fg[black]%}\`# %{$reset_color%}%~ %{$fg_bold[$prompt_end_color]%}>%{$fg_no_bold[black]%}\`;%{$reset_color%}"
     else
-    # I want to display the full path, but I'm sick of starting off right at the end of a long one.
-      PS1="%{$fg[black]%}\`# %{$reset_color%}%~ %{$fg_bold[$_my_color]%}>%{$fg_no_bold[black]%}\`;%{$reset_color%}
-    %{$fg_bold[$_my_color]%}>%{$reset_color%} "
+      # I want to display the full path, but I'm sick of starting off right at the end of a long one.
+      PS1="%{$fg[black]%}\`# %{$reset_color%}%~ %{$fg_bold[$prompt_end_color]%}>%{$fg_no_bold[black]%}\`;%{$reset_color%}
+    %{$fg_bold[$prompt_end_color]%}>%{$reset_color%} "
     fi
   }
 
+  # Original, simplified, method:
   #PS1="%~ %{$fg_bold[red]%}> %{$reset_color%}"
   #PS1=%~$'%{\e[31;1m%} > %{\e[0m%}'
 
   #PS1="%~ %{$fg_bold[blue]%}> %{$reset_color%}"
   #PS1=%~$'%{\e[34;1m%} > %{\e[0m%}'
-
-  # A decent default prompt:
-  # autoload -U promptinit && promptinit && prompt suse
 }
 
 
@@ -103,7 +104,7 @@ export  LS_COLORS=${LS_COLORS}":*.7z=01;31"
       ;;
     esac
   }
-  chpwd
+  \chpwd
 }
 
 
