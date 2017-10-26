@@ -6,18 +6,16 @@ alias  cp='\cp  --interactive'
 alias  mv='\mv  --interactive'
 alias  rm='\rm  --interactive'
 alias  md='\mkdir'
-# -P  Do not follow symbolic links
-alias  cd='\cd  -P'
-alias  ..='  \cd  -P  ..'
-alias  cd..='\cd  -P  ..'
 alias  du='\du  --human-readable'
 alias  cls='\clear'
 alias  more='less  --quit-at-eof  --quit-if-one-screen'
-alias  less='\less  --RAW-CONTROL-CHARS'
 
-# Had  --raw-control-chars  in the past, and this version was thought to be tidier.  I don't notice any issues.
+# This won't work on cygwin, and I'm not even sure what it was for..
+#alias  cd='\cd  --no-dereference'
+#alias  ..='  \cd  --no-dereference  ..'
+#alias  cd..='\cd  --no-dereference  ..'
+alias  ..='  \cd  ..'
+alias  cd..='\cd  ..'
+
 alias  less='\less  --RAW-CONTROL-CHARS'
 #alias  less='\less  --force  --RAW-CONTROL-CHARS  --quit-if-one-screen  $@'
-# --follow-name would allow the file to be edited and less will automatically display changes.
-LESS=' --force  --ignore-case  --long-prompt  --no-init  --silent  --status-column  --tilde  --window=-2'
-export LESS
