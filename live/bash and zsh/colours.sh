@@ -61,13 +61,15 @@ initializeANSI() {
 
 initializeANSI
 
-#cat << EOF
-#${yellowf}This is a phrase in yellow${redb} and red${reset}
-#${boldon}This is bold${ulon} this is italics${reset} bye bye
-#${italicson}This is italics${italicsoff} and this is not
-#${ulon}This is ul${uloff} and this is not
-#${invon}This is inv${invoff} and this is not
-#${yellowf}${redb}Warning I${yellowb}${redf}Warning II${reset}
-#EOF
-
-#cat << EOF
+test_initializeANSI() {
+cat << EOF
+${yellowf}This is a phrase in yellow${redb} and red${reset}
+${boldon}This is bold${ulon} this is italics${reset} bye bye
+${italicson}This is italics${italicsoff} and this is not
+${ulon}This is ul${uloff} and this is not
+${invon}This is inv${invoff} and this is not
+${yellowf}${redb}Warning I${yellowb}${redf}Warning II${reset}
+EOF
+}
+#test_initializeANSI
+unset -f test_initializeANSI
