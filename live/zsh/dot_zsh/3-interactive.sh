@@ -17,7 +17,8 @@ else
   # do nothing
 fi
 
-HISTFILE=~/.zsh/histfile
+# Keeping it out of ~/.zsh/ allows that directory's contents to be shared.
+HISTFILE=~/.zsh_histfile
 HISTSIZE=10000
 SAVEHIST=10000
 # Neither of these work to let me prepend a command with a space and have it not commit a command to the histfile.

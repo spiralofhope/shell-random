@@ -1,3 +1,7 @@
+#!/usr/bin/env  sh
+
+
+
 # TODO:  Add lots more.  Check my notes.
 
   # I compile it.

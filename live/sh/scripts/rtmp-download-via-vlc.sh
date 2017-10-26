@@ -1,3 +1,7 @@
+#!/usr/bin/env  sh
+
+
+
 \vlc \
   -I dummy \
   "$1" \
