@@ -38,7 +38,7 @@ alias  hg="${PF}/\TortoiseHg/hg.exe"
 # Midnight Commander, file thingy
 # http://www.midnight-commander.org/
 # http://sourceforge.net/projects/mcwin32/
-alias  mc="${PFx}/Midnight\ Commander/mc.exe"
+alias  mc="${PFx}/Midnight Commander/mc.exe"
 
 # 7zip compression, filename.7z
 # http://www.7-zip.org/
@@ -54,5 +54,6 @@ alias  rsync='${GIT_DIRECTORY}/bin/cwRsync/rsync.exe'
 # --  Windows GUI applications
 # --
 
-
-alias  geany="${PFx}/Geany/bin/Geany.exe"
+geany() {
+  "${PFx}/Geany/bin/geany.exe"  $* &
+}

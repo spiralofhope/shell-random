@@ -26,8 +26,9 @@ export  PATH="${PATH}:${GIT_DIRECTORY}/bin"
 export  PATH="${PATH}:$shell_random/live/"
 export  PATH="${PATH}:$shell_random/live/sh/scripts/"
 export  PATH="${PATH}:$shell_random/live/bash-windows/scripts/"
-PF='/c/Program\ Files'
-PFx="${PF}\ \(x86\)"
+# Yes, this odd quoting is needed.
+PF='"/c/Program Files"'
+PFx='/c/Program Files (x86)'
 
 
 
