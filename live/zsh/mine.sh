@@ -1,3 +1,4 @@
+#!/usr/bin/env  zsh
 # TODO - Rename this file.  Move it into lib.sh?
 
 

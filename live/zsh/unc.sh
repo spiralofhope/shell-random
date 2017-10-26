@@ -1,3 +1,4 @@
+#!/usr/bin/env  zsh
 # TODO - Keep this as a separate .sh and just have an alias refer to it.  Dumbass.  Then move this script elsewhere.
 # TODO - Rework things to check for bash-windows and use alternate executables.
 

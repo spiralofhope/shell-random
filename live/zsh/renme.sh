@@ -1,3 +1,4 @@
+#!/usr/bin/env  zsh
 # TODO - Keep this as a separate .sh and just have an alias refer to it.  Dumbass.
 
 

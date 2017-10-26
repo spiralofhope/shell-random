@@ -1,4 +1,4 @@
-#!/usr/local/bin/zsh
+#!/usr/bin/env  zsh
 # Delete the current directory and related files
 # WARNING:  Use at your own risk!  You do back up your files regularly, right?
 

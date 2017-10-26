@@ -1,3 +1,4 @@
+#!/usr/bin/env  zsh
 # Note that `setopt` is a zshism
 
 

@@ -1,3 +1,8 @@
+#!/usr/bin/env  zsh
+# Note that `zstyle` is a zshism
+
+
+
 # completion for *lots* of commands - man, ssh, etc
 zmodload  -i  zsh/complist
 ## Tab completion.
