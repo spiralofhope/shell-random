@@ -12,10 +12,10 @@ IDEAS
   zshdir='/l/shell-random/git/live/zsh'
 
   PATH='/l/OS/bin':"$PATH"
-  PATH="$PATH":'/l/shell-random/git/live'
-  PATH="$PATH":'/l/shell-random/git/live/sh/scripts'
-  PATH="$PATH":'/l/shell-random/git/live/bash/scripts'
-  PATH="$PATH":'/l/shell-random/git/live/zsh/scripts'
+  PATH="$PATH":"$zshdir/../"
+  PATH="$PATH":"$zshdir/../sh/scripts"
+  PATH="$PATH":"$zshdir/../bash/scripts"
+  PATH="$PATH":"$zshdir/../zsh/scripts"
   # FIXME/TODO - Babun:  Tentative testing suggests there are valid applications within, but Babun is running as user.
   if [ $( \whoami ) = 'root' ]; then
     PATH="$PATH":'/sbin'
