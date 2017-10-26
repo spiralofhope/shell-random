@@ -3,7 +3,7 @@
 
 
 
-#debug=true
+debug=true
 
 
 {  #  PATH
@@ -29,21 +29,21 @@
 
 
 {  #  Variables
-  # TODO - I don't know how to detect where "Program Files" is.
-  PF=$( \realpath '/c/Program Files' )
-  # TODO - I don't know how to detect where "Program Files (x86)" is.
-  PFx="${PF} (x86)"
-  # The Windows-style versions:
-  wPF=$(  \cygpath  --mixed  "$PF"  )
-  wPFx=$( \cygpath  --mixed  "$PFx" )
-  windows_home_as_linux="$( \cygpath  --desktop )"
-  # TODO - I don't know how to detect where the user's folder is.
-  windows_home_as_linux="$( \dirname  "$windows_home_as_linux" )"
-  # Note that I use --mixed to use forward-slashes (/) and not backslashes (\) because backslashes are an impossible problem.
+  # Note that I use --mixed to use forward-slashes (/) and not backslashes (\) because backslashes are an impossible problem to overcome.
   # Windows can work with forward slashes just fine, so don't worry.
-  windows_home_as_windows="$( \cygpath --desktop  --mixed )"
-  # TODO - I don't know how to detect where the user's folder is.
-  windows_home_as_windows="$( \dirname  "$windows_home_as_windows" )"
+
+  # CSIDL_PROGRAM_FILES 0x0026  --  This still reports (x86)
+  PF="$( \cygpath  --folder 0x0026 )"
+  # FIXME - Semi-manually doing it:
+  PF="$( \dirname  "$PF" )/Program Files"
+  # CSIDL_PROGRAM_FILESX86 0x002a
+  PFx="$( \cygpath  --folder 0x002a )"
+  # The Windows-style versions:
+  wPF="$(  \cygpath  --mixed  "$PF"  )"
+  wPFx="$( \cygpath  --mixed  "$PFx" )"
+  # CSIDL_PROFILE 0x0028
+  windows_home_as_linux="$( \cygpath  --folder 0x0028 )"
+  windows_home_as_windows="$( \cygpath  --mixed  "$windows_home_as_linux" )"
 
   if [ $debug ]; then
     \echo  "PF   = $PF"
@@ -73,6 +73,7 @@ geany() {  #  The GUI editor
 
 
 
+\unset  debug
 
 
 
