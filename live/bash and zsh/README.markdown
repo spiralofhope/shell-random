@@ -1,3 +1,5 @@
+This is for both bash and zsh, but not for sh/dash.
+
 Bash:
 
   - https://www.gnu.org/software/bash/
