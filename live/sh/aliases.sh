@@ -1,7 +1,5 @@
-# These work on zsh and bash-windows
+#!/usr/bin/env  sh
 
-# bash-windows tested 2016-01-29 on Windows 10, updated recently
-#   GNU bash, version 3.1.20(4)-release (i686-pc-msys)
 
 
 alias  cp='\cp  --interactive'
