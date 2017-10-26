@@ -3,7 +3,7 @@
 
 
 
-debug=true
+#debug=true
 
 
 {  #  PATH
