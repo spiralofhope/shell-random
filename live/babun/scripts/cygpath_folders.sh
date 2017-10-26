@@ -1,0 +1,97 @@
+#!/usr/bin/env  sh
+# Output the complete list, usable by:
+#   -F, --folder ID       output special folder with numeric ID and exit
+
+
+
+cygpath_folders_log="$0".txt
+\rm  --force  --verbose  "$cygpath_folders_log"
+\echo 
+\touch                   "$cygpath_folders_log"
+
+
+
+__(){
+  #\echo  "$1"
+  local  __=$( \cygpath  --folder "$2" 2> /dev/null )
+  # This is the error message for invalid things:
+  # cygpath: failed to retrieve special folder path
+  \echo  "$1 $2 = $__" | \tee  --append  "$cygpath_folders_log"
+}
+
+
+# The following list was taken and slightly-modified from:
+#   /usr/include/w32api/shlobj.h
+# 2017-10-25 - Babun 1.2.0 (Cygwin version unknown)
+# IDEA - Fetch and build this list automatically.
+# IDEA - Build this into a line break-separated list, so it's cleaner, and then iterate.
+__ OFASI_EDIT 0x0001
+__ OFASI_OPENDESKTOP 0x0002
+__ CSIDL_DESKTOP 0x0000
+__ CSIDL_INTERNET 0x0001
+__ CSIDL_PROGRAMS 0x0002
+__ CSIDL_CONTROLS 0x0003
+__ CSIDL_PRINTERS 0x0004
+__ CSIDL_PERSONAL 0x0005
+__ CSIDL_FAVORITES 0x0006
+__ CSIDL_STARTUP 0x0007
+__ CSIDL_RECENT 0x0008
+__ CSIDL_SENDTO 0x0009
+__ CSIDL_BITBUCKET 0x000a
+__ CSIDL_STARTMENU 0x000b
+__ CSIDL_MYDOCUMENTS CSIDL_PERSONAL
+__ CSIDL_MYMUSIC 0x000d
+__ CSIDL_MYVIDEO 0x000e
+__ CSIDL_DESKTOPDIRECTORY 0x0010
+__ CSIDL_DRIVES 0x0011
+__ CSIDL_NETWORK 0x0012
+__ CSIDL_NETHOOD 0x0013
+__ CSIDL_FONTS 0x0014
+__ CSIDL_TEMPLATES 0x0015
+__ CSIDL_COMMON_STARTMENU 0x0016
+__ CSIDL_COMMON_PROGRAMS 0x0017
+__ CSIDL_COMMON_STARTUP 0x0018
+__ CSIDL_COMMON_DESKTOPDIRECTORY 0x0019
+__ CSIDL_APPDATA 0x001a
+__ CSIDL_PRINTHOOD 0x001b
+__ CSIDL_LOCAL_APPDATA 0x001c
+__ CSIDL_ALTSTARTUP 0x001d
+__ CSIDL_COMMON_ALTSTARTUP 0x001e
+__ CSIDL_COMMON_FAVORITES 0x001f
+__ CSIDL_INTERNET_CACHE 0x0020
+__ CSIDL_COOKIES 0x0021
+__ CSIDL_HISTORY 0x0022
+__ CSIDL_COMMON_APPDATA 0x0023
+__ CSIDL_WINDOWS 0x0024
+__ CSIDL_SYSTEM 0x0025
+__ CSIDL_PROGRAM_FILES 0x0026
+__ CSIDL_MYPICTURES 0x0027
+__ CSIDL_PROFILE 0x0028
+__ CSIDL_SYSTEMX86 0x0029
+__ CSIDL_PROGRAM_FILESX86 0x002a
+__ CSIDL_PROGRAM_FILES_COMMON 0x002b
+__ CSIDL_PROGRAM_FILES_COMMONX86 0x002c
+__ CSIDL_COMMON_TEMPLATES 0x002d
+__ CSIDL_COMMON_DOCUMENTS 0x002e
+__ CSIDL_COMMON_ADMINTOOLS 0x002f
+__ CSIDL_ADMINTOOLS 0x0030
+__ CSIDL_CONNECTIONS 0x0031
+__ CSIDL_COMMON_MUSIC 0x0035
+__ CSIDL_COMMON_PICTURES 0x0036
+__ CSIDL_COMMON_VIDEO 0x0037
+__ CSIDL_RESOURCES 0x0038
+__ CSIDL_RESOURCES_LOCALIZED 0x0039
+__ CSIDL_COMMON_OEM_LINKS 0x003a
+__ CSIDL_CDBURN_AREA 0x003b
+__ CSIDL_COMPUTERSNEARME 0x003d
+__ CSIDL_FLAG_CREATE 0x8000
+__ CSIDL_FLAG_DONT_VERIFY 0x4000
+__ CSIDL_FLAG_DONT_UNEXPAND 0x2000
+__ CSIDL_FLAG_NO_ALIAS 0x1000
+__ CSIDL_FLAG_PER_USER_INIT 0x0800
+__ CSIDL_FLAG_MASK 0xff00
+
+
+
+\unset  -f  __
+\unset  cygpath_folders_log
