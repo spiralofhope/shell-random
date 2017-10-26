@@ -3,15 +3,40 @@
 
 
 
-PF=$( \realpath '/c/Program Files' )
-PFx="${PF} (x86)"
-# The Windows-style versions:
-wPF=$(  \cygpath  "$PF"  )
-wPFx=$( \cygpath  "$PFx" )
+#debug=true
 
 
 
-geany() {
+{  #  Variables
+  # TODO - I don't know how to detect where "Program Files" is.
+  PF=$( \realpath '/c/Program Files' )
+  # TODO - I don't know how to detect where "Program Files (x86)" is.
+  PFx="${PF} (x86)"
+  # The Windows-style versions:
+  wPF=$(  \cygpath  --mixed  "$PF"  )
+  wPFx=$( \cygpath  --mixed  "$PFx" )
+  windows_home_as_linux="$( \cygpath  --desktop )"
+  # TODO - I don't know how to detect where the user's folder is.
+  windows_home_as_linux="$( \dirname  "$windows_home_as_linux" )"
+  # Note that I use --mixed to use forward-slashes (/) and not backslashes (\) because backslashes are an impossible problem.
+  # Windows can work with forward slashes just fine, so don't worry.
+  windows_home_as_windows="$( \cygpath --desktop  --mixed )"
+  # TODO - I don't know how to detect where the user's folder is.
+  windows_home_as_windows="$( \dirname  "$windows_home_as_windows" )"
+
+  if [ $debug ]; then
+    \echo  "PF   = $PF"
+    \echo  "PFx  = $PFx"
+    \echo  "wPF  = $wPF"
+    \echo  "wPFx = $wPFx"
+    \echo  "windows_home_as_linux   = $windows_home_as_linux"
+    \echo  "windows_home_as_windows = $windows_home_as_windows"
+  fi
+}
+
+
+
+geany() {  #  The GUI editor
   # The basic solution won't work with symbolic links:
   #\cygstart  '/c/Program Files (x86)/Geany/bin/geany.exe'  $*  &
   for file in $*; do
