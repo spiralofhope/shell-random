@@ -6,6 +6,27 @@
 #debug=true
 
 
+{  #  PATH
+  PATH="$zshdir/../babun/scripts":"$PATH"
+
+  # Babun cannot deal with relative paths.  Iterate through and correct them:
+  # FIXME - An unavoidable slowdown in startup.  Maybe these results could be cached in a file..
+  \unset  __
+  oldIFS="$IFS"
+  IFS=':'
+  for i in $PATH
+  do
+    if [ $debug ]; then
+      \echo  "Processing PATH: $i"
+    fi
+    __="$__":$( \realpath "$i" 2> /dev/null )
+  done 
+  IFS="$oldIFS"
+  PATH="$__"
+  \unset  __
+}
+
+
 
 {  #  Variables
   # TODO - I don't know how to detect where "Program Files" is.
