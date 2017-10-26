@@ -5,5 +5,5 @@
 \alias  current='cd /l/OS'
 
 # Not used/valid under Babun:
-\unalias  sul
-\unalias  previous
+#\unalias sul
+\unalias previous
