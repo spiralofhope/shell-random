@@ -22,6 +22,7 @@ geany() {
     fi
   done
   \cygstart  "$PFx/Geany/bin/geany.exe"  "$string" &
+  \unset  string
 }
 
 
