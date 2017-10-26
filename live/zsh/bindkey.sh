@@ -1,5 +1,5 @@
-# Note that `bindkey` is a zshism
-# NOTE: It's control-v and a key combination to learn the binding.
+#!/usr/bin/env  sh
+# NOTE: control-v and a key combination to learn that binding.
 
 
 
