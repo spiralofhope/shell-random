@@ -29,7 +29,6 @@ zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
 
 
   sourceallthat  "$zshdir/../sh/"
-  sourceallthat  "$zshdir/../bash and zsh/"
   sourceallthat  "$zshdir/"
 
   # Cygwin / Babun
