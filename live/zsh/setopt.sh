@@ -35,10 +35,10 @@
   # Don't duplicate auto_pushd
   \setopt  pushd_ignore_dups
 
-  # Exchanges the meanings of ‘+’ and ‘-' when used with a number to specify a directory in the stack. 
+  # Exchanges the meanings of '+' and '-' when used with a number to specify a directory in the stack. 
   \setopt  pushd_minus
 
-  # Have pushd with no arguments act like ‘pushd $HOME’.
+  # Have pushd with no arguments act like 'pushd $HOME'.
   \setopt  pushd_to_home
 
   # Do not print the directory stack after pushd or popd.
@@ -61,7 +61,7 @@
   # If a parameter is completed whose content is the name of a directory, then add a trailing slash instead of a space. 
   \setopt  auto_param_slash
 
-  # When the current word has a glob pattern, do not insert all the words resulting from the expansion but generate matches as for completion and cycle through them like MENU_COMPLETE. The matches are generated as if a ‘*’ was added to the end of the word, or inserted at the cursor when COMPLETE_IN_WORD is set. This actually uses pattern matching, not globbing, so it works not only for files but for any completion, such as options, user names, etc.
+  # When the current word has a glob pattern, do not insert all the words resulting from the expansion but generate matches as for completion and cycle through them like MENU_COMPLETE. The matches are generated as if a '*' was added to the end of the word, or inserted at the cursor when COMPLETE_IN_WORD is set. This actually uses pattern matching, not globbing, so it works not only for files but for any completion, such as options, user names, etc.
   # Note that when the pattern matcher is used, matching control (for example, case-insensitive or anchored matching) cannot be used. This limitation only applies when the current word contains a pattern; simply turning on the GLOB_COMPLETE option does not have this effect. 
   \setopt  glob_complete
 
@@ -83,12 +83,12 @@
   # Perform filename generation (globbing).
   \setopt  glob
 
-  # Append a trailing ‘/’ to all directory names resulting from filename generation (globbing). 
+  # Append a trailing '/' to all directory names resulting from filename generation (globbing). 
   \setopt  mark_dirs
 
   # Try to avoid the message:  'zsh: no matches found...'
   # If a pattern for filename generation has no matches, print an error, instead of leaving it unchanged in the argument list.
-  # This also applies to file expansion of an initial ‘~’ or ‘=’. 
+  # This also applies to file expansion of an initial '~' or '='. 
   \setopt  no_nomatch
 }
 
@@ -98,7 +98,7 @@
   # If this is set, zsh sessions will append their history list to the history file, rather than replace it. Thus, multiple parallel zsh sessions will all have the new entries from their history lists added to the history file, in the order that they exit. The file will still be periodically re-written to trim it when the number of lines grows 20% beyond the value specified by $SAVEHIST (see also the HIST_SAVE_BY_COPY option).
   \setopt  append_history
 
-  # When writing out the history file, by default zsh uses ad-hoc file locking to avoid known problems with locking on some operating systems. With this option locking is done by means of the system’s fcntl call, where this method is available. On recent operating systems this may provide better performance, in particular avoiding history corruption when files are stored on NFS. 
+  # When writing out the history file, by default zsh uses ad-hoc file locking to avoid known problems with locking on some operating systems. With this option locking is done by means of the system's fcntl call, where this method is available. On recent operating systems this may provide better performance, in particular avoiding history corruption when files are stored on NFS. 
   # I won't be using zsh elsewhere.
   \setopt  hist_fcntl_lock
 
@@ -131,8 +131,8 @@
 
 
 {  #  Input/Output
-  # Allows ‘>’ redirection to truncate existing files, and ‘>>’ to create files.
-  # Otherwise ‘>!’ or ‘>|’ must be used to truncate a file, and ‘>>!’ or ‘>>|’ to create a file. 
+  # Allows '>' redirection to truncate existing files, and '>>' to create files.
+  # Otherwise '>!' or '>|' must be used to truncate a file, and '>>!' or '>>|' to create a file. 
   \setopt  no_clobber
 
   # Try to correct the spelling of commands. Note that, when the HASH_LIST_ALL option is not set or when some directories in the path are not readable, this may falsely report spelling errors the first time some commands are used.
@@ -148,7 +148,7 @@
   # Print the exit value of programs with non-zero exit status.
   \setopt  print_exit_value
 
-  # Do not query the user before executing ‘rm *’ or ‘rm path/*’.
+  # Do not query the user before executing 'rm *' or 'rm path/*'.
   \setopt  no_rm_star_silent
 
   # Allow the short forms of for, repeat, select, if, and function constructs. 
