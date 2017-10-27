@@ -7,10 +7,43 @@
 IDEAS
 
 
+zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
+
+
+{ # 'source' additional scripting and settings.
+
+  function sourceallthat() {
+    \pushd > /dev/null
+    \cd  "$1"
+    if [ -f 'lib.sh' ]; then
+      \source  'lib.sh'
+    fi
+    for i in *.sh; do
+      if [ "$i" = 'lib.sh' ]; then
+        continue
+      fi
+      \source  "$i"
+    done
+    \popd > /dev/null
+  }
+
+
+  sourceallthat  "$zshdir/../sh/"
+  sourceallthat  "$zshdir/../bash and zsh/"
+  sourceallthat  "$zshdir/"
+
+  # Cygwin / Babun
+  if [ -d '/cygdrive' ]; then
+    sourceallthat  "$zshdir/../babun/"
+  fi
+
+  \unset -f sourceallthat
+
+}
+
+
 
 {  #  Paths
-  zshdir='/l/shell-random/git/live/zsh'
-
   PATH='/l/OS/bin':"$PATH"
   PATH="$PATH":"$zshdir/../"
   PATH="$PATH":"$zshdir/../sh/scripts"
@@ -112,44 +145,12 @@ zle_highlight=(region:bg=red special:underline)
       ;;
     esac
   }
-  \chpwd
 }
 
 
 
-{ # 'source' additional scripting and settings.
-
-  function sourceallthat() {
-    \pushd > /dev/null
-    \cd  "$1"
-    if [ -f 'lib.sh' ]; then
-      \source  'lib.sh'
-    fi
-    for i in *.sh; do
-      if [ "$i" = 'lib.sh' ]; then
-        continue
-      fi
-      \source  "$i"
-    done
-    \popd > /dev/null
-  }
-
-
-  sourceallthat  "$zshdir/../sh/"
-  sourceallthat  "$zshdir/../bash and zsh/"
-  sourceallthat  "$zshdir/"
-
-  # Cygwin / Babun
-  if [ -d '/cygdrive' ]; then
-    sourceallthat  "$zshdir/../babun/"
-  fi
-
-  \unset -f sourceallthat
-
-}
-
-
-
+# Set the title
+chpwd
 # I so frequently check for disk space that I ought to do it automatically.
 df
 
