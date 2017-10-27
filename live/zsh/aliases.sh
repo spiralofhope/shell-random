@@ -47,3 +47,5 @@ alias  poweroff='  \sudo  /sbin/poweroff'
 
 alias current=' \cd  /l/OS/current/'
 alias previous='\cd  /l/OS/previous/'
+
+alias git='nocorrect  \git'
