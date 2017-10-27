@@ -60,13 +60,13 @@ zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
 
 {  #  History
   # Keeping it out of ~/.zsh/ allows that directory's contents to be shared.
-  HISTFILE="~/.zsh_histfile"
+  HISTFILE="$HOME/.zsh_histfile"
   HISTSIZE=10000
   SAVEHIST=10000
-  # Neither of these work to let me prepend a command with a space and have it not commit a command to the histfile.
+  # FIXME - Neither of these work to let me prepend a command with a space and have it not commit a command to the histfile.
   #   https://www.reddit.com/r/commandline/comments/4knoj4/
-  # HISTCONTROL=ignoredups:ignorespace
-  # HISTCONTROL=ignoreboth
+  #HISTCONTROL=ignoredups:ignorespace
+  #HISTCONTROL=ignoreboth
 }
 
 
@@ -145,12 +145,11 @@ zle_highlight=(region:bg=red special:underline)
       ;;
     esac
   }
+  chpwd
 }
 
 
 
-# Set the title
-chpwd
 # I so frequently check for disk space that I ought to do it automatically.
 df
 
