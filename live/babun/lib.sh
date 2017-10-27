@@ -5,6 +5,8 @@
 
 #debug=true
 
+# Do not use the system's fcntl call.  Instead, use ad-hoc file locking to avoid known problems with locking on some (*cough* Windows) operating systems.
+\unsetopt  hist_fcntl_lock
 
 {  #  PATH
   PATH="$zshdir/../babun/scripts":"$PATH"
@@ -74,38 +76,3 @@ geany() {  #  The GUI editor
 
 
 \unset  debug
-
-
-
-
-
-
-
-
-
-
-:<<'NOTES'
-# It's probably just a lock on this file preventing ~/.zshrc source-ing it.
-problem(){  # Fix startup freezing
-
-# Problem:
-# Windows file locking will hit $HISTFILE, causing a new shell to freeze on startup.
-
-# Reproduction:
-# Start one instance of Babun
-# nano (this file), make no changes
-# Start another instance of Babun
-# Instance 2 freezes and never gets to the prompt.
-# Exit nano from instance 1
-# type rm (with nothing else)
-# The prompt on instance 2 un-freezes
-
-unsetopt inc_append_history
-unsetopt share_history
-# This frees up locks on $HISTFILE
-\rm >> /dev/null &
-
-# No luck with this
-\flock  --unlock  "$0"
-}
-NOTES
