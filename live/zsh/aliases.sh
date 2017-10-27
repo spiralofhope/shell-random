@@ -17,6 +17,7 @@ alias  mv='nocorrect  \mv  --interactive'
 alias  rm='nocorrect  \rm  --interactive  --one-file-system'
 alias  mkdir='nocorrect  \mkdir'
 alias  man='nocorrect  \man'
+alias  ping='nocorrect  \ping'
 
 
 

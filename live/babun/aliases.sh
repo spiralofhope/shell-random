@@ -8,6 +8,7 @@ alias d:='nocorrect  \cd D:'
 alias D:='nocorrect  \cd D:'
 
 
+
 # -X is to sort by extension.
 # alias  ls='\ls  -1  --all  --classify  --color=auto  --show-control-chars  -X'
 \alias  current='\cd  /l/OS/'
