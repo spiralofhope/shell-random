@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/bin/env  bash
 
-# Tested on Lubuntu 13:10, updated 2013-11-15
+
+
+# 2013-11-16 - Tested on Lubuntu 13.10, updated 2013-11-15
 
 # Props to cryos82 for a nudge in the right direction.
 #   http://sourceforge.net/tracker/?func=detail&aid=2672844&group_id=180858&atid=894872
