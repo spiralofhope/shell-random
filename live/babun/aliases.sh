@@ -22,3 +22,7 @@ alias     wow='\cd  /l/World_of_Warcraft/'
 
 # Not used/valid under Babun:
 \unalias  previous
+
+sudo() {
+  \cygstart  --action=runas  "$*" &
+}
