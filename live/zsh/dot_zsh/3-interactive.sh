@@ -34,11 +34,8 @@ IDEAS
   #   https://www.reddit.com/r/commandline/comments/4knoj4/
   # HISTCONTROL=ignoredups:ignorespace
   # HISTCONTROL=ignoreboth
-  #To save every command before it is executed (this is different from bash's history -a solution):
-  \setopt  inc_append_history
-  #To retrieve the history file everytime history is called upon.
-  \setopt  share_history
 }
+
 
 # Change the highlight colour.  Underlining doesn't seem to work.
 zle_highlight=(region:bg=red special:underline)
