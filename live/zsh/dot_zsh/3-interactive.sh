@@ -47,9 +47,18 @@ zle_highlight=(region:bg=red special:underline)
 # export  WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
 \export  WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-\eval  $( \dircolors -b )
-\export  LS_COLORS=${LS_COLORS}":*.7z=01;31"
-
+{  #  File colors
+  \eval  $( \dircolors  --bourne-shell )
+  # Additional archives
+  \export  LS_COLORS="${LS_COLORS}":'*.7z=01;31'
+  # Windows system files
+  \export  LS_COLORS="${LS_COLORS}":'*.lnk=0;42'
+  # Text files
+  # TODO? - Can I just use a regular filename, like README ?
+  \export  LS_COLORS="${LS_COLORS}":'*.txt=1;37':'*.md=1;37':'*.markdown=1;37'
+  # Videos
+  \export  LS_COLORS="${LS_COLORS}":'*.flv=01;35'
+}
 
 
 {  #  Prompt
