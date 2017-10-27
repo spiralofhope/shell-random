@@ -2,6 +2,7 @@
 
 
 
+# git-bash:
 # To get ANSI working under Windows, use ansicon
 #   https://github.com/adoxa/ansicon
 # on Windows 10:
@@ -12,6 +13,7 @@
 DEBUG=true
 SPINNER=1
 
+# git-bash:
 # Apparently $PF vanishes for this shell..
 #if [ -z "$PF" ]; then
   ## I'm on Linux
@@ -20,7 +22,9 @@ SPINNER=1
   #WINDOWS=true
 #fi
 
+# git-bash:
 # env ought to be smart under Linux.
+# FIXME - this is not valid under Babun/Cygwin
 if [ "$SHELL" = '/usr/bin/bash' ]; then
   WINDOWS=true
 else
@@ -129,11 +133,11 @@ _sleep() {
 
 _audio_alert() {
   if [ -z "$WINDOWS" ]; then
-    # I don't know how to make it not spam.
+    # TODO - improve
     \speaker-test  --test wav  --channels 2  --nloops 1  2> /dev/null
     # NOTE - this repository has earlier code for chiptune-like sound.
   else   # Windows
-    # This does not work
+    # This does not work (in git-windows):
     #powershell -c echo \`a
     # echo `a in powershell worked one time but never again.
     # echo ^g is supposed to work
@@ -205,5 +209,3 @@ alarm.sh 1h &   # Remember to not close this terminal!
 # =>
 # 1             # The number of seconds it's been running.
 usage
-# FIXME - This might pick up another command with the name 'sleep'.
-#         Exactness would require knowing the process number of sleep (which is doable), then checking that specific process number.
