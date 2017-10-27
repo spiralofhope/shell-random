@@ -95,8 +95,6 @@ typeset  -g  -A  key
   #   Pressing tab immediately suggests the full command line.
   #   When the user types something partial, pressing tab immediately cycles through suggested matches.
   \bindkey   '^[[Z'      reverse-menu-complete                          # shift-tab (go back in the list of tab autocompletion items)
-  set  show-all-if-ambiguous  on
-  set  completion-ignore-case on
 }
 
 
