@@ -41,7 +41,8 @@
   # Have pushd with no arguments act like ‘pushd $HOME’.
   \setopt  pushd_to_home
 
-  # Do not print the directory stack after pushd or popd. 
+  # Do not print the directory stack after pushd or popd.
+  # FIXME - This doesn't seem to do anything, am I missing something?
   \setopt  pushd_silent
 }
 

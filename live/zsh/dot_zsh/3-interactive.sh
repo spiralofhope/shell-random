@@ -44,6 +44,7 @@ zle_highlight=(region:bg=red special:underline)
 # export  WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
 \export  WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
+
 {  #  File colors
   \eval  $( \dircolors  --bourne-shell )
   # Additional archives
@@ -56,6 +57,7 @@ zle_highlight=(region:bg=red special:underline)
   # Videos
   \export  LS_COLORS="${LS_COLORS}":'*.flv=01;35'
 }
+
 
 
 {  #  Prompt
@@ -98,7 +100,7 @@ zle_highlight=(region:bg=red special:underline)
 
 
 
-{  # Update the title of a terminal
+{  #  Update the title of a terminal
   chpwd() {
     [[ -t 1 ]] || return
     case $TERM in
