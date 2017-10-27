@@ -1,6 +1,8 @@
 #!/usr/bin/env  sh
-
+# This script has been obsoleted, due to my move away from `KeePassX` to `KeePassXC`.
 # Sometimes keepassx refuses to show on the taskbar (lxpanel)
+
+
 
 \killall  --quiet  keepassx
 
