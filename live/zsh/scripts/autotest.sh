@@ -149,9 +149,9 @@ HEREDOC
 }
 
 setup() {
-  MYSHELL=$( \basename  $( \readlink  /proc/$$/exe ) )
+  MYSHELL="$( \basename  $( \readlink  /proc/$$/exe ) )"
   ORIGINAL_PWD="$PWD"
-  \source  /l/shell-random/git/live/zsh/colours.sh
+  \source  '/l/shell-random/git/live/zsh/colours.sh'
 }
 setup
 
@@ -274,7 +274,7 @@ check_file() {
 
 get_file_ext() {
   AUTOTEST_FILE="$1"
-  AUTOTEST_DIR=$( \dirname "$AUTOTEST_FILE" )
+  AUTOTEST_DIR="$( \dirname "$AUTOTEST_FILE" )"
   # 1.tar.bz2 => tar.bz2 (good, but...)
   #   it also does 1.test.test.tar.bz2 => test.test.tar.bz2 (bad idea!)
   # EXT=${AUTOTEST_FILE#*.}
@@ -371,7 +371,7 @@ get_file_ext() {
         #/usr/bin/mythryl should only be invoked via ''#!...'' line in a script!
         #/usr/bin/mythryl  "$AUTOTEST_FILE" ; RESULT="$?"
         # Check for the shebang
-        local  head=$( \head  --lines=1  "$AUTOTEST_FILE" )
+        local  head="$( \head  --lines=1  "$AUTOTEST_FILE" )"
         local  mythryl_shebang="#!/usr/bin/mythryl"
         if ! [[ $head == $mythryl_shebang ]]; then
           #\echo  "no shebang?"
@@ -427,13 +427,17 @@ get_file_ext() {
     ;;
     "sh") # *nix shell scripting languages
       # Check for a shebang:
-      local head=$( \head --lines=1 "$AUTOTEST_FILE" )
+      local head="$( \head --lines=1 "$AUTOTEST_FILE" )"
       case "$head" in
         "#!/usr/bin/env bash" | "#!/usr/bin/env  bash" | "#!/bin/bash" | "#!/usr/local/bin/bash" )  MYSHELL=bash ;;
         "#!/usr/bin/env dash" | "#!/usr/bin/env  dash" | "#!/bin/dash" | "#!/usr/local/bin/dash" )  MYSHELL=dash ;;
         "#!/usr/bin/env sh"   | "#!/usr/bin/env  sh"   | "#!/bin/sh"   | "#!/usr/local/bin/sh"   )  MYSHELL=sh   ;;
         "#!/usr/bin/env zsh"  | "#!/usr/bin/env  zsh"  | "#!/bin/zsh"  | "#!/usr/local/bin/zsh"  )  MYSHELL=zsh  ;;
       *)
+        \echo
+        \echo  "NOTE - The first line was checked, and is:"
+        \echo  "$head"
+        \echo
         \echo  "The file either:"
         \echo  "  - has no shebang"
         \echo  "  - or this script has not been programmed to use it"
@@ -541,22 +545,22 @@ get_file_time() {
   AUTOTEST_FILE_TIME=""
   # AUTOTEST_FILE_TIME_TEMP="-rw-rw-r-- 1 4 2009-03-29 13:34:56.000000000 -0700 /tmp/checkfile"
   # AUTOTEST_FILE_TIME="2009-03-29 13:34:56.000000000"
-  AUTOTEST_FILE_TIME_TEMP=$( \ls --full-time -gG --no-group "$AUTOTEST_FILE" )
+  AUTOTEST_FILE_TIME_TEMP="$( \ls --full-time -gG --no-group "$AUTOTEST_FILE" )"
 
   case "$MYSHELL" in
     "bash")
       # For reasons unknown, this doesn't work anymore.
       # AUTOTEST_FILE_TIME="${AUTOTEST_FILE_TIME_TEMP:15:29}"
-      AUTOTEST_FILE_TIME=$( \echo "$AUTOTEST_FILE_TIME_TEMP"|"cut" --delimiter " " --fields 4,5 )
+      AUTOTEST_FILE_TIME="$( \echo "$AUTOTEST_FILE_TIME_TEMP"|"cut" --delimiter " " --fields 4,5 )"
     ;;
     "zsh")
       # For reasons unknown, this doesn't work anymore.
       # AUTOTEST_FILE_TIME="${AUTOTEST_FILE_TIME_TEMP[12,30]}"
-      AUTOTEST_FILE_TIME=$( \echo "$AUTOTEST_FILE_TIME_TEMP"|"cut" --delimiter " " --fields 4,5 )
+      AUTOTEST_FILE_TIME="$( \echo "$AUTOTEST_FILE_TIME_TEMP"|"cut" --delimiter " " --fields 4,5 )"
     ;;
     *)
       # Other shells might/should be able to use an external program like 'cut', or some other "real" programming language (Perl, Python, Ruby, etc)
-      AUTOTEST_FILE_TIME=$( \echo "$AUTOTEST_FILE_TIME_TEMP"|"cut" --delimiter " " --fields 4,5 )
+      AUTOTEST_FILE_TIME="$( \echo "$AUTOTEST_FILE_TIME_TEMP"|"cut" --delimiter " " --fields 4,5 )"
   esac
 }
 
@@ -578,9 +582,9 @@ run_script() {
 
       if [ ! "$TIME" = "no" ]; then
         # TODO : use 'time' to time it.  I'm not sure how, since I want to grab the result from the original program.
-        TIMESTAMP_BEGIN=$( \date +%s )
+        TIMESTAMP_BEGIN="$( \date +%s )"
       fi
-      ansi_echo "--+ begin" $( \date ) "+--"
+      ansi_echo "--+ begin  $( \date ) +--"
 
       if [ "$RESULT" = "0" ]; then
         execute
@@ -590,7 +594,7 @@ run_script() {
 
       ansi_echo "--+ end [$RESULT]" $( date ) "+--"
       if [ ! "$TIME" = "no" ]; then
-        TIMESTAMP_END=$( \date +%s )
+        TIMESTAMP_END="$( \date +%s )"
         \echo  "$(($TIMESTAMP_END - $TIMESTAMP_BEGIN)) seconds"
         # TODO: Detect if it's appropriate to list in minutes, then display in mm:ss
         #   Maybe also do hh:mm:ss, oh hell.. do yy:dd:mm:ss for kicks!
@@ -609,7 +613,7 @@ run_script() {
 
 main_foreground() {
   until [ "MAIN_ROUTINE" = "finished" ]; do
-    AUTOTEST_FILE=$( \readlink  --canonicalize  "$1" )
+    AUTOTEST_FILE="$( \readlink  --canonicalize  "$1" )"
 
     get_file_ext "$AUTOTEST_FILE"
     if [ ! $? = "0" ]; then  break ; fi
@@ -697,7 +701,7 @@ main_background() {
 #-----------
 
   until [ "MAIN_ROUTINE" = "finished" ]; do
-    AUTOTEST_FILE=$( \readlink  --canonicalize  "$1" )
+    AUTOTEST_FILE="$( \readlink  --canonicalize  "$1" )"
 
     check_file "$AUTOTEST_FILE"
     if [ ! $? = "0" ]; then  break ; fi
