@@ -509,8 +509,6 @@ findqueue() {
   fi
 
 
-
-
   # TODO:  files_array can be shuffled here.
   #        If zsh could sanely shuffle an array.  =/
 
@@ -536,7 +534,7 @@ findqueue() {
       #\deadbeef  --queue     "$files_array[$i]" &
       #\deadbeef.sh  --queue     "$files_array[$i]"
       #\deadbeef.sh  --queue     \'"${files_array[${i}]}"\'
-      /l/OS/bin/deadbeef-0.7.2/deadbeef  --queue     \'"${files_array[${i}]}"\' &
+      \deadbeef  --queue     \'"${files_array[${i}]}"\' &
     else
       \audacious  --enqueue  "$files_array[$i]" &
     fi
@@ -554,10 +552,23 @@ findplay() {
     # Deadbeef has no functionality to just empty out its existing play list, but I can load an empty one.
     # I can't give an inline example, because it's a binary file.
     # TODO - give an inline example of a deadbeef empty playlist.  It should be possible somehow, maybe in hex or some such.
-    \deadbeef  /l/media/deadbeef_empty_playlist.dbpl
+
+:<<'DBPL'
+TODO - hexdump gave this:
+
+0000000 4244 4c50 0201 0000 0000 0000          
+000000c
+DBPL
+
+    # I dunno, if I can't guarantee an empty playlist, could I do something like this? :
+    #temp=/tmp/deadbeef_playlist.$$.dbpl
+    #\cp  /l/empty_playlist.dbpl  $temp
+    #\deadbeef  $temp
+    \deadbeef  /l/empty_playlist.dbpl
     \sleep  0.1
     findqueue  $*
     \deadbeef  --play
+    #\rm  --force  $temp
     # I could just point to a random entry in deadbeef's playlist:
     #\deadbeef  --random  --play
   else
@@ -580,7 +591,7 @@ PLS
 </playlist>
 XSPF
 
-    \audacious  --enqueue-to-temp  /l/media/audacious_empty_playlist.xspf &
+    #\audacious  --enqueue-to-temp  /l/empty_playlist.xspf &
     \sleep  0.1
     findqueue  $*
     \audacious  --play
