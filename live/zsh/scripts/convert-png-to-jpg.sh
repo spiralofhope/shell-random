@@ -26,8 +26,8 @@ _die_on_failure(){
 # FIXME - errors should be checked for and delt with!
 # I can't effectively do this.. if there are no .PNG (caps) files then it fails.. sigh.
 #for i in **/*.png  **/*.PNG; do
-for i in $1; do
-  \echo  "$i"
+for i in "$1"; do
+  \echo  " * Converting $i"
 
   \convert  "$i" "$i".jpg
   # It's ok if something fails to convert (usually because it's a broken image), just don't try to do anything else with it..
