@@ -47,7 +47,7 @@ zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
   PATH="$PATH":"$zshdir/../"
   PATH="$PATH":"$zshdir/../sh/scripts"
   PATH="$PATH":"$zshdir/../bash/scripts"
-  PATH="$PATH":"$zshdir/../zsh/scripts"
+  PATH="$PATH":"$zshdir/scripts"
   # FIXME/TODO - Babun:  Tentative testing suggests there are valid applications within, but Babun is running as user.
   if [ $( \whoami ) = 'root' ]; then
     PATH="$PATH":'/sbin'
