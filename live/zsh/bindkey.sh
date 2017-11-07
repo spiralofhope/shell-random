@@ -120,6 +120,13 @@ typeset  -g  -A  key
 
 # This seems to be the Right Way to handle edge cases
 case $TERM in
+  xterm-256color)
+    #  2017-11-07 - Babun (though with a Cygwyn update)
+    \bindkey  '^_'       backward-kill-word                              # control-backspace
+    \bindkey  '^[[H'     beginning-of-line                               # home
+    \bindkey  '^[[F'     end-of-line                                     # end
+  ;;
+
   *xterm*)
     #\bindkey  '^?'       backward-kill-word                              # control-backspace
     \bindkey  '^[[H'     beginning-of-line                               # home
@@ -131,7 +138,8 @@ case $TERM in
     \bindkey  '^?'       backward-delete-char                            # backspace
   ;;
 
-  rxvt-unicode|rxvt-unicode-256color)
+  rxvt-unicode         |\
+  rxvt-unicode-256color)
     # rxvt-unicode = 'urxvt' (urxvtd / urxvtc)
     \bindkey  '^[[7~'    beginning-of-line                               # home
     \bindkey  '^[[8~'    end-of-line                                     # end
