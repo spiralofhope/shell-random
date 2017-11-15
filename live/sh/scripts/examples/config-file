@@ -1,0 +1,5 @@
+:<<'}'
+Though it is not marked as executable, this is actually a shell script and must follow the rules of shell scripts.
+}
+
+variable='hello world'
