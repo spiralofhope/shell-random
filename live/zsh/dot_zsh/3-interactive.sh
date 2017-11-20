@@ -43,11 +43,11 @@ zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
 
 
 {  #  Paths
-  PATH='/l/OS/bin':"$PATH"
-  PATH="$PATH":"$zshdir/../"
-  PATH="$PATH":"$zshdir/../sh/scripts"
-  PATH="$PATH":"$zshdir/../bash/scripts"
-  PATH="$PATH":"$zshdir/scripts"
+  PATH="$( \realpath  '/l/OS/bin' )":"$PATH"
+  PATH="$PATH":"$( \realpath  "$zshdir/../" )"
+  PATH="$PATH":"$( \realpath  "$zshdir/../sh/scripts" )"
+  PATH="$PATH":"$( \realpath  "$zshdir/../bash/scripts" )"
+  PATH="$PATH":"$( \realpath  "$zshdir/scripts" )"
   # FIXME/TODO - Babun:  Tentative testing suggests there are valid applications within, but Babun is running as user.
   if [ $( \whoami ) = 'root' ]; then
     PATH="$PATH":'/sbin'
