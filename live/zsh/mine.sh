@@ -550,21 +550,18 @@ findplay() {
 
   if [[ x$deadbeef == x1 ]]; then
     # Deadbeef has no functionality to just empty out its existing play list, but I can load an empty one.
-    # I can't give an inline example, because it's a binary file.
-    # TODO - give an inline example of a deadbeef empty playlist.  It should be possible somehow, maybe in hex or some such.
 
-:<<'DBPL'
-TODO - hexdump gave this:
+:<<'DEADBEEF_EMPTY_PLAYLIST'
 
-0000000 4244 4c50 0201 0000 0000 0000          
-000000c
+(
+\xxd  -r  <<  'DBPL'  #  xxd
+0000000: 4442 504c 0102 0000 0000 0000            DBPL........
 DBPL
+) > /l/deadbeef_empty_playlist.dbpl
 
-    # I dunno, if I can't guarantee an empty playlist, could I do something like this? :
-    #temp=/tmp/deadbeef_playlist.$$.dbpl
-    #\cp  /l/empty_playlist.dbpl  $temp
-    #\deadbeef  $temp
-    \deadbeef  /l/empty_playlist.dbpl
+DEADBEEF_EMPTY_PLAYLIST
+
+    \deadbeef  /l/deadbeef_empty_playlist.dbpl
     \sleep  0.1
     findqueue  $*
     \deadbeef  --play
