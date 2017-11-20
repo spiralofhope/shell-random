@@ -11,7 +11,7 @@ alias  -s txt=geany
 alias  -s pdf=xpdf
 
 # --  Aliases for builtins
-alias  ls='\ls  -1  --all  --classify  --color=always  --group-directories-first  --show-control-chars'
+alias  ls='nocorrect  \ls  -1  --all  --classify  --color=always  --group-directories-first  --show-control-chars'
 alias  cp='nocorrect  \cp  --interactive  --preserve=all'
 alias  mv='nocorrect  \mv  --interactive'
 alias  rm='nocorrect  \rm  --interactive  --one-file-system'
