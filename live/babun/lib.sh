@@ -62,11 +62,15 @@
 geany() {  #  The GUI editor
   # The basic solution won't work with symbolic links:
   #\cygstart  '/c/Program Files (x86)/Geany/bin/geany.exe'  $*  &
-  for file in "$*"; do
+  for file in "$@"; do
+    if ! [ -f "$file" ]; then
+      # Workaround:  \cygpath  can't handle nonexistent files:
+      \touch  "$file"
+    fi
     string=${string}' '\"$( \cygpath  --dos  "$file" )\"
   done
 #  \cygstart  "$PFx/Geany/bin/geany.exe"  "$string" &
-echo  \cygstart  "/d/Program Files (x86)/Geany/bin/geany.exe"  "$string" &
+  \cygstart  "/d/Program Files (x86)/Geany/bin/geany.exe"  "$string" &
   \unset  string
 }
 
