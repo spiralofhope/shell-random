@@ -22,7 +22,7 @@
       \echo  "Processing PATH: $i"
     fi
     __="$__":$( \realpath "$i" 2> /dev/null )
-  done 
+  done
   IFS="$oldIFS"
   PATH="$__"
   \unset  __
