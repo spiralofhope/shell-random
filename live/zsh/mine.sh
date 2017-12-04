@@ -823,20 +823,24 @@ multiply() {
 
 
 _jpegoptimize() {
-  \jpegoptim  --max=$1  --preserve  *
-  if [ $1 -ne 100 ]; then
+  amount=$1
+  shift
+  \jpegoptim  --max=$amount  --preserve  "$@"
+  if [ $amount -ne 100 ]; then
     \touch  "zz--  jpegoptim -m$1"
   fi
-  \exit
 }
 
-jpegoptim100() { _jpegoptimize 100 }
-jpegoptim95()  { _jpegoptimize  95 }
-jpegoptim90()  { _jpegoptimize  90 }
-jpegoptim85()  { _jpegoptimize  85 }
-jpegoptim80()  { _jpegoptimize  80 }
-jpegoptim50()  { _jpegoptimize  50 }
-
+# Not happy:
+#   for i in *; if [[ -d $i ]]; then cd $i; jpegoptim100; fi; cd -
+# Try:
+#   jpegoptim100 **/*.jpg
+jpegoptim100() { _jpegoptimize 100 "$@" }
+jpegoptim95()  { _jpegoptimize  95 "$@" }
+jpegoptim90()  { _jpegoptimize  90 "$@" }
+jpegoptim85()  { _jpegoptimize  85 "$@" }
+jpegoptim80()  { _jpegoptimize  80 "$@" }
+jpegoptim50()  { _jpegoptimize  50 "$@" }
 
 
 # TODO - deduplicate this
