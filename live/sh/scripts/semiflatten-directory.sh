@@ -39,7 +39,7 @@ _go() {
 
 
   {  # Skip is that one item is not a subdirectory.
-    if [ ! -f "$( \ls  --almost-all  -1 "$1"/ )" ]; then
+    if [ ! -d "$( \ls  --almost-all  -1 "$1"/ )" ]; then
       debug  "   Skipping (not a subdirectory)"
       continue
     fi

@@ -550,21 +550,18 @@ findplay() {
 
   if [[ x$deadbeef == x1 ]]; then
     # Deadbeef has no functionality to just empty out its existing play list, but I can load an empty one.
-    # I can't give an inline example, because it's a binary file.
-    # TODO - give an inline example of a deadbeef empty playlist.  It should be possible somehow, maybe in hex or some such.
 
-:<<'DBPL'
-TODO - hexdump gave this:
+:<<'DEADBEEF_EMPTY_PLAYLIST'
 
-0000000 4244 4c50 0201 0000 0000 0000          
-000000c
+(
+\xxd  -r  <<  'DBPL'  #  xxd
+0000000: 4442 504c 0102 0000 0000 0000            DBPL........
 DBPL
+) > /l/deadbeef_empty_playlist.dbpl
 
-    # I dunno, if I can't guarantee an empty playlist, could I do something like this? :
-    #temp=/tmp/deadbeef_playlist.$$.dbpl
-    #\cp  /l/empty_playlist.dbpl  $temp
-    #\deadbeef  $temp
-    \deadbeef  /l/empty_playlist.dbpl
+DEADBEEF_EMPTY_PLAYLIST
+
+    \deadbeef  /l/deadbeef_empty_playlist.dbpl
     \sleep  0.1
     findqueue  $*
     \deadbeef  --play
@@ -826,20 +823,24 @@ multiply() {
 
 
 _jpegoptimize() {
-  \jpegoptim  --max=$1  --preserve  *
-  if [ $1 -ne 100 ]; then
-    \touch  "zz--  jpegoptim -m$1"
+  amount=$1
+  shift
+  \jpegoptim  --max=$amount  --preserve  "$@"
+  if [ $amount -ne 100 ]; then
+    \touch  "zz--  jpegoptim -m$amount"
   fi
-  \exit
 }
 
-jpegoptim100() { _jpegoptimize 100 }
-jpegoptim95()  { _jpegoptimize  95 }
-jpegoptim90()  { _jpegoptimize  90 }
-jpegoptim85()  { _jpegoptimize  85 }
-jpegoptim80()  { _jpegoptimize  80 }
-jpegoptim50()  { _jpegoptimize  50 }
-
+# Not happy:
+#   for i in *; if [[ -d $i ]]; then cd $i; jpegoptim100; fi; cd -
+# Try:
+#   jpegoptim100 **/*.jpg
+jpegoptim100() { _jpegoptimize 100 "$@" }
+jpegoptim95()  { _jpegoptimize  95 "$@" }
+jpegoptim90()  { _jpegoptimize  90 "$@" }
+jpegoptim85()  { _jpegoptimize  85 "$@" }
+jpegoptim80()  { _jpegoptimize  80 "$@" }
+jpegoptim50()  { _jpegoptimize  50 "$@" }
 
 
 # TODO - deduplicate this

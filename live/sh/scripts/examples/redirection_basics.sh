@@ -43,3 +43,11 @@
 # =>
 # 2
 # 0
+
+
+# Force commandline application non-interactivity
+# Programs like FFmpeg can act non-interactively from a script, but if they're at a prompt they go interactive.  This screws up the copy-and-paste I like doing.
+\expr 10 + 10  >/dev/null 2>/dev/null </dev/null
+
+# You can also send it to the background:
+\expr 10 + 10  >/dev/null 2>/dev/null </dev/null &
