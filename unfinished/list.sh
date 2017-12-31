@@ -1,3 +1,7 @@
+#!/usr/bin/env  sh
+
+
+
 for i in ../*; do
   if [ -d "$i" ]; then
     if [ "$i" != "../_built" ]; then continue; fi

@@ -1,3 +1,7 @@
+#!/usr/bin/env  sh
+
+
+
 echo "## Thumbnails"
 rm -rf /home/work/.thumbnails
 

@@ -1,4 +1,4 @@
-#/bin/bash
+#!/usr/bin/env  bash
 
 :<<NOTES
 - given a directory, and a text file

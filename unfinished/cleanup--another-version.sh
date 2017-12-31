@@ -1,3 +1,7 @@
+#!/usr/bin/env  sh
+
+
+
 # This is my ISO preparation script from PCLinuxOS back in 2008-08-21
 
 # Update all packages

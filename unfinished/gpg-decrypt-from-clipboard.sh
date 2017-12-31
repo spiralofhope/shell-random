@@ -1,3 +1,6 @@
+#!/usr/bin/env  sh
+
+
 
 # A helper to decrypt a PGP block copied into the clipboard.
 

@@ -1,3 +1,7 @@
+#!/usr/bin/env  sh
+
+
+
 # It turns out to have a lot of quirks and not being very useful compared to using [[find]] raw at the commandline.  I guess I'll have to look up how to use find every time I want to perform an action globally.  Hrmph.
 
 # In 4DOS this command is just "GLOBAL", a one-liner.  =/
