@@ -26,9 +26,19 @@ finddir() {
 # TODO - Technically I could make a `findin` that applies to only one file, but I won't bother.
 findinall() {
   if [[ -d $1 ]]; then
-    ${shell_random}/live/sh/scripts/findhelper.sh  file_contents      $*
+    ${shell_random}/live/sh/scripts/findhelper.sh  999            $*
   else
-    ${shell_random}/live/sh/scripts/findhelper.sh  file_contents  ./  $*
+    ${shell_random}/live/sh/scripts/findhelper.sh  999        ./  $*
+  fi
+}
+
+
+# TODO - Technically I could make a `findin` that applies to only one file, but I won't bother.
+findhere() {
+  if [[ -d $1 ]]; then
+    ${shell_random}/live/sh/scripts/findhelper.sh  1              $*
+  else
+    ${shell_random}/live/sh/scripts/findhelper.sh  1          ./  $*
   fi
 }
 

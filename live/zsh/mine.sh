@@ -434,9 +434,11 @@ finddir() {
   \find  -type d  -iname  \*"$1"\* |\
   \sed  's/^/"/' |\
   \sed  's/$/"/' |\
-  \grep  --colour=always -i "$1"
+  \grep  --colour=always  --ignore-case  "$1"
 }
 findin() {
+  maxdepth=$1
+  shift
   __=$1
   shift
   if [ -z $1 ]; then
@@ -452,13 +454,14 @@ If you do anything fancy, quote!
   $0 . 'asterisk * example'
 "
   else
-    \find  $__  -type f  -print0  -iname  \'"$*"\' |\
-      \xargs  -r0 \
-      \grep  --colour=always  -Fi  -e "$*"
+    \find  $__  -maxdepth $maxdepth  -type f  -print0  -iname  \'"$*"\' |\
+    \xargs  --no-run-if-empty  --null \
+      \grep  --colour=always  --fixed-strings  --ignore-case  --regexp="$*"
   fi
 }
 # TODO: parameter-sanity?
-findinall() { findin ./ "$*" ; }
+findinall() { findin 999 ./ "$*" ; }
+findhere()  { findin 1   ./ "$*" ; }
 
 findreplace() {
   if [ -z $3 ]; then

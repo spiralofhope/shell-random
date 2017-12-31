@@ -5,6 +5,9 @@
 
 
 
+shell_random='/l/shell-random/git'
+export  shell_random
+
 # --follow-name would allow the file to be edited and less will automatically display changes.
 LESS=' --force  --ignore-case  --long-prompt  --no-init  --silent  --status-column  --tilde  --window=-2'
 export  LESS

@@ -8,10 +8,10 @@ _findhelper_find() {
   shift
   local  directory=$1
   shift
-  \find  $directory  -type $type  -iname  \*"$1"\* |\
-  \sed  's/^/"/'|\
-  \sed  's/$/"/' |\
-  \grep  --colour=always  --ignore-case  "$1"
+  \find  $directory               -type $type  -iname  \*"$1"\* |\
+    \sed  's/^/"/' |\
+    \sed  's/$/"/' |\
+    \grep  --colour=always  --ignore-case  "$1"
 }
 #_findhelper_find() {
   #local  type=$1
@@ -28,29 +28,31 @@ _findhelper_find() {
 # Can backslash to escape.
 #   I don\'t know
 _findhelper_find_file_contents() {
-  local directory=$1
+  local maxdepth=$1
   shift
-  \find  $directory  -type f  -print0  -iname  \'"$*"\' |\
+  \find  .  -maxdepth $maxdepth  -type f  -print0  -iname  \'"$*"\' |\
     \xargs  --no-run-if-empty  --null \
-    \grep  --colour=always  --fixed-strings  --ignore-case  --regexp="$*"
+      \grep  --colour=always  --fixed-strings  --ignore-case  --regexp="$*"
 }
-# TODO: parameter-sanity?
-#findinall() { findin ./ "$*" ; }
 
 
 
 case $1 in
-  file)
+  'file')
     shift
     _findhelper_find  f  $*
   ;;
-  directory)
+  'directory')
     shift
     _findhelper_find  d  $*
   ;;
-  file_contents)
+  '999')
     shift
-    _findhelper_find_file_contents  $*
+    _findhelper_find_file_contents  999 $*
+  ;;
+  '1')
+    shift
+    _findhelper_find_file_contents  1   $*
   ;;
   *)
     \echo  'invalid usage'
