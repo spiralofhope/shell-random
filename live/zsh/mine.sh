@@ -360,7 +360,7 @@ TODO_dir() {
       | \sed  --expression='s/ //g' \
       | \rev
   )
-  file_sizes_commas=comma($file_sizes)
+  file_sizes_commas=comma( $file_sizes )
   file_sizes_width=$(
     \ls $ls_options \
       | \cut  --bytes=15- \
