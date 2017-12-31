@@ -8,5 +8,5 @@ for i in ../*; do
     find $i -type f
   fi
 done
-#\find \
-  #> list-`\date +%Y-%m-%d`.txt
+\find \
+  > list-`\date +%Y-%m-%d`.txt
