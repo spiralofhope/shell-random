@@ -7,13 +7,10 @@
 
 # --follow-name would allow the file to be edited and less will automatically display changes.
 LESS=' --force  --ignore-case  --long-prompt  --no-init  --silent  --status-column  --tilde  --window=-2'
-export LESS
+export  LESS
 
 
 
-# TODO - Fucking hell, `du` has trailing spaces and the name of the directory.  It even puts '.' if nothing is specified.
-# TODO - remove a trailing period.
-# TODO - remove trailing spaces.
 comma() {
   if [ -z $1 ]; then
     # Incorrect usage.
@@ -25,9 +22,11 @@ comma() {
     \echo  -n  ''
   fi
 }
-# Although at the commandline, this works:
-#   comma 1000
-# This is the required way to use it when scripting:
-#   comma '1000'
-# Or more complex:
-#   count=$( comma $( \ls -1 . | \wc -l ) )
+:<<'USAGE'
+Although at the commandline, this works:
+  comma 1000
+This is the required way to use it when scripting:
+  comma '1000'
+Or more complex:
+  count=$( comma $( \ls -1 . | \wc -l ) )
+USAGE
