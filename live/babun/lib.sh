@@ -8,19 +8,26 @@
 # Do not use the system's fcntl call.  Instead, use ad-hoc file locking to avoid known problems with locking on some (*cough* Windows) operating systems.
 \unsetopt  hist_fcntl_lock
 
+
+
 {  #  PATH
   # Iterating with realpath will slow down startup.
   # Workaround:  Cache the results.
-  path_cache=~/path-cache.txt
-  if  [ -f $path_cache ]; then
+  path_cache="$HOME/Babun-path-cache.txt"
+  #\rm  --force  "$path_cache"
+  if  [ -f "$path_cache" ]; then
     if [ $debug ]; then
       \echo  "Reading \$PATH from $path_cache"
     fi
-    PATH=$( \cat $path_cache )
-  else  #  Rebuild the path
+    PATH="$( \cat $path_cache )"
+  else
+    if [ $debug ]; then
+      \echo  "Rebuilding \$PATH for $path_cache"
+    fi
     PATH="$zshdir/../babun/scripts":"$PATH"
 
     # Babun cannot deal with relative paths.  Iterate through and correct them:
+    # FIXME - An unavoidable slowdown in startup.  Maybe these results could be cached in a file..
     \unset  __
     oldIFS="$IFS"
     IFS=':'
@@ -31,12 +38,12 @@
       fi
       __="$__":$( \realpath "$i" 2> /dev/null )
     done
-    PATH="$__"
-    \echo  "$PATH" > $path_cache
     IFS="$oldIFS"
+    PATH="$__"
+    \echo  "$PATH" > "$path_cache"
+    \unset  __
+    \unset  path_cache
   fi
-  \unset  __
-  \unset  path_cache
 }
 
 
