@@ -10,7 +10,7 @@ IDEAS
 zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
 
 
-{ # 'source' additional scripting and settings.
+{  # 'source' additional scripting and settings.
 
   function sourceallthat() {
     \pushd > /dev/null
