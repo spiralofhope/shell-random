@@ -9,23 +9,34 @@
 \unsetopt  hist_fcntl_lock
 
 {  #  PATH
-  PATH="$zshdir/../babun/scripts":"$PATH"
-
-  # Babun cannot deal with relative paths.  Iterate through and correct them:
-  # FIXME - An unavoidable slowdown in startup.  Maybe these results could be cached in a file..
-  \unset  __
-  oldIFS="$IFS"
-  IFS=':'
-  for i in $PATH
-  do
+  # Iterating with realpath will slow down startup.
+  # Workaround:  Cache the results.
+  path_cache=~/path-cache.txt
+  if  [ -f $path_cache ]; then
     if [ $debug ]; then
-      \echo  "Processing PATH: $i"
+      \echo  "Reading \$PATH from $path_cache"
     fi
-    __="$__":$( \realpath "$i" 2> /dev/null )
-  done
-  IFS="$oldIFS"
-  PATH="$__"
+    PATH=$( \cat $path_cache )
+  else  #  Rebuild the path
+    PATH="$zshdir/../babun/scripts":"$PATH"
+
+    # Babun cannot deal with relative paths.  Iterate through and correct them:
+    \unset  __
+    oldIFS="$IFS"
+    IFS=':'
+    for i in $PATH
+    do
+      if [ $debug ]; then
+        \echo  "Processing PATH: $i"
+      fi
+      __="$__":$( \realpath "$i" 2> /dev/null )
+    done
+    PATH="$__"
+    \echo  "$PATH" > $path_cache
+    IFS="$oldIFS"
+  fi
   \unset  __
+  \unset  path_cache
 }
 
 
