@@ -1,4 +1,4 @@
-#!/usr/bin/env  bash
+#!/usr/bin/env  sh
 
 
 
@@ -22,7 +22,7 @@ _convert_flac_to_mp3() {
     -i "$1" \
     -qscale:a 0 \
     "$2"
-  if [[ $? -ne 0 ]]; then
+  if ! [ $? = 0 ]; then
     \echo  'pausing..'
     read  __
   fi
@@ -35,15 +35,15 @@ _convert_vbrfix() {
   \echo  ' * Fixing the mp3 length..'
   working_filename=ripping_temp.$$."$audio_codec"
 
-  \vbrfix  -always  -makevbr  "$1"  $working_filename
+  \vbrfix  -always  -makevbr  "$1"  "$working_filename"
 
-  \mv  --force  $working_filename  "$1"
+  \mv  --force  "$working_filename"  "$1"
   \rm  --force  vbrfix.log  vbrfix.tmp
 }
 
 
 
-if [ -z $1 ]; then
+if [ "x$1" = 'x' ]; then
   \echo  ''
   \echo  ' * Converting all flac files in the current directory..'
   for i in *.flac; do
@@ -52,12 +52,12 @@ if [ -z $1 ]; then
       \echo  'ERROR:  No .flac files found.'
       continue
     fi
-    output_filename="${i/%.flac/ =_.mp3}"
+    output_filename=$( \echo  "$i" | \sed  's/.flac$/ =_.mp3/' )
     _convert_flac_to_mp3  "$i"  "$output_filename"
     _convert_vbrfix              "$output_filename"
   done
 else
-    output_filename="${@/%.flac/ =_.mp3}"
+    output_filename=$( \echo  "$@" | \sed  's/.flac$/ =_.mp3/' )
     _convert_flac_to_mp3  "$1"  "$output_filename"
     _convert_vbrfix             "$output_filename"
 fi
