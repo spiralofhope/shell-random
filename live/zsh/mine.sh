@@ -314,10 +314,10 @@ dir() {
     --almost-all \
     --color=always \
     --group-directories-first \
-    --human-readable \
     --no-group \
+    --quoting-style=shell \
     --size \
-    $@  |\
+    "$@"  |\
       \less \
         --raw-control-chars \
         --no-init \
