@@ -2,9 +2,6 @@
 
 
 
-# NOTE - this will all get broken when ported over to zsh
-# the easy fix would be to do symlinking for /c
-
 findfile() {
   if [[ -d $1 ]]; then
     ${shell_random}/live/sh/scripts/findhelper.sh  file      $*
