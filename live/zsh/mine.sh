@@ -59,9 +59,10 @@ fi
 
 
 # This would be a nice idea to get rmdir to shut the fuck up.
-#rmdir2() {
-#for i in $i; do if [ -f "$i" ]; then \rmdir "$i"; fi; done
-#}
+:<<'}'   #  
+rmdir2() {
+  for i in $i; do if [ -f "$i" ]; then \rmdir "$i"; fi; done
+}
 deduplicate_with_directories() {
   \echo " * fdupes start.."
   \fdupes  -dnNr .
@@ -87,7 +88,7 @@ deduplicate_with_directories() {
 
 # TODO - How could I make this into something reusable?  e.g.:
   # until false; do sudo df -h | grep /mnt/tmp ; sleep 1m ; done
-: << 'FAIL_repeat'
+:<<'}'   #  FAIL
 repeat() {
   __=$1
   shift
@@ -96,7 +97,6 @@ repeat() {
     sleep __
   done
 }
-FAIL_repeat
 
 
 
@@ -218,61 +218,66 @@ c() {
 alias mcedit='\mcedit  --colors  editnormal=lightgrey,black'
 #alias edit='/usr/bin/sanos-simple-text-editor'
 
-#edit() {
-  ## I'm in X, I'm at the raw console and X is launched.
-  #\geany --new-instance  $@ > /dev/null 2>&1
-  #if [ "$?" != "0" ]; then
-    ## X is not launched at all.  It might be sitting at the login screen though.
-    #mcedit  $@
-  #fi
-#}
+:<<'}'   #  
+edit() {
+  # I'm in X, I'm at the raw console and X is launched.
+  \geany --new-instance  $@ > /dev/null 2>&1
+  if [ "$?" != "0" ]; then
+    # X is not launched at all.  It might be sitting at the login screen though.
+    mcedit  $@
+  fi
+}
 
 
 
-# TODO: implement 'global' with find
+:<<'}'   #  TODO: implement 'global' with find
 # or just do (zsh):
 # For directories:  **/
 # For files:  **
 # This doesn't work..
-#global() {
-  #if [ x$1 = x ]; then return 0; fi
-  #for i in *; do
-    #$@
-  #done
-#}
+global() {
+  if [ x$1 = x ]; then return 0; fi
+  for i in *; do
+    $@
+  done
+}
+:<<'}'   #  
 global() {
   \echo  "use **"
 }
+:<<'}'   #  
 globaldirs() {
   \echo  "use **/"
 }
-#globaldirs() {
-  #EXEC="$@"
-  #EXEC=(${=EXEC})
-  #\echo $EXEC
-  #for globaldirs in **/; do
-    #cd "$globaldirs"
-    ##\echo $EXEC
-    #cd -
-  #done
-#}
+:<<'}'   #  
+globaldirs() {
+  EXEC="$@"
+  EXEC=(${=EXEC})
+  \echo $EXEC
+  for globaldirs in **/; do
+    cd "$globaldirs"
+    #\echo $EXEC
+    cd -
+  done
+}
 
 
 
-# TODO: Change directory and don't bother requiring double-quotes in the string..
-#cd() {
-#  # This isn't working..
-#  dir=${*:gs/~/\\\\~/}
-#  builtin cd "$dir"
-#}
-# ccd() {
-# a="$@"
-# \echo $a
-# # b=${a:gs/ /\\\\ /}
-# b=${(q)a}
-# \echo $b
-#   \cd $b
-# }
+:<<'}'   #  TODO: Change directory and don't bother requiring double-quotes in the string..
+cd() {
+  # This isn't working..
+  dir=${*:gs/~/\\\\~/}
+  builtin cd "$dir"
+}
+:<<'}'
+ccd() {
+  a="$@"
+  \echo $a
+  # b=${a:gs/ /\\\\ /}
+  b=${(q)a}
+  \echo $b
+  \cd $b
+}
 
 
 
@@ -289,7 +294,7 @@ cdv() {
 
 
 
-: << NO_WAY
+:<<'}'   #  Hard unmount notes.  No way.
 umount() {
   if [ "$#" = "0" ] || [ "$1" = "--help" ]; then
     /bin/umount "$@"
@@ -303,17 +308,16 @@ umount() {
     fi
   fi
 }
-NO_WAY
 
 
 
-# A proper dir command!
 # dir() { /bin/ls --color -gGh "$@"|cut -d" " -f4-100 ; }
 # dir() { \ls --color -gGh "$@" | \cut -b14- | \less -F -r ; }
 # Challenges:
 # 1) Don't display a size for directories.
 # TODO: -R does funny things.  Catch if it's been sent (even with -AR) and deal with it specially?
 # Note that $LESS will influence the display.
+:<<'}'   #  A proper dir command!
 TODO_dir() {
   if [ "x$1" = "x-d" ] || [ "x$1" = "x-ad" ]; then
     ddir
@@ -846,7 +850,7 @@ vbrfixit() {
 # Note that none of this was checked in bash-windows
 # FIXME - none of this would work with autocomplete, so fuck it.
 # todo - This needs to be tested.
-: << DISABLED_cd
+:<<'}'   #  Disabled cd
 # Be able to cd into the directory of a file, because autocomplete gives a filename.
 cd() {
 ## One would think something like this would work for multiple parameters, but it doesn't.  Well fuck it, the user (me) can \cd foo bar if they want to.
@@ -874,12 +878,11 @@ cd() {
   # FIXME - is there a long form for -P ?  There is no  man cd
   \cd  -P  "$__"
 }
-DISABLED_cd
 
 
 
 # I don't know why I had this uncommented in aliases.sh, but I'm moving it here and disabling it.
-: << DISABLED_rm
+:<<'}'   #  Disabled rm
 #alias  rm='nocorrect  \rm  --interactive'
 # Making rm smarter so it can remove directories too.  Fuck you, GNU.
 # TODO? - Know when there are contents in directories to delete them?  It doesn't seem right to do this..
@@ -892,4 +895,3 @@ rm() {
     nocorrect  /bin/rm  --interactive  "$*"
   fi
 }
-DISABLED_rm
