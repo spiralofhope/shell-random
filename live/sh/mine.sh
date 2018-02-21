@@ -2,6 +2,27 @@
 
 
 
+# FIXME: I don't understand why I cannot call this ls()
+dir() {
+  \ls \
+    -1 \
+    --almost-all \
+    --color=always \
+    --group-directories-first \
+    --no-group \
+    --quoting-style=shell \
+    --size \
+    "$@"  |\
+      \less \
+        --raw-control-chars \
+        --no-init \
+        --QUIT-AT-EOF \
+        --quit-on-intr \
+        --quiet
+    ` # `
+}
+
+
 findfile() {
   if [[ -d $1 ]]; then
     ${shell_random}/live/sh/scripts/findhelper.sh  file      $*
