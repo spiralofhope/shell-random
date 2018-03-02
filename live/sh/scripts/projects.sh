@@ -12,7 +12,8 @@
 # FIXME - If run multiple times, it will attempt to open a new tab with a nonexistent file.
 #         This is likely because I have a leading or trailing printf in the final command.
 
-
+# TODO - read a file which has a list of directories to skip
+# TODO - skip directories containing a directory or file named `ECRYPTFS_FNEK_ENCRYPTED.*`
 
 setup() {
   \echo  ' * begin'
