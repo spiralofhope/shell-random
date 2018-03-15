@@ -8,6 +8,7 @@ echo "trying lxpanel"
 \setsid  \lxpanel &
 killall -0 lxpanel
 
+
 if [ $? -ne 0 ]; then
   echo "trying fbpanel"
   \setsid  \fbpanel &
@@ -20,6 +21,7 @@ if [ $? -ne 0 ]; then
   \setsid  \xfce4-panel &
 fi
 killall -0 xfce4-panel
+
 
 if [ $? -ne 0 ]; then
   echo "trying tint2"
