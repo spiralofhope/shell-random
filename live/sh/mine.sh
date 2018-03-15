@@ -90,10 +90,3 @@ _df_sorted(){
     \tail --lines=+2  |\
     \sort --key=${1}
 }
-alias  df='_df_sorted 5'    # sorted by mountpoint
-alias  df='_df_sorted 1'    # sorted by filesystem
-\killall  fbpanel
-\sleep  2
-\fbpanel &
-\sleep  2
-\exit

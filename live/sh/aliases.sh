@@ -19,3 +19,6 @@ alias  cd..='\cd  ..'
 
 alias  less='\less  --RAW-CONTROL-CHARS'
 #alias  less='\less  --force  --RAW-CONTROL-CHARS  --quit-if-one-screen  $@'
+
+alias  df='_df_sorted 5'    # sorted by mountpoint
+alias  df='_df_sorted 1'    # sorted by filesystem
