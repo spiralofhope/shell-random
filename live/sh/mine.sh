@@ -1,6 +1,14 @@
 #!/usr/bin/env  sh
 
 
+fbpanel_restart(){
+  \killall  fbpanel  &&  \fbpanel &
+  #\sleep  2
+  #\fbpanel &
+  #\sleep  2
+  \exit
+}
+
 
 # FIXME: I don't understand why I cannot call this ls()
 dir() {
@@ -84,3 +92,8 @@ _df_sorted(){
 }
 alias  df='_df_sorted 5'    # sorted by mountpoint
 alias  df='_df_sorted 1'    # sorted by filesystem
+\killall  fbpanel
+\sleep  2
+\fbpanel &
+\sleep  2
+\exit
