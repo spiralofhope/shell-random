@@ -109,20 +109,6 @@ be_root_or_die() {
 
 
 
-ziprepair() {
-  file=ziprepair.$$.zip
-  dir="$1".ziprepair.$$
-  \echo  y  |  \zip  --fixfix "$1"  --out $file
-  \mkdir  "$dir"
-  \cd  "$dir"
-  \unzip  -o  ../$file
-  \cd  -
-  \rm  --force  $file
-#  \unzip  -tqq  $file  >> /dev/null 2>&1
-}
-
-
-
 re_source() {
   for i in /l/shell-random/git/live/zsh/*.sh
     source  $i
