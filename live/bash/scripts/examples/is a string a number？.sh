@@ -24,7 +24,7 @@ isnumber() {
        [[ "$1" =~ '^(\+\.[0-9]+)$'         ]]   ; then
       \echo  0
     else
-      echo 1
+      \echo  1
     fi
     break
   done
