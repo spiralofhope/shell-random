@@ -161,8 +161,13 @@
   # With this option set, stopped jobs that are removed from the job table with the disown builtin command are automatically sent a CONT signal to make them running. 
   \setopt  auto_continue
 
-  # Send the HUP signal to running jobs when the shell exits.
+  # Open a terminal
+  # Run a process
+  # Exit the terminal, but don't exit the process:
   \setopt  no_hup
+  # Don't warn on exit
+  \setopt  no_check_jobs
+
 
   # List jobs in the long format by default. 
   \setopt  long_list_jobs
