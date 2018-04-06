@@ -177,3 +177,8 @@ else
   echo tty
 fi
 OLD
+
+
+# Syntax highlighting magic
+#   https://github.com/zsh-users/zsh-syntax-highlighting
+\source  /l/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
