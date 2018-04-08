@@ -15,16 +15,17 @@ OpenBox rc.xml
 
 
 
-dialog --title "Dialog input box" \
-   --inputbox "Text" 8 20\
-   2>/tmp/dialog.$PPID
+\dialog \
+  --title "Dialog input box" \
+  --inputbox "Text" 8 20 \
+  2> /tmp/dialog.$PPID
 if [ $? = 1 ]; then
-   clear
-   exit 0
+  clear
+  exit 0
 fi
-ANS=`cat /tmp/dialog.$PPID`
+ANS=$( \cat /tmp/dialog.$PPID )
 
-exec nohup $ANS >> /dev/null&
+\exec  \nohup  "$ANS" > /dev/null 2> /dev/null &&
 
-rm -f /tmp/dialog.$PPID
+\rm  --force  /tmp/dialog.$PPID
 exit 0
