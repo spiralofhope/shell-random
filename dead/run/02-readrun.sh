@@ -2,8 +2,6 @@
 
 
 
-# This is an update to my `dialog` launcher.
-
 :<<'Notes'
 * I don't know how to detect an escape.  That would be nice.
   **  If I did the read character-by-character I could check for it.
