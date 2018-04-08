@@ -27,9 +27,9 @@ OpenBox rc.xml
 
 
 
-unset READ
+\unset  READ
 until [ ! "$READ" = "" ]; do
-  read READ
+  \read  "READ"
 done
-nohup $READ >> /dev/null&
-sleep 1
+\nohup  "$READ" > /dev/null 2> /dev/null &
+\sleep  1
