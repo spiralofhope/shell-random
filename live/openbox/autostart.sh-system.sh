@@ -125,7 +125,7 @@
 \sleep 0.3
 
 # Set up a Virtual Private Network (left to the user's creation)
-~/vpn.sh
+~/vpn-launch.sh
 
 # FIXME - This is done to ensure this window pops up after the previous one.  I hate this.
 \sleep 0.3
