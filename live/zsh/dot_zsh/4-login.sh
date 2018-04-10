@@ -1,5 +1,6 @@
 # /etc/zlogin and ~/.zlogin
 # Read after zshrc, if the shell is a login shell.
+# See also /etc/default/console-setup
 
 
 
