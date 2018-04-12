@@ -6,17 +6,17 @@
 {   # Find all characters after.
 
 # After the first occurrance
-variable="test test"
+string="test test"
 pattern="s"
 
-\echo ${variable#*${pattern}}
+\echo ${string#*${pattern}}
 
 # ----
 
 # After the last occurrance
-variable="test test"
+string="test test"
 pattern="s"
 
-\echo ${variable##*${pattern}}
+\echo ${string##*${pattern}}
 
 }
