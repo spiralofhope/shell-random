@@ -1,0 +1,6 @@
+:: Making things lowercase:
+
+
+
+GLOBAL/i (dir/a/b>\$temp.tmp^for %1 in (@\$temp.tmp) DO REN/A: %1 %@LOWER[%1])
+DEL \$temp.tmp

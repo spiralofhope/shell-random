@@ -1,0 +1,51 @@
+LOADBTM ON
+
+GOTO _endnotes_
+
+For the editor TED3
+
+
+2018-04-13
+  --  This is at least as old as 2007-07-22, and I know it's *much* older.
+  --  I have not come across an earlier version of this script.  Perhaps one day.
+
+
+ * LOADBTM ON exists as a fix to allow this batch to self-edit.  This is done
+to avoid the entire song and dance with checking %_batchname and editing a
+temporary file.
+
+
+can't start a file with a long filename.. ted3 will save to the wrong name..
+to avoid this problem, create that long filename before passing it to ted3,
+and have ted3 work on the SFN version. =)
+
+** Unfortunately, if this were converted to a .btm, it won't work if the user
+is in a really long directory string, because the %@ATTRIB command won't
+properly work!
+
+** Edit it so that it can handle being fed *.???? accidentally (in dos)
+if %_WIN=0 blablabla
+
+:_endnotes_
+
+
+SETLOCAL
+
+: Handle long filenames
+IF NOT .%1=. SET $TED=%@FULL[%@SFN[%1]]
+
+: Save the state of the attributes, then remove them.
+IF %@ATTRIB[%$TED,R,P]=1 (ATTRIB/Q -R %$TED^SET $TED_R=1)
+IF %@ATTRIB[%$TED,S,P]=1 (ATTRIB/Q -R %$TED^SET $TED_S=1)
+IF %@ATTRIB[%$TED,H,P]=1 (ATTRIB/Q -R %$TED^SET $TED_H=1)
+
+IFF .%1=. THEN %8088%\UTILS\ted3.com %1
+ELSE %8088%\UTILS\ted3.com %$TED
+ENDIFF
+
+: Fix the attribute if they were changed
+IF EXIST %$TED IF %$TED_R=1 ATTRIB/Q +R %$TED
+IF EXIST %$TED IF %$TED_S=1 ATTRIB/Q +S %$TED
+IF EXIST %$TED IF %$TED_H=1 ATTRIB/Q +H %$TED
+
+.

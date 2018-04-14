@@ -1,0 +1,145 @@
+GOTO _endnotes_
+
+Build directory listings
+
+
+2018-04-13
+  --  This is at least as old as 2007-07-22, and I know it's *much* older.
+  --  I have not come across an earlier version of this script.  Perhaps one day.
+
+
+Display things as a two (and more later) column table.
+left = filenames, right = descriptions.
+works perfectly
+
+
+TO DO:
+put the temp file in the %TEMP% dir?
+display a process countdown (file x of x)
+GLOBAL all of this... manually use GLOBAL.
+I should also include a HOME or "\" link as well.
+force the width of the tables?  I may have to in order for them to look good
+    especially if I have date/time etc added in.
+
+
+
+
+HISTORY:
+- minor change
++ major change
+* major bug
+
+
++ squashed the multiword filename issue.. sad bug
+- don't have a "../" listing if already at the root
+- dir.htm was removed from the process list
+* cannot handle multi word files / dirs
+- added in ../ code
++ added code to handle directories differently and reference dir.htm
++ solved the "\" = "%5C" and case problems in one swoop
+* have to make sure case and length are properly addressed, they might not be
+* links to dirs won't work because it doesn't reference a dir.htm in new one
++ rebuild to include directories
+* links aren't working because "\" appears as "%5C", sigh
+- description display fix
++ first try displayed ok
+prerelease
+
+:_endnotes_
+
+
+SETLOCAL
+: Not sure if I need to do a system purge or not.
+: UNSET *
+: UNALIAS *
+ON BREAK QUIT
+
+: --------------
+
+: haveta put a GLOBAL statement in there somewhere
+: CD __NEW
+
+: Build HTML and table headers
+
+TEXT>dir.htm
+<HTML>
+<HEAD>
+<TITLE></TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFCC">
+<TABLE>
+ENDTEXT
+
+: Don't put in a link to ../ if it doesn't exist.
+IF NOT EXIST ..\dir.htm GOTO _skip_
+TEXT>>dir.htm
+<TR><TD>
+<A HREF="../dir.htm">../</A>
+</TD><TD></TD></TR>
+ENDTEXT
+:_skip_
+
+: Have to build a dir list because FOR %1 in (*.*) will ignore directories.
+: hide dir.htm so it doesn't appear in the list
+EXCEPT (dir.htm) *DIR/B>\$temp.tmp
+FOR %1 IN (@\$temp.tmp) DO GOSUB _work_
+*DEL \$temp.tmp
+GOTO _end_
+
+:_work_
+: row beginning
+TEXT>>dir.htm
+<TR>
+ENDTEXT
+
+IF ISDIR %1 GOTO _dir_
+
+: Include filename
+ECHOS `<TD><A HREF="`>>dir.htm
+ECHOS %@FILENAME[%1]>>dir.htm
+ECHOS `">`>>dir.htm
+ECHOS %@FILENAME[%1]>>dir.htm
+ECHO `</A></TD>`>>dir.htm
+GOTO _notdir_
+
+:_dir_
+: pretty much the same as above, without extensions, and with dir.htm tacked on
+:    It was separated just in case I wanted to do something different with
+:    a directory.
+ECHOS `<TD><A HREF="`>>dir.htm
+ECHOS %@FILENAME[%1]/dir.htm>>dir.htm
+ECHOS `">`>>dir.htm
+ECHOS %@FILENAME[%1]>>dir.htm
+ECHO `</A></TD>`>>dir.htm
+:_notdir_
+
+: Include description
+: Put in a custom message if there is no description?
+: Search the description for special codes?
+:    1 - some text won't display properly
+:    2 - some text will fuck over this batch file
+:    3 - I could put in my own codes to, say, also add a link to a homepage
+:        or a review of the file in question, or provide a link to an
+:        alias or different version, or other notes etc..
+ECHOS `<TD>`>>dir.htm
+ECHOS %@DESCRIPT[%1]>>dir.htm
+ECHO `</TD>`>>dir.htm
+
+
+: row end
+TEXT>>dir.htm
+</TR>
+ENDTEXT
+
+RETURN
+
+
+:_end_
+
+: Build table and HTML footers
+
+TEXT>>dir.htm
+</TABLE>
+</BODY>
+</HTML>
+ENDTEXT

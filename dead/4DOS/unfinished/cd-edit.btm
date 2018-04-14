@@ -1,0 +1,20 @@
+::  Be able to house descriptions of files in a location other than the file's directory.  Meant to allow one to describe files on write-only media.
+
+
+
+GOTO _endnotes_
+
+Functions:
+	- To be able to have updated descriptions on a CD
+	- To be able to have updated, new or removed files on a CD
+
+	- Companion programs must be aware of the changes.  For example,
+	  unc.btm must be aware of the new file and uncompress that one, not
+	  the one on the CD.
+
+
+Create a duplicate directory structure of the CD, including only the edited
+sections.  Have a special "dir" look to see if there is a file on the HDD which
+indicates there are changes on the CD in the current directory.
+
+:_endnotes_
