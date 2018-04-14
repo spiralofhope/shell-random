@@ -1,0 +1,47 @@
+GOTO _endnotes_
+
+
+some sort of descript.ion helper. 
+
+
+2018-04-13
+  --  This is at least as old as 2007-07-22, and I know it's *much* older.
+  --  I have not come across an earlier version of this script.  Perhaps one day.
+
+
+problem -- this doesn't work on 8.3 files.. with the full 8 char name. 
+Unsure about the extension.  It just hops over these with an error. sigh.
+
+
+Long filename aware
+have this describe short file names as well though!! for proper compatability!
+maybe have it automagically put LFN descriptions on the SFNs.. or the reverse..
+would be a good side-batch.
+
+:_endnotes_
+
+
+ECHO How do I describe directories?!
+ECHO use ansi and do my own global directory showing, use global/q
+
+ON BREAK (ECHO Aborted! 1="%1" 2&="%2&"^QUIT)
+IF NOT EXIST %1 (ECHO ERROR: "%1" Does Not Exist!^QUIT)
+
+: Routine to describe the wildcard %1 as %2& if %1 has no description
+IFF %@INDEX[%1,*] != -1 .OR. %@INDEX[%1,?] != -1 THEN
+  : Decent speedup to use a bulk-describe instead of a a file-by-file describe
+  : if the descript.ion doesn't exist.
+
+:  GLOBAL/H GOSUB _gosub_
+  :_gosub_
+	IFF NOT EXIST descript.ion THEN
+		DESCRIBE "%1" /D"%2&"
+	ELSE
+		FOR %T IN (%1) IF %@DESCRIPT[%T].=. DESCRIBE "%T" /D"%2&"
+	ENDIFF
+ELSE
+  : Routine to describe the file or wildcard %2 the description of %1 if %2 has
+  : no description.  This is used with REDESC NAME1.EXT NAME2.EXT
+  IF NOT EXIST %2 (ECHO ERROR: "%2" Does Not Exist!^QUIT)
+  GLOBAL/H FOR %T in (%2) IF %@DESCRIPT[%T].=. DESCRIBE "%T" /D"%@DESCRIPT[%1]
+ENDIFF

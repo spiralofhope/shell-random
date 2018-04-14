@@ -1,0 +1,45 @@
+GOTO _endnotes_
+
+I'm not sure what this was for.
+
+
+2018-04-13
+  --  This is at least as old as 2007-07-22, and I know it's *much* older.
+  --  I have not come across an earlier version of this script.  Perhaps one day.
+
+
+This should also display any variables which point towards a drive
+
+won't work if some drives are disabled
+
+This program somewhat emulates the Novell command "map".
+It is designed to display the vital stats of the drive(s)
+
+This is somewhat based on the UNC code which displays
+selectable drives as alternate extraction routes.  Pretty
+much a rewrite based on its concept more than a port.
+
+v0.1
+
+
+
+grr.. use the DOALL alias!  =)
+
+:_endnotes_
+
+
+CLS
+ECHO    LABEL	FREE	/  TOTAL SPACE (kilobytes)
+DOALL GOSUB _doit_
+QUIT
+:_doit_
+IF %DOALL != A: .AND. %DOALL != B: IFF %@READY[%DOALL]=1 THEN
+: fix up the improper tabbing on small sized drive labels  =) -- a couple of
+: spaces before the tab.. nothing special.
+IFF %@LEN[%@LABEL[%DOALL]] LT 5 THEN
+	ECHO %DOALL: %@LABEL[%DOALL]   	%@DISKFREE[%DOALL,k]k	/  %@DISKTOTAL[%DOALL,k]k
+: 		some spaces	----/
+ELSE
+	ECHO %DOALL: %@LABEL[%DOALL]	%@DISKFREE[%DOALL,k]k	/  %@DISKTOTAL[%DOALL,k]k
+ENDIFF
+RETURN

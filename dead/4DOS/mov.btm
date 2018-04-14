@@ -1,0 +1,24 @@
+GOTO _endnotes_
+
+
+(Not begun)  Evil-death batch file for intelligent copying and moving of files.
+
+
+2018-04-13
+  --  This is at least as old as 2007-07-22, and I know it's *much* older.
+  --  I have not come across an earlier version of this script.  Perhaps one day.
+
+
+make sure it works with both copy and move
+
+
+make sure %1 exists
+
+deal with wildcards
+if exist %2, compare size, if same, do a byte compare (does 4dos have an
+	internal function, or will I have to use an outside program?)
+if %1 = %2, delete %2
+* deal with the descriptions.. keep %2's description
+
+
+:_endnotes_

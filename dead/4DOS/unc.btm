@@ -1,0 +1,816 @@
+GOTO _endnotes_
+
+My old 4DOS solution for easily uncompressing various archives using the right application and switches. 
+
+
+2018-04-13
+  --  This is at least as old as 2007-07-22, and I know it's *much* older.
+  --  I have not come across an earlier version of this script.  Perhaps one day.
+  --  There seem to be some non-traditional characters in here.  I hope my various editors haven't mangled things.
+
+
+:_endnotes_
+
+
+:  * Environment Setup
+: Save SET statements to use beyond the SETLOCAL boundery
+:: Hrm, I can't do that if I have important set statements like %8086%
+: This is a problem when running off of a network and you don't have C:\
+:	*IF .%TEMP != . *SET TEMP>C:\unc.tmp
+:	*IF .%ARJ_SW != . *SET ARJ_SW>>C:\unc.tmp
+: dammit.. %PATH is too long!  aaaaaaaaaaaaaaaaarg!!!!!!!!!!!!!!
+: the only real way around it is to cut it up and pass it to unc.tmp in pieces.
+: *IF .%PATH != .
+:	*PATH>>C:\unc.tmp
+:	*SETLOCAL
+:	*UNALIAS *
+:::: UNSET *
+:	SET/R C:\unc.tmp
+ALIAS _r_e_=`(GOSUB _recover_^GOTO _end_)`
+ON BREAK (POPD^GOTO _end_)
+PUSHD
+
+: +--
+
+:  *  Custom Setup
+: ** Notes:
+: Edit the occurrances of "C:\unc.tmp" in this batch if you want to change the
+:	drive/dir
+:	of this temporary file.  It cannot be set in any standard way without
+:	making this program unnecessarily complex.
+
+: ** Switches:
+: The default directory to spawn the directory from.  This option skips the
+:	drive scanning and questions which are prompted by UNC when it cannot
+:	find enough free space on the default drive.  Leave it blank or comment
+:	it out if you
+:	want UNC to interrogate the system and the user.
+: SET A=C:\TEMP
+
+: This is the formula to determine what number should be compared to the free
+:	space in a directory.  *5 = %@EVAL[filesize*5]
+SET B=*5
+
+: This is the reference to a virus scanner.  It is executed after a successful
+:	uncompress.  Leave it blank if you don't wish to use a virus scanner.
+: ALIAS C=`ECHO Clearing cache...^C:\WINDOWS\smartdrv.exe/C^ECHO Done^rem C:\UTILS\TBAV\tbscan.exe AF`
+ALIAS C=ECHO.
+
+: +--
+
+GOTO _endnotes_
+uncompress (make it in modules! - separate files in a BATCHES\UNC\ control dir as with arj.dat which has the ARJ commands within..  It would make it very easy to maintain.. perhaps combine all the data files into one data file??
+
+unc should ask if it needs to create a new dir.. also, if the preexistant dir is empty, it should use it anyways. 
+
+fix the unc free space detection / drive scanning.. don't scan past lastdrive 
+
+point towards the true exes after testing and shuffling the exes
+
+if i have a file "1" and i extract it as a .zip, unc will not work.. it looks
+for 1.zip  also, recovering from the error kills that original file
+
+i have no clue why, but rar will not move to the proper dir!!
+
+make the directory have the same description as the filename, with some
+marking to have me notice it.. (just in case)
+
+
+			*** NOTES ***
+
+ because I finished the background code on the renumbering process.. it is
+possible to have the directory name not be unique but have a number at the end!
+wooh!
+ A.I. Change the unique directory thing.  Have it prompt the user, [enter] to
+make a unique dir, have it check if the prompted dir exists or not.
+
+
+
+taken from a noteware note:
+- make sure a drive is active AND ready!  it dies on Z:
+- doesn't show the default dir with [enter]
+spawn "<name>" from:         -- should be TO, not from
+
+
+
+When out of space on CWD, don't have it re-search to check if that drive has
+free space again, in that list.. and don't have it pull up CD-ROMs.  (This may
+already be the case!)
+
+ -- after having entered in a directory to spawn the dir from, say the full
+path which will be used to uncompress to.  and remember that the SCREEN
+statements will have the archiver text start nearer to the top and this will
+overwrite some of the text from the search thing.
+
+add an ON BREAK statement?  Detect a break after archiver execution?
+technically the detection of the errorlevel can understand if there's been a
+break.
+
+research the archiver errorlevels
+
+This will be referred to as "this" throughout this' text.  I don't wish to name
+this as a program, a piece of software, a text, a betch file or anything else.
+
+I take no responsibility for its use .. morality, blabla
+
+Persons not fitting into the categories listed above may use this only if they
+agree to eloquently report any problems in a reasonable amount of time.
+
+This program requires the external archivers to function.
+If you want other programs / options supported, then suggest and / or supply
+them.
+
+Should I have an info display afterwards?  It would slow things down.
+
+Program version, date/time/size(/CRC?)
+
+A ` or % (not ^ though) as an input REALLLLY screws things up.  How should I go
+about removing them? (It's kinda like the old trick to hack into BBS' written
+in BASIC eh?).  Here is one method, but it's messy to *see* those errors if
+they show up:
+IF %@INDEX[`,`,]=-1 ECHO SETDOS/X-7 is active
+IF ERRORLEVEL 0 ECHO SETDOS/X+7 is active
+(A nice twist on the old:  IF NOT "%@EVAL[1+1]"=="2" ECHO This is DOS!  Ugh!
+
+I have no REAL way to predict how much space files will take after being
+expanded.
+	Problems:
+	compressed drives
+	cluster sizes
+As such, I just use 5x the archive size as the expected filesize.
+I could provide source code for at least a couple of the programs in order to
+let somebody build us a custom program to see what a file will be expanded to,
+but even in this case it would be a serious slowdown to have to check files in
+this manner before uncompressing them.
+
+Spif up the help.  Don't make it just the one screen, have it be several that
+the user can pick between.  Show command examples and give a GOOD description!
+
+be able to specify a path to unarchive to (%1 or something).  prompt if it's
+there already
+check if the first character is a \ or the second character is a :
+Add: Detect the use of a "\" in %1, and if so, then decompress to that dir
+
+make a function (%1) to have the file uncompressed in the directory in which it
+resides, and not the current directory.
+
+: add in *.r01
+if the archive is .r01 -> RAR extract *.r02...*.r??
+if the archive is .a01 -> RAR extract *.a02...*.r??
+check for the existance of .r01 and .a01 if the archive is .rar/.arj
+not necessary for rar, but for arj it is.
+
+for *.### -> have it autodetect the filename type (edit prep to leave
+ that info out? -> have it notify if the *.### is incorrect. (file missing)
+New feature:  If the filename has a special extension (.###), then read the
+file to get the path information and filename of the file that should be
+uncompressed in its place.
+-- if i have it read the description instead, i coukd save space...
+
+
+  Questions:
+  ~~~~~~~~~~
+ * What other SET statements need to be saved beyond the SETLOCAL boundery?!
+ * I think my use of >NUL and /Q etc.. need to be checked..
+ * What decompresses *.lha ?
+ * which version of 4dos does this require?
+
+  Future projects:
+  ~~~~~~~~~~~~~~~~
+- Be able to handle having not been given an extension?
+- Add in a log?
+- Add in more switches, to delete a file afterwards.  Be careful, research a
+while back put me off making more switches.  Something about not knowing how
+to pass them to the archivers?  It should be easily solved though.
+- Redo the colour commands so that they do not require ANSI.  I don't believe
+there is a proper way for me to �[K with the available technology.
+- Do wildcards with the FOR / DO function! have *. and .* and other ?!
+- Check for self extracting capability with unp (4.11 is latest)
+- Check for the "types" on the uncompressed files, and if description is
+nonexistant, (use filed39a), and describe each file.  Otherwise, append to
+the description or otherwise alter it?
+- Include a conversion ability, or otherwise extract the code from this one
+to make an external conversion program.
+- *OH* the things I could do with errorlevels and conversion and all the
+related things.. with detection of damaged archives and autorepair
+subroutines and..... .....
+
+- Include adaptations to use external programs to convert cross platform
+file types and archives, and then extract from them.
+  - lbr64.exe   -> dissolves commodore (64?) .lbr files
+  - ax.exe      -> dissolves commodore 64/128 .arc files
+  + Do I want to have the conversion for tokenized 64 basic/cbmscii ?
+- Include other, rarely used programs??  What else is there?
+- Include realtime executable decompression (unp 4.11) ?
+
+LIST OF CURRENTLY SUPPORTED (UN)ARCHIVERS:
+extension, name, version & date tested, copyright holder / author, homepage and/or email
+
+arc	ARC 6.02			Jan 01 1989	(c) System Enhancement Associates, Inc.
+ari	ARI 2.2				Oct 24 1997	(c) RAO Inc.
+arj	ARJ 2.60 			Nov 16 1997	(c) ARJ Software, Inc.
+exe	Assumed to be a Self-Extracting Archive		-
+com	Assumed to be a Self-Extracting Archive		-
+gz/z	GNU Zip 1.2.4			Aug 19 1993	Jean-loup Gailly <jloup@chorus.fr>
+ha	Lyapko George HA 1.1		Dec 02 1997	(c) Lyapko George (Lyapko Yuri Georgievich)
+hap	Pah 3.00			Nov 15 1992	(c) Harald Feldmann (Hamarsoft)
+hpk	Hpack 0.78a0 (beta)		Sep 01 1992	(c) Peter Gutmann
+hyp	Hyper - Pack Utility 2.5	Sep 29 1990	(c) Sawatzki and K.P. Nischke
+ice	LHice 1.14			Jul 15 1989	(c) Haruyasu Yoshizaki
+j	JAR 1.02			Aug 11 1997	(c) ARJ Software, Inc.
+jrc	JRchive Copyright		May 01 95	(c) JAYAR Systems
+lzh	LHA 2.55			Nov 15 1992	(c) Haruyasu Yoshizaki
+lzs	LArc 3.33			Feb 25 1989	(c) K.Miki H.Okumura K.Masuyama
+pak	Pkunpak 3.61			Aug 02 1988	(c) Pkware Inc.
+rar	RAR 2.02			Sep 11 1997	(c) Eugene Roshal
+rkv	Rkive v1.4			Oct 30 1996	(c) Malcolm Taylor
+sqz	Squeeze It! 1.08.3		Jan 24 1993	Jonas I Hammarberg
+tar	UNTGZ/386 0.95			Feb 17 1997	(c) Tillmann Steinbrecher
+tgz	"				"		"
+uc2	UltraCompressor II r3 PRO	Jun 11 1997	(c) Ad Infinitum Programs
+wa	Waveform Archiver 1.0 (32-bit)	Jul 14 1997	(c) Dennis Lee
+zip	Pkunzip 2.50			Mar 01 1999	(c) Pkware Inc.						www.pkware.com
+zoo	zoo 2.10.34			Jul 09 1991	Rahul Dhesi
+###	(My own special extension)
+
+Future Archivers: (As soon as I get the programs!)
+ext.	filename		unpack  list  test
+.PUT	get.exe
+.GBF	gifblast.exe		-d
+.AIN	ain.exe			x	l	t
+.LIM	limit.exe		e -n	l	t
+.MD	mdcd.exe		r	f
+
+AIN	ain x -y %
+AMG	amgc e %
+AR	ar x %
+ARK	quark x %
+ARX	arx x %
+BSA	bsa -x %
+CAB	extract %
+CDC	codec -d % *.*
+COD	codec -d % *.*
+DWC	dwc e %
+ -- This should be covered by LGHA
+HA	ha xay %
+LBR	lue % *.*
+LIM	lim E -S -Y %
+SAR	sar e %
+SIT	unstuff -d %
+UCN	uc esf %
+YC	yac x %
+
+Function Lowdown:
+(Am I using that word right?!)
+
+ * This is a quick list of the major functions of this program.
+
+Uncompresses a specified archive to a directory of its own.
+
+- Can create a unique directory when needed.
+- Easily modified to work with ANY commandline archiver
+- Special error trapping for .arj and .uc2
+- Basic error trapping for (most?) other archivers
+- Advanced CD-ROM and free space A.I.:  Where necessary, it will prompt the
+	user to uncompress to one of the listed useable drives.
+
+
+Version History:
+
+ * After a thinking hard about it, I have decided to keep a bit of a history
+list for those of you who are keeping track of the changes from time to time.
+Technically, this entire concept is useless except to those who wish to know
+what the changes are before playing with a new version.  I also feel that it
+is nice for those of you who are helping me out, in order to let you know the
+problems I have "conquered" and the additions I have made.
+ * a.b.c is the standard (I think) version numbering system.  a is a *major*
+change, b is a large change and c is a minor fix.  This numbers are meant to
+show the difference between a old version and the latest version.  If you are
+using and like v1.3.0, and 1.4.9 is current, you can expect a great deal of
+improvement between the versions and ought to update yourself.
+ * The list will have a marker on the left-hand side, - is a minor change, +
+is a large change and * is a humungous change (I don't expact to have ANY of
+these.  Something constituting a change like that would be to the degree of
+porting it to UNIX, which, yes, would be silly.
+
+
+* 2007-07-22
+** I shuffled this changelog around to put the newer items at the top.
+** Ok, I asked for it.  "Rewritten in UNIX"  =)
+
+2.1.0	Rewrite planned.. ugh.
++	Added compatability with the 4dos UNIX-like slashes option, by putting
+	a space between the archive executable and it's first switch.
+Feb 01	Hmm, was I even keeping track of any changes in the last couple of
+	years?  This batch is broken.. I have to redo a lot of it from scratch
+	to get it to do anything at all.. sigh.
+Aug 99	Heh, it seems I haven't been keeping revision updates up to date.  =)
+	Actually I totally forgot that this existed.
+-	Pkware v2.50 is finally installed on my system.
+-	Long filename awareness finally added and 100% functional.
+
+2.0.0
+ (to)	Version numbers between here and 1.4.9 have been ignored.  The version
+Aug 98	number has been incremented to 2.0.0 to reflect the extreme difference
+	between this and the previous release (1.3.0 I believe).
+*	Major updates (see 1.4.9 change history)
+*	Finished the routine which deals with there not being enough free space
+	or the file to be uncompressed being on a CD-ROM.  I will spiff it up
+	some more at a future date when I'm colourizing.
+	Jan 01 1998	Eric Franklin <>
+			Insistance of high-level A.I. forced me to rethink the
+			entire routine and add in the drive search function and
+			user input.
+-	Some more tweaking of the function to unarchive when without free
+	space on the default drive.
+-	Added the Auto-Unarchive (CD to %A when without free space) function
+	and gave it A.I. to detect if that directory exists or not.
+-	Added the "custom setup" SET statements.
+
+1.4.9
+	Technically I should have released this program at least two times
+	before now.  Every ?.x.? increment should be released.
+-	Free space detection added.  It's rusty and needs to be seriously
+	revamped.  For some reason it doesn't feel like working, so I've had
+	to strip out it's intelligence to get it to work at all.  This section
+	will be updated to detect a Cd-Rom by the %@CDROM flag and not in a
+	round-about way with %@DISKFREE.
++	Added in support for a whole LOT of other archivers
+-	Added in support for a archive redirection (*.###).  This support would
+	mean that files can be in "multiple locations" at once (without
+	resorting to editing the FAT).  So if an archive is categorizable in
+	two distinct ways, the file can be essentially "copied" and can be
+	drawn from using UNC in any of its locations.
+-	Altered the archiver detection scheme
+-	Added the filetype autodetection failure section.
+-	Added the version history
+-	Added the cheezy help listing
+-	Added the SETLOCAL / ENDLOCAL bounderies to avoid problems on foreign
+	computers such as running out of environment space or unintentionally
+	executing an alias.  Unfortunately this assumes that C:\unc.tmp can be
+	created and used.  I would have loved to avoid this, but it seems
+	impossible.  I do not want to start a secondary shell or anything that
+	complex and memory wasting, so this method will have to do.
+
+1.x-1.2
+95-96	Somewhere in here I had gotten help from many programmers after posting
+	this program in the Fido 4DOS Batch Programmers Area.  Special thanks
+	go towards Milo Van Der Leij and Phi Nguyen for their ideas.  There
+	were also many other people who gave me inspiration to continue the
+	project.
+
+:_endnotes_
+
+: Deal with various inputs
+IF %@INDEX[!-?!/?!?!,!%1!] != -1 GOTO _help_
+IF %@INDEX[%1,*] != -1 .OR. %@INDEX[%1,?] != -1 (ECHO WILDCARDS ARE NOT YET SUPPORTED^GOTO _help_)
+IF .%1=. GOTO _help_
+IF NOT EXIST %1 (ECHO ERROR: "%@UPPER[%1]" not found^GOTO _help_)
+
+SET ARCHIVE=%@FULL[%@SFN[%1]]
+:_special_
+IF ISLABEL _%@EXT[%ARCHIVE]_ GOTO _%@EXT[%ARCHIVE]_
+: Check for *.??_
+IF %@SUBSTR[%@EXT[%ARCHIVE],0,-1]=_ GOTO ___
+
+:_fail_
+  TEXT
+
+ERROR: Filetype autodetect failed, please identify the archive
+
+1 / a   Arc                 
+2 / j   Arj                 
+3 / l   Lharc               
+4 / r   Rar                 
+5 / u   UltraCompressor 2   
+6 / z   Pkunzip             
+7 / o   Zoo                 
+8 /<cr> -- Special --
+
+X - Exit program
+
+  ENDTEXT
+: ~~ REDO THIS ENTIRE THING! - prompt for the first three letters of the proper
+:	archive extension or something of the sort.  Give it a list??
+: hrm, after thinking about it.. I could possible pull up a list of the existing
+:	and appropriate labels, and have the list customized based on that!  =)
+	SET I=
+	INKEY/K"1a2j3l4r5u6z7ox[enter]" `Your Selection: ` %%I
+	IF %I=x GOTO _end_
+	IF %I=a SET I=1
+	IF %I=j SET I=2
+	IF %I=l SET I=3
+	IF %I=r SET I=4
+	IF %I=u SET I=5
+	IF %I=z SET I=6
+	IF %I=o SET I=7
+	IF .%I=. SET I=8
+	GOTO _%@WORD[%I,X ARC ARJ LZH RAR UC2 ZIP ZOO ###]_
+ECHO ~~ Deal with this!!
+GOTO _end_
+
+:___
+
+GOSUB _mm_
+: ** properly point to expand.. wherever it is.
+IFF %@EXT[%ARCHIVE]=tx_ THEN C:\DOS\JUNK\expand.exe %ARCHIVE %@NAME[%ARCHIVE].txt
+	ELSEIFF %@EXT[%ARCHIVE]=do_ THEN C:\DOS\JUNK\expand.exe %ARCHIVE %@NAME[%ARCHIVE].doc
+	ELSEIFF %@EXT[%ARCHIVE]=ex_ THEN C:\DOS\JUNK\expand.exe %ARCHIVE %@NAME[%ARCHIVE].exe
+	ELSEIFF %@EXT[%ARCHIVE]=co_ THEN C:\DOS\JUNK\expand.exe %ARCHIVE %@NAME[%ARCHIVE].com
+	ELSE C:\DOS\JUNK\expand.exe %ARCHIVE 
+ENDIFF
+_r_e_
+
+:_arc_
+GOSUB _mm_
+arc -x %ARCHIVE %2&
+_r_e_
+
+:_ari_
+GOSUB _mm_
+ari -x %ARCHIVE %2&
+_r_e_
+
+:_arj_
+GOSUB _mm_
+arj x -v %ARCHIVE %2&
+GOSUB _recover_
+: This needs to be fixed somehow?  Something about a less than?
+IF ERRORLEVEL=9 GOTO _fail_
+GOTO _end_
+
+:_exe_
+:_com_
+GOSUB _mm_
+%ARCHIVE %2&
+_r_e_
+
+:_gz_
+:_z_
+GOSUB _mm_
+COPY %ARCHIVE
+gzip386 -d %1 %2&
+: An alternate is:
+: untgz386 -d %ARCHIVE outfile %2&
+_r_e_
+
+:_ha_
+GOSUB _mm_
+lgha x %ARCHIVE %2&
+_r_e_
+
+:_hap_
+GOSUB _mm_
+pah e %ARCHIVE %2&
+_r_e_
+
+:_hpk_
+GOSUB _mm_
+hpack x %ARCHIVE %2&
+_r_e_
+
+:_hyp_
+GOSUB _mm_
+hyper -x %ARCHIVE %2&
+_r_e_
+
+:_ice_
+GOSUB _mm_
+ice x %ARCHIVE %2&
+_r_e_
+
+:_j_
+GOSUB _mm_
+jar x %ARCHIVE %2&
+_r_e_
+
+:_jrc_
+GOSUB _mm_
+jrce -v %ARCHIVE %2&
+_r_e_
+
+:_lzh_
+GOSUB _mm_
+: ICE no longer replaces LhArc
+lha x %ARCHIVE %2&
+_r_e_
+
+:_lzs_
+GOSUB _mm_
+larc x %ARCHIVE %2&
+_r_e_
+
+:_pak_
+GOSUB _mm_
+pak e %ARCHIVE %2&
+_r_e_
+
+:_rar_
+:_r01_
+GOSUB _mm_
+: Fucking used to point at a batch and screw up for no reason
+%8086%\UTILS\ARCS\rar.exe -std -rr -mm -s- x %ARCHIVE %2&
+_r_e_
+
+:_rkv_
+GOSUB _mm_
+rkive -x %ARCHIVE %2&
+_r_e_
+
+:_sqz_
+GOSUB _mm_
+sqz x %ARCHIVE %2&
+_r_e_
+
+:_tar_
+GOSUB _mm_
+untgz386 %ARCHIVE *.* %2&
+_r_e_
+
+:_tgz_
+GOSUB _mm_
+untgz386 %ARCHIVE *.* %2&
+_r_e_
+
+:_uc2_
+GOSUB _mm_
+: uuc e -s %ARCHIVE %2&
+uc e -s %ARCHIVE %2&
+GOSUB _recover_
+: 
+IF ERRORLEVEL=100 GOTO _fail_
+: errorlevel 120 is for v2.2 not 2.3 pro ?!  Why did they change it?!?!
+: for v2.3, this errorlevel means that the command line is incorrect.
+IF ERRORLEVEL=120 GOTO _fail_
+GOTO _end_
+
+:_wa_
+GOSUB _mm_
+wa32 x %ARCHIVE %2&
+_r_e_
+
+:_zip_
+GOSUB _mm_
+pkunzip /d %ARCHIVE %2&
+: unzip32 %ARCHIVE %2&
+: gives errors  =(
+_r_e_
+
+:_zoo_
+GOSUB _mm_
+zoo -e %ARCHIVE %2&
+_r_e_
+
+:_###_
+	SET HANDLE=%@FILEOPEN[%1,READ]
+	SET ARCHIVE=%@FILEREAD[%HANDLE]
+	SET CLOSE=%@FILECLOSE[%HANDLE]
+	FOR %I IN (%ARCHIVE.*) DO GOSUB _#_
+	GOTO _special_
+	:_#_
+	SET COUNTER=%@INC[%COUNTER]
+ECHO ~ ARG!
+GOTO _end_
+
+:_mm_
+:  * Routine: If CDROM / not enough space, deal with it.
+: ? Should I break up this next command?  Does it stop looking after it finds
+:	out that the current drive is a cdrom drive?  Is there a faster method?
+IF %@CDROM[%_DISK]=0 .AND. %@DISKFREE[%_DISK] GT %@EVAL[%@FILESIZE[%ARCHIVE]%B] GOTO _mm2_
+ECHO There Is Not Enough Free Space On The Default Drive
+: If the %A setting is off, continue on to interrogate the drive(s) for free
+:	space.
+
+: umm, why do i have this spaghetti code here? .. clean this up
+IF .%A != . GOTO _skip_
+
+: If the %A setting is on, skip the interrogation and go there if
+:	possible (if there's enough free space there).
+IFF %@DISKFREE[%A] GT %@EVAL[%@FILESIZE[%ARCHIVE]%B] THEN
+	IFF NOT ISDIR %A THEN
+		SET I=
+		INKEY/K"yn[enter]" %A\ Not Found!  Shall I Make It? [Y/n] %%I
+		IF .%I=. .OR. %I=y MD/S %A
+		IF %I=n (ECHO Remember To Edit UNC To Avoid This Error In The Future -- Quitting^GOTO _end_)
+	ENDIFF
+	CDD %A\
+	ECHO Auto-Unarchiving To %A\%@UPPER[%@NAME[%1]]\
+	: As it won't be used past this point, use it as an indicator that this
+	:	routine has been run.  It is so that a recovery attempt will
+	:	properly work.
+	SET A=
+	GOTO _mm2_
+ENDIFF
+
+:_skip_
+CLS
+:  * Routine to check out the drives, see which is ready, and list
+:	which are and are not proper for the user to pick from.
+: ? Can anybody think of a faster / better method?  If this were on a slow
+: computer, it would be hellish for it to search through so many drive letters.
+SCREEN 2 0
+ECHO DRIVE:    TOTAL:		USED:			FREE:
+FOR %I IN (c d e f g h i j k l m n o p q r s t u v w x y z) GOSUB _temp2_
+GOTO _done_
+
+:_temp2_
+: [2] Stop UNC from bothering to check drives which don't exist
+: ? Ugh, what a messy way to do it.  How do I stop the rest of the FOR
+:	statements?  Do I REALLY want to GOTO out of this FOR loop?!
+IF %LEAVE=1 RETURN
+IF %I=%_LASTDISK SET LEAVE=1
+: [4] Reveal where UNC is currently looking
+SET C=%_COLUMN
+SET R=%_ROW
+SCREEN 0 0 Scanning Drive [%I:]
+SCREEN %R %C
+: Check if this drive exists and is ready
+IFF %@READY[%I]=1 THEN
+	: Check if this drive has enough space free
+	IFF %@DISKFREE[%I] GT %@EVAL[%@FILESIZE[%ARCHIVE]%B] THEN
+		: Prep the list of which drives are selectable
+		: This is used for the inkey statement below (picklist)
+		SET TEMP3=%TEMP3%%I
+		: List the proper drives
+		ECHO [%I]	%@COMMA[%@DISKTOTAL[%I,K]] kB		%@COMMA[%@DISKUSED[%I,K]] kB		%@COMMA[%@DISKFREE[%I,K]] kB
+	ELSE
+		: List the improper drives
+		ECHO %I	%@COMMA[%@DISKTOTAL[%I,K]] kB		%@COMMA[%@DISKUSED[%I,K]] kB		%@COMMA[%@DISKFREE[%I,K]] kB
+	ENDIFF
+ENDIFF
+RETURN
+	:_done_
+	IF .%TEMP3=. (ECHO ERROR: Not Enough Free Space Anywhere!^GOTO _end_)
+
+	SCREEN 0 0
+	: If there is only one selectable drive, go there
+	IF %@LEN[%TEMP3]=1 (ECHO Drive %@UPPER[%TEMP3] is the only available drive - I'll use it^%TEMP3:^GOTO _retry_)
+	: Ask which of the acceptable drives will be used
+	INKEY/K"%TEMP3" Please Select The Alternate Drive You Wish To Use: %%I
+	%I:
+	: -- Prompt for a directory, and go there if it exists
+	SCREEN 2 0 Press [enter] For "%@UPPER[%_CWDS%%@NAME[%ARCHIVE]]"�[K
+
+: ~~~~ look at this - it should be intelligent.  it should not %I: over to that
+: drive without remembering where it used to be - then I can type out this
+: other information easily.  be careful of repeating redraws if you run into
+: an error.
+
+	SCREEN 3 0 Type %_DISK: For "%@UPPER[%_CWDS%%@NAME[%ARCHIVE]]"�[K
+	:_retry_
+	: Reset the cursor to its proper position
+	SCREEN 1 0
+	INPUT Please Input The Directory You Wish To Spawn "%@UPPER[%@NAME[%ARCHIVE]]" From:�[K %%I
+	IFF .%I != . .AND. NOT ISDIR %I THEN
+		SCREEN 3 0 ECHO ERROR: Directory Not Found! -- Making It�[K
+		: ~ I may wish to check and make sure the directory name is
+		:	proper?
+		MD %I
+:		DESCRIBE %I %@DESCRIPT[%1]
+	ELSEIFF .%I != . THEN
+		IFF EXIST %I .AND. NOT ISDIR %I THEN
+			SCREEN 4 0 ERROR: Invalid Directory Name! -- It Exists As A File�[K
+		ELSE
+			SCREEN 4 0 ERROR: (~ext1~)�[K
+		ENDIFF
+		GOTO _retry_
+	ENDIFF
+	: [enter] is %_CWD
+	IF .%I=. SET I=%_CWD
+
+
+: ? Should I have leading and trailing slashes??  Could I stick in some sort
+:	of control-tab listing thingemy??  (How?)
+: ? Perhaps I should suggest some common directories??  like %TEMP ??
+: ? Do I need to clean up %I, just in case it's wierd like "C:\A\..\2\\\.\" ?
+: I understand that this will accept wierd inputs and can let the user go to
+:	a drive which is on the unacceptable list.  So if the user picks C and
+:	says to go to D:\, it'll work.
+CDD %I
+: +--
+
+:_mm2_
+:  * Routine to Make the directory and then go there.
+: I might remove the .OR. EXIST %@NAME[%ARCHIVE] .. I could put it back in if
+:	I were to somehow use an IF ERRORLEVEL with the MD command below.  MD
+:	does not set the ERRORLEVEL flag
+IFF ISDIR %@NAME[%ARCHIVE] .OR. EXIST %@NAME[%ARCHIVE] THEN
+	ECHO NOTE: A Unique Directory Name Will Be Created
+	SET DIR_TEMP=%@UNIQUE[]
+	: This delete command is necessary because the %@UNIQUE[]
+	:	command will create a zero byte file.
+	DEL %DIR_TEMP
+	: Don't bother making a wierd-assed directory with an extension
+	SET DIR_TEMP=%@NAME[%DIR_TEMP]
+ELSE
+	: Do I need this to have the drive/path ?
+	SET DIR_TEMP="%@PATH[%ARCHIVE]%@NAME[%ARCHIVE]"
+ENDIFF
+: The %@NAME is necessary just in case %SPACE=0
+MD "%@NAME[%DIR_TEMP]"
+: DESCRIBE %@NAME[%DIR_TEMP] %@DESCRIPT[%1]
+CD "%@NAME[%DIR_TEMP]"
+: This step can deal with any sort of %1 given  (I don't remember why I
+:	did this! -- urr.. but it works!  =)
+IF .%SPACE=. IF .%HANDLE=. SET ARCHIVE=%@PATH[%@FULL[%ARCHIVE]]%@FILENAME[%ARCHIVE]
+RETURN
+: +--
+
+:_recover_
+:  * Check for the errorlevel flag, and prompt the user to "undo" everything
+IF ERRORLEVEL=0 GOTO _recover2_
+:: ARG - this is somehow out of place!  It can be done LOTS better.
+: Auto-unarchive was initiated - make sure UNC knows it.
+:: ARG. i give up..
+:: IF .%A=. SET DIR_TEMP=%@NAME[%1]
+ECHO.
+ECHO Do you wish to recover from the error? [Y/n]
+: ECHO "%DIR_TEMP" and its contents will be deleted!
+ECHO "%_CWD" and its contents will be deleted!
+SET I=
+INKEY/K"yn[enter]" %%I
+IF %I=N GOTO _end_
+ECHO.
+ECHO Recovering from the error...
+: Reuse the variable
+SET DIR_TEMP=%_CWD
+CD..
+: C:\UTILS\TBAV\tbfile.exe d
+*DEL/ESXYZ "%DIR_TEMP"
+: C:\UTILS\TBAV\tbfile.exe e
+GOTO _end_
+
+:_recover2_
+: Virus Scanner Commandline
+C
+DIR /HKLMZO:U %ARCHIVE
+RETURN
+: +--
+
+:_help_
+: CLS WHI ON BLA BOR BLA
+ECHO.
+ECHO �[1;35mUNC�[33m v2.0.0�[0m
+TEXT
+Uncompresses an archive into a directory made from the archive name, CD-ing the
+user there afterwards.
+
+<> = required
+[] = optional
+
+unc[.btm] <archive_name.ext> [unarchive_filespec]
+
+<archive_name.ext>	Archive Name (+ Extension)
+[unarchive_filespec]	A switch passed to the unarchiver to indicate which
+			files you wish to extract.
+
+
+** EXAMPLE:  (While at C:\ and the archive is at C:\)
+
+unc archive.rar *.nfo
+
+{1} This will create C:\ARCHIVE {2} and uncompress *.nfo from C:\archive.rar
+into that directory.  The user will then be left in C:\ARCHIVE
+
+** EXAMPLE:  (While at C:\ and the archive is at D:\)
+
+unc.btm D:\archive.rar
+
+{1} This will create C:\ARCHIVE {2} and uncompress the archive from
+D:\archive.rar into that directory.  The user will be left in C:\ARCHIVE
+
+** EXAMPLE: (While at Z:\ and the archive is at Z:\ -- Z: is a CD-ROM drive)
+
+unc archive.rar
+
+The CD-ROM is detected, and unless the user has set the quick-switch to auto-
+uncompress, UNC will scan the other drives for available free space.  The user
+will be prompted to pick the drive to use and the directory to create the
+directory ARCHIVE {2}.
+
+1 - Assuming there is enough calculated free space on the current drive
+2 - Or a random directory if the file or directory C:\ARCHIVE already exists
+
+
+
+
+
+Created with help from:
+  - Milo Van Der Leij
+  - Phi Nguyen
+  - Many others batch programmers
+ENDTEXT
+: It flows right into _end_
+
+:_end_
+:  * Save %_CWDS to use beyond the ENDLOCAL boundery
+:	ECHO UNC=%_CWDS>C:\unc.tmp
+:	ENDLOCAL
+:	*ALIAS/R C:\unc.tmp
+
+: wtf are these two for?
+:	UNC
+:	*ALIAS UNC=
+
+:	*DEL/Q C:\unc.tmp
+*QUIT
