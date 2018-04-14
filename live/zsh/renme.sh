@@ -1,6 +1,9 @@
 #!/usr/bin/env  zsh
 # TODO - Keep this as a separate .sh and just have an alias refer to it.  Dumbass.
 
+2018-04-13 - This is at least as old as 2009-03-29, and I know it's older.
+
+
 
 # Rename the current directory
 # This seems to work under vanilla shell.
