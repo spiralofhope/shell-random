@@ -1,30 +1,31 @@
 #!/usr/bin/env  sh
+# Launch any available panel (the bottom bar)
+# 2018-04-15 on Devuan-1.0.0-jessie-i386-DVD
 
-# 2016-11-26 on Devuan
+
 
 # TODO - given an array of strings, run the first program found.
-# `setsid`  is to force it to run in its own session, so that there's no lingering zsh process.
-echo "trying lxpanel"
-\setsid  \lxpanel &
-killall -0 lxpanel
 
 
-if [ $? -ne 0 ]; then
-  echo "trying fbpanel"
-  \setsid  \fbpanel &
-fi
-killall -0 fbpanel
 
 
-if [ $? -ne 0 ]; then
-  echo "trying xfce4-panel"
-  \setsid  \xfce4-panel &
-fi
-killall -0 xfce4-panel
+trytry() {
+  # killing ahead of time, in case it's already running.  fbpanel, for one, will allow multiple processes if run in this script's manner, which is really odd.
+  # `setsid` is to force it to run in its own session, so that there's no lingering shell parent process.
+  #
+  \echo  "$1 attempt"
+  \killall  $1   >  /dev/null 2> /dev/null
+  \setsid   $1  2>  /dev/null &
+  \which    $1   >  /dev/null 2> /dev/null
+  if [ $? = 0 ]; then
+    \echo  "$1 success"
+    exit  0
+  fi
+  \echo  "$1 failed"
+}
 
 
-if [ $? -ne 0 ]; then
-  echo "trying tint2"
-  \setsid  \tint2 &
-fi
-killall -0 tint2
+trytry fbpanel
+trytry lxpanel
+trytry xfce4-panel
+trytry tint2
