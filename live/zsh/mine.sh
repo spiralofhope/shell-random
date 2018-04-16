@@ -447,8 +447,8 @@ findreplace() {
 
 # Solves commandline limitations.  Hot damn.
 findqueue() {
-  #local deadbeef=1
-  #local debug=true
+  local  deadbeef=1
+  #local  debug=true
 
   # Case-insensitive globbing:
   \unsetopt CASE_GLOB
@@ -502,10 +502,10 @@ findqueue() {
     fi
     if [[ x$deadbeef == x1 ]]; then
       # FIXME - apparently  --queue  does not work any more.  Somehow.
-      #\deadbeef  --queue     "$files_array[$i]" &
-      #\deadbeef.sh  --queue     "$files_array[$i]"
-      #\deadbeef.sh  --queue     \'"${files_array[${i}]}"\'
-      \deadbeef  --queue     \'"${files_array[${i}]}"\' &
+      #/l/OS/bin/deadbeef-0.7.2/deadbeef  --queue     "$files_array[$i]" &
+      #/l/OS/bin/deadbeef-0.7.2/deadbeef  --queue     "$files_array[$i]"
+      #/l/OS/bin/deadbeef-0.7.2/deadbeef  --queue     \'"${files_array[${i}]}"\'
+      /l/OS/bin/deadbeef-0.7.2/deadbeef  --queue     \'"${files_array[${i}]}"\' &
     else
       \audacious  --enqueue  "$files_array[$i]" &
     fi
@@ -517,7 +517,7 @@ findqueue() {
 
 # TODO - yes it's possible to rig things so that playback begins when the very first item is added, but that's a bit annoying to do.  I don't understand parameters in scripting well enough to do it cleanly.  Needing to do that reveals a big issue with the player.. perhaps it's configured to scan every file for meta data.
 findplay() {
-  #local deadbeef=1
+  local  deadbeef=1
 
   if [[ x$deadbeef == x1 ]]; then
     # Deadbeef has no functionality to just empty out its existing play list, but I can load an empty one.
@@ -532,13 +532,13 @@ DBPL
 
 DEADBEEF_EMPTY_PLAYLIST
 
-    \deadbeef  /l/deadbeef_empty_playlist.dbpl
+    '/l/OS/bin/deadbeef-0.7.2/deadbeef'  '/l/deadbeef_empty_playlist.dbpl'
     \sleep  0.1
     findqueue  $*
-    \deadbeef  --play
+    '/l/OS/bin/deadbeef-0.7.2/deadbeef'  --play
     #\rm  --force  $temp
-    # I could just point to a random entry in deadbeef's playlist:
-    #\deadbeef  --random  --play
+    # I could also point to a random entry in deadbeef's playlist:
+    #'/l/OS/bin/deadbeef-0.7.2/deadbeef'  --random  --play
   else
     # Audacious has no functionality to just empty out its existing play list, but I can load an empty one.  Here are three examples:
 
