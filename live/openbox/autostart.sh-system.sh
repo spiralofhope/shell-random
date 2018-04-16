@@ -101,6 +101,7 @@
 
 /l/shell-random/git/live/sh/scripts/panel.sh &
 
+
 # Passwords
 # FIXME - 'sleep' is a stupid way to ensure the panel has been launched before adding keepassx.
 # Maybe do an `until` and `sleep` loop to wait for `which fbpanel`?  Fork that in its own process too?
@@ -130,6 +131,11 @@
 # FIXME - This is done to ensure this window pops up after the previous one.  I hate this.
 \sleep 0.3
 
+
+# The tray's volume icon.
+# I add this because fbpanel's volume plugin doesn't feel like working any more.
+\killall  volumeicon  >  /dev/null 2> /dev/null
+\volumeicon &
 
 
 # --
