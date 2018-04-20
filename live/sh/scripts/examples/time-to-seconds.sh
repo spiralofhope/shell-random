@@ -48,3 +48,7 @@ local t="40.2"
   \bc
 
 
+
+
+# You can learn the length of an audio file like so:
+#t=$( \avconv  -i "$file"  2>&1 | \grep Duration | \awk '{print $2}' | \tr -d ',' )
