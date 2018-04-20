@@ -304,13 +304,6 @@ launch_terminal() {
       # This dumbass terminal does not have a proper fallback if I use an invalid font.
       # See ~/.Xresources
 
-      # Learn if the process exists and is owned by the current user.
-      \killall  --user $( \whoami )  -0  urxvtd
-      if [ $? -eq 1 ]; then
-        \echo "urxvtd is not running, running it"
-        \urxvtd  --fork  --opendisplay  --quiet
-      fi
-
       \which xlsfonts > /dev/null
       if [ $? -eq 0 ]; then
         \echo "I can probably use a font, trying.."
@@ -329,13 +322,29 @@ launch_terminal() {
         # 2016-11-24 - on Devuan
         #font='xft:Bitstream Vera Sans Mono'
         \setsid  \urxvtc  -fn $font  -bg black  -fg grey  "$@"
+        if [ $? -eq 2 ]; then
+          \echo "urxvtd is not running, running it"
+          \setsid  \urxvtd  --fork  --opendisplay  --quiet
+          \setsid  \urxvtc  -fn $font  -bg black  -fg grey  "$@"
+        fi
+        
       else
         \echo "I doubt I can use a font, skipping.."
         \setsid  \urxvtc  -bg black  -fg grey  "$@"
+        if [ $? -eq 2 ]; then
+          \echo "urxvtd is not running, running it"
+          \setsid  \urxvtd  --fork  --opendisplay  --quiet
+          \setsid  \urxvtc  -bg black  -fg grey  "$@"
+        fi
       fi
       if [ $? -ne 0 ]; then
         # Just fucking work..
         \setsid  \urxvtc  -fn 'xft:'
+        if [ $? -eq 2 ]; then
+          \echo "urxvtd is not running, running it"
+          \setsid  \urxvtd  --fork  --opendisplay  --quiet
+          \setsid  \urxvtc  -fn 'xft:'
+        fi
       fi
     ;;
 
