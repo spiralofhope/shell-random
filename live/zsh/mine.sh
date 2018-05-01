@@ -445,82 +445,95 @@ findreplace() {
 
 
 
-# Solves commandline limitations.  Hot damn.
 findqueue() {
-  local  deadbeef=1
-  #local  debug=true
+  #local  deadbeef=1
 
-  # Case-insensitive globbing:
-  \unsetopt CASE_GLOB
-  # Search through directories, and read it all into an array.
-  # The ending (.) means "files only".
-  # Fucking son of a bitch it's impossible to make glob use a variable in a sensible way.
-  #params=
-  #for i in {1..${#@}}; do
-    #if [ $i -gt 1 ]; then
-      #params+="\ "
-    #fi;
-    #params+="$@[$i]"
-  #done
-  #\echo $params
-  #\echo "$params"
-  # Just brute forcing this..
-  if [ -z $1 ]; then
-    files_array=( ./**/**(.) )
-  elif [ -z $2 ]; then
-    files_array=( ./**/*$1*(.) )
-  elif [ -z $3 ]; then
-    files_array=( ./**/*$1\ $2*(.) )
-  elif [ -z $4 ]; then
-    files_array=( ./**/*$1\ $2\ $3*(.) )
-  elif [ -z $5 ]; then
-    files_array=( ./**/*$1\ $2\ $3\ $4*(.) )
-  else
-    \echo  'ERROR -----------------------------------------------------'
+  if [[ x$deadbeef == x1 ]]; then                                         {   #  Deadbeef
+    # Make sure it's running first.
+    \setsid  '/l/OS/bin/deadbeef-0.7.2/deadbeef'  > /dev/null 2> /dev/null  &
+    # Wait for it to launch
+    until pids=$( \pidof  '/l/OS/bin/deadbeef-0.7.2/deadbeef' ); do
+      \ps  alx | \grep  'deadbeef'
+      \sleep  0.1
+    done
+    find  .  -type f -iname "*${*}*" -print0 |\
+      \xargs -0 -r -I file '/l/OS/bin/deadbeef-0.7.2/deadbeef'  --queue  file  > /dev/null 2> /dev/null  &
+  }
+  else                                                                    {   #  Audacious
+    # Make sure it's running first.
+    \setsid  \audacious  --show-main-window  > /dev/null 2> /dev/null  &
+    # Wait for it to launch
+:<<'}'   #  Why in the everloving fuck doesn't this work?
+    until pids=$( \pidof  'audacious' ); do   
+      echo  'waiting for audacious to launch..'
+      \ps  alx | \grep  'audacious'
+      \sleep  0.1
+    done
+}
+    \sleep 1
+      \ps  alx | \grep  'audacious'
+      \pidof  'audacious'
+
+    find  .  -type f -iname "*${*}*" -print0 |\
+      \xargs -0 -r -I file audacious  --enqueue  file
+  }
   fi
-
-
-  # TODO:  files_array can be shuffled here.
-  #        If zsh could sanely shuffle an array.  =/
-
-  # Iterate through the array.
-  # FIXME - this seems to be random!  Needs testing
-  # I could take a random entry like this:
-  #\echo $files_array[$RANDOM%$#FILES+1]
-  if [[ x$deadbeef == x1 ]]; then
-    # In my original tests, I did not need to do anything.
-    #/l/OS/bin/deadbeef-0.7.2/deadbeef
-  else
-    \audacious  --show-main-window &
-    # An unfortunate need, it seems, to prevent a billion instances from spawning.
-    # TODO - Maybe I could wait for its pid?
-    \sleep  1
-  fi
-  for i in {1..${#files_array}}; do
-    if [ $debug ]; then
-      \echo  "Processing:  $files_array[$i]"
-    fi
-    if [[ x$deadbeef == x1 ]]; then
-      # FIXME - apparently  --queue  does not work any more.  Somehow.
-      #/l/OS/bin/deadbeef-0.7.2/deadbeef  --queue     "$files_array[$i]" &
-      #/l/OS/bin/deadbeef-0.7.2/deadbeef  --queue     "$files_array[$i]"
-      #/l/OS/bin/deadbeef-0.7.2/deadbeef  --queue     \'"${files_array[${i}]}"\'
-      /l/OS/bin/deadbeef-0.7.2/deadbeef  --queue     \'"${files_array[${i}]}"\' &
-    else
-      \audacious  --enqueue  "$files_array[$i]" &
-    fi
-    #\sleep 0.1
-  done
 }
 
 
-
-# TODO - yes it's possible to rig things so that playback begins when the very first item is added, but that's a bit annoying to do.  I don't understand parameters in scripting well enough to do it cleanly.  Needing to do that reveals a big issue with the player.. perhaps it's configured to scan every file for meta data.
 findplay() {
-  local  deadbeef=1
+  #local  deadbeef=1
 
-  if [[ x$deadbeef == x1 ]]; then
-    # Deadbeef has no functionality to just empty out its existing play list, but I can load an empty one.
+  # TODO - Create the empty playlists in /l if they don't exist.
+  # TODO - perform the search once, then take the first result and play with that.  Then take the rest and queue it up.
+  # TODO - With with a separate 'findqueue' playlist.
+          # Remove any 'findqueue' playlist
+          # Create a new 'findqueue' playlist with these results.
+          # Play that playlist.
+
+  if [[ x$deadbeef == x1 ]]; then                                         {   #  Deadbeef
+    # Launch with an empty playlist
+    \setsid  '/l/OS/bin/deadbeef-0.7.2/deadbeef'  '/l/deadbeef_empty_playlist.dbpl'   > /dev/null 2> /dev/null  &
+    # Wait for it to launch
+    until pids=$( \pidof  '/l/OS/bin/deadbeef-0.7.2/deadbeef' ) ; do
+      \ps  alx | \grep  'deadbeef'
+      \sleep  0.1
+    done
+    # Queue
+    find  .  -type f -iname "*${*}*" -print0 |\
+      \xargs -0 -r -I file '/l/OS/bin/deadbeef-0.7.2/deadbeef'  --queue  file  > /dev/null 2> /dev/null  &
+    # Play
+    # FIXME - This doesn't always trigger
+            # .. unless I pause for a bit.
+            # .. but if I do pause, then sometimes it will play, and then restart playing.
+    #\sleep  1
+    # If findplay() is run without deadbeef already running, if it begins playing at all, then it begins playing at the second item!
+    '/l/OS/bin/deadbeef-0.7.2/deadbeef'  --play
+  }
+  else                                                                    {   #  Audacious
+
+    # Empty any current playlist:
+    \setsid  \audacious  --enqueue-to-temp  /l/empty_playlist.xspf   > /dev/null 2> /dev/null  &
+:<<'}'   #  Why in the everloving fuck doesn't this work?
+    until pids=$( \pidof  'audacious' ); do   
+      echo  'waiting for audacious to launch..'
+      \ps  alx | \grep  'audacious'
+      \sleep  0.1
+    done
+}
+    \sleep  1
+    # Queue
+    # Pulled from findqueue()
+    find  .  -type f -iname "*${*}*" -print0 |\
+      \xargs -0 -r -I file audacious  --enqueue  file
+    # Play
+    \audacious  --play
+  }
+  fi
+
+
+
+# Deadbeef has no functionality to just empty out its existing play list, but I can load an empty one.
 
 :<<'DEADBEEF_EMPTY_PLAYLIST'
 
@@ -532,15 +545,8 @@ DBPL
 
 DEADBEEF_EMPTY_PLAYLIST
 
-    '/l/OS/bin/deadbeef-0.7.2/deadbeef'  '/l/deadbeef_empty_playlist.dbpl'
-    \sleep  0.1
-    findqueue  $*
-    '/l/OS/bin/deadbeef-0.7.2/deadbeef'  --play
-    #\rm  --force  $temp
-    # I could also point to a random entry in deadbeef's playlist:
-    #'/l/OS/bin/deadbeef-0.7.2/deadbeef'  --random  --play
-  else
-    # Audacious has no functionality to just empty out its existing play list, but I can load an empty one.  Here are three examples:
+
+# Audacious has no functionality to just empty out its existing play list, but I can load an empty one.  Here are three examples:
 
 :<<'AUPL'
 title=Now%20Playing
@@ -559,11 +565,6 @@ PLS
 </playlist>
 XSPF
 
-    #\audacious  --enqueue-to-temp  /l/empty_playlist.xspf &
-    \sleep  0.1
-    findqueue  $*
-    \audacious  --play
-  fi
 }
 
 
