@@ -105,7 +105,7 @@ _df_sorted(){
 
 
 findqueue() {
-  #local  deadbeef=1
+  local  deadbeef=1
 
   if [[ x$deadbeef == x1 ]]; then                                         {   #  Deadbeef
     # Make sure it's running first.
@@ -141,7 +141,7 @@ findqueue() {
 
 
 findplay() {
-  #local  deadbeef=1
+  local  deadbeef=1
 
   # TODO - Create the empty playlists in /l if they don't exist.
   # TODO - perform the search once, then take the first result and play with that.  Then take the rest and queue it up.
