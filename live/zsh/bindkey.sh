@@ -99,7 +99,7 @@ typeset  -g  -A  key
 
 {  #  Quote everything after the first parameter
   # TODO - This turns the mark on, and it shouldn't.  I wasn't able to figure out how to stop that, but I don't care much.
-  # Use case
+  # Use case:
   #   somecommand 
   #   (paste)
   #   somecommand This is a string
@@ -154,8 +154,8 @@ case $TERM in
     \bindkey  '^[[3~'    kill-word                                      # control-delete
 
     # 2016-11-26 - Devuan
-    \bindkey  '^[[D'  backward-word                                     # control-left
-    \bindkey  '^[[C'  forward-word                                      # control-right
+    \bindkey  '^[[D'     backward-word                                  # control-left
+    \bindkey  '^[[C'     forward-word                                   # control-right
   ;;
 
   screen|screen-256color)   # The program 'screen'
