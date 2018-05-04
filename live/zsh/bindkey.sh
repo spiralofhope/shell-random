@@ -143,7 +143,6 @@ case $TERM in
     \bindkey  '^[[7~'    beginning-of-line                              # home
     \bindkey  '^[[8~'    end-of-line                                    # end
     #\bindkey  '^H'       backward-kill-word                             # control-backspace
-
     # 2016-11-26 - Devuan
     \bindkey  ''       backward-kill-word                             # control-backspace
   ;;
