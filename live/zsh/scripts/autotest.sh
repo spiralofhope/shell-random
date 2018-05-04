@@ -595,7 +595,7 @@ run_script() {
       ansi_echo "--+ end [$RESULT]" $( date ) "+--"
       if [ ! "$TIME" = "no" ]; then
         TIMESTAMP_END="$( \date +%s )"
-        \echo  "$(($TIMESTAMP_END - $TIMESTAMP_BEGIN)) seconds"
+        \echo  "autotest:  The script ran for $(($TIMESTAMP_END - $TIMESTAMP_BEGIN)) seconds"
         # TODO: Detect if it's appropriate to list in minutes, then display in mm:ss
         #   Maybe also do hh:mm:ss, oh hell.. do yy:dd:mm:ss for kicks!
       fi
