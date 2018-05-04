@@ -151,6 +151,7 @@ case $TERM in
     \bindkey  '^[OH'     beginning-of-line                              # home
     \bindkey  '^[OF'     end-of-line                                    # end
     \bindkey  '^H'       backward-kill-word                             # control-backspace
+    \bindkey  '^[[3~'    kill-word                                      # control-delete
 
     # 2016-11-26 - Devuan
     \bindkey  '^[[D'  backward-word                                     # control-left
