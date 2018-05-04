@@ -1,141 +1,159 @@
 #!/usr/bin/env  sh
+# 2018-05-04 - Dash 0.5.7-4+b1
+
+
+#debug=true
+#debug  '\n\n________________________________________________________________________________\n\n' ; return
+SPINNER=true
+
+
+time_source=$( \date  --date 'now'  +%s )
+
+
+debug() {
+  if [ "$debug" ]; then
+    \printf  "$*"
+  fi
+}
+
+
+:<<'}'   #  git-bash:  ANSI under Windows
+Use ansicon
+  https://github.com/adoxa/ansicon
+on Windows 10:
+  1. unzip it somewhere.
+  2. open a cmd as admin
+  3. go to its unzipped location, to x64
+  4. ansicon.exe -I
+}
 
 
 
-# git-bash:
-# To get ANSI working under Windows, use ansicon
-#   https://github.com/adoxa/ansicon
-# on Windows 10:
-#   1. unzip it somewhere.
-#   2. open a cmd as admin
-#   3. go to its unzipped location, to x64
-#   4. ansicon.exe -I
-DEBUG=true
-SPINNER=1
+{   #  Configuration for git-bash
+  # Apparently $PF vanishes for this shell..
+  #if [ -z "$PF" ]; then
+    ## I'm on Linux
+    #WINDOWS=
+  #else
+    #WINDOWS=true
+  #fi
 
-# git-bash:
-# Apparently $PF vanishes for this shell..
-#if [ -z "$PF" ]; then
-  ## I'm on Linux
-  #WINDOWS=
-#else
-  #WINDOWS=true
-#fi
+  # env ought to be smart under Linux.
+  # FIXME - this is not valid under Babun/Cygwin
+  if [ "$SHELL" = '/usr/bin/bash' ]; then
+    WINDOWS=true
+  else
+    # I'm on Linux
+    WINDOWS=
+  fi
 
-# git-bash:
-# env ought to be smart under Linux.
-# FIXME - this is not valid under Babun/Cygwin
-if [ "$SHELL" = '/usr/bin/bash' ]; then
-  WINDOWS=true
-else
-  # I'm on Linux
-  WINDOWS=
-fi
-
-if [ -z "$WINDOWS" ]; then
-  ESCAPE='\033'
-else
-  ESCAPE=
-fi
+  if [ -z "$WINDOWS" ]; then
+    ESCAPE='\033'
+  else
+    ESCAPE=
+  fi
+}
 
 
-# Traditional bar-spinner with these characters:  -\|/
-# Save cursor position
-\echo -n  "$ESCAPE[s"
-spinner() {
+
+spinner() {   #  Traditional bar-spinner with these characters:  -\|/
   # Restore cursor position
   \echo -n  "$ESCAPE[u"
   if [ -z $SPINNER ]; then return 0 ; fi
   case $SPINNER in
     1)
-      \echo  -n  ' - '
+      \echo  -n  '-'
       SPINNER=2
     ;;
     2)
-      \echo  -n  ' \ '
+      \echo  -n  '\'
       SPINNER=3
     ;;
     3)
-      \echo  -n  ' | '
+      \echo  -n  '|'
       SPINNER=4
     ;;
     *)
-      \echo  -n  ' / '
+      \echo  -n  '/'
       SPINNER=1
     ;;
   esac
 }
+# Save cursor position
+\echo -n  "$ESCAPE[s"
 
 
 
-_echo() {
-  if ! [ -z "$DEBUG" ]; then
-    \echo "$*"
-  fi
-}
 
+_sleep_if_possible(){
+  sleep_duration=$*
 
-
-_sleep() {
-  startTime=$(     \date  --date "now"  +%s )
-  startDateTime=$( \date  --date "now"      )
-  if [ -z "$*" ]; then
-    _echo  "sleeping for 1s (default)"
-    sleep_duration=1s
-  elif [ "$1" = '--date' ]; then
-    shift
-    _echo  "sleeping until $*"
-    # https://stackoverflow.com/questions/645992
-    endTime=$(   \date  --date "$*"  +%s )
-    sleep_duration=$(( $endTime - $startTime ))
-    if [ "$sleep_duration" -lt 0 ]; then
-      \echo  'ERROR:  Time is in the past'
-      _echo  "sleeping for 1s (default)"
-      sleep_duration=1
-    fi
-    sleep_duration=${sleep_duration}s
-    _echo  '' $startTime 'seconds'
-    _echo  $endTime 'seconds to wait'
-    _echo  $sleep_duration
-  else
-    sleep_duration="$*"
-    _echo  "sleeping for $sleep_duration"
-  fi
-
-  # Wrap the 'sleep' command, so I can occasionally display how long it's been sleeping for.
-  \sleep  $sleep_duration & _pid=$!
-  _elapsed_time_seconds=0
-  until [ $? = 1 ]; do
-    \sleep 1
-    # Show that the timer is still ticking.
-    spinner
-
-    _elapsed_time_seconds=$(( $_elapsed_time_seconds + 1 ))
-    _echo_every_x_seconds=10
-    if [ $(( $_elapsed_time_seconds % $_echo_every_x_seconds )) -eq 0 ]; then
-      # IDEA - Be fancy.  But that's likely way too annoying.  I'd have to collect all parameters to 'sleep' (like '\sleep 1h 3m 2s' )to convert them to seconds, then convert that back up to h:m:s
-      # It's possible to force the user into one consistent format that's more strict than what 'sleep' allows, but that seems wrong to me.
-      # If I manage fancyness, I can display the time remaining.
-      \echo  ''
-      \echo  "slept for $_elapsed_time_seconds seconds out of $sleep_duration"
-    fi
+  check_for_sleep_process() {
+    # PROBLEM - duplicate instances of 'sleep'
     if [ -z "$WINDOWS" ]; then
-      \ps  --pid     $_pid | \grep  sleep  > /dev/null
+      \ps  --pid     $1 | \grep  sleep  > /dev/null
     else  # cygwin
-      \ps  --process $_pid | \grep  sleep  > /dev/null
+      \ps  --process $1 | \grep  sleep  > /dev/null
     fi
+    return  $?
+  }
+
+  \sleep  $sleep_duration  2>  /dev/null  &  _pid=$!
+  # There is no way to:
+    # Run the command in the background
+    # .. and if it died, learn the error code
+    # .. or if it succeeded, learn its process id
+  # Therefore I will leverage the timing of the life of the 'sleep' process.  If it died immediately then there was an error, and if it remains alive after a while, then it ran successfully.
+  # Assume the sleep process is running
+  is_sleep_process_running=0
+
+  debug_every_x_seconds=1
+  _elapsed_time_seconds=0
+  until [ $is_sleep_process_running -eq 1 ]; do
+    \sleep 1
+    _elapsed_time_seconds=$(( $_elapsed_time_seconds + 1 ))
+    if [ $_elapsed_time_seconds -gt 2 ]; then
+      spinner
+      if  [ "$debug" ]                                                     &&\
+          [ $(( $_elapsed_time_seconds % $debug_every_x_seconds )) -eq 0 ] ; then
+            debug  " alarm.sh slept for ${_elapsed_time_seconds} of ${sleep_duration} ($commandline)."
+      fi
+    fi
+    check_for_sleep_process  $_pid
+    is_sleep_process_running=$?
   done
 
-  endDateTime=$( \date )
+  # If the sleep command died it will (probably) have lived for no more than 2 seconds.
+  if [ $_elapsed_time_seconds -lt 2 ]; then return 1; fi
 }
 
 
 
-_audio_alert() {
+get_seconds(){
+  debug  'time, now -- seconds since "epoch" (1970-01-01 00:00:00 UTC):  '$time_source'\n'
+  time_target=$( \date  --date "$*"  +%s  2>  /dev/null )
+  if [ $? -ne 0 ]; then
+    debug  "date invalid:  $*\n"
+    return 0
+  fi
+  time_to_wait=$(( $time_target - $time_source ))
+  debug  'time, target:  '$time_target'\n'
+  if [ $time_to_wait -lt 2 ]; then
+    debug  'time to wait invalid:  '$time_to_wait'\n'
+    time_to_wait=0
+  fi
+  return  $time_to_wait
+}
+
+
+
+_alert_audio() {
   if [ -z "$WINDOWS" ]; then
     # TODO - improve
     \speaker-test  --test wav  --channels 2  --nloops 1  2> /dev/null
     # NOTE - this repository has earlier code for chiptune-like sound.
+    # I've had speaker-test keep echoing before.  While this hasn't been reproduced lately, I'm going to keep this here just in case:
+    \killall  -9 speaker-test 2> /dev/null
   else   # Windows
     # This does not work (in git-windows):
     #powershell -c echo \`a
@@ -155,57 +173,65 @@ _audio_alert() {
 }
 
 
-
-_visual_alert() {
+_alert_visual() {
   if [ -z "$WINDOWS" ]; then
     # TODO - I could just open a terminal, use Xdialog, zenity or some other such thing.
     # I could also detect for which is available.
-    \echo  "$*" | \leafpad &
+    \printf  "$*" | \leafpad &
   else   # Windows
     # Hackish, but don't dismiss simplicity.
     start '' "$3"
   fi
-  _echo
-  _echo
-  _echo  "$1"
-  _echo  "$2"
-  _echo  "$3"
 }
 
 
 
-# ----------------------------------------------------------------------
-
-_echo  ' * Alarm started'
-_sleep  $*
-_audio_alert
-if [ -z "$WINDOWS" ]; then
-  # Just in case
-  \killall  -9 speaker-test 2> /dev/null
-fi
-_visual_alert \
-  "Alarm started at:  $startDateTime" \
-  "Alarm waited for:  $sleep_duration" \
-  "Alarm rang at:     $endDateTime" \
-` # `
+_sleep() {
+  # Brute force, directly using `sleep`
+  _sleep_if_possible  $*
+  if [ $? -eq 1 ]; then
+    #  The brute-force attempt with `sleep` failed.  Fall back to using `date`
+    get_seconds  $*
+    seconds="$?"
+    _sleep_if_possible  "$seconds"
+  fi
+}
 
 
+commandline=$*
+_sleep  $commandline
+if [ $? -ne 0 ]; then return $?; fi
 
 
+# Using `sleep` directly
+# Note that quotes are not valid around this format
+  #_sleep  4s
+  #_sleep  1h 12s
+  #_sleep  1s 4s
+
+# Using `date`
+  #_sleep    thursday
+  #_sleep    1:23am
+  #_sleep    tomorrow 1:23am
+  #_sleep    friday 10pm
+  #_sleep    friday 10:11:22pm
+
+  #_sleep    invalid
 
 
-# To learn the number of seconds elapsed, probably:
-:<<'learn'
-\ps  --user $( \whoami )  -o etimes,args  |\
-  \grep  sleep                            |\
-  \head  --lines=1                        |\
-  \sed  --expression='s/^[[:space:]]*//'  |\
-  \cut  --fields=1 --delimiter=' '
-learn
-# 
-:<<'usage'
-alarm.sh 1h &   # Remember to not close this terminal!
-# (the above command)
-# =>
-# 1             # The number of seconds it's been running.
-usage
+# TODO - don't trigger these alerts if the sleep wasn't for very long..
+:<<'}'
+time_source=$( \date  --date  @$time_source +%s )
+time_target=$( \date  --date  'now'         +%s )
+time_target=$(( $time_target + 2 ))
+if [ $time_target -lt 4 ]; then return; fi
+if [ $then -lt 3 ]; then return; fi
+}
+
+_alert_audio
+
+# Unfortunately %l (ell) is space-padded, and I don't want to bother doing anything about that.
+_alert_visual  \
+'Alarm!\n\n'\
+"Started " $( \date  --date  @$time_source  +"%Y-%m-%d - %l:%M:%S %P" ) '\n'\
+"Ended   " $( \date  --date  'now'          +"%Y-%m-%d - %l:%M:%S %P" )
