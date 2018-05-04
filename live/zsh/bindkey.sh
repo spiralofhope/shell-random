@@ -56,36 +56,36 @@ typeset  -g  -A  key
 
 # I've uncommented only the things I required.  The above typeset seems to be good for most things.
 
-#\bindkey  '^?'       backward-delete-char                                # backspace
-#\bindkey  '^[[D'     backward-char                                       # left
-#\bindkey  '^[[C'     forward-char                                        # right
-#\bindkey  '^[[A'     up-line-or-history                                  # up
-#\bindkey  '^[[B'     down-line-or-history                                # down
+#\bindkey  '^?'       backward-delete-char                               # backspace
+#\bindkey  '^[[D'     backward-char                                      # left
+#\bindkey  '^[[C'     forward-char                                       # right
+#\bindkey  '^[[A'     up-line-or-history                                 # up
+#\bindkey  '^[[B'     down-line-or-history                               # down
 
-\bindkey  '^[[3~'    delete-char                                         # delete
+\bindkey  '^[[3~'    delete-char                                        # delete
 
 # (old binding)
-#\bindkey  '^[[5~'    up-line-or-search                                   # pageup (matching history)
-#\bindkey  '^[[6~'    down-line-or-search                                 # pagedown (matching history)
+#\bindkey  '^[[5~'    up-line-or-search                                  # pageup (matching history)
+#\bindkey  '^[[6~'    down-line-or-search                                # pagedown (matching history)
 # These should properly go through history:
-\bindkey  '^[[5~'    history-beginning-search-backward                   # pageup (matching history)
-\bindkey  '^[[6~'    history-beginning-search-forward                    # pagedown (matching history)
+\bindkey  '^[[5~'    history-beginning-search-backward                  # pageup (matching history)
+\bindkey  '^[[6~'    history-beginning-search-forward                   # pagedown (matching history)
 
-\bindkey  '^[[1;5D'  backward-word                                       # control-left
-\bindkey  '^[[1;5C'  forward-word                                        # control-right
+\bindkey  '^[[1;5D'  backward-word                                      # control-left
+\bindkey  '^[[1;5C'  forward-word                                       # control-right
 
-#\bindkey  '^[[3;5~'  kill-word                                           # control-delete
-\bindkey  '^[[3^'  kill-word                                             # control-delete
+#\bindkey  '^[[3;5~'  kill-word                                          # control-delete
+\bindkey  '^[[3^'  kill-word                                            # control-delete
 
 
 # alt-backspace appears to be impossible
 # I hear that xterm can be configured with changes in ~/.Xresources, but I have no will to pursue any of this.
-#\bindkey  '^È'       backward-kill-word                                  # alt-backspace
-#\bindkey  '^[^?'     vi-backward-kill-word                               # alt-backspace
+#\bindkey  '^È'       backward-kill-word                                 # alt-backspace
+#\bindkey  '^[^?'     vi-backward-kill-word                              # alt-backspace
 
 # kill-word does not respect word bounderies.
 #\bindkey  '^[[3;3~'  kill-word
-#\bindkey  '^[[3;5~'  delete-word-forward                                 # alt-delete
+#\bindkey  '^[[3;5~'  delete-word-forward                                # alt-delete
 
 {  #  Tab completion
   # TODO - Explore listing the possible matches as one single-column where possible.  There's nothing built-in, but it's possible to associate a method to the completion functionality.
@@ -105,7 +105,7 @@ typeset  -g  -A  key
   #   somecommand This is a string
   #   ^X
   #   somecommand 'This is a string'
-  \bindkey  -s  '^X'  '^@^[[1;5C^A\ef\e" ^@'                               # control-x
+  \bindkey  -s  '^X'  '^@^[[1;5C^A\ef\e" ^@'                            # control-x
 }
 
 
@@ -121,55 +121,55 @@ typeset  -g  -A  key
 case $TERM in
   xterm-256color)
     #  2017-11-07 - Babun (though with a Cygwyn update)
-    \bindkey  '^_'       backward-kill-word                              # control-backspace
-    \bindkey  '^[[H'     beginning-of-line                               # home
-    \bindkey  '^[[F'     end-of-line                                     # end
+    \bindkey  '^_'       backward-kill-word                             # control-backspace
+    \bindkey  '^[[H'     beginning-of-line                              # home
+    \bindkey  '^[[F'     end-of-line                                    # end
   ;;
 
   *xterm*)
-    #\bindkey  '^?'       backward-kill-word                              # control-backspace
-    \bindkey  '^[[H'     beginning-of-line                               # home
-    \bindkey  '^[[F'     end-of-line                                     # end
+    #\bindkey  '^?'       backward-kill-word                             # control-backspace
+    \bindkey  '^[[H'     beginning-of-line                              # home
+    \bindkey  '^[[F'     end-of-line                                    # end
 
     # 2016-11-26 - Devuan
-    \bindkey  '^H'       backward-kill-word                              # control-backspace
-    \bindkey  'ÿ'        backward-kill-word                              # alt-backspace
-    \bindkey  '^?'       backward-delete-char                            # backspace
+    \bindkey  '^H'       backward-kill-word                             # control-backspace
+    \bindkey  'ÿ'        backward-kill-word                             # alt-backspace
+    \bindkey  '^?'       backward-delete-char                           # backspace
   ;;
 
   rxvt-unicode         |\
   rxvt-unicode-256color)
     # rxvt-unicode = 'urxvt' (urxvtd / urxvtc)
-    \bindkey  '^[[7~'    beginning-of-line                               # home
-    \bindkey  '^[[8~'    end-of-line                                     # end
-    #\bindkey  '^H'       backward-kill-word                              # control-backspace
+    \bindkey  '^[[7~'    beginning-of-line                              # home
+    \bindkey  '^[[8~'    end-of-line                                    # end
+    #\bindkey  '^H'       backward-kill-word                             # control-backspace
 
     # 2016-11-26 - Devuan
-    \bindkey  ''       backward-kill-word                              # control-backspace
+    \bindkey  ''       backward-kill-word                             # control-backspace
   ;;
 
   linux)   # The raw tty console
-    \bindkey  '^[OH'     beginning-of-line                               # home
-    \bindkey  '^[OF'     end-of-line                                     # end
-    \bindkey  '^H'       backward-kill-word                              # control-backspace
+    \bindkey  '^[OH'     beginning-of-line                              # home
+    \bindkey  '^[OF'     end-of-line                                    # end
+    \bindkey  '^H'       backward-kill-word                             # control-backspace
 
     # 2016-11-26 - Devuan
-    \bindkey  '^[[D'  backward-word                                      # control-left
-    \bindkey  '^[[C'  forward-word                                       # control-right
+    \bindkey  '^[[D'  backward-word                                     # control-left
+    \bindkey  '^[[C'  forward-word                                      # control-right
   ;;
 
   screen|screen-256color)   # The program 'screen'
-    \bindkey  '^?'       backward-delete-char                            # backspace
-    \bindkey  '^[[1~'    beginning-of-line                               # home
-    \bindkey  '^[[4~'    end-of-line                                     # end
-    \bindkey  '^H'       backward-kill-word                              # control-backspace
+    \bindkey  '^?'       backward-delete-char                           # backspace
+    \bindkey  '^[[1~'    beginning-of-line                              # home
+    \bindkey  '^[[4~'    end-of-line                                    # end
+    \bindkey  '^H'       backward-kill-word                             # control-backspace
   ;;
 
   screen.linux)   # The program 'screen', at the tty
 # These won't work, because left/right are the same as control-left/right !
-#    \bindkey '^[OD'      backward-word                                   # control-left
-#    \bindkey '^[OC'      forward-word                                    # control-right
-    \bindkey  '^H'       backward-kill-word                              # alt-backspace
+#    \bindkey '^[OD'      backward-word                                  # control-left
+#    \bindkey '^[OC'      forward-word                                   # control-right
+    \bindkey  '^H'       backward-kill-word                             # alt-backspace
   ;;
 
   *)
