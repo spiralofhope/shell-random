@@ -16,13 +16,13 @@
 
 command_one() {
   # Expecting a return code of 0, because "bc 10 + 10" outputs "10"
-  #\echo  "10 + 10"
+  #\echo  '10 + 10'
   # Expecting a return code of 1, because "bc 10 + a." throws an error
   # However, this always returns "0"
-  echo "10 + a."
+  \echo  '10 + a.'
 }
 command_two() {
-  \bc
+  \bc  > /dev/null 2> /dev/null
 }
 
 
@@ -38,28 +38,28 @@ command_one() {
   #\echo  "10 + 10"
   # Expecting a return code of 1, because "bc 10 + a." throws an error
   # However, this always returns "0"
-  echo "10 + a."
+  \echo  '10 + a.'
 }
 command_two() {
-  \bc
+  \bc  > /dev/null 2> /dev/null
 }
 
 { # setup
   pipe_file='./pipe_file'
-  \rm  --force  $pipe_file
-  mkfifo --mode=700 $pipe_file
+  \rm  --force        "$pipe_file"
+  \mkfifo --mode=700  "$pipe_file"
 }
 
 # So instead of the following:
 # command_one | command_two
 #echo $?
 # We do:
-command_two < $pipe_file &
-command_one > $pipe_file
-echo $?
+command_two < "$pipe_file" &
+command_one > "$pipe_file"
+\echo  $?
 
 { # teardown
-  \rm  --force  $pipe_file
+  \rm  --force  "$pipe_file"
 }
 
 
@@ -67,24 +67,24 @@ exit
 
 check() {
   pipe_file='./pipe_file'
-  \rm  --force  $pipe_file
-  mkfifo $pipe_file
+  \rm  --force  "$pipe_file"
+  \mkfifo       "$pipe_file"
 
 
   bc > /dev/null < $pipe_file &
-  echo "$*" > $pipe_file
+  echo "$*" >  "$pipe_file"
   __=$?
-  \rm  --force  $pipe_file
+  \rm  --force  "$pipe_file"
   #echo $__
   #return $__
 }
 
-check "10 + 10"
-echo $?
-check "10 + a"
-#echo $?
-#check "1 + 10"
-#echo $?
+check  '10 + 10'
+\echo  $?
+check  '10 + a'
+#echo  $?
+#check  '1 + 10'
+#echo  $?
 
 
 exit 0
@@ -119,7 +119,7 @@ exit 0
 
 #first_command | second
 
-#command | tee out.txt
+#command | \tee out.txt
 
 # Using bc
 isnumber() {
@@ -128,10 +128,10 @@ isnumber() {
 
 
 
-    mkfifo pipe
-    tee out.txt < pipe &
+    \mkfifo pipe
+    \tee out.txt < pipe &
     command > pipe
-    echo $?
+    \echo  $?
 
 
 
