@@ -1,5 +1,4 @@
 #!/usr/bin/env  zsh
-# Note that `setopt` is a zshism
 # NOTE: control-v and a key combination to learn that binding.
 
 
