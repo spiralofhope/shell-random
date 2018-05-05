@@ -5,16 +5,19 @@
 
 _file='./usb.vmdk'
 _disk='/dev/sdc'
+_user='user'
+_group='user'
 
 
-\rm  --force  $_file
+
+\rm  --force  "$_file"
 
 \sudo \
 \vboxmanage \
   internalcommands \
   createrawvmdk \
-    -filename $_file \
-    -rawdisk  $_disk \
+    -filename "$_file" \
+    -rawdisk  "$_disk" \
 ` # `
 
-\sudo  \chown  user:user  $_file
+\sudo  \chown  "$_user":"$_group"  "$_file"
