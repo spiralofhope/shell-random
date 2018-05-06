@@ -1,5 +1,6 @@
 #!/usr/bin/env  sh
 # Search-replace an editor's name and email address.
+  #  Note that you may have to nuke and re-create your remote repository.  I don't know.
 # At least as old as 2017-10-20
 
 
