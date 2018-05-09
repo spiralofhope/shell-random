@@ -2,6 +2,11 @@
 # 2018-05-04 - Dash 0.5.7-4+b1
 
 
+
+# FIXME - On Windows:  On a Wednesday, `alarm friday` will produce a very small number for the wait-time.
+
+
+
 #debug=true
 #debug  '\n\n________________________________________________________________________________\n\n' ; return
 SPINNER=true
@@ -17,8 +22,9 @@ debug() {
 }
 
 
+
 :<<'}'   #  git-bash:  ANSI under Windows
-Use ansicon
+Use ANSICON
   https://blog.spiralofhope.com/?p=37580
   http://ansicon.adoxa.vze.com/
   https://github.com/adoxa/ansicon/releases/latest
@@ -32,29 +38,40 @@ on Windows 10:
 
 
 
-{   #  Configuration for git-bash
-  # Apparently $PF vanishes for this shell..
-  #if [ -z "$PF" ]; then
-    ## I'm on Linux
-    #WINDOWS=
-  #else
-    #WINDOWS=true
-  #fi
+{   #  Determine what sort of machine we're on
+  unameOut="$(uname -s)"
+  case "${unameOut}" in
+    CYGWIN*)    machine=Cygwin;;
+    Darwin*)    machine=Mac;;
+    Linux*)     machine=Linux;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN:${unameOut}"
+  esac
+  #echo ${machine}
 
-  # env ought to be smart under Linux.
-  # FIXME - this is not valid under Babun/Cygwin
-  if [ "$SHELL" = '/usr/bin/bash' ]; then
-    WINDOWS=true
-  else
-    # I'm on Linux
-    WINDOWS=
-  fi
+  case "${unameOut}" in
+    # Babun
+    CYGWIN*)
+      ESCAPE=
+      _ps='--process'
+    ;;
+    # This might be okay for git-bash
+    MINGW*)
+      ESCAPE='\033'
+      _ps='--pid'
+    ;;
+    *)
+      _ps='--process'
+      ESCAPE=
+  esac
+}
 
-  if [ -z "$WINDOWS" ]; then
-    ESCAPE='\033'
-  else
-    ESCAPE=
-  fi
+
+
+check_for_sleep_process() {
+  # PROBLEM - duplicate instances of 'sleep'
+  \ps  "$_ps"  $1 | \grep  sleep  > /dev/null
+  return  $?
 }
 
 
@@ -87,19 +104,10 @@ spinner() {   #  Traditional bar-spinner with these characters:  -\|/
 
 
 
-
 _sleep_if_possible(){
   sleep_duration=$*
 
-  check_for_sleep_process() {
-    # PROBLEM - duplicate instances of 'sleep'
-    if [ -z "$WINDOWS" ]; then
-      \ps  --pid     $1 | \grep  sleep  > /dev/null
-    else  # cygwin
-      \ps  --process $1 | \grep  sleep  > /dev/null
-    fi
-    return  $?
-  }
+  check_for_sleep_process  $1
 
   \sleep  $sleep_duration  2>  /dev/null  &  _pid=$!
   # There is no way to:
@@ -151,40 +159,54 @@ get_seconds(){
 
 
 _alert_audio() {
-  if [ -z "$WINDOWS" ]; then
-    # TODO - improve
-    \speaker-test  --test wav  --channels 2  --nloops 1  2> /dev/null
-    # NOTE - this repository has earlier code for chiptune-like sound.
-    # I've had speaker-test keep echoing before.  While this hasn't been reproduced lately, I'm going to keep this here just in case:
-    \killall  -9 speaker-test 2> /dev/null
-  else   # Windows
-    # This does not work (in git-windows):
-    #powershell -c echo \`a
-    # echo `a in powershell worked one time but never again.
-    # echo ^g is supposed to work
-    
-    # TODO - is there a way to do this without vlc?
-    # TODO - detect if vlc is present
-    file="C:\Windows\Media\Alarm01.wav"
-    "C:\Program Files\VideoLAN\VLC\vlc.exe" \
-      --qt-start-minimized \
-      ` # Doesn''t work: ` \
-      ` # --play-and-exit ` \
-      "$file" \
-    ` # ` &
-  fi
+  case "${unameOut}" in
+    CYGWIN*|MINGW*)
+      powershell.exe -Command '
+        [console]::beep(1000,300) ;
+        [console]::beep(500,400) ;
+        [console]::beep(250,500) ;
+        sleep 1 ;
+        [console]::beep(1000,300) ;
+        [console]::beep(500,400) ;
+        [console]::beep(250,500) ;
+      '
+    ;;
+    *)
+      # TODO - improve
+      \speaker-test  --test wav  --channels 2  --nloops 1  2> /dev/null
+      # NOTE - this repository has earlier code for chiptune-like sound.
+      # I've had speaker-test keep echoing before.  While this hasn't been reproduced lately, I'm going to keep this here just in case:
+      \killall  -9 speaker-test 2> /dev/null
+  esac
 }
 
 
+
 _alert_visual() {
-  if [ -z "$WINDOWS" ]; then
-    # TODO - I could just open a terminal, use Xdialog, zenity or some other such thing.
-    # I could also detect for which is available.
-    \printf  "$*" | \leafpad &
-  else   # Windows
-    # Hackish, but don't dismiss simplicity.
-    start '' "$3"
-  fi
+  case "${unameOut}" in
+    CYGWIN*)
+      # This seems like an okay idea.
+      cygstart.exe cmd /K "\
+        echo Alarm! & \
+        echo. & \
+        echo Started $( \date  --date  @$time_source  +"%Y-%m-%d - %l:%M:%S %P" ) & \
+        echo Ended   $( \date  --date  'now'          +"%Y-%m-%d - %l:%M:%S %P" ) & \
+      "
+    ;;
+    MINGW*)
+      # Hackish, but don't dismiss simplicity.
+      start '' "$3"
+    ;;
+    *)
+      # TODO - I could just open a terminal, use Xdialog, zenity or some other such thing.
+             # I could also detect which is available.
+      # re. `date`:  Unfortunately %l (ell) is space-padded, and I don't want to bother doing anything about that.
+      \printf \
+'Alarm!\n\n'\
+"Started " $( \date  --date  @$time_source  +"%Y-%m-%d - %l:%M:%S %P" ) '\n'\
+"Ended   " $( \date  --date  'now'          +"%Y-%m-%d - %l:%M:%S %P" ) '\n'\
+| \leafpad &
+  esac
 }
 
 
@@ -203,9 +225,25 @@ _sleep() {
 
 commandline=$*
 _sleep  $commandline
-if [ $? -ne 0 ]; then return $?; fi
 
 
+
+# TODO - don't trigger these alerts if the sleep wasn't for very long..
+:<<'}'
+time_source=$( \date  --date  @$time_source +%s )
+time_target=$( \date  --date  'now'         +%s )
+time_target=$(( $time_target + 2 ))
+if [ $time_target -lt 4 ]; then return; fi
+if [ $then -lt 3 ]; then return; fi
+}
+_alert_visual
+_alert_audio
+
+
+
+
+:<<'}'   #  Usage
+{
 # Using `sleep` directly
 # Note that quotes are not valid around this format
   #_sleep  4s
@@ -220,21 +258,4 @@ if [ $? -ne 0 ]; then return $?; fi
   #_sleep    friday 10:11:22pm
 
   #_sleep    invalid
-
-
-# TODO - don't trigger these alerts if the sleep wasn't for very long..
-:<<'}'
-time_source=$( \date  --date  @$time_source +%s )
-time_target=$( \date  --date  'now'         +%s )
-time_target=$(( $time_target + 2 ))
-if [ $time_target -lt 4 ]; then return; fi
-if [ $then -lt 3 ]; then return; fi
 }
-
-_alert_audio
-
-# Unfortunately %l (ell) is space-padded, and I don't want to bother doing anything about that.
-_alert_visual  \
-'Alarm!\n\n'\
-"Started " $( \date  --date  @$time_source  +"%Y-%m-%d - %l:%M:%S %P" ) '\n'\
-"Ended   " $( \date  --date  'now'          +"%Y-%m-%d - %l:%M:%S %P" )
