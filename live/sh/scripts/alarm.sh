@@ -19,10 +19,13 @@ debug() {
 
 :<<'}'   #  git-bash:  ANSI under Windows
 Use ansicon
-  https://github.com/adoxa/ansicon
+  https://blog.spiralofhope.com/?p=37580
+  http://ansicon.adoxa.vze.com/
+  https://github.com/adoxa/ansicon/releases/latest
 on Windows 10:
   1. unzip it somewhere.
   2. open a cmd as admin
+       windows-x a
   3. go to its unzipped location, to x64
   4. ansicon.exe -I
 }
