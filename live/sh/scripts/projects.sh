@@ -95,8 +95,8 @@ open_array_of_files() {
     ` # A major project of mine which ought to be reviewed very regularly. ` \
     '/l/unplugging/unplugging.txt' \
     '/l/_outbox--0/_outbox--0.txt' \
-    '/mnt/1/data-windows/live/_outbox--0/_outbox--0.txt' \
-    '/mnt/1/data-windows/live/_outbox--1/_outbox--1.txt' \
+    '/mnt/1/windows-data/live/_outbox--0/_outbox--0.txt' \
+    '/mnt/1/windows-data/live/_outbox--1/_outbox--1.txt' \
     $array_of_files \
     /l/__/__.txt \
   &
