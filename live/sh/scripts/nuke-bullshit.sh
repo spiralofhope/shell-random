@@ -7,10 +7,12 @@
 # .BridgeCache
 # .BridgeCacheT
 # Thumbs.db
-
+# desktop.ini
 
 
 \find  -type f  -name '.DS_Store'     -delete
 \find  -type f  -name '.BridgeCache'  -delete
 \find  -type f  -name '.BridgeCacheT' -delete
 \find  -type f  -name 'Thumbs.db'     -delete
+# Windows
+\find  -type f  -name 'desktop.ini'   -delete
