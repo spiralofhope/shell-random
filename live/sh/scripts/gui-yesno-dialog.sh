@@ -12,9 +12,8 @@ width=0
 #height=5
 #width=19
 text="$1"
-# TODO - there's some thingy thing that GNU has to make one of these 
-# safely-named
-_tmpfile="/tmp/$$.tmp"
+tempfile=$( \mktemp  --suffix="_gui-yesno-dialog" )
+\rm  --force  "$tempfile"
 
 
 # I suspect I could have solved this with `read`, but I think I'd have 
@@ -23,10 +22,10 @@ _tmpfile="/tmp/$$.tmp"
 
 # TODO - use alternate terminals..
 \urxvt  -geometry 239x64  -e \
-  \dialog  --yesno  "$text"  "$height"  "$width"  --trace  "$_tmpfile" 2>/dev/null
+  \dialog  --yesno  "$text"  "$height"  "$width"  --trace  "$tempfile" 2>/dev/null
 
-if [ -f "$_tmpfile" ]; then
-  \rm  --force  "$_tmpfile"
+if [ -f "$tempfile" ]; then
+  \rm  --force  "$tempfile"
   \echo  '0'
 else
   \echo  '1'
