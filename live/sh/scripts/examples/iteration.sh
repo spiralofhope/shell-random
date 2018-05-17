@@ -108,8 +108,7 @@
 {
   echo '----'
   echo "$variable" |\
-  while read line;
-  do
+  while read line; do
     echo $line
   done
   echo '----'
@@ -120,8 +119,7 @@
 {
   echo '----'
   echo "$variable" |\
-  while read line;
-  do
+  while read line; do
     echo "_ $line"
   done
   echo '----'
@@ -132,8 +130,7 @@
 {
   echo '----'
   echo "$variable" |\
-  while read line;
-  do
+  while read line; do
     echo "$line"
   done
   echo '----'
