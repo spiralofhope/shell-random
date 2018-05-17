@@ -4,9 +4,12 @@ todo() {
 # TODO: Distinctly identify debugging vs regular.  Maybe a simple colour change, or some text..?
 
 : <<TODO_LIST
-Also search this script for 'TODO:' and 'FIXME:'
+- Rework this so it works in vanilla shell (dash)
+- Absorb the revised spinner code from alarm.sh
+- Consider implementing directory watching.
 
-- host on github
+
+Also search this script for 'TODO:' and 'FIXME:'
 
 - Implement versioning and a changelog.
 
