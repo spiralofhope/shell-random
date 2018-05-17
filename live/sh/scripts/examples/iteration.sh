@@ -1,82 +1,155 @@
 #!/usr/bin/env  sh
+# Examples of iterating through a list / array
+# 2018-05-17 - Dash 0.5.7-4+b1
 
 
 
-
-#:<<'}'
-{  #  Basics
-  # GNU bash, version 4.3.33(1)-release (i686-pc-cygwin)
-  # GNU bash, version 4.3.30(1)-release (i586-pc-linux-gnu)
-  # zsh 5.0.7 (i586-pc-linux-gnu)
-  for i in $( \seq 1 1 10 ); do
+:<<'}'  # Increment 1 to 5, one at a time
+{
+  for i in $( \seq 1 2 5 ); do
     echo $i
   done
-  echo
-  for i in $( \seq 10 -1 1 ); do
+}
+
+
+:<<'}'  # Increment 1 to 5, one at a time, starting at 2
+{
+  for i in $( \seq 2 1 5 ); do
     echo $i
   done
-  # Another way:
-  #for i in {1..10}; do echo $i; done
-  # With no line breaks:
-  #for i in {1..10}; do printf $i; done
+}
+
+
+:<<'}'  # Increment 1 to 10, two at a time (odd numbers)
+{
+  for i in $( \seq 1 2 10 ); do
+    echo $i
+  done
+}
+
+
+:<<'}'  # Increment 2 to 10, two at a time (even numbers)
+{
+  for i in $( \seq 2 2 10 ); do
+    echo $i
+  done
+}
+
+
+:<<'}'  # Decrement 5 to 1, one at a time
+{
+  for i in $( \seq 5 -1 1 ); do
+    echo $i
+  done
+}
+
+
+:<<'}'  #  Iterating through each character in a variable
+# I don't think it's possible to do it without external programs, when restricted to the Bourne shell (sh, dash, etc)
+{  # Using grep
+  echo '----'
+  variable="two words"
+  echo $variable |\
+  grep --only-matching . |\
+  while read character;  do
+    echo $character
+    # An example, with prepending text:
+    #echo "_ $character"
+  done 
+  echo '----'
 }
 
 
 
-#:<<'}'
-{  #  Walking through each line in a variable.
-
-  # NOTE - Notice how this removes beginning spaces:
+{  #  Build an array
   variable="
-  testing
-  multiple
-  lines
+    one  two   three
+    second
+    third
   "
 
-  # Or from a command:
+  # You can also build your content from a command:
   #variable=$( \find . -maxdepth 1 )
+}
 
-  # $variable cannot be quoted as "$variable"
+
+:<<'}'  #  Literal / exact.
+{
+  echo '----'
+  for i in "$variable"; do
+    echo "$i"
+  done
+  echo '----'
+}
+
+
+:<<'}'  #  Split by spaces, ignore extra spaces, ignore empty lines.
+{
+  echo '----'
+  for i in $variable; do
+    echo $i
+  done
+  echo '----'
+}
+
+
+:<<'}'  #  Split by spaces, ignore extra spaces, ignore empty lines, append text.
+{
+  echo '----'
   for line in $variable; do
     echo "_ $line"
   done
+  echo '----'
 }
-{  #  Another method:
-  variable="
-  testing
-  multiple
-  lines
-  "
+
+
+
+:<<'}'  #  Split by lines, ignore extra spaces, accept empty lines.
+{
+  echo '----'
   echo "$variable" |\
   while read line;
   do
     echo $line
   done
+  echo '----'
+}
+
+
+:<<'}'  #  Split by lines, ignore extra spaces, accept empty lines, append text.
+{
+  echo '----'
+  echo "$variable" |\
+  while read line;
+  do
+    echo "_ $line"
+  done
+  echo '----'
+}
+
+
+:<<'}'  #  Split by lines, ignore beginning spaces, accept empty lines, accept inner spaces.
+{
+  echo '----'
+  echo "$variable" |\
+  while read line;
+  do
+    echo "$line"
+  done
+  echo '----'
 }
 
 
 
-#:<<'}'
-# This may not work for everyone:
-{  #  Iterate through the listing made by 'find'
+:<<'}'  #  Another way to iterate
+{  
+  # This may not work for everyone
   # GNU bash, version 4.3.33(1)-release (i686-pc-cygwin)
+  # FIXME - 2018-05-17 - Dash 0.5.7-4+b1  --  This does not work as-expected.
   OLDIFS=$IFS
   IFS=$'\n'
-  for line in $( find . -maxdepth 1 ); do
+  for line in $variable; do
     \echo  "_ $line"
   done
   IFS=$OLDIFS
 }
-
-
-
-#  Iterating through each character in a variable
-{  # Using grep
-  variable="testing"
-  echo "$variable" |\
-  grep -o . |\
-  while read character;  do
-    echo "_ $character"
-  done 
-}
-# I don't think it's possible to do it without external programs, when restricted to the Bourne shell (sh, dash, etc)
