@@ -1,6 +1,7 @@
 #!/usr/bin/env  bash
-# 
+# Iterating through a list or array of some sort.
 # bash 4.3.30(1)-release (i586-pc-linux-gnu)
+# TODO - a lot more examples need to be made.  I've used arrays elsewhere, and that can be used as inspiration.
 
 
 
@@ -37,10 +38,23 @@ variable=(
 variable=( string "two words" 1 )
 
 
-#:<<'}'  #  Iterate by line, ignoring beginning spaces
+:<<'}'  #  Iterate by line, ignoring beginning spaces.
 # This does not accept "one quoted strong" as one item.  zsh does it properly.
 {
   for i in ${variable[@]}; do
     echo $i
   done
+}
+
+
+
+:<<'}'  #  Passing an array to a fuction.
+{
+  testing() {
+    for element in ${@}; do
+      \echo  "$element"
+    done
+  }
+  \echo
+  testing  string  'two words'  1
 }
