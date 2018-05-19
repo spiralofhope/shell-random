@@ -1,5 +1,5 @@
 #!/usr/bin/env  sh
-# 2018-05-04 - Dash 0.5.7-4+b1
+# 2018-05-19 - Dash 0.5.7-4+b1
 
 
 
@@ -17,7 +17,13 @@ time_source=$( \date  --date 'now'  +%s )
 
 debug() {
   if [ "$debug" ]; then
-    \printf  "$*"
+    #\printf  "$*"
+
+  reset="${ANSI_escape_code}[0m"
+  yellow="${ANSI_escape_code}[33m"
+  blackb="${ANSI_escape_code}[40m"
+
+    \printf  "${blackb}${yellow}$*${reset}"
   fi
 }
 
@@ -39,7 +45,8 @@ on Windows 10:
 
 
 {   #  Determine what sort of machine we're on
-  unameOut="$(uname -s)"
+  #  -s
+  unameOut="$( \uname  --kernel-name )"
   case "${unameOut}" in
     CYGWIN*)    machine=Cygwin;;
     Darwin*)    machine=Mac;;
@@ -52,34 +59,29 @@ on Windows 10:
   case "${unameOut}" in
     # Babun
     CYGWIN*)
-      ESCAPE=
+      ANSI_escape_code=
       _ps='--process'
     ;;
     # This might be okay for git-bash
-    MINGW*)
-      ESCAPE='\033'
+    MINGW*|Linux)
+      ANSI_escape_code='\033'
       _ps='--pid'
     ;;
     *)
       _ps='--process'
-      ESCAPE=
+      ANSI_escape_code=
   esac
-}
-
-
-
-check_for_sleep_process() {
-  # PROBLEM - duplicate instances of 'sleep'
-  \ps  "$_ps"  $1 | \grep  sleep  > /dev/null
-  return  $?
+  cursor_position_save() {    \echo -n  "$ANSI_escape_code[s" ; }
+  cursor_position_restore() { \echo -n  "$ANSI_escape_code[u" ; }
+  debug  "$unameOut means _ps=$_ps\n"
+  debug  '\n'
 }
 
 
 
 spinner() {   #  Traditional bar-spinner with these characters:  -\|/
-  # Restore cursor position
-  \echo -n  "$ESCAPE[u"
   if [ -z $SPINNER ]; then return 0 ; fi
+  \printf  '   '
   case $SPINNER in
     1)
       \echo  -n  '-'
@@ -98,59 +100,80 @@ spinner() {   #  Traditional bar-spinner with these characters:  -\|/
       SPINNER=1
     ;;
   esac
+  \printf  '  '
 }
-# Save cursor position
-\echo -n  "$ESCAPE[s"
 
 
 
 _sleep_if_possible(){
-  sleep_duration=$*
+  debug  "_sleep_if_possible()  $*\n\n"
 
-  check_for_sleep_process  $1
+  {  # Attempt to sleep
+    \sleep  $*  2> /dev/null  &  _pid=$!
+  }
 
-  \sleep  $sleep_duration  2>  /dev/null  &  _pid=$!
-  # There is no way to:
-    # Run the command in the background
-    # .. and if it died, learn the error code
-    # .. or if it succeeded, learn its process id
-  # Therefore I will leverage the timing of the life of the 'sleep' process.  If it died immediately then there was an error, and if it remains alive after a while, then it ran successfully.
-  # Assume the sleep process is running
-  is_sleep_process_running=0
 
-  debug_every_x_seconds=1
-  _elapsed_time_seconds=0
-  until [ $is_sleep_process_running -eq 1 ]; do
-    \sleep 1
-    _elapsed_time_seconds=$(( $_elapsed_time_seconds + 1 ))
-    if [ $_elapsed_time_seconds -gt 2 ]; then
+  {  #  Check if sleeping was a success.  If so, continue sleeping and perform actions while sleeping.
+    # There is no way to:
+      # Run the command in the background
+      # .. and if it died, learn the error code
+      # .. or if it succeeded, learn its process id
+    # Therefore I will check for the 'sleep' process.
+      # .. if it vanishes immediately then there was an error with the `sleep` command.
+      # .. if it remains alive after a while, then `sleep` has valid parameters and sleep is continuing normally.
+    _elapsed_time_seconds=0
+    loop=0
+    until [ $loop -eq 1 ]; do
+      \sleep  1
+      _elapsed_time_seconds=$(( $_elapsed_time_seconds + 1 ))
+      cursor_position_save
       spinner
-      if  [ "$debug" ]                                                     &&\
-          [ $(( $_elapsed_time_seconds % $debug_every_x_seconds )) -eq 0 ] ; then
-            debug  " alarm.sh slept for ${_elapsed_time_seconds} of ${sleep_duration} ($commandline)."
+      \printf  "sleeping until $* - ${_elapsed_time_seconds} seconds elapsed.                  "
+      if [ "$debug" ]; then
+        \printf  '\n'
       fi
-    fi
-    check_for_sleep_process  $_pid
-    is_sleep_process_running=$?
-  done
+      cursor_position_restore
 
-  # If the sleep command died it will (probably) have lived for no more than 2 seconds.
-  if [ $_elapsed_time_seconds -lt 2 ]; then return 1; fi
+      check_for_sleep_process() {
+        debug  "check_for_sleep_process()  $*\n\n"
+        debug  "\ps  "$_ps"  "$1" | \grep  sleep  2> /dev/null\n"
+        # This may be required for Windows
+        #\ps  "$_ps"  "$1" | \grep  sleep  2> /dev/null
+
+        \ps  "$_ps"  "$1"  > /dev/null  2> /dev/null
+        exit_code=$?
+
+        debug  "exiting with $exit_code\n\n"
+        return  $exit_code
+      }
+      check_for_sleep_process  $_pid
+      loop=$?
+    done
+  }
+
+  if [ $_elapsed_time_seconds -gt 1 ]; then
+    # `sleep` was a success for more than 1 second.
+    return 0
+  else
+    # `sleep` did not survive after 1 second.
+    return 1
+  fi
 }
 
 
 
-get_seconds(){
-  debug  'time, now -- seconds since "epoch" (1970-01-01 00:00:00 UTC):  '$time_source'\n'
+get_seconds_using_date(){
+  debug  "get_seconds_using_date()  $*\n\n"
   time_target=$( \date  --date "$*"  +%s  2>  /dev/null )
   if [ $? -ne 0 ]; then
     debug  "date invalid:  $*\n"
     return 0
   fi
   time_to_wait=$(( $time_target - $time_source ))
+  debug  'time, now -- seconds since "epoch" (1970-01-01 00:00:00 UTC):  '$time_source'\n'
   debug  'time, target:  '$time_target'\n'
   if [ $time_to_wait -lt 2 ]; then
-    debug  'time to wait invalid:  '$time_to_wait'\n'
+    debug  'time to wait invalid:  '$time_to_wait' returning 0\n'
     time_to_wait=0
   fi
   return  $time_to_wait
@@ -158,73 +181,18 @@ get_seconds(){
 
 
 
-_alert_audio() {
-  case "${unameOut}" in
-    CYGWIN*|MINGW*)
-      powershell.exe -Command '
-        [console]::beep(1000,300) ;
-        [console]::beep(500,400) ;
-        [console]::beep(250,500) ;
-        sleep 1 ;
-        [console]::beep(1000,300) ;
-        [console]::beep(500,400) ;
-        [console]::beep(250,500) ;
-      '
-    ;;
-    *)
-      # TODO - improve
-      \speaker-test  --test wav  --channels 2  --nloops 1  2> /dev/null
-      # NOTE - this repository has earlier code for chiptune-like sound.
-      # I've had speaker-test keep echoing before.  While this hasn't been reproduced lately, I'm going to keep this here just in case:
-      \killall  -9 speaker-test 2> /dev/null
-  esac
-}
-
-
-
-_alert_visual() {
-  case "${unameOut}" in
-    CYGWIN*)
-      # This seems like an okay idea.
-      cygstart.exe cmd /K "\
-        echo Alarm! & \
-        echo. & \
-        echo Started $( \date  --date  @$time_source  +"%Y-%m-%d - %l:%M:%S %P" ) & \
-        echo Ended   $( \date  --date  'now'          +"%Y-%m-%d - %l:%M:%S %P" ) & \
-      "
-    ;;
-    MINGW*)
-      # Hackish, but don't dismiss simplicity.
-      start '' "$3"
-    ;;
-    *)
-      # TODO - I could just open a terminal, use Xdialog, zenity or some other such thing.
-             # I could also detect which is available.
-      # re. `date`:  Unfortunately %l (ell) is space-padded, and I don't want to bother doing anything about that.
-      \printf \
-'Alarm!\n\n'\
-"Started " $( \date  --date  @$time_source  +"%Y-%m-%d - %l:%M:%S %P" ) '\n'\
-"Ended   " $( \date  --date  'now'          +"%Y-%m-%d - %l:%M:%S %P" ) '\n'\
-| \leafpad &
-  esac
-}
-
-
-
 _sleep() {
-  # Brute force, directly using `sleep`
+  debug  "_sleep()  $*\n\n"
   _sleep_if_possible  $*
   if [ $? -eq 1 ]; then
-    #  The brute-force attempt with `sleep` failed.  Fall back to using `date`
-    get_seconds  $*
+    get_seconds_using_date  $*
     seconds="$?"
     _sleep_if_possible  "$seconds"
   fi
 }
 
 
-commandline=$*
-_sleep  $commandline
+_sleep  $*
 
 
 
@@ -236,8 +204,67 @@ time_target=$(( $time_target + 2 ))
 if [ $time_target -lt 4 ]; then return; fi
 if [ $then -lt 3 ]; then return; fi
 }
-_alert_visual
-_alert_audio
+if [ "$debug" ]; then
+  debug  'in debug mode, not triggering alerts\n'
+else
+
+  _alert_audio() {
+    debug  "_alert_audio()  $*\n\n"
+    case "${unameOut}" in
+      CYGWIN*|MINGW*)
+        powershell.exe -Command '
+          [console]::beep(1000,300) ;
+          [console]::beep(500,400) ;
+          [console]::beep(250,500) ;
+          sleep 1 ;
+          [console]::beep(1000,300) ;
+          [console]::beep(500,400) ;
+          [console]::beep(250,500) ;
+        '
+      ;;
+      *)
+        # TODO - improve
+        \speaker-test  --test wav  --channels 2  --nloops 1  > /dev/null  2> /dev/null
+        # NOTE - this repository has earlier code for chiptune-like sound.
+        # I've had speaker-test keep echoing before.  While this hasn't been reproduced lately, I'm going to keep this here just in case:
+        \killall  -9 speaker-test 2> /dev/null
+    esac
+  }
+
+
+
+  _alert_visual() {
+    debug  "_alert_visual()  $*\n\n"
+    case "${unameOut}" in
+      CYGWIN*)
+        # This seems like an okay idea.
+        cygstart.exe cmd /K "\
+          echo Alarm! & \
+          echo. & \
+          echo Started $( \date  --date  @$time_source  +"%Y-%m-%d - %l:%M:%S %P" ) & \
+          echo Ended   $( \date  --date  'now'          +"%Y-%m-%d - %l:%M:%S %P" ) & \
+        "
+      ;;
+      MINGW*)
+        # Hackish, but don't dismiss simplicity.
+        start '' "$3"
+      ;;
+      *)
+        # TODO - I could just open a terminal, use Xdialog, zenity or some other such thing.
+               # I could also detect which is available.
+        # re. `date`:  Unfortunately %l (ell) is space-padded, and I don't want to bother doing anything about that.
+        \echo \
+"Alarm!
+
+Started  $( \date  --date  @$time_source  +"%Y-%m-%d - %l:%M:%S %P" )
+Ended    $( \date  --date  'now'          +"%Y-%m-%d - %l:%M:%S %P" )
+"  | \leafpad &
+    esac
+  }
+
+  _alert_visual
+  _alert_audio
+fi
 
 
 
