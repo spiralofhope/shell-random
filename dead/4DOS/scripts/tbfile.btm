@@ -1,0 +1,25 @@
+GOTO _endnotes_
+
+A ThunderByte Antivirus helper.
+
+  https://blog.spiralofhope.com/?p=38083
+
+
+2018-05-20
+  --  This is at least as old as 2007-07-22, and I know it's *much* older.
+  --  I have not come across an earlier version of this script.  Perhaps one day.
+
+:_endnotes_
+
+
+SETLOCAL
+UNALIAS *
+ECHO ***** %_DATE %_TIME TBFILE ABORTED!!>>%MYTEMP\_TEMP\LOGS\general.log
+BEEP
+IFF %_WIN=0 THEN %DOS\DOS\mode.com CO80^ELSE C:\WINDOWS\COMMAND.mode.com CO80^ENDIFF
+CLS WHI ON BLU BOR RED
+%DOS\UTILS\medieval.com
+IFF %_WIN=0 THEN %DOS\DOS\mode.com CON RATE=32 DELAY=1^ELSE C:\WINDOWS\COMMAND.mode.com CON RATE=32 DELAY=1^ENDIFF
+INKEY/CP/K"yn" [Be humbled?] %%INKEY
+IF %INKEY=y %DOS\UTILS\TBAV\tbfile.exe %&
+ENDLOCAL
