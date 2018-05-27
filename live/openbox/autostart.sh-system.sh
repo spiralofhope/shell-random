@@ -96,24 +96,19 @@
   # https://github.com/magkopian/keepassxc-debian/releases
 
   \rm  --force  \
-    /l/.KeePassXC--passwords.kdbx.lock  \
-    /mnt/1/windows-data/live/.KeePassXC--passwords.kdbx.lock
+    '/l/.KeePassXC--passwords.kdbx.lock'  \
+    '/mnt/1/windows-data/live/.KeePassXC--passwords.kdbx.lock'
 
   # It can be set to load previous databases on startup, but I prefer this..
   /usr/bin/keepassxc  \
-    /l/KeePassXC--passwords.kdbx  \
-    /mnt/1/data-windows/live/KeePassXC--passwords.kdbx &
+    '/l/KeePassXC--passwords.kdbx'  \
+    '/mnt/1/data-windows/live/KeePassXC--passwords.kdbx' &
 }
 
 
 # launch any user-specific stuff:
-~/.config/openbox/autostart.sh-applications.sh &
+~/.config/openbox/autostart.sh-applications.sh
 
-# FIXME - This is done to ensure this window pops up after the previous one.  I hate this.
-\sleep 0.3
-
-# Set up a Virtual Private Network (left to the user's creation)
-~/vpn-launch.sh
 
 
 
