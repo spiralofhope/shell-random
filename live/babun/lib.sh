@@ -88,7 +88,7 @@ geany() {  #  The GUI editor
     string=${string}' '\"$( \cygpath  --dos  "$file" )\"
   done
 #  \cygstart  "$PFx/Geany/bin/geany.exe"  "$string" &
-  \cygstart  '/c/Program Files (x86)/Geany/bin/geany.exe'  "$string" &
+  \cygstart  '/c/Program Files (x86)/Geany/bin/geany.exe'  "$string"
   \unset  string
 }
 
