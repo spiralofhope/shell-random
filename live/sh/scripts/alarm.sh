@@ -63,13 +63,14 @@ on Windows 10:
       _ps='--process'
     ;;
     # This might be okay for git-bash
-    MINGW*|Linux)
+    MINGW*|'Linux')
       ANSI_escape_code='\033'
       _ps='--pid'
     ;;
     *)
       _ps='--process'
       ANSI_escape_code=
+    ;;
   esac
   cursor_position_save() {    \echo -n  "$ANSI_escape_code[s" ; }
   cursor_position_restore() { \echo -n  "$ANSI_escape_code[u" ; }
