@@ -3,13 +3,18 @@
 
 
 
-if [ $( \whoami ) = root ]; then
+# Cygwin / Babun
+if [ -d '/cygdrive' ]; then
+  exit  0
+fi
+
+
+
+if [ $( \whoami ) = 'root' ]; then
   __() {
     \smartctl  --quietmode=errorsonly  --smart=on  "$1"
 #    \smartctl  --smart=on  "$1"
   }
-  __  /dev/sda
-  __  /dev/sdb
-else
-  # do nothing
+  __  '/dev/sda'
+  __  '/dev/sdb'
 fi
