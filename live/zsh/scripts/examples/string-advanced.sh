@@ -1,3 +1,6 @@
+#!/usr/bin/env  zsh
+
+
 
 searchstring() {
   unset searchstring_success

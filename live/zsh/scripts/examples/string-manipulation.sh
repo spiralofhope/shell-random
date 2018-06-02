@@ -1,3 +1,7 @@
+#!/usr/bin/env  zsh
+
+
+
 insert_character() {
   unset searchstring_success
   until [ 'sky' = 'falling' ]; do

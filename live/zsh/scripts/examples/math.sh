@@ -1,3 +1,7 @@
+#!/usr/bin/env  zsh
+
+
+
 divide() {
   # Just simple for now.  Elsewhere I have more complex code that's more thorough
   isnumber() {

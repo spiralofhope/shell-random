@@ -2,7 +2,6 @@
 
 
 
-
 {   # Find all characters after.
 
 # After the first occurrance
