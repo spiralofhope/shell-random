@@ -59,7 +59,7 @@ on Windows 10:
   case "${unameOut}" in
     # Babun
     CYGWIN*)
-      ANSI_escape_code=
+      ANSI_escape_code=''
       _ps='--process'
     ;;
     # This might be okay for git-bash
@@ -69,7 +69,7 @@ on Windows 10:
     ;;
     *)
       _ps='--process'
-      ANSI_escape_code=
+      ANSI_escape_code=''
     ;;
   esac
   cursor_position_save() {    \echo -n  "$ANSI_escape_code[s" ; }
