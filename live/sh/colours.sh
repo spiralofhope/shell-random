@@ -11,8 +11,49 @@
 #    colors (f = foreground, b = background), and use the 'off'
 #    feature for anything you turn on.
 
+
+:<<'}'   #  git-bash:  ANSI under Windows
+Use ANSICON
+  https://blog.spiralofhope.com/?p=37580
+  http://ansicon.adoxa.vze.com/
+  https://github.com/adoxa/ansicon/releases/latest
+on Windows 10:
+  1. unzip it somewhere.
+  2. open a cmd as admin
+       windows-x a
+  3. go to its unzipped location, to x64
+  4. ansicon.exe -I
+}
+
+
+
 initializeANSI() {
-  esc=""
+
+  {   #  Determine what sort of machine we're on
+    unameOut="$( \uname  --kernel-name )"
+    case "${unameOut}" in
+      CYGWIN*)    machine=Cygwin;;
+      Darwin*)    machine=Mac;;
+      Linux*)     machine=Linux;;
+      MINGW*)     machine=MinGw;;
+      *)          machine="UNKNOWN:${unameOut}"
+    esac
+    #echo ${machine}
+
+    case "${unameOut}" in
+      # Babun
+      CYGWIN*)
+        esc=''
+      ;;
+      # This might be okay for git-bash
+      MINGW*|'Linux')
+        esc='\033'
+      ;;
+      *)
+        esc=''
+      ;;
+    esac
+  }
 
   # Foreground colour
   black="${esc}[30m"
