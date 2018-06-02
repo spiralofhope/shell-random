@@ -2,7 +2,6 @@
 
 
 
-
 # This would be a nice idea to get rmdir to shut the fuck up.
 :<<'}'   #  
 rmdir2() {

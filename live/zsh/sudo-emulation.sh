@@ -1,3 +1,6 @@
+#!/usr/bin/env  zsh
+
+
 
 \which  sudo > /dev/null
 if [ $? -eq 0 ]; then

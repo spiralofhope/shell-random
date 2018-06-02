@@ -1,3 +1,7 @@
+#!/usr/bin/env  zsh
+
+
+
 # Be able to cd into the directory of a file, because autocomplete gives a filename.
 # TODO
 

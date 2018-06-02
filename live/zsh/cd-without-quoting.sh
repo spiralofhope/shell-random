@@ -1,3 +1,7 @@
+#!/usr/bin/env  zsh
+
+
+
 # TODO: Change directory and don't bother requiring double-quotes in the string..
 # I just use some trickery with control-x
 

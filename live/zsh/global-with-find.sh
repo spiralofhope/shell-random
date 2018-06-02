@@ -1,3 +1,4 @@
+#!/usr/bin/env  zsh
 # TODO: implement 'global' with find
 
 

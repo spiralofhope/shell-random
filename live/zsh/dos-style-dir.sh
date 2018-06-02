@@ -1,3 +1,6 @@
+#!/usr/bin/env  zsh
+
+
 
 # dir() { /bin/ls --color -gGh "$@"|cut -d" " -f4-100 ; }
 # dir() { \ls --color -gGh "$@" | \cut -b14- | \less -F -r ; }
