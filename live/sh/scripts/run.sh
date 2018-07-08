@@ -2,6 +2,12 @@
 
 
 
+dmenu_run  -i -l 32  -fn "7x14" -nf yellow -nb black -sf black -sb white
+
+
+
+return 0
+
 # TODO:  Add lots more.  Check my notes.
 
   # I compile it.
