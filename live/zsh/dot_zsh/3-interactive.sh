@@ -9,6 +9,11 @@ IDEAS
 
 zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
 
+if [ -d '/mnt/c' ]; then  local  c_drive='/mnt/c'; fi   # Windows Subsystem for Linux
+if [ -d '/mnt/d' ]; then  local  d_drive='/mnt/d'; fi   #
+if [ -d '/c' ];     then  local  c_drive='/c';     fi   # Babun
+if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
+
 
 {  # 'source' additional scripting and settings.
 
@@ -43,7 +48,7 @@ zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
 
 
 {  #  Paths
-  PATH="$( \realpath  '/l/OS/bin' )":"$PATH"
+  PATH="$( \realpath  ${d_drive}/live/OS/bin )":"$PATH"
   PATH="$PATH":"$( \realpath  "$zshdir/../" )"
   PATH="$PATH":"$( \realpath  "$zshdir/../sh/scripts" )"
   PATH="$PATH":"$( \realpath  "$zshdir/../bash/scripts" )"
@@ -181,4 +186,4 @@ OLD
 
 # Syntax highlighting magic
 #   https://github.com/zsh-users/zsh-syntax-highlighting
-\source  /l/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+\source  ${d_drive}/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
