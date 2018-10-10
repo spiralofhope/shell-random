@@ -84,6 +84,11 @@ zle_highlight=(region:bg=red special:underline)
 
 {  #  File colors
   \eval  $( \dircolors  --bourne-shell )
+  # Directories
+  # 94 = text, light blue
+  # 40 = background, black
+  # Note that in order to have light blue in Windows Subsystem for Linux, you need Color Tool to enable 24-bit colors:  https://github.com/Microsoft/console/releases
+  \export  LS_COLORS="${LS_COLORS}":'di=0;94;40'
   # Additional archives
   \export  LS_COLORS="${LS_COLORS}":'*.7z=01;31'
   # Windows system files
