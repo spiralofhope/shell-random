@@ -187,3 +187,10 @@ OLD
 # Syntax highlighting magic
 #   https://github.com/zsh-users/zsh-syntax-highlighting
 \source  ${d_drive}/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+
+# Windows Subsystem for Linux, GUI software support.
+if [ -d '/mnt/c' ]; then
+  \export  DISPLAY=localhost:0.0
+fi
+
