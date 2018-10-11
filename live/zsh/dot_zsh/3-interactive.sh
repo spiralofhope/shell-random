@@ -36,9 +36,12 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
   sourceallthat  "$zshdir/../sh/"
   sourceallthat  "$zshdir/"
 
-  # Cygwin / Babun
   if [ -d '/cygdrive' ]; then
+    # Cygwin / Babun
     sourceallthat  "$zshdir/../babun/"
+  elif [ -d '/mnt/c' ]; then
+    # Windows Subsystem for Linux
+    sourceallthat  "$zshdir/../wfl/"
   fi
 
   \unset -f sourceallthat
