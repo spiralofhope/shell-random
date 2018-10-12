@@ -1,4 +1,4 @@
-#!/usr/bin/env  zsh
+#!/usr/bin/env  sh
 
 
 
@@ -19,7 +19,3 @@ alias  l="nocorrect  \cd  $l"
 # World of Warcraft
 alias  addons="nocorrect  \cd  /$l/World_of_Warcraft/_dotfiles/Interface/AddOns/"
 alias     wow="nocorrect  \cd  /$l/World_of_Warcraft/"
-
-
-# Not used/valid under wsl:
-\unalias  previous

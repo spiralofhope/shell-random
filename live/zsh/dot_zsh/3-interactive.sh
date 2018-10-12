@@ -41,7 +41,10 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
     sourceallthat  "$zshdir/../babun/"
   elif [ -d '/mnt/c' ]; then
     # Windows Subsystem for Linux
-    sourceallthat  "$zshdir/../wfl/"
+    # I don't understand why doing this will change the directory I'm dropped into.
+    #sourceallthat  "$zshdir/../wfl/"
+    source  "$zshdir/../wfl/lib.sh"
+    source  "$zshdir/../wfl/aliases.sh"
   fi
 
   \unset -f sourceallthat
