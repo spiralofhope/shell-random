@@ -47,4 +47,4 @@ if which /usr/lib/openbox/xdg-autostart >/dev/null; then
 fi
 
 # My additions
-~/.config/openbox/autostart.sh-system.sh
+\setsid  ~/.config/openbox/autostart.sh-system.sh &
