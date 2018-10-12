@@ -105,10 +105,13 @@ for interface in ` \ls /sys/class/net/  |  \grep  --invert-match  lo `; do
 done
 
 if [ "$_connected" = 'true' ]; then
+
+  # Set up a Virtual Private Network (left to the user's creation)
+  ~/vpn-launch.sh
+
   __=` /l/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' `
   if [ "$__" -eq 0 ]; then
     _connected_true
-    \echo .
   else
     exit 1
   fi
@@ -131,4 +134,4 @@ fi
 
 # Notes
 # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-/l/shell-random/git/live/sh/scripts/projects.sh &
+/l/shell-random/git/live/sh/scripts/projects.sh
