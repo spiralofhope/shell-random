@@ -1,7 +1,9 @@
+# --
 # -- My additions to autostart.sh
 # --
 # Edit autostart.sh and append:
 # ~/.config/openbox/autostart.sh-system.sh
+
 
 
 {  #  Dual screens
