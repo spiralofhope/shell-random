@@ -1,3 +1,5 @@
+TEST
+
 # --
 # -- My additions to autostart.sh
 # --
