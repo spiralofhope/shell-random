@@ -18,6 +18,7 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
 {  # 'source' additional scripting and settings.
 
   function sourceallthat() {
+#    \echo  "sourcing $1"
     \pushd > /dev/null
     \cd  "$1"
     if [ -f 'lib.sh' ]; then
@@ -54,6 +55,7 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
 
 
 {  #  Paths
+
   PATH="$( \realpath  ${d_drive}/live/OS/bin )":"$PATH"
   PATH="$PATH":"$( \realpath  "$zshdir/../" )"
   PATH="$PATH":"$( \realpath  "$zshdir/../sh/scripts" )"
@@ -64,6 +66,7 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
     PATH="$PATH":'/sbin'
     PATH="$PATH":'/usr/sbin'
   fi
+
 }
 
 
