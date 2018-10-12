@@ -9,10 +9,16 @@ IDEAS
 
 zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
 
+if [ -d '/mnt/c' ]; then  local  c_drive='/mnt/c'; fi   # Windows Subsystem for Linux
+if [ -d '/mnt/d' ]; then  local  d_drive='/mnt/d'; fi   #
+if [ -d '/c' ];     then  local  c_drive='/c';     fi   # Babun
+if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
+
 
 {  # 'source' additional scripting and settings.
 
   function sourceallthat() {
+#    \echo  "sourcing $1"
     \pushd > /dev/null
     \cd  "$1"
     if [ -f 'lib.sh' ]; then
@@ -31,9 +37,15 @@ zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
   sourceallthat  "$zshdir/../sh/"
   sourceallthat  "$zshdir/"
 
-  # Cygwin / Babun
   if [ -d '/cygdrive' ]; then
+    # Cygwin / Babun
     sourceallthat  "$zshdir/../babun/"
+  elif [ -d '/mnt/c' ]; then
+    # Windows Subsystem for Linux
+    # I don't understand why doing this will change the directory I'm dropped into.
+    #sourceallthat  "$zshdir/../wfl/"
+    source  "$zshdir/../wfl/lib.sh"
+    source  "$zshdir/../wfl/aliases.sh"
   fi
 
   \unset -f sourceallthat
@@ -43,7 +55,8 @@ zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
 
 
 {  #  Paths
-  PATH="$( \realpath  '/l/OS/bin' )":"$PATH"
+
+  PATH="$( \realpath  ${d_drive}/live/OS/bin )":"$PATH"
   PATH="$PATH":"$( \realpath  "$zshdir/../" )"
   PATH="$PATH":"$( \realpath  "$zshdir/../sh/scripts" )"
   PATH="$PATH":"$( \realpath  "$zshdir/../bash/scripts" )"
@@ -53,6 +66,7 @@ zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
     PATH="$PATH":'/sbin'
     PATH="$PATH":'/usr/sbin'
   fi
+
 }
 
 
@@ -79,6 +93,11 @@ zle_highlight=(region:bg=red special:underline)
 
 {  #  File colors
   \eval  $( \dircolors  --bourne-shell )
+  # Directories
+  # 94 = text, light blue
+  # 40 = background, black
+  # Note that in order to have light blue in Windows Subsystem for Linux, you need Color Tool to enable 24-bit colors:  https://github.com/Microsoft/console/releases
+  \export  LS_COLORS="${LS_COLORS}":'di=0;94;40'
   # Additional archives
   \export  LS_COLORS="${LS_COLORS}":'*.7z=01;31'
   # Windows system files
@@ -181,4 +200,11 @@ OLD
 
 # Syntax highlighting magic
 #   https://github.com/zsh-users/zsh-syntax-highlighting
-\source  /l/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+\source  ${d_drive}/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+
+# Windows Subsystem for Linux, GUI software support.
+if [ -d '/mnt/c' ]; then
+  \export  DISPLAY=localhost:0.0
+fi
+

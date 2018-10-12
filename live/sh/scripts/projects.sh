@@ -8,6 +8,13 @@
 # Prefer loading some files first, so they will appear as the first tabs.
 
 
+# Windows Subsystem for Linux
+if [ -d '/mnt/c' ]; then
+  l='/mnt/d/live'
+else
+  l='/l'
+fi
+
 
 # FIXME - If run multiple times, it will attempt to open a new tab with a nonexistent file.
 #         This is likely because I have a leading or trailing printf in the final command.
@@ -69,7 +76,7 @@ build_array_of_files() {
       \touch  "$file"
       \echo  "$NEW_PROJECT_MESSAGE" >> "$file"
     fi
-    local  size_of_file=` \stat  --printf="%s"  "$file"  |  \cut -f 1 `
+    size_of_file=` \stat  --printf="%s"  "$file"  |  \cut -f 1 `
     if [ "$size_of_file" = "0" ] ; then
       \echo  "skipping 0-byte file:  $file"
       continue
@@ -87,19 +94,29 @@ build_array_of_files() {
 
 
 open_array_of_files() {
-  #echo  \geany  $array_of_files
-  #\geany  $array_of_files
-  \geany  --new-instance \
-    '/l/__/__.txt' \
-    '/l/projects.txt' \
-    ` # A major project of mine which ought to be reviewed very regularly. ` \
-    '/l/unplugging/unplugging.txt' \
-    '/l/_outbox--0/_outbox--0.txt' \
-    '/mnt/1/windows-data/live/_outbox--0/_outbox--0.txt' \
-    '/mnt/1/windows-data/live/_outbox--1/_outbox--1.txt' \
-    $array_of_files \
-    /l/__/__.txt \
-  &
+  if [ -d '/mnt/c' ]; then
+    \geany  --new-instance \
+      $l/__/__.txt \
+      $l/projects.txt \
+      $l/_outbox--0/_outbox--0.txt \
+      $array_of_files \
+      $l/__/__.txt \
+    &
+  else
+    #echo  \geany  $array_of_files
+    #\geany  $array_of_files
+    \geany  --new-instance \
+      $l/__/__.txt \
+      $l/projects.txt \
+      ` # A major project of mine which ought to be reviewed very regularly. ` \
+      '/l/unplugging/unplugging.txt' \
+      $l/_outbox--0/_outbox--0.txt \
+      '/mnt/1/windows-data/live/_outbox--0/_outbox--0.txt' \
+      '/mnt/1/windows-data/live/_outbox--1/_outbox--1.txt' \
+      $array_of_files \
+      $l/__/__.txt \
+    &
+  fi
 }
 
 
@@ -116,8 +133,13 @@ teardown() {
 # --
 
 setup
-build_array_of_directories  '/l'
-build_array_of_directories  '/mnt/1/data-windows/live'
+if [ -d '/mnt/c' ]; then
+  # Windows Subsystem for Linux
+  build_array_of_directories  $l
+else
+  build_array_of_directories  $l
+  build_array_of_directories  '/mnt/1/data-windows/live'
+fi
 build_array_of_files  "$array_of_directories"
 
 open_array_of_files
