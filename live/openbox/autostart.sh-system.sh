@@ -1,4 +1,3 @@
-FUCKING WORK
 # --
 # -- My additions to autostart.sh
 # --
