@@ -50,7 +50,9 @@ _connected_true() {
   #
   # Web browser
   #
-  /l/Pale\ Moon/go.sh  default &
+  profile_name='default'
+  '/l/Pale Moon/delete_parentlock.sh'       "$profile_name"
+  '/l/Pale Moon/_installation/palemoon'  -P "$profile_name"  -new-tab "about:blank" &
 
 
   #
