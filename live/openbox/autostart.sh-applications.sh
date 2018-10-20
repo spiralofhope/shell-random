@@ -93,18 +93,39 @@ _connected_true() {
 # --
 
 _connected=
-# 'lo' is localhost
-for interface in ` \ls /sys/class/net/  |  \grep  --invert-match  lo `; do
-  \echo "Processing $interface"
-  _result=` \cat /sys/class/net/"$interface"/carrier `
-  \echo  "$_result"
-  if [ "$_result" = '1' ]; then
+
+:<<'}'  # earlier method
+{
+  # 'lo' is localhost
+  for interface in ` \ls /sys/class/net/  |  \grep  --invert-match  lo `; do
+    \echo "Processing $interface"
+    _result=` \cat /sys/class/net/"$interface"/carrier `
+    \echo  "$_result"
+    if [ "$_result" = '1' ]; then
+      _connected='true'
+      \echo  " * Internet connection detected."
+    else
+      \echo  " * Internet connection not detected."
+    fi
+  done
+}
+
+
+#:<<'}'   # Ping the default gateway
+{
+  # GW=$( \ip  route list  |  \sed -rn 's/^default via ([0-9a-f:.]+) .*/\1/p' )
+  # 40% slower, but easier to read:
+  GW=$( \ip  route list  |  \awk  '($1 == "default") {print $3}' )
+  # I don't know how to shut it up.
+  \ping  -c 1  -q  "$GW" 2> /dev/null
+  if [ $? -eq 0 ]; then
     _connected='true'
     \echo  " * Internet connection detected."
   else
     \echo  " * Internet connection not detected."
   fi
-done
+}
+
 
 if [ "$_connected" = 'true' ]; then
   __=` /l/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' `
