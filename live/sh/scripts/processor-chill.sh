@@ -2,6 +2,9 @@
 
 
 
+# Get the governor status with something like:
+# /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+
 # Maybe there's a better way to do this, but I don't know it.
 get_the_number_of_processors() {
   \echo  $( \
