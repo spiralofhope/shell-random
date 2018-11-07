@@ -97,7 +97,7 @@ open_array_of_files() {
   if [ -d '/mnt/c' ]; then
     \geany  --new-instance \
       $l/__/__.txt \
-      $l/projects.txt \
+      $l/live/projects/projects.txt \
       $l/_outbox--0/_outbox--0.txt \
       $array_of_files \
       $l/__/__.txt \
@@ -107,7 +107,7 @@ open_array_of_files() {
     #\geany  $array_of_files
     \geany  --new-instance \
       $l/__/__.txt \
-      $l/projects.txt \
+      $l/live/projects/projects.txt \
       ` # A major project of mine which ought to be reviewed very regularly. ` \
       '/l/unplugging/unplugging.txt' \
       $l/_outbox--0/_outbox--0.txt \
@@ -138,7 +138,9 @@ if [ -d '/mnt/c' ]; then
   build_array_of_directories  $l
 else
   build_array_of_directories  $l
-  build_array_of_directories  '/mnt/1/data-windows/live'
+  build_array_of_directories  $l/live/projects
+  build_array_of_directories  '/mnt/1/windows-data/live'
+  build_array_of_directories  '/mnt/1/windows-data/live/projects'
 fi
 build_array_of_files  "$array_of_directories"
 
