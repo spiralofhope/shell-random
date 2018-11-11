@@ -6,6 +6,9 @@
 
 \setfont  Uni2-VGA16.psf.gz
 
+
+# This mess lets me use the console login screen as a GUI login manager.
+
 # if [ -z "$DISPLAY" ] && [ $( \tty ) == /dev/tty1 ]; then
 
 if    [ "$TTY" = '/dev/tty1' ] ||\
@@ -22,10 +25,25 @@ if    [ "$TTY" = '/dev/tty1' ] ||\
   local  tty_to_use=${string##${pattern}}
   tty_to_use=${string##*${pattern}}
 
-  #\setsid  \startx
+#less /usr/bin/startx
+
+
+# 2018-11-10 - Devuan 2.0.0
+# This will open Openbox
+\startx
+# This will open the default stuff (MATE)
+#xinit /etc/X11/xinit/xinitrc -- /usr/bin/X :$( \expr "$tty_to_use" - 1 ) vt"$tty_to_use" -auth $( \tempfile --prefix='serverauth.' )
+
+
+# Earlier successes:
+  # Be really specific, so that we can setsid to exit entirely out of zsh or sh:
+# As of Devuan 2.0.0 this works as root but not as a user:
+#  \setsid  xinit /etc/X11/xinit/xinitrc -- /usr/bin/X :$( \expr "$tty_to_use" - 1 ) vt"$tty_to_use" -auth $( \tempfile --prefix='serverauth.' )
+
   # Start X on that specific TTY
   #\setsid  \startx  --  vt"$tty_to_use"
-  # Be really specific, so that we can setsid to exit entirely out of zsh or sh:
-  \setsid  xinit /etc/X11/xinit/xinitrc -- /usr/bin/X :$( \expr "$tty_to_use" - 1 ) vt"$tty_to_use" -auth $( \tempfile --prefix='serverauth.' )
-  \logout
+
+# xinit "$client" $clientargs -- "$server" $display $serverargs
+
+\logout
 fi

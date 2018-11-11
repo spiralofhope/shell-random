@@ -26,26 +26,10 @@
 }
 
 
-{  #  Screen saver
-  # Just in case:
-  \killall  --quiet  gnome-screensaver &
-
-  # This complexity is to prevent screen blanking if xscreensaver is run a second time.  What idiocy..
-  #\pidof  xscreensaver
-  #if [ "$?" -ne 0 ]; then
-  #  \xscreensaver  -no-splash > /dev/null &
-  #fi
-
-  # xautolock is a really simple monitor for inactivity.
-  # slock is a really simple screen saver/locker.
-  \xautolock  -time 5  -locker \slock &
-}
-
-
 {  # Turn on the numlock
   # 2016-03-30, on Slackware 14.1
   #   installed with  `slpkg  -s sbo  numlockx`
-  \numlockx &
+  \setsid  \numlockx &
   # (date not recorded), on Lubuntu (version not recoded)
   #   wtf, doesn't seem to work anymore..
   # 2014-05-16, on Lubuntu 14.04
@@ -61,8 +45,25 @@
 }
 
 
-# Hide an inactive mouse.
-\unclutter  -root  -idle 3 &
+{  # Hide an inactive mouse.
+  \setsid  \unclutter  -root  -idle 3 &
+}
+
+
+{  #  Screen saver
+  # Just in case:
+  \killall  --quiet  gnome-screensaver &
+
+  # This complexity is to prevent screen blanking if xscreensaver is run a second time.  What idiocy..
+  #\pidof  xscreensaver
+  #if [ "$?" -ne 0 ]; then
+  #  \xscreensaver  -no-splash > /dev/null &
+  #fi
+
+  # xautolock is a really simple monitor for inactivity.
+  # slock is a really simple screen saver/locker.
+  \setsid  \xautolock  -time 5  -locker \slock &
+}
 
 
 # Fuck you and your desktop nonsense, you crappy program.
@@ -89,7 +90,7 @@
 {  #  The tray's volume icon.
   # I add this because fbpanel's volume plugin doesn't feel like working any more.
   \killall  volumeicon  >  /dev/null  2>  /dev/null
-  \volumeicon &
+  \setsid  \volumeicon &
 }
 
 
@@ -102,7 +103,7 @@
     '/mnt/1/windows-data/live/.KeePassXC--passwords.kdbx.lock'
 
   # It can be set to load previous databases on startup, but I prefer this..
-  /usr/bin/keepassxc  \
+  \setsid  /usr/bin/keepassxc  \
     '/l/KeePassXC--passwords.kdbx'  \
     '/mnt/1/data-windows/live/KeePassXC--passwords.kdbx' &
 }
