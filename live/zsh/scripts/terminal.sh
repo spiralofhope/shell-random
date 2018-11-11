@@ -97,6 +97,7 @@ terminal_setup() {
     /usr/bin/rxvt-unicode
     /usr/bin/rxvt
     /usr/bin/mrxvt
+    /usr/bin/mate-terminal
     /usr/bin/lxterminal
     /usr/bin/sakura
     /usr/bin/Terminal
@@ -116,6 +117,7 @@ terminal_setup() {
   terminals_with_lines=(
     /usr/bin/urxvt
     /usr/bin/rxvt-unicode
+    /usr/bin/mate-terminal
     /usr/bin/lxterminal
     /usr/bin/sakura
     /usr/bin/Terminal
