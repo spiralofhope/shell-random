@@ -51,8 +51,8 @@ _connected_true() {
   # Web browser
   #
   profile_name='default'
-  '/l/Pale Moon/delete_parentlock.sh'       "$profile_name"
-  \setsid  '/l/Pale Moon/_installation/palemoon'  -P "$profile_name"  -new-tab "about:blank" &
+  '/l/OS/bin/Pale Moon/delete_parentlock.sh'       "$profile_name"
+  \setsid  '/l/OS/bin/Pale Moon/_installation/palemoon'  -P "$profile_name"  -new-tab "about:blank" &
 
 
   #
