@@ -1,50 +1,108 @@
 #!/usr/bin/env  sh
 
 
-:<<'from_sh'
-findfile() {
-  if [[ -d $1 ]]; then
-    ${shell_random}/live/sh/scripts/findhelper.sh  file      $*
-  else
-    ${shell_random}/live/sh/scripts/findhelper.sh  file  ./  $*
-  fi
+
+#:<<'}}'  #  From sh
+{{
+findhelper() {
+  case  $_findhelper_type  in
+    'file')
+      _findhelper_type='f'
+    ;;
+    'directory')
+      _findhelper_type='d'
+    ;;
+    *)
+      \echo  'invalid usage'
+    ;;
+  esac
+
+  \find  \
+    ./  \
+    -type $_findhelper_type  \
+    -iname  \*"$1"\*  |\
+      \sed  's/^/"/'  |\
+        \sed  's/$/"/'  |\
+          \grep  \
+            --colour=$_findhelper_color  \
+            --ignore-case  "$1"  \
+  ` # `
+
+  _findhelper_type=
+  _findhelper_color=
 }
+
+
+findfile() {
+  _findhelper_type='file'
+  _findhelper_color='always'
+  findhelper  f  always  $*
+}
+findfile_color_off() {
+  _findhelper_type='file'
+  _findhelper_color='never'
+  findhelper  f  never  $*
+}
+
 
 
 finddir() {
-  if [[ -d $1 ]]; then
-    ${shell_random}/live/sh/scripts/findhelper.sh  directory      $*
-  else
-    ${shell_random}/live/sh/scripts/findhelper.sh  directory  ./  $*
-  fi
+  _findhelper_type='directory'
+  _findhelper_color='always'
+  findhelper  $*
+}
+finddir_color_off() {
+  _findhelper_type='directory'
+  _findhelper_color='never'
+  findhelper  $*
 }
 
 
+
+# Can double-quote to quote a single-quote.
+#   "I don't know"
+# Can backslash to escape.
+#   I don\'t know
+_findhelper_file_contents() {
+  local  maxdepth=$1
+  shift
+  \find  \
+    .  \
+    -maxdepth $maxdepth  \
+    -type f  \
+    -print0  \
+    -iname  \'"$*"\' |\
+      \xargs  \
+        --no-run-if-empty  \
+        --null \
+        \grep  \
+          --colour=always  \
+          --fixed-strings  \
+          --ignore-case  \
+          --regexp="$*"  \
+    ` # `
+
+  _findhelper_type=
+  _findhelper_color=
+}
+
 # TODO - Technically I could make a `findin` that applies to only one file, but I won't bother.
 findinall() {
-  if [[ -d $1 ]]; then
-    ${shell_random}/live/sh/scripts/findhelper.sh  999            $*
-  else
-    ${shell_random}/live/sh/scripts/findhelper.sh  999        ./  $*
-  fi
+  _findhelper_file_contents  999   $*
 }
 
 
 # TODO - Technically I could make a `findin` that applies to only one file, but I won't bother.
 findhere() {
-  if [[ -d $1 ]]; then
-    ${shell_random}/live/sh/scripts/findhelper.sh  1              $*
-  else
-    ${shell_random}/live/sh/scripts/findhelper.sh  1          ./  $*
-  fi
+  _findhelper_file_contents  1   $*
 }
-from_sh
+
+}}
 
 
 
-############
-# From zsh #
-############
+:<<'}}'  #  From zsh
+{{
 # Roughly copied here.
 # TODO - audit
 
@@ -103,3 +161,4 @@ findreplace() {
   shift
   \sed  --in-place  "s/$search/$replace/g"  $*
 }
+}}
