@@ -1,6 +1,52 @@
-#!/usr/bin/env  zsh
+#!/usr/bin/env  sh
 
 
+:<<'from_sh'
+findfile() {
+  if [[ -d $1 ]]; then
+    ${shell_random}/live/sh/scripts/findhelper.sh  file      $*
+  else
+    ${shell_random}/live/sh/scripts/findhelper.sh  file  ./  $*
+  fi
+}
+
+
+finddir() {
+  if [[ -d $1 ]]; then
+    ${shell_random}/live/sh/scripts/findhelper.sh  directory      $*
+  else
+    ${shell_random}/live/sh/scripts/findhelper.sh  directory  ./  $*
+  fi
+}
+
+
+# TODO - Technically I could make a `findin` that applies to only one file, but I won't bother.
+findinall() {
+  if [[ -d $1 ]]; then
+    ${shell_random}/live/sh/scripts/findhelper.sh  999            $*
+  else
+    ${shell_random}/live/sh/scripts/findhelper.sh  999        ./  $*
+  fi
+}
+
+
+# TODO - Technically I could make a `findin` that applies to only one file, but I won't bother.
+findhere() {
+  if [[ -d $1 ]]; then
+    ${shell_random}/live/sh/scripts/findhelper.sh  1              $*
+  else
+    ${shell_random}/live/sh/scripts/findhelper.sh  1          ./  $*
+  fi
+}
+from_sh
+
+
+
+############
+# From zsh #
+############
+# Roughly copied here.
+# TODO - audit
 
 # TODO? - update this using the style of findreplace
 # File/Directory-finding helpers.  Saves keystrokes.

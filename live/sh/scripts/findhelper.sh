@@ -1,6 +1,11 @@
 #!/usr/bin/env  sh
 
 
+type=$1
+color=$2
+
+
+
 
 # TODO? - update this using the style of findreplace
 _findhelper_find() {
