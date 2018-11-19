@@ -2,16 +2,6 @@
 
 
 
-fq() {
-  # This will empty the playlist:
-  #/l/OS/bin/deadbeef-0.7.2/deadbeef  '/l/deadbeef_empty_playlist.dbpl'
-  \find  .  -iname "*$1*"  -type f  -print0 |\
-    \xargs  -0  \
-    /l/OS/bin/deadbeef-0.7.2/deadbeef  --queue "{}"  > /dev/null 2> /dev/null &
-}
-
-
-
 fbpanel_restart(){
   \killall  fbpanel  &&  \fbpanel &
   #\sleep  2
@@ -100,6 +90,14 @@ _df_sorted(){
   _df |\
     \tail --lines=+2  |\
     \sort --key=${1}
+}
+
+
+
+fq() {
+  \find  .  -iname "*$1*"  -type f  -print0 |\
+    \xargs  -0  \
+    /l/OS/bin/deadbeef-0.7.2/deadbeef  --queue "{}"  > /dev/null 2> /dev/null &
 }
 
 
