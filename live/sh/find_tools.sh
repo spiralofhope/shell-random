@@ -36,12 +36,12 @@ findhelper() {
 findfile() {
   _findhelper_type='file'
   _findhelper_color='always'
-  findhelper  f  always  $*
+  findhelper  $*
 }
 findfile_color_off() {
   _findhelper_type='file'
   _findhelper_color='never'
-  findhelper  f  never  $*
+  findhelper  $*
 }
 
 
