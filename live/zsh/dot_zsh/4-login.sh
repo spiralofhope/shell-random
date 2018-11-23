@@ -4,7 +4,8 @@
 
 
 
-\setfont  Uni2-VGA16.psf.gz
+# No need if booting is otherwise set up correctly:
+#\setfont  Uni2-VGA16.psf.gz
 
 
 # This mess lets me use the console login screen as a GUI login manager.
