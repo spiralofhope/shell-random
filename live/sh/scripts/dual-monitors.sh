@@ -5,17 +5,6 @@
 
 
 
-# More advanced stuff:
-# https://ubuntuforums.org/showthread.php?t=240150
-
-# Adding another montior is something like..
-#\cvt  1680 1050
-#\xrandr  --addmode VGA-1 1680x1050
-#
-#\xrandr  --addmode VGA-1 1280x1024
-#\xrandr  --output VGA-1  --mode  1280x1024
-
-
 # Fix the resolution of the big screen
 \xrandr  --output DVI-D-1  --mode 1920x1080  --pos 0x0
 
@@ -43,10 +32,26 @@ fi
 
 
 :<<NOTES
+# More advanced stuff:
+# https://ubuntuforums.org/showthread.php?t=240150
+
+# Adding another montior is something like..
+\cvt  1680 1050
+\xrandr  --addmode VGA-1 1680x1050
+
+\xrandr  --addmode VGA-1 1280x1024
+\xrandr  --output VGA-1  --mode  1280x1024
+
+
 # List all displays and modes:
 \xrandr  -q
+  VGA-1    --  little screen
+  HDMI-1
+  DVI-D-1  --  big screen
 
-VGA-1    --  little screen
-HDMI-1
-DVI-D-1  --  big screen
+
+# Learn about your cards:
+lspci -k | grep -A 2 -i VGA
+
+lsmod | grep nouveau
 NOTES
