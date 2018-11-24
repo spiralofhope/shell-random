@@ -9,28 +9,39 @@ findqueue() {
   local  deadbeef=1
 
   if [[ x$deadbeef == x1 ]]; then                                         {   #  Deadbeef
-    # Make sure it's running first.
-    \setsid  '/l/OS/bin/deadbeef-0.7.2/deadbeef'  > /dev/null 2> /dev/null  &
-    # Wait for it to launch
-    until pids=$( \pidof  '/l/OS/bin/deadbeef-0.7.2/deadbeef' ); do
-      \ps  alx | \grep  'deadbeef'
-      \sleep  0.1
-    done
+    ## Make sure it's running first.
+    #\setsid  '/l/OS/bin/deadbeef-0.7.2/deadbeef'  > /dev/null 2> /dev/null  &
+    ## Wait for it to launch
+    #until pids=$( \pidof  '/l/OS/bin/deadbeef-0.7.2/deadbeef' ); do
+      ##\ps | \grep  'deadbeef-gtkui$'
+      #\sleep  0.1
+    #done
+
+    local _queue() {
+      local  extension="$1"
+      shift
+      local  iname="*${@}*${extension}"
+      \echo  "Searching for:  $iname"
+      #\find  .  -type f  -iname "$iname"
+
+      \find  .  -type f  -iname "$iname"  -print0 |\
+          \xargs  \
+          --null  \
+          --no-run-if-empty  \
+          -I file \
+          '/l/OS/bin/deadbeef-0.7.2/deadbeef'  --queue  file  \
+          > /dev/null 2> /dev/null  &
+
+    }
 
     # TODO - As deadbeef empties a playlist once it hits an invalid file, I'm going over its more common file types manually.
-    # TODO - fix this hackishness.
-
-    find  .  -type f -iname "*${@}*mp3" -print0 |\
-      \xargs -0 -r -I file '/l/OS/bin/deadbeef-0.7.2/deadbeef'  --queue  file  > /dev/null 2> /dev/null  &
-
-    find  .  -type f -iname "*${@}*ogg" -print0 |\
-      \xargs -0 -r -I file '/l/OS/bin/deadbeef-0.7.2/deadbeef'  --queue  file  > /dev/null 2> /dev/null  &
-
-    find  .  -type f -iname "*${@}*flac" -print0 |\
-      \xargs -0 -r -I file '/l/OS/bin/deadbeef-0.7.2/deadbeef'  --queue  file  > /dev/null 2> /dev/null  &
-
-    find  .  -type f -iname "*${@}*m4a" -print0 |\
-      \xargs -0 -r -I file '/l/OS/bin/deadbeef-0.7.2/deadbeef'  --queue  file  > /dev/null 2> /dev/null  &
+    _queue  '.mp3'  "$@"
+    _queue  '.ogg'  "$@"
+    _queue  '.flac' "$@"
+    _queue  '.m4a'  "$@"
+    # Oldschool, via plugins
+    _queue  '.sid'  "$@"
+    # FIXME - more extensions
 
   }
   else                                                                    {   #  Audacious
