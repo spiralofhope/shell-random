@@ -86,7 +86,9 @@ DBPL
       \setsid  '/l/OS/bin/deadbeef-0.7.2/deadbeef'  "$tempfile"   > /dev/null 2> /dev/null  &
       # Wait for it to launch
       until pids=$( \pidof  '/l/OS/bin/deadbeef-0.7.2/deadbeef' ) ; do
-        \ps  alx | \grep  'deadbeef' | \grep  -v  'grep deadbeef'
+        #\ps  alx | \grep  'deadbeef' | \grep  -v  'grep deadbeef'
+        # I think this will work.
+        \ps  alx | \grep  -E '.* deadbeef$'
 
         \sleep  0.1
       done
