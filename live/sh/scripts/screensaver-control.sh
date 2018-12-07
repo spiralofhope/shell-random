@@ -6,7 +6,7 @@
 # 2016-11-26, on Devuan
 # 2016-11-28, on Slackware 14.1
 # 2016-03-26, on Lubuntu (version not recorded)
-#             /l/shell-random/git/live/slock-capital-punishment.sh
+#             /l/OS/bin-mine/shell-random/git/live/slock-capital-punishment.sh
 # I've also used
 #   \xscreensaver-demo
 
@@ -65,7 +65,7 @@ case "$1" in
     screensaver_locknow
   ;;
   *)
-    __=`/l/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh  'Enable screen saver?'`
+    __=`/l/OS/bin-mine/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh  'Enable screen saver?'`
     if [ "$__" = 0 ]; then
       screensaver_enable
     else
