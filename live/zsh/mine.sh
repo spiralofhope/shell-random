@@ -45,7 +45,7 @@ be_root_or_die() {
 
 #:<<'}'   #  Re-load all these zsh libraries.
 re_source() {
-  for i in /l/shell-random/git/live/zsh/*.sh
+  for i in /l/OS/bin-mine/shell-random/git/live/zsh/*.sh
     source  $i
 }
 

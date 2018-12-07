@@ -5,7 +5,7 @@
 
 
 
-shell_random='/l/shell-random/git'
+shell_random='/l/OS/bin-mine/shell-random/git'
 export  shell_random
 
 # --follow-name would allow the file to be edited and less will automatically display changes.
