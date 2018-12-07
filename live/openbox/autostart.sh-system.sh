@@ -5,6 +5,10 @@
 # ~/.config/openbox/autostart.sh-system.sh
 
 
+# This lingering parent task isn't necessary.
+# I don't know of a better way to break out of this subshell nonsense.  `setsid` all over the place hasn't been the answer.
+\kill  -9  $( \pgrep --full '/bin/sh /usr/bin/startx' )
+
 
 {  #  Dual screens
   # Fix the resolution of the big screen
@@ -77,13 +81,18 @@
 
 # Force-load .Xdefaults, for rxvt-unicode's colour preferences.
 \xrdb  -load ~/.Xdefaults
+# Fix urxvt:
+\xrdb  -load ~/.Xresources
 
 
 {  #  The panel (bottom menu, bar, tray, or whatever)
-  /l/shell-random/git/live/sh/scripts/panel.sh &
-  # FIXME - 'sleep' is a stupid way to ensure the panel has been launched before other programs.
-  # Maybe do an `until` and `sleep` loop to wait for `which fbpanel`?  Fork that in its own process too?
-  \sleep 0.3
+  \setsid  \fbpanel &
+  # Wait until fbpanel launches.
+  # Fbpanel might not pick up on an application's tray icon unless fbpanel is started first.
+  until pids=$( \pidof  'fbpanel' ) ; do
+    \ps  alx | \grep  -E '.* fbpanel$'
+    \sleep  0.1
+  done
 }
 
 
@@ -122,3 +131,4 @@
 # Kill the summoning process so I don't have a lingering shell..
 # .. doesn't work the way I thought..
 # \kill -9 ` \cat /tmp/zsh-launching-startx.ppid `
+
