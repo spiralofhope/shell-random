@@ -3,9 +3,10 @@
 # Instead of slock, xtrlock (provided by xautolock) works with:
 # xtrlock -b
 
-# 2016-11-26, on Devuan
-# 2016-11-28, on Slackware 14.1
-# 2016-03-26, on Lubuntu (version not recorded)
+# 2018-12-09 on devuan_ascii_2.0.0-rc_i386_dvd-1
+# 2016-11-26 on Devuan
+# 2016-11-28 on Slackware 14.1
+# 2016-03-26 on Lubuntu (version not recorded)
 #             /l/OS/bin-mine/shell-random/git/live/slock-capital-punishment.sh
 # I've also used
 #   \xscreensaver-demo
@@ -21,6 +22,7 @@ screensaver_enable() {
   # 5 minutes to activation.
   # `readlink`  is to get the full path of _this_ script.
   # There are ways around using  `readlink`  if this ends up being a problem for others.  See https://stackoverflow.com/questions/4774054/
+  \killall  xautolock
   \xautolock  -time 5  -locker "`\readlink -f $0` 'locknow'" &
   \echo        enabled
 }
@@ -38,6 +40,7 @@ screensaver_disable() {
   # \setterm  pointerBlank false
   # Exit xautolock, preventing slock from being triggered.
   \xautolock  -exit
+  \killall  xautolock
   \echo       disabled
 }
 
