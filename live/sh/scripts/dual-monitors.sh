@@ -41,7 +41,6 @@ _right_enable() {
 
 
 if [ -z $1 ]; then
-  # TODO - implement a more explicit enable/disable feature..
   __=$( /l/OS/bin-mine/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable second monitor?' )
   if [ $__ = 0 ]; then
     _right_enable
