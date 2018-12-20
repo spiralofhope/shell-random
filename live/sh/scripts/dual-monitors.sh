@@ -30,6 +30,7 @@ _right_enable() {
   # shift down:  1080 - 1050 = 30
   \xrandr  --output "$monitor_middle"  --pos 0x-30  --output "$monitor_right"  --pos 1920x0
 
+  \killall fbpanel
   # middle
   \setsid  \fbpanel  --profile  1920x1080.sh  &
   # right
