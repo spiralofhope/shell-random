@@ -100,13 +100,6 @@
 }
 
 
-{  #  The tray's volume icon.
-  # I add this because fbpanel's volume plugin doesn't feel like working any more.
-  \killall  volumeicon  >  /dev/null  2>  /dev/null
-  \setsid  \volumeicon &
-}
-
-
 {  #  KeepassXC (passwords)
   # https://keepassxc.org/
   # https://github.com/magkopian/keepassxc-debian/releases
