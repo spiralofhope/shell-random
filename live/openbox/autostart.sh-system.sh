@@ -11,10 +11,14 @@
 
 
 {  #  Dual screens
+  # Larger monitor:
+  \xrandr  --output HDMI-0  --left-of DVI-D-0
+
+# Smaller monitor:
   # Fix the resolution of the big screen
-  \xrandr  --output DVI-D-1  --mode 1920x1080  --pos 0x0
+#  \xrandr  --output DVI-D-1  --mode 1920x1080  --pos 0x0
   # Disable the little screen by default
-  \xrandr  --output VGA-1  --off
+#  \xrandr  --output VGA-1  --off
 }
 
 
