@@ -10,18 +10,6 @@
 \kill  -9  $( \pgrep --full '/bin/sh /usr/bin/startx' )
 
 
-{  #  Dual screens
-  # Larger monitor:
-  \xrandr  --output HDMI-0  --left-of DVI-D-0
-
-# Smaller monitor:
-  # Fix the resolution of the big screen
-#  \xrandr  --output DVI-D-1  --mode 1920x1080  --pos 0x0
-  # Disable the little screen by default
-#  \xrandr  --output VGA-1  --off
-}
-
-
 {  # Background colour
   #   check out /usr/share/X11/rgb.txt for the list of names
   #   http://bitsy.sub-atomic.com/~moses/decimalcol.html
@@ -89,15 +77,17 @@
 \xrdb  -load ~/.Xresources
 
 
-{  #  The panel (bottom menu, bar, tray, or whatever)
-  \setsid  \fbpanel &
-  # Wait until fbpanel launches.
-  # Fbpanel might not pick up on an application's tray icon unless fbpanel is started first.
-  until pids=$( \pidof  'fbpanel' ) ; do
-    \ps  alx | \grep  -E '.* fbpanel$'
-    \sleep  0.1
-  done
-}
+
+# This also launches fbpanel
+/l/OS/bin-mine/shell-random/git/live/sh/scripts/dual-monitors.sh  'right enable'
+
+# Wait until fbpanel launches.
+# .. because fbpanel might not pick up on an application's tray icon unless fbpanel is started first.
+until pids=$( \pidof  'fbpanel' ) ; do
+  \ps  alx | \grep  -E '.* fbpanel$'
+  \sleep  0.1
+done
+
 
 
 {  #  KeepassXC (passwords)

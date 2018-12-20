@@ -1,6 +1,8 @@
 #!/usr/bin/env  sh
 # 2018-12-20 on devuan_ascii_2.0.0-rc_i386_dvd-1
-#   This is using the legacy proprietary drivers direct from GeForce.
+  # Using the proprietary GeForce legacy drivers direct from NVIDIA:
+  #   https://www.nvidia.com/Download/driverResults.aspx/137275/en-us
+
 
 
 # monitor_left=''  # n/a
@@ -9,21 +11,47 @@ monitor_middle='HDMI-0'  # 1920x1080
 monitor_right='DVI-D-0'  # 1680x1050
 
 
+_right_disable() {
+  #\xrandr  --output "$monitor_middle"  --auto  --primary  # power on
+  \xrandr  --output "$monitor_right"   --off
+
+  # Kill all instances, including the right
+  \killall fbpanel
+  # Re-launch the middle instance
+  \setsid  \fbpanel  --profile  1920x1080.sh  &
+}
+
+
+_right_enable() {
+  #\xrandr  --output "$monitor_middle"  --auto  --primary  # power on
+  \xrandr  --output "$monitor_right"   --auto             # power on
+  \xrandr  --output "$monitor_right"  --right-of "$monitor_middle"
+
+  # shift down:  1080 - 1050 = 30
+  \xrandr  --output "$monitor_middle"  --pos 0x-30  --output "$monitor_right"  --pos 1920x0
+
+  # middle
+  \setsid  \fbpanel  --profile  1920x1080.sh  &
+  # right
+  \setsid  \fbpanel  --profile  1680x1050.sh  &
+  # e.g.:
+  # \xrandr --output HDMI-0  --mode 1920x1080  --left-of DVI-D-0
+}
+
+
 
 if [ -z $1 ]; then
   # TODO - implement a more explicit enable/disable feature..
   __=$( /l/OS/bin-mine/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable second monitor?' )
   if [ $__ = 0 ]; then
-    \xrandr  --output "$monitor_middle"  --auto  # power on
-    \xrandr  --output "$monitor_right"   --auto  # power on
-    \xrandr  --output "$monitor_right"  --right-of "$monitor_middle"
-
-    # e.g.:
-    # \xrandr --output HDMI-0  --mode 1920x1080  --left-of DVI-D-0
+    _right_enable
   else
-    \xrandr  --output "$monitor_middle"  --auto  # power on
-    \xrandr  --output "$monitor_right"   --off
+    _right_disable
   fi
+elif [ $1 == 'right enable' ]; then
+  _right_enable
+elif [ $1 == 'right disable' ]; then
+  _right_disable
 fi
 
 

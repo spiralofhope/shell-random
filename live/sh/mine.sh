@@ -2,15 +2,6 @@
 
 
 
-fbpanel_restart(){
-  \killall  fbpanel  &&  \fbpanel &
-  #\sleep  2
-  #\fbpanel &
-  #\sleep  2
-  \exit
-}
-
-
 # FIXME: I don't understand why I cannot call this ls()
 dir() {
   \ls \
