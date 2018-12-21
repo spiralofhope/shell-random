@@ -4,7 +4,6 @@
   #   https://www.nvidia.com/Download/driverResults.aspx/137275/en-us
 
 
-
 # monitor_left=''  # n/a
 monitor_middle='HDMI-0'  # 1920x1080
 #monitor_right='VGA-1'
@@ -12,6 +11,8 @@ monitor_right='DVI-D-0'  # 1680x1050
 
 
 _right_disable() {
+  \echo  "disable"
+
   #\xrandr  --output "$monitor_middle"  --auto  --primary  # power on
   \xrandr  --output "$monitor_right"   --off
 
@@ -23,6 +24,8 @@ _right_disable() {
 
 
 _right_enable() {
+  \echo  "enable"
+
   #\xrandr  --output "$monitor_middle"  --auto  --primary  # power on
   \xrandr  --output "$monitor_right"   --auto             # power on
   \xrandr  --output "$monitor_right"  --right-of "$monitor_middle"
@@ -41,16 +44,16 @@ _right_enable() {
 
 
 
-if [ -z $1 ]; then
+if [ -z "$1" ]; then
   __=$( /l/OS/bin-mine/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable second monitor?' )
   if [ $__ = 0 ]; then
     _right_enable
   else
     _right_disable
   fi
-elif [ $1 == 'right enable' ]; then
+elif [ "$1" = 'right enable' ]; then
   _right_enable
-elif [ $1 == 'right disable' ]; then
+elif [ "$1" = 'right disable' ]; then
   _right_disable
 fi
 
