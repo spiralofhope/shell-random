@@ -32,7 +32,7 @@ if    [ "$TTY" = '/dev/tty1' ] ||\
 # 2018-11-10 - Devuan 2.0.0
 # This will open Openbox
 #setsid  \startx
-nohup  setsid  \startx
+nohup  setsid  \startx > /dev/null
 
 # This will open the default stuff (MATE)
 #xinit /etc/X11/xinit/xinitrc -- /usr/bin/X :$( \expr "$tty_to_use" - 1 ) vt"$tty_to_use" -auth $( \tempfile --prefix='serverauth.' )
