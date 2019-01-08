@@ -56,7 +56,7 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
 
 {  #  Paths
 
-  PATH="$( \realpath  ${d_drive}/live/OS/bin )":"$PATH"
+  PATH="$( \realpath  ${c_drive}/live/OS/bin )":"$PATH"
   PATH="$PATH":"$( \realpath  "$zshdir/../" )"
   PATH="$PATH":"$( \realpath  "$zshdir/../sh/scripts" )"
   PATH="$PATH":"$( \realpath  "$zshdir/../bash/scripts" )"
@@ -200,7 +200,7 @@ OLD
 
 # Syntax highlighting magic
 #   https://github.com/zsh-users/zsh-syntax-highlighting
-\source  ${d_drive}/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+\source  ${c_drive}/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
 # Windows Subsystem for Linux, GUI software support.
