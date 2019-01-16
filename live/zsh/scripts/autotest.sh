@@ -168,9 +168,12 @@ HEREDOC
 setup() {
   MYSHELL="$( \basename  $( \readlink  /proc/$$/exe ) )"
   ORIGINAL_PWD="$PWD"
-  if [ -d '/mnt/c' ]; then
+  if   [ -d '/mnt/c' ]; then
     # Windows Subsystem for Linux
-    \source  '/mnt/d/live/shell-random/git/live/zsh/colours.sh'
+    \source  '/mnt/c/live/OS/bin-mine/shell-random/git/live/zsh/colours.sh'
+  elif [ -d '/mnt/d' ]; then
+    # Windows Subsystem for Linux
+    \source  '/mnt/d/live/OS/bin-mine/shell-random/git/live/zsh/colours.sh'
   else
     \source  '/l/OS/bin-mine/shell-random/git/live/zsh/colours.sh'
   fi
