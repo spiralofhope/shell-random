@@ -8,7 +8,7 @@ alias d:='nocorrect  \cd  /mnt/d'
 alias D:='nocorrect  \cd  /mnt/d'
 
 
-local  l='/mnt/d/live'
+local  l='/mnt/c/live'
 
 alias  l="nocorrect  \cd  $l"
 
