@@ -17,5 +17,5 @@ alias  l="nocorrect  \cd  $l"
 \alias  current="\cd  /$l/OS/"
 
 # World of Warcraft
-alias  addons="nocorrect  \cd  /$l/World_of_Warcraft/_dotfiles/Interface/AddOns/"
-alias     wow="nocorrect  \cd  /$l/World_of_Warcraft/"
+alias  addons="nocorrect  \cd  /$l/games/World_of_Warcraft/_dotfiles/Interface/AddOns/"
+alias     wow="nocorrect  \cd  /$l/games/World_of_Warcraft/"
