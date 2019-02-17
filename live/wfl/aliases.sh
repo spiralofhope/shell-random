@@ -2,10 +2,18 @@
 
 
 
-alias c:='nocorrect  \cd  /mnt/c'
-alias C:='nocorrect  \cd  /mnt/c'
-alias d:='nocorrect  \cd  /mnt/d'
-alias D:='nocorrect  \cd  /mnt/d'
+alias  c:='nocorrect  \cd  /mnt/c'
+alias  C:=c:
+alias  d:='nocorrect  \cd  /mnt/d'
+alias  D:=d:
+e:() {
+  if  ! [ -d /mnt/e ]; then
+    \sudo  \mkdir  --parents  /mnt/e
+    \sudo  \mount  -t drvfs  E:  /mnt/e
+  fi
+  \cd  /mnt/e
+}
+alias  E:=e:
 
 
 local  l='/mnt/c/live'
