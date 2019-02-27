@@ -39,8 +39,9 @@ _processor_heat() {
 
 
 
-# FIXME - this prevents ^c from operating as expected.
+# FIXME - This prevents ^c from operating as expected.
 #         trap INT ?
+# TODO - Fhat the fuck, past self?  This can probably be replaced by `read`
 get_char() {
   # Yes, getting a keystroke from the user is this stupid.  Welcome to Linuxville, population 1970.
   \stty  raw
