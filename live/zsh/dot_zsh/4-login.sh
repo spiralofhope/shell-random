@@ -29,14 +29,6 @@ if    [ "$TTY" = '/dev/tty1' ] ||\
 #less /usr/bin/startx
 
 
-# 2018-11-10 - Devuan 2.0.0
-# This will open Openbox
-#setsid  \startx
-nohup  setsid  \startx > /dev/null
-
-# This will open the default stuff (MATE)
-#xinit /etc/X11/xinit/xinitrc -- /usr/bin/X :$( \expr "$tty_to_use" - 1 ) vt"$tty_to_use" -auth $( \tempfile --prefix='serverauth.' )
-
 
 # Earlier successes:
   # Be really specific, so that we can setsid to exit entirely out of zsh or sh:
@@ -48,5 +40,34 @@ nohup  setsid  \startx > /dev/null
 
 # xinit "$client" $clientargs -- "$server" $display $serverargs
 
-\logout
+
+
+
+# 2018-11-10 - Devuan 2.0.0
+#
+# This will open Openbox
+#setsid  \startx
+#\logout
+
+
+# 2018-12-28 - Devuan 2.0.0 before new computer
+#
+# This will open Openbox
+#nohup  setsid  \startx > /dev/null
+#\logout
+
+
+# 2018-12-29 - Devuan 2.0.0 after new computer
+#
+# Launches X but doesn't switch to it:
+#startx
+# Launches X but doesn't switch to it:
+#setsid  \startx
+# Launches X but doesn't switch to it:
+#nohup  setsid  \startx > /dev/null
+# Launches MATE:
+\xinit  /etc/X11/xinit/xinitrc -- /usr/bin/X :$( \expr "$tty_to_use" - 1 ) vt"$tty_to_use"  -auth $( \tempfile  --prefix='serverauth.' )
+logout
+
+
 fi
