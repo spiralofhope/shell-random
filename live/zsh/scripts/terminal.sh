@@ -443,6 +443,8 @@ launch_terminal() {
       -cr darkgreen \
       -sl 10000 \
       -geometry 80x24+0+0 \
+        ` # I dunno.. this either will override the existing font preference or it will fall back to something nicer. ` \
+      -fa x \
       "$@" &
     ;;
 
