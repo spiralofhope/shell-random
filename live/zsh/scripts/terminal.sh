@@ -99,6 +99,7 @@ terminal_setup() {
     /usr/bin/mrxvt
     /usr/bin/mate-terminal
     /usr/bin/lxterminal
+    /usr/bin/qterminal
     /usr/bin/sakura
     /usr/bin/Terminal
     /usr/bin/gnome-terminal
@@ -119,6 +120,7 @@ terminal_setup() {
     /usr/bin/rxvt-unicode
     /usr/bin/mate-terminal
     /usr/bin/lxterminal
+    /usr/bin/qterminal
     /usr/bin/sakura
     /usr/bin/Terminal
     /usr/bin/evilvte
@@ -168,7 +170,7 @@ launch_terminal() {
 
     /usr/bin/aterm)
       # aterm
-      # http://www.afterstep.org/aterm.php
+      #   http://www.afterstep.org/aterm.php
       # Not tabbed
       # TODO - Does this thing actually have *no* dependencies?
       # In maintenance mode since 2007-08-01.
@@ -196,7 +198,7 @@ launch_terminal() {
 
     Eterm)
       # Eterm
-      # http://www.eterm.org/
+      #   http://www.eterm.org/
       # Tabbed
       # TODO - font
       # TODO - geometry
@@ -228,7 +230,7 @@ launch_terminal() {
 
     /usr/bin/lilyterm)
       # TODO - name
-      # http://lilyterm.luna.com.tw/
+      #   http://lilyterm.luna.com.tw/
       # Tabbed
       # TODO - font
       # TODO - geometry
@@ -237,8 +239,8 @@ launch_terminal() {
 
     /usr/bin/lxterminal)
       # LXTerminal
-      # http://wiki.lxde.org/en/LXTerminal
-      # http://sourceforge.net/projects/lxde/files/LXTerminal%20%28terminal%20emulator%29/
+      #   http://wiki.lxde.org/en/LXTerminal
+      #   http://sourceforge.net/projects/lxde/files/LXTerminal%20%28terminal%20emulator%29/
       # Tabbed
       #   New tabs are opened in the same directory as the current tab.
       # I cannot set a font at the command line.
@@ -247,9 +249,22 @@ launch_terminal() {
         "$@" &
     ;;
 
+    /usr/bin/qterminal)
+      # QTerminal
+      #   https://github.com/lxqt/qterminal
+      # Used with the LXQt desktop environment.
+      #   http://lxqt.org/
+      # Tabbed
+      #   New tabs are opened in $HOME
+      # I cannot set a font at the command line.
+      # TODO - profiles are a thing, which I think would allow a geometry and font.
+      \setsid  $i \
+        "$@" &
+    ;;
+
     /usr/bin/mrxvt)
       # TODO - name
-      # http://materm.sourceforge.net/wiki/
+      #   http://materm.sourceforge.net/wiki/
       # (Formerly materm)
       # TODO - my options from the Zaurus
       # Tabbed
@@ -260,7 +275,7 @@ launch_terminal() {
 
     /usr/bin/roxterm)
       # TODO - name
-      # http://roxterm.sourceforge.net/
+      #   http://roxterm.sourceforge.net/
       # Tabbed
       # TODO - font selection
       # TODO - geometry
@@ -279,7 +294,7 @@ launch_terminal() {
       # Under Slackware 14.1, it sets "xterm" as its terminal, but it doesn't act properly and zsh/bindkeys will be unhappy.
 
       # rxvt
-      # http://www.rxvt.org/
+      #   http://www.rxvt.org/
       # rxvt is an alias to rxvt-unicode when rxvt-unicode is installed.
       # I make changes to ~/.Xdefaults for things like fonts.
       \setsid  $i \
@@ -302,7 +317,7 @@ launch_terminal() {
 
     /usr/bin/rxvt-unicode|/usr/bin/urxvt)
       # urxvt / rxvt-unicode
-      # http://software.schmorp.de/pkg/rxvt-unicode
+      #   http://software.schmorp.de/pkg/rxvt-unicode
       # This dumbass terminal does not have a proper fallback if I use an invalid font.
       # See ~/.Xresources
 
@@ -352,7 +367,7 @@ launch_terminal() {
 
     /usr/bin/sakura)
       # Sakura
-      # http://pleyades.net/david/sakura.php
+      #   http://pleyades.net/david/sakura.php
       # Tabbed
       # When using bash as the default shell, the prompt doesn't immediately appear.
       #   zsh works fine.
@@ -364,7 +379,7 @@ launch_terminal() {
 
     /usr/bin/st)
       # Simple Terminal
-      # http://st.suckless.org/
+      #   http://st.suckless.org/
       # Not tabbed.
       # TODO - font
       # TODO - geometry
@@ -395,7 +410,7 @@ launch_terminal() {
 
     /usr/bin/terminator)
       # Terminator
-      # http://software.jessies.org/terminator/
+      #   http://software.jessies.org/terminator/
       # Tabbed
       # Holy shit, their geometry is pixel based, not character based like everyone else in the universe.
       #\terminator --geometry 80x24+0+0 "$@"
@@ -406,7 +421,7 @@ launch_terminal() {
 
     /usr/bin/xterm)
       # TODO - name
-      # http://invisible-island.net/xterm/
+      #   http://invisible-island.net/xterm/
       # Tabbed
       \setsid  $i \
         ` # Output to the window should not have it scroll to the bottom.` \
