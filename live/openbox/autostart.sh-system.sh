@@ -95,14 +95,21 @@ done
   # https://keepassxc.org/
   # https://github.com/magkopian/keepassxc-debian/releases
 
+  #\rm  --force  \
+    #'/l/.KeePassXC--passwords.kdbx.lock'  \
+    #'/mnt/1/windows-data/live/.KeePassXC--passwords.kdbx.lock'
+
+  ## It can be set to load previous databases on startup, but I prefer this..
+  #\setsid  /usr/bin/keepassxc  \
+    #'/l/KeePassXC--passwords.kdbx'  \
+    #'/mnt/1/data-windows/live/KeePassXC--passwords.kdbx' &
+
   \rm  --force  \
-    '/l/.KeePassXC--passwords.kdbx.lock'  \
-    '/mnt/1/windows-data/live/.KeePassXC--passwords.kdbx.lock'
+    '/l/.KeePassXC--passwords.kdbx.lock'
 
   # It can be set to load previous databases on startup, but I prefer this..
   \setsid  /usr/bin/keepassxc  \
-    '/l/KeePassXC--passwords.kdbx'  \
-    '/mnt/1/data-windows/live/KeePassXC--passwords.kdbx' &
+    '/l/KeePassXC--passwords.kdbx'  &
 }
 
 
