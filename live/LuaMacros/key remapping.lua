@@ -27,24 +27,24 @@ lmc_set_handler(
     --  >     is a reference to using the right-side modifier.  e.g.  ^>  is the right-side control key.
 
     --  Note that <numlock> will not trigger a keystroke.
-    if     ( button == 111 ) then  lmc_send_keys( '^>%+#{NUMDIVIDE}',   50 )  --  /
-    elseif ( button == 106 ) then  lmc_send_keys( '^>%+#{NUMMULTIPLY}', 50 )  --  *
-    elseif ( button == 109 ) then  lmc_send_keys( '^>%+#{NUMMINUS}',    50 )  --  -
-    elseif ( button == 103 ) then  lmc_send_keys( '^>%+#{NUM7}',        50 )  --  7
-    elseif ( button == 104 ) then  lmc_send_keys( '^>%+#{NUM8}',        50 )  --  8
-    elseif ( button == 105 ) then  lmc_send_keys( '^>%+#{NUM9}',        50 )  --  9
-    elseif ( button == 107 ) then  lmc_send_keys( '^>%+#{NUMPLUS}',     50 )  --  +
-    elseif ( button == 100 ) then  lmc_send_keys( '^>%+#{NUM4}',        50 )  --  4
-    elseif ( button == 101 ) then  lmc_send_keys( '^>%+#{NUM5}',        50 )  --  5
-    elseif ( button == 102 ) then  lmc_send_keys( '^>%+#{NUM6}',        50 )  --  6
-    elseif ( button ==   8 ) then  lmc_send_keys( '^>%+#{BACKSPACE}',   50 )  --  <backspace>
-    elseif ( button ==  97 ) then  lmc_send_keys( '^>%+#{NUM1}',        50 )  --  1
-    elseif ( button ==  98 ) then  lmc_send_keys( '^>%+#{NUM2}',        50 )  --  2
-    elseif ( button ==  99 ) then  lmc_send_keys( '^>%+#{NUM3}',        50 )  --  3
-    elseif ( button ==  13 ) then  lmc_send_keys( '^>%+#{ENTER}',       50 )  --  <enter>
-    elseif ( button ==  96 ) then  lmc_send_keys( '^>%+#{NUM0}',        50 )  --  0
+    if     ( button == 111 ) then  lmc_send_keys( '^>%#{NUMDIVIDE}',   50 )  --  /
+    elseif ( button == 106 ) then  lmc_send_keys( '^>%#{NUMMULTIPLY}', 50 )  --  *
+    elseif ( button == 109 ) then  lmc_send_keys( '^>%#{NUMMINUS}',    50 )  --  -
+    elseif ( button == 103 ) then  lmc_send_keys( '^>%#{NUM7}',        50 )  --  7
+    elseif ( button == 104 ) then  lmc_send_keys( '^>%#{NUM8}',        50 )  --  8
+    elseif ( button == 105 ) then  lmc_send_keys( '^>%#{NUM9}',        50 )  --  9
+    elseif ( button == 107 ) then  lmc_send_keys( '^>%#{NUMPLUS}',     50 )  --  +
+    elseif ( button == 100 ) then  lmc_send_keys( '^>%#{NUM4}',        50 )  --  4
+    elseif ( button == 101 ) then  lmc_send_keys( '^>%#{NUM5}',        50 )  --  5
+    elseif ( button == 102 ) then  lmc_send_keys( '^>%#{NUM6}',        50 )  --  6
+    elseif ( button ==   8 ) then  lmc_send_keys( '^>%#{BACKSPACE}',   50 )  --  <backspace>
+    elseif ( button ==  97 ) then  lmc_send_keys( '^>%#{NUM1}',        50 )  --  1
+    elseif ( button ==  98 ) then  lmc_send_keys( '^>%#{NUM2}',        50 )  --  2
+    elseif ( button ==  99 ) then  lmc_send_keys( '^>%#{NUM3}',        50 )  --  3
+    elseif ( button ==  13 ) then  lmc_send_keys( '^>%#{ENTER}',       50 )  --  <enter>
+    elseif ( button ==  96 ) then  lmc_send_keys( '^>%#{NUM0}',        50 )  --  0
     -- Note that '000' will just rapidly send '96'
-    elseif ( button == 110 ) then  lmc_send_keys( '^>%+#{NUMDECIMAL}',  50 )  --  .
+    elseif ( button == 110 ) then  lmc_send_keys( '^>%#{NUMDECIMAL}',  50 )  --  .
     end
   end
 )
