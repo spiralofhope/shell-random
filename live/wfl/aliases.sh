@@ -4,16 +4,23 @@
 
 alias  c:='nocorrect  \cd  /mnt/c'
 alias  C:=c:
-alias  d:='nocorrect  \cd  /mnt/d'
-alias  D:=d:
-e:() {
-  if  ! [ -d /mnt/e ]; then
-    \sudo  \mkdir  --parents  /mnt/e
-    \sudo  \mount  -t drvfs  E:  /mnt/e
+#alias  d:='nocorrect  \cd  /mnt/d'
+wfl_mount_drive() {
+  if  ! [ -d /mnt/$1 ]; then
+    \sudo  \mkdir  --parents  /mnt/$1
   fi
-  \cd  /mnt/e
+    \mount | \grep $1
+    if [ $? == 1 ]; then
+      \sudo  \mount  -t drvfs  $1:  /mnt/$1
+    fi
+  \cd  /mnt/$1
 }
-alias  E:=e:
+alias  d:='wfl_mount_drive  d'
+alias  D:d:
+alias  e:='wfl_mount_drive  e'
+alias  E:e:
+alias  f:='wfl_mount_drive  f'
+alias  F:f:
 
 
 local  l='/mnt/c/live'
