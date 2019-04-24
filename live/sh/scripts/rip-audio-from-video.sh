@@ -12,7 +12,7 @@
 # Requirements:
 # avconv (libav)
 #   http://libav.org/
-# Note that  \avconv  is a drop-in replacement for the deprecated  \ffmpeg
+# Note that  \avconv  is a drop-in replacement for the \ffmpeg
 
 
 
@@ -59,6 +59,7 @@ debug() {
 
 
 {  # rip
+#  \ffmpeg \
   \avconv \
     -i "$source_file" \
     -acodec copy \
