@@ -9,9 +9,11 @@ IDEAS
 
 zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
 
-if [ -d '/mnt/c' ]; then  local  c_drive='/mnt/c'; fi   # Windows Subsystem for Linux
+if [ -d '/mnt/a' ]; then  local  c_drive='/mnt/a'; fi   # Windows Subsystem for Linux
+if [ -d '/mnt/c' ]; then  local  c_drive='/mnt/c'; fi   #
 if [ -d '/mnt/d' ]; then  local  d_drive='/mnt/d'; fi   #
-if [ -d '/c' ];     then  local  c_drive='/c';     fi   # Babun
+if [ -d '/a' ];     then  local  c_drive='/a';     fi   # Babun
+if [ -d '/c' ];     then  local  c_drive='/c';     fi   #
 if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
 
 
@@ -56,7 +58,8 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
 
 {  #  Paths
 
-  PATH="$( \realpath  ${c_drive}/live/OS/bin )":"$PATH"
+#  PATH="$( \realpath  ${a_drive}/live/OS/bin )":"$PATH"
+  PATH="$( \realpath  /mnt/a/live/OS/bin )":"$PATH"
   PATH="$PATH":"$( \realpath  "$zshdir/../" )"
   PATH="$PATH":"$( \realpath  "$zshdir/../sh/scripts" )"
   PATH="$PATH":"$( \realpath  "$zshdir/../bash/scripts" )"
@@ -200,7 +203,8 @@ OLD
 
 # Syntax highlighting magic
 #   https://github.com/zsh-users/zsh-syntax-highlighting
-\source  ${c_drive}/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#\source  ${a_drive}/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+\source  /mnt/a/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 
 # Windows Subsystem for Linux, GUI software support.
