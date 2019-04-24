@@ -6,12 +6,13 @@
 -- Learn the list of devices with 
 -- lmc_print_devices()
 
--- Mine is
--- <unassigned>  :  \\?\HID#VID_13BA&PID_0001#8&BE46E30&0&0000#{884B96C3-56EF-11D1-BC8C-00A0C91405DD} [-1927936621] :  keyboard
+-- Every time Windows goes through the "setting up" process it will generate a new string for that device.  For example:
+-- <unassigned>  :  \\?\HID#VID_13BA&PID_0001#8&5C15E41&0&0000#{884B96C3-56EF-11D1-BC8C-00A0C91405DD} [772079993] :  keyboard
 
 -- IDEA - Just cut the appropriate stuff out of the above string.
+--        The problem is that  lmc_print_devices()  outputs content with escaped stuff, which doesn't neatly fit into a string if simply copy-pasted.  This doesn't seem worth attempting.
 
-usb_device_code='BE46E30'
+usb_device_code='5C15E41'
 usb_device_name='usb_numpad'
 lmc_device_set_name( usb_device_name, usb_device_code )
 

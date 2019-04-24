@@ -15,8 +15,10 @@ wfl_mount_drive() {
     fi
   \cd  /mnt/$1
 }
-alias  d:='wfl_mount_drive  d'
-alias  D:d:
+alias  a:='wfl_mount_drive  d'
+alias  A:a:
+alias  b:='wfl_mount_drive  d'
+alias  B:b:
 alias  e:='wfl_mount_drive  e'
 alias  E:e:
 alias  f:='wfl_mount_drive  f'
