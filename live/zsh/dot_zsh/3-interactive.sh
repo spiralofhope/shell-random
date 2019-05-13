@@ -70,6 +70,10 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
     PATH="$PATH":'/usr/sbin'
   fi
 
+  if [ -d '/cygdrive' ] || [ -d '/mnt/c' ] ; then
+    PATH="$PATH":"$( \realpath  "$zshdir/../wfl/scripts" )"
+  fi
+
 }
 
 
