@@ -41,7 +41,7 @@ debug() {
 
   {  # Learn the codec being used:
     audio_codec="$( \
-      \avconv  -i "$source_file"  2>&1 |\
+      \ffmpeg  -i "$source_file"  2>&1 |\
       \sed  --quiet  's/.* Audio: \([^,]*\).*/\1/p' \
     )"
 
@@ -59,8 +59,7 @@ debug() {
 
 
 {  # rip
-#  \ffmpeg \
-  \avconv \
+  \ffmpeg \
     -i "$source_file" \
     -acodec copy \
     "$target_file" \
