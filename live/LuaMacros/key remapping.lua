@@ -23,13 +23,14 @@
 -- 1) Edit the below line and name your device anything you want.
 usb_device_name_1='hfsecurity Triple Foot Switch'
 -- 2) Learn the unique identifier for your device.
--- 3) Unplug your device
--- 4) Run this script:  At the top of this window is a triangle pointing to the right.
+-- 3) Unplug your device.
+-- 4) Unplug any non-essential USB devices.
+-- 5) Run this script:  At the top of this window is a triangle pointing to the right.
 --    Continue to step 5.
       lmc_print_devices()
--- 5) Press any key
--- 6) Plug in your device
--- 7) Unplug any non-essential USB devices.
+-- 6) Press any key
+--    (Do not click the "Cancel" button)
+-- 7) Plug in your device
 -- 8) Run this script:  At the top of this window is a triangle pointing to the right.
 -- 9) Press any key
 --    (Do not click the "Cancel" button)
