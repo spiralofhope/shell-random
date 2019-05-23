@@ -8,7 +8,7 @@ lmc_assign_keyboard( 'MACROS' )
 -- define callback for whole device
 lmc_set_handler(
   'MACROS',
-  function( button, direction)
+  function( button, direction )
     if ( direction == 1 ) then return end  -- ignore down
     if     ( button == string.byte( 'C' ) ) then  lmc_spawn( 'calc' )
     elseif ( button == string.byte( 'N' ) ) then  lmc_spawn( 'notepad', 'C:\\test.txt' )
