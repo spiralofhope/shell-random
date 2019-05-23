@@ -1,15 +1,12 @@
--- For LuaMacros
-
--- Read  `List-of-Keys.md`  for the modifiers etc.
-
-
--- IDEA - Just cut the appropriate stuff out of the above string.
---        The problem is that  lmc_print_devices()  outputs content with escaped stuff, which doesn't neatly fit into a string if simply copy-pasted.  This doesn't seem worth attempting.
-
+-- Take any extra USB device (keyboard, keypad, etc) and re-assign its keys.
+-- This uses LuaMacros:
+--   website:      http://www.hidmacros.eu/
+--   forum:        http://www.hidmacros.eu/forum/
+--   download:     http://www.hidmacros.eu/luamacros.zip
+--   source code:  https://github.com/me2d13/luamacros/
 
 
--- (A USB numpad)
---
+
 -- 1) Edit the below line and name your device anything you want.
 usb_device_name_1='hfsecurity Triple Foot Switch'
 -- 2) Learn the unique identifier for your device.
@@ -149,3 +146,7 @@ lmc_minimize()
 -- lmc_say( 'Launched' )
 -- lmc_spawn( 'calc' )
 
+
+
+-- IDEA - Just cut the appropriate stuff out ot lmc_print_devices()
+--        The problem is that it outputs content with escaped stuff, which doesn't neatly fit into a string if simply copy-pasted.  This doesn't seem worth attempting.
