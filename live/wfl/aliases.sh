@@ -36,3 +36,12 @@ alias  l="nocorrect  \cd  $l"
 # World of Warcraft
 alias  addons="nocorrect  \cd  /$l/games/World_of_Warcraft/_dotfiles/Interface/AddOns/"
 alias     wow="nocorrect  \cd  /$l/games/World_of_Warcraft/"
+
+
+screen() {
+  if ! [ -d /run/screen ]; then
+    \sudo  \mkdir      /run/screen
+    \sudo  \chmod 777  /run/screen
+  fi
+  /usr/bin/screen  $@
+}
