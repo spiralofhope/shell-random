@@ -41,17 +41,13 @@ usb_device_name_1='hfsecurity Triple Foot Switch'
 --     Edit the following line:
        usb_device_code_1='A377D60'
 --     (Note:  Every time Windows goes through the "setting up" process for this device, you will need to determine your usb_device_code again.)
-
-
-
+--     Continue to step 12.
+--
+--
 print( '-------------' )
 lmc_print_devices()
 print( '-------------' )
-
-
-
--- The following was tested for the:
---   HFSECURITY Triple Foot Switch Pedal Usb Gaming Keyboard Wired Non Slip Metal Momentary Electric Power Foot Switch
+-- The following was tested for the HFSECURITY Triple Foot Switch Pedal Usb Gaming Keyboard Wired Non Slip Metal Momentary Electric Power Foot Switch
 --   https://www.aliexpress.com/item/32843799982.html
 --
 lmc_device_set_name( usb_device_name_1, usb_device_code_1 )
@@ -63,7 +59,7 @@ lmc_set_handler(     usb_device_name_1, function( button, direction )
   --   For example, the "HFSECURITY Triple Foot Switch Pedal" has the software "Usbhid Keybhoard 3.0 Designed by JC" which I would use instead of LuaMacros.
   if ( direction == 0 ) then return end
   is_button_code_assigned = true
-
+--
 -- 12) Create a list.
 --     (This gets a little complicated, but be patient.)
 --     For each key on your device:
