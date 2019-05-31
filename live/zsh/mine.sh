@@ -249,15 +249,17 @@ ytdl() {
 #    --get-filename  \
 
   \youtube-dl  \
+    --audio-format  best  \
     --write-description  \
     --write-info-json  \
     --write-annotations  \
-    --write-all-thumbnails  \
-    --all-subs  \
-    --embed-subs \
+    --write-all-thumbnails  --embed-thumbnail  \
+    --all-subs  --embed-subs  \
+    --add-metadata  \
     --no-call-home  \
     ` # Note that a base directory  ./  does not work (for subtitles) `  \
-    --output '%(uploader)s/%(upload_date)s - %(title)s/%(title)s'  \
+    --output '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
+    -f best  \
     "$@"
 
   # Trailing periods are invalid on Windows; remove them:
