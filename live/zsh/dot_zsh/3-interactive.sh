@@ -9,6 +9,35 @@ IDEAS
 
 zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
 
+
+
+#  Distinguish between:
+#    Cygwin
+#    Linux
+#    Windows Subsystem for Linux
+case "$( \uname  --kernel-name )" in
+  # Cygwin / Babun
+  CYGWIN*)
+    this_kernel_release='Cygwin'
+  ;;
+  # This might be okay for git-bash
+  'Linux')
+    case "$( \uname  --kernel-release )" in
+      *-Microsoft)
+        this_kernel_release='Windows Subsystem for Linux'
+      ;;
+      *)
+        this_kernel_release='Linux'
+      ;;
+    esac
+  ;;
+  *)
+    \echo  " * No scripting has been made for:  $( \uname  --kernel-name )"
+  ;;
+esac
+
+
+
 if [ -d '/mnt/a' ]; then  local  c_drive='/mnt/a'; fi   # Windows Subsystem for Linux
 if [ -d '/mnt/c' ]; then  local  c_drive='/mnt/c'; fi   #
 if [ -d '/mnt/d' ]; then  local  d_drive='/mnt/d'; fi   #
@@ -40,47 +69,18 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
   sourceallthat  "$zshdir/"
 
 
-  {   #  Determine what sort of machine we're on
-    #  -s
-    unameOut="$( \uname  --kernel-name )"
-    case "${unameOut}" in
-      CYGWIN*)    machine=Cygwin;;
-      Darwin*)    machine=Mac;;
-      Linux*)     machine=Linux;;
-      MINGW*)     machine=MinGw;;
-      *)          machine="UNKNOWN:${unameOut}"
-    esac
-    #echo ${machine}
+  case "$this_kernel_release" in
+    'Cygwin')
+      sourceallthat  "$zshdir/../babun/"
+    ;;
+    'Windows Subsystem for Linux')
+      # I don't understand why doing this will change the directory I'm dropped into:
+      #sourceallthat  "$zshdir/../wfl/"
+      source  "$zshdir/../wfl/lib.sh"
+      source  "$zshdir/../wfl/aliases.sh"
+    ;;
+  esac
 
-    case "${unameOut}" in
-      # Cygwin / Babun
-      CYGWIN*)
-        sourceallthat  "$zshdir/../babun/"
-      ;;
-      # This might be okay for git-bash
-      'Linux')
-        unameOut_2="$( \uname  --kernel-release )"
-        case "${unameOut_2}" in
-          *-Microsoft)
-            # Windows Subsystem for Linux
-            # I don't understand why doing this will change the directory I'm dropped into.
-            #sourceallthat  "$zshdir/../wfl/"
-            source  "$zshdir/../wfl/lib.sh"
-            source  "$zshdir/../wfl/aliases.sh"
-          ;;
-          *)
-            # True Linux
-            \echo  " * Nothing extra needs to be done."
-          ;;
-        esac
-      ;;
-      MINGW*)
-        \echo  " * This corner case is not handled."
-      ;;
-      *)
-      ;;
-    esac
-  }
 
   \unset -f sourceallthat
 
