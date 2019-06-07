@@ -39,16 +39,48 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
   sourceallthat  "$zshdir/../sh/"
   sourceallthat  "$zshdir/"
 
-  if [ -d '/cygdrive' ]; then
-    # Cygwin / Babun
-    sourceallthat  "$zshdir/../babun/"
-  elif [ -d '/mnt/c' ]; then
-    # Windows Subsystem for Linux
-    # I don't understand why doing this will change the directory I'm dropped into.
-    #sourceallthat  "$zshdir/../wfl/"
-    source  "$zshdir/../wfl/lib.sh"
-    source  "$zshdir/../wfl/aliases.sh"
-  fi
+
+  {   #  Determine what sort of machine we're on
+    #  -s
+    unameOut="$( \uname  --kernel-name )"
+    case "${unameOut}" in
+      CYGWIN*)    machine=Cygwin;;
+      Darwin*)    machine=Mac;;
+      Linux*)     machine=Linux;;
+      MINGW*)     machine=MinGw;;
+      *)          machine="UNKNOWN:${unameOut}"
+    esac
+    #echo ${machine}
+
+    case "${unameOut}" in
+      # Cygwin / Babun
+      CYGWIN*)
+        sourceallthat  "$zshdir/../babun/"
+      ;;
+      # This might be okay for git-bash
+      'Linux')
+        unameOut_2="$( \uname  --kernel-release )"
+        case "${unameOut_2}" in
+          *-Microsoft)
+            # Windows Subsystem for Linux
+            # I don't understand why doing this will change the directory I'm dropped into.
+            #sourceallthat  "$zshdir/../wfl/"
+            source  "$zshdir/../wfl/lib.sh"
+            source  "$zshdir/../wfl/aliases.sh"
+          ;;
+          *)
+            # True Linux
+            \echo  " * Nothing extra needs to be done."
+          ;;
+        esac
+      ;;
+      MINGW*)
+        \echo  " * This corner case is not handled."
+      ;;
+      *)
+      ;;
+    esac
+  }
 
   \unset -f sourceallthat
 
