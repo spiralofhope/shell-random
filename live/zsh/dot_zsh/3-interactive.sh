@@ -7,7 +7,12 @@
 IDEAS
 
 
-zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
+
+if [ $( \whoami ) = 'root' ]; then
+  zshdir="$( \dirname $( \dirname $( \realpath  /home/user/.zshrc ) ) )"
+else
+  zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
+fi
 
 
 
@@ -61,6 +66,7 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
       fi
       \source  "$i"
     done
+    # Note that it's intentional that this will generate an error if  suu()  is called by root, when root is currently sitting in an directory that denies permission to the user.
     \popd > /dev/null
   }
 
@@ -102,7 +108,8 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
     PATH="$PATH":'/usr/sbin'
   fi
 
-  if [ -d '/cygdrive' ] || [ -d '/mnt/c' ] ; then
+  if [ "$this_kernel_release" = 'Cygwin'                      ] ||  \
+     [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]; then
     PATH="$PATH":"$( \realpath  "$zshdir/../wfl/scripts" )"
   fi
 
@@ -193,22 +200,45 @@ zle_highlight=(region:bg=red special:underline)
 {  #  Update the title of a terminal
   chpwd() {
     [[ -t 1 ]] || return
-    case $TERM in
-      sun-cmd)
-        print -Pn "\e]l%~\e\\"
-      ;;
-      *xterm*|rxvt(-unicode)|(dt|k|E)term|screen)
-        print -Pn "\e]2;%~\a"
-      ;;
-    esac
+    print -Pn "\e]2;%~\a"
+
+    # I don't think I've ever needed this complexity:
+    #case $TERM in
+      #sun-cmd)
+        #print -Pn "\e]l%~\e\\"
+      #;;
+      #*xterm*|rxvt(-unicode)|(dt|k|E)term|screen)
+        #print -Pn "\e]2;%~\a"
+      #;;
+    #esac
+
   }
   chpwd
 }
 
 
 
+# Syntax highlighting magic
+#   https://github.com/zsh-users/zsh-syntax-highlighting
+#\source  ${a_drive}/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+#FIXME
+\source  /mnt/a/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+
+# GUI software support.
+if [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]; then
+  \export  DISPLAY=localhost:0.0
+fi
+
+
+
 # I so frequently check for disk space that I ought to do it automatically.
+# Note this is not  \dd  because I prefer my customized  dd()
 df
+
+
+
+# ---------------------------------------------------------------------
 
 
 
@@ -235,16 +265,3 @@ else
   echo tty
 fi
 OLD
-
-
-# Syntax highlighting magic
-#   https://github.com/zsh-users/zsh-syntax-highlighting
-#\source  ${a_drive}/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-\source  /mnt/a/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-
-# Windows Subsystem for Linux, GUI software support.
-if [ -d '/mnt/c' ]; then
-  \export  DISPLAY=localhost:0.0
-fi
-
