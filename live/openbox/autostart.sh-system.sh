@@ -84,16 +84,20 @@
 
 # Wait until fbpanel launches.
 # .. because fbpanel might not pick up on an application's tray icon unless fbpanel is started first.
-until pids=$( \pidof  'fbpanel' ) ; do
-  \ps  alx | \grep  -E '.* fbpanel$'
-  \sleep  0.1
-done
+#until pids=$( \pidof  'fbpanel' ) ; do
+  #\ps  alx | \grep  -E '.* fbpanel$'
+  #\sleep  0.1
+#done
 
 
 
 {  #  KeepassXC (passwords)
   # https://keepassxc.org/
   # https://github.com/magkopian/keepassxc-debian/releases
+
+
+keepassxc&
+
 
   #\rm  --force  \
     #'/l/.KeePassXC--passwords.kdbx.lock'  \
@@ -104,12 +108,12 @@ done
     #'/l/KeePassXC--passwords.kdbx'  \
     #'/mnt/1/data-windows/live/KeePassXC--passwords.kdbx' &
 
-  \rm  --force  \
-    '/l/.KeePassXC--passwords.kdbx.lock'
+#  \rm  --force  \
+#    '/l/.KeePassXC--passwords.kdbx.lock'
 
   # It can be set to load previous databases on startup, but I prefer this..
-  \setsid  /usr/bin/keepassxc  \
-    '/l/KeePassXC--passwords.kdbx'  &
+#  \setsid  /usr/bin/keepassxc  \
+#    '/l/KeePassXC--passwords.kdbx'  &
 }
 
 
