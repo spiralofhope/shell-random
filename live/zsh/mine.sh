@@ -247,6 +247,9 @@ rm() {
 ytdl() {
   # To test the filename:
 #    --get-filename  \
+    #` # I suspect this is important for an NTFS filesystem. `  \
+    #--restrict-filenames  \
+#
 
   \youtube-dl  \
     --audio-format  best  \
@@ -257,8 +260,6 @@ ytdl() {
     --all-subs  --embed-subs  \
     --add-metadata  \
     --no-call-home  \
-    ` # I suspect this is important for an NTFS filesystem. `  \
-    --restrict-filenames  \
     ` # Note that a base directory  ./  does not work (for subtitles) `  \
     --output '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
     -f best  \
