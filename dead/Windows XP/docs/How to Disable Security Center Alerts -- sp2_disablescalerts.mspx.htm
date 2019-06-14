@@ -1,0 +1,165 @@
+
+<html dir="LTR"><head><META http-equiv="Content-Type" content="text/html; charset=iso-8859-1"><META name="MS.LOCALE" content="en-us"><title>How to Disable Security Center Alerts</title><meta name="description" content="How to disable Alerts in the Windows Security Center in Windows XP SP2."><meta name="search.mnp.template" content="MNP2.GenericArticle"><link type="text/css" rel="Stylesheet" href="/windowsxp/mnp_utility.mspx/templatecss?template=%2fbusiness%2ftemplates%2fMNP2.GenericArticle&amp;shell=%2fwindowsxp%2fconfiguration_using.xml&amp;locale=en-us"><style>
+          #contentTableDIV{padding: 0px 15px 0px 20px}
+        </style><meta name="title" content="How to Disable Security Center Alerts" xmlns="http://www.microsoft.com/MSCOM/MNP2/Schemas"><meta name="pageTitle" content="How to Disable Security Center Alerts" xmlns="http://www.microsoft.com/MSCOM/MNP2/Schemas"><meta name="description" content="How to disable Alerts in the Windows Security Center in Windows XP SP2." xmlns="http://www.microsoft.com/MSCOM/MNP2/Schemas"><meta name="keywords" content="" xmlns="http://www.microsoft.com/MSCOM/MNP2/Schemas"><meta name="owner" content="Microsoft Corporation" xmlns="http://www.microsoft.com/MSCOM/MNP2/Schemas"><meta name="author" content="Microsoft" xmlns="http://www.microsoft.com/MSCOM/MNP2/Schemas"><meta name="publishedDate" content="2004-08-16" xmlns="http://www.microsoft.com/MSCOM/MNP2/Schemas">
+<link type='text/css' rel='Stylesheet' href='/library/mnp/2/aspx/css.aspx?locale=en-us&amp;name=Menu&amp;static=Page' />
+<script type='text/javascript' language='Javascript' src='/windowsxp/mnp_utility.mspx/menujs?mnpshell=%2fwindowsxp%2fconfiguration_using.xml&amp;clicktrax=False'></script>
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"><link rel='stylesheet' type='text/css' href='/library/toolbar/3.0/css.aspx?c=/windowsxp/configuration_using.xml'/><script language='JavaScript'>var doImage=doImage;var TType=TType;var defaultSearchLable;
+function mhHover(tbl,idx,cls){var t,d;if(document.getElementById)t=document.getElementById(tbl);else t=document.all(tbl);if(t==null)return;if(t.getElementsByTagName)d=t.getElementsByTagName("TD");else d=t.all.tags("TD");if(d==null)return;if(d.length<=idx)return;d[idx].className=cls;}
+function footerjs(doc){if(doImage==null){var tt=TType==null?"PV":TType;doc.write('<layer visibility="hide"><div style="display:none"><img src="http://c.microsoft.com/trans_pixel.asp?source=www&TYPE=' + tt + '&p=windowsxp_using_security_internet_sp2&URI=%2fwindowsxp%2fusing%2fsecurity%2finternet%2fsp2_disablescalerts.mspx&GUID=1F4FC18C-F71E-47FB-8FC9-612F8EE59C61&r=http%3a%2f%2fwww.google.ca%2fsearch%3fq%3dwindows%2bxp%2bremove%2bsecurity%2balerts%26ie%3dutf-8%26oe%3dutf-8%26aq%3dt%26rls%3dorg.mozilla%3aen-US%3aofficial%26client%3dfirefox-a&lc=en-us" width=0 height=0 hspace=0 vspace=0 border=0 alt=""/></div></layer>');}}
+var rsltextbox = 'msviLSBtbox'; var wtflag = false;
+function stripSymbols () { var objrslttextbox = getObjectById(rsltextbox); if (objrslttextbox) { var form = objrslttextbox.form; var s = objrslttextbox.value; filteredValues = "<>!@^*"; var i; var returnString = ""; for (i = 0; i < s.length; i++) { var c = s.charAt(i); if (filteredValues.indexOf(c) == -1) { returnString += c; } else { returnString += " "; } } objrslttextbox.value = returnString; } if(!wtflag) { trackLSB("Site"); } } 
+function addSubmitEvent() {
+ msviLSBtbox=document.getElementById("msviLSBtbox")
+ if(msviLSBtbox)
+ {
+    defaultSearchLable = msviLSBtbox.value;
+ }
+ var objrslttextbox = getObjectById(rsltextbox); 
+ if (objrslttextbox) 
+ { 
+    var form = objrslttextbox.form;
+     if (window.attachEvent) 
+     { 
+         form.attachEvent("onsubmit",stripSymbols); 
+     }
+     else 
+     { 
+        form.addEventListener("submit",stripSymbols,false);
+     }
+  } 
+} 
+function getObjectById(elid) 
+{ 
+    if (document.getElementById) 
+    { 
+        return document.getElementById(elid); 
+    } 
+    else if (document.all) 
+    { 
+        return document.all[elid]; 
+    } 
+    else if (document.layers) 
+    { 
+        return document.layers[elid];
+    } 
+} 
+if (window.attachEvent) { window.attachEvent("onload",addSubmitEvent); } else { window.addEventListener("load",addSubmitEvent,false); } 
+var FromWeb = false;
+function trackLSB(type)
+{
+
+  clearDefaultSearchLable();
+ 
+  if(type=="Web")
+    FromWeb = true;
+  var tmp = document.getElementById("msviLSBtbox");
+  var errorInfo = document.getElementById("errorInfo");
+  if(type=="Site" && tmp.value.length==0 && !FromWeb)
+  {
+       tmp.value=errorInfo.value;
+       tmp.style.color='#bc2b2b';
+       ajustWidth();
+  }
+  if (typeof dcsMultiTrack == "function")
+  { 
+      var qu = document.getElementById("msviLSBtbox").value;
+      var dcsuri = "results.aspx";
+      var dcssip, ti;
+      if (type == "Site")
+      {
+        dcssip = "search.microsoft.com";
+        ti = "SearchButton: OnSite"; 
+      }
+      else if (type == "Web")
+      {
+         dcssip = "bing.com";
+         ti = "SearchButton: Web";
+      }
+      dcsMultiTrack("DCS.dcsuri", dcsuri, "DCS.dcssip", dcssip, "WT.ti", ti, "WT.dl", "2", "WT.z_srch_t", qu, "DCS.dcsqry", "", "WT.ad", "", "WT.mc_id", ""); 
+      wtflag = true; DCS.dcsuri=DCS.dcssip=DCS.dcsqry=WT.ti=WT.z_srch_t="";
+  }
+}
+
+var isInputqu = false;
+var searchBoxWidthWithKievLogo = 0;
+var searchBoxWidthWithoutKievLogo = 0;
+function clearDefaultSearchLable()
+{var searchBox = document.getElementById("msviLSBtbox");
+if(!isInputqu){searchBox.value = "";}}
+var kievImageWidth = 47;
+var isAdTboxWidth = false;
+var isInitailed = false;
+function ajustWidth()
+{
+    var searchBoxInput = document.getElementById("msviLSBtbox");
+    var kievImage = document.getElementById("msviLSBlogo");
+    if(!isInitailed)
+    {
+         searchBoxWidthWithKievLogo = searchBoxInput.style.width;
+         searchBoxWidthWithoutKievLogo = searchBoxInput.clientWidth + (kievImageWidth - 1);
+         isInitailed = true;
+    }
+    var width = kievImage.clientWidth-1;
+    kievImage.style.width = '1px';
+    var tBoxAloneWidth = searchBoxInput.clientWidth + width;
+    searchBoxInput.style.width = tBoxAloneWidth;
+    isAdTboxWidth = true;
+    
+      
+    
+}
+
+function searchBoxFocused(defaultSearchLabel)
+{
+    var searchBoxInput = document.getElementById("msviLSBtbox");
+    var kievImage = document.getElementById("msviLSBlogo");
+    if(searchBoxInput.value == defaultSearchLabel || searchBoxInput.value==document.getElementById("errorInfo").value)
+    {
+        searchBoxInput.value = '';
+        searchBoxInput.style.fontStyle = '';
+        searchBoxInput.style.color='#000000';
+        kievImage.style.width = '1px';
+        if(searchBoxWidthWithKievLogo == 0 && !isAdTboxWidth &&!isInitailed)
+        {
+            searchBoxWidthWithKievLogo = searchBoxInput.style.width;
+            searchBoxWidthWithoutKievLogo = searchBoxInput.clientWidth + (kievImageWidth - 1);
+            isInitailed = true;
+        }
+        searchBoxInput.style.width = searchBoxWidthWithoutKievLogo;
+    }
+}
+
+function searchBoxBlur(defaultSearchLabel)
+{
+    var searchBoxInput = document.getElementById("msviLSBtbox");
+    var kievImage = document.getElementById("msviLSBlogo");
+    if(searchBoxInput.value.replace(/(^\s*)|(\s*$)/g, '')=='') 
+    {
+        searchBoxInput.value=defaultSearchLabel;searchBoxInput.style.fontStyle ='Italic';
+        searchBoxInput.style.color = "#a1a1a1";
+        kievImage.style.width = kievImageWidth;
+        
+        searchBoxInput.style.width = searchBoxWidthWithKievLogo;
+        isInputqu = false;
+     }
+     else
+     {
+        isInputqu = true;
+     }
+}
+
+function Test()
+{
+    var searchBox = document.getElementById(rsltextbox);
+    var go = document.getElementById("errorInfo");
+    if(searchBox.value==go.value)
+        return false;
+    return true; 
+}</script><meta name="WT.sp" content="_windowsxp_using_" /><script language='JavaScript' src='http://js.microsoft.com/library/svy/broker.js'></script><script language="Javascript">
+					if (self.name == "MNPMainFrame") top.location.href = self.location.href;
+				</script><META name="save" content="favorite"></head><body bgcolor="#FFFFFF" topmargin="0" leftmargin="0" marginwidth="0" marginheight="0"><!--NOINDEX_START--><a name="top"></a><div id="msviMasthead"><table cellpadding="0" cellspacing="0" width="100%" border="0"><tr><td width="100%"><table cellpadding="0" cellspacing="0" width="100%" height="22" border="0"><tr><td id="msviMarketing" bgcolor="#FFFFFF" nowrap=""><a href="http://go.microsoft.com/fwlink/?LinkID=92799">Click Here to Install Silverlight</a></td><td width="100%" bgcolor="#6487DB"><img src="/library/toolbar/3.0/gradient.aspx?a=FFFFFF&amp;b=6487DB&amp;w=250&amp;h=22&amp;d=ltr&amp;c=neLYoN4v%2bKoJvcOcpwHUWuYiTQg%3d" width="250" height="22" alt="*" title=""></td></tr></table></td><td id="msviGlobalToolbar" bgcolor="#6487DB" height="22" nowrap="" dir="ltr" align="left"><table cellpadding="0" cellspacing="0" border="0"><tr><td id="msviRegionId" nowrap>United States</td><td id="msviRegionSelector" nowrap><a href="http://www.microsoft.com/worldwide">Change</a></td><td class="gtsep">|</td><td id="msviSiteMap" nowrap><a href="http://www.microsoft.com/en/us/sitemap.aspx">All Microsoft Sites</a></td><td class="msviPPSpace"></td></tr></table></td></tr></table><table cellpadding="0" cellspacing="0" width="100%" border="0"><tr valign="top"><td><table cellpadding="0" cellspacing="0" width="100%" height="42" border="0" style="height:expression(parentElement.parentElement.parentElement.parentElement.offsetHeight)"><tr valign="top"><td id="msviBrandBanner" bgcolor="FFFFFF"><a href="http://www.microsoft.com/windowsxp"><img src="/library/toolbar/3.0/images/banners/windowsXP_masthead_ltr.gif" width="225" height="42" alt="Windows XP" title="" border="0"></a></td></tr></table></td><td id="msviGlobalSearch" width="100%" bgcolor="#B6C5EE"><div class="msviLSBsform"><form id="msviLSBForm" action="/library/toolbar/3.0/search.aspx" target="_top"><div id="msKiev"><input type="hidden" name="View" value="en-us"><input type="hidden" name="charset" value="iso-8859-1"><input id="msviLSBtbox" style="font-style:italic; color:#a1a1a1" onkeydown="if(event.keyCode == 13)searchBoxBlur('Search Microsoft.com')" onfocus="searchBoxFocused('Search Microsoft.com')" onblur="searchBoxBlur('Search Microsoft.com')" type="text" name="qu" value="Search Microsoft.com" autocomplete="off"><span id="msviLSBlogo" class="msviLSBlogo" title="Results by Bing"></span><input id="msviLSBssearch" title="Search Microsoft.com" type="image" name="site" src="/library/toolbar/3.0/images/LSB/Search_icon.gif" align="absmiddle" onclick="trackLSB('Site')"></div><input id="msviLSBWeb" title="Search the Web" name="sweb" type="submit" value="" onclick="trackLSB('Web')" align="absmiddle"></form></div></td></tr></table><div id="msviLocalToolbar"><table cellpadding="0" cellspacing="0" width="100%" height="19" border="0"><tr><td nowrap id="msviHomePageLink"><a href="/windowsxp/default.mspx">Windows XP Home</a></td><td><span class="ltsep">|</span></td><td class="lt0" nowrap onmouseover="mhHover('msviLocalToolbar', 2, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 2, 'lt0')"><a href="/athome/security/default.mspx">Security At Home</a></td><td><span class="ltsep">|</span></td><td class="lt0" nowrap onmouseover="mhHover('msviLocalToolbar', 4, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 4, 'lt0')"><a href="/athome/default.mspx">Microsoft At Home</a></td><td><span class="ltsep">|</span></td><td class="lt0" nowrap onmouseover="mhHover('msviLocalToolbar', 6, 'lt1')" onmouseout="mhHover('msviLocalToolbar', 6, 'lt0')"><a href="/atwork/default.mspx">Microsoft At Work</a></td><td width="100%"></td></tr></table></div></div><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr valign="top"><td height="100%" style="overflow-x: hidden" width="181"><div id="mnpMenuTop" class="mnpMenuTop" style="overflow-x: hidden; width: 181px" url="/windowsxp/using/security/internet/sp2_disablescalerts.mspx" dir="LTR" parent="/windowsxp/using/security/default.mspx"><div class="mnpInherit"><div class="mnpMenuLabel">Windows XP Editions</div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windowsxp/home/default.mspx">Home Edition</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windowsxp/pro/default.mspx">Professional</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windowsxp/mediacenter/default.mspx">Media Center Edition</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windowsxp/tabletpc/default.mspx">Tablet PC Edition</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windowsxp/64bit/default.mspx">Professional x64 Edition</a></div><div class="mnpMenuBorder" style="width: 180px"></div><div class="mnpMenuLabel">Information For</div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windowsxp/homeusers/defaultm.mspx">Home Users</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windowsxp/students/default.mspx">Students</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windowsxp/business/default.mspx">Small Businesses</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/technet/prodtechnol/winxppro/default.mspx">IT Professionals</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="http://msdn2.microsoft.com/en-us/library/aa286545">Developers</a></div><div class="mnpMenuBorder" style="width: 180px"></div><div class="mnpMenuLabel">Resources</div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden" menu="m90f0c3765598a8f6d936ceb105f60def"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windowsxp/using/default.mspx">Using Windows XP</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden" menu="m0ab75ea5c65258a4d0f711a14581bde7"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windowsxp/downloads/default.mspx">Downloads</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windowsxp/support/default.mspx">Support</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden" menu="m79bcb962cfe9a15079154b3f186bd916"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windowsxp/expertzone/default.mspx">Expert Zone</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windowsxp/worldwide/default.mspx">Worldwide Sites</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="http://update.microsoft.com/microsoftupdate/">Microsoft Update</a></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="http://www.windowsmarketplace.com/">Windows Marketplace</a></div><div class="mnpMenuBorder" style="width: 180px"></div><div class="mnpMenuRow" style="border-color: #F1F1F1; background: #F1F1F1; width: 153px; overflow-x: hidden" menu="m830408569122205f4691f65de881aef3"><img width="4" height="7" border="0" alt="*" title="" class="mnpMenuArrow" src="/library/mnp/2/gif/arrowLTR.gif" style="left: 166px; visibility: hidden"><a href="/windows/default.asp">Windows Family</a></div><div class="mnpMenuBorder" style="width: 180px; margin-bottom: 0px"></div></div></div><div class="mnpAds" style="width: 181px; height: 100%; padding-bottom: 20px; background: #F1F1F1; border-style: solid; border-color: #999999; border-width: 0px 1px 0px 0px"><center><script type="text/javascript" src="http://Ads1.msn.com/library/dap.js"></script><div id="CMSDLQ" style="padding-top: 20px;; background: inherit"></div><script type="text/javascript">dapMgr.enableACB("CMSDLQ", false);dapMgr.renderAd("CMSDLQ", "&PG=CMSDLQ&SC=F3&AP=1164",120,240);
+    </script></center></div></td><td width="100%" dir="LTR">
+<table cellpadding="0" cellspacing="0" border="0" width="100%" class="bodyTable"><tr><td valign="top"><table cellpadding="0" cellspacing="0" border="0" class="containerTable"><tr><td><div id="contentTableDIV"><div class="ancestorLinks"><nobr><a href="/windowsxp/using/default.mspx">Using Windows XP</a>
+        &gt;
+      </nobr><nobr><a href="/windowsxp/using/security/default.mspx">Security and Privacy</a></nobr></div><h1>How to Disable Security Center Alerts</h1><div class="date">Published: August 16, 2004</div><div style="height: 18px"></div><table width="165" cellpadding="0" cellspacing="0" border="0" class="sideContainer" align="right" style="margin-left: 15px"><tr><td><table dir="LTR" class="containerHeader" cellpadding="0" cellspacing="0" border="0" width="165"><tr><td align="left"><img src="http://img.microsoft.com/library/gallery/templates/MNP2.Common/images/l_corner.gif" border='0' alt="*" title="" width='2' height='3' /></td><td align="right"><img src="http://img.microsoft.com/library/gallery/templates/MNP2.Common/images/r_corner.gif" border='0' alt="*" title="" width='2' height='3' /></td></tr></table><div style="width: 165px; padding: 8px 7px" class="sidebarContent"><h5>Related Links</h5><table cellpadding="0" cellspacing="0" border="0" style="margin-top: 10px; margin-bottom: -2px" class="relatedLinksContainer"><tr valign="top"><td class="rlBullet">&#8226;</td><td class="relatedLink"><a href="/windowsxp/sp2/default.mspx">Get Windows XP SP2</a></td></tr><tr valign="top"><td class="rlBullet">&#8226;</td><td class="relatedLink"><a href="/security/articles/antivirus.asp">Frequently asked questions about antivirus software</a></td></tr><tr valign="top"><td class="rlBullet">&#8226;</td><td class="relatedLink"><a href="/athome/security/viruses/virus101.mspx">Learn more about preventing viruses and worms</a></td></tr></table></div><table dir="LTR" class="containerFooter" cellpadding="0" cellspacing="0" border="0" width="165"><tr><td align="left"><img src="http://img.microsoft.com/library/gallery/templates/MNP2.Common/images/l_b.corner.gif" border='0' alt="*" title="" width='2' height='3' /></td><td align="right"><img src="http://img.microsoft.com/library/gallery/templates/MNP2.Common/images/r_b.corner.gif" border='0' alt="*" title="" width='2' height='3' /></td></tr></table></td></tr></table><p>If you're running Windows XP Service Pack 2 (SP2) Windows Security Center should tell you the status of your antivirus software, firewall, and automatic updates.  Security Center will alert you if your antivirus is out of date or turned off, firewall is turned off, or if Automatic Update is not turned on.</p><p> If you have received multiple alerts and would like to turn notifications off, you can disable the antivirus, firewall, or automatic update alerts.</p><p><b>Note</b> You should only disable these alerts if you are an expert user. If you are in the process of updating or installing software you may also want to temporarily disable alerts, but please be sure to turn alerts back on so Windows can keep your status up to date.</p><p><b>To turn off Security Center alerts</b></p><table cellpadding="0" cellspacing="0" border="0" class="numberedList"><tr valign="top"><td class="listNumber" nowrap="" align="right"><p>1.</p></td><td><p>Click <b>Start</b> and then click <b>Control Panel</b>.</p></td></tr><tr valign="top"><td class="listNumber" nowrap="" align="right"><p>2.</p></td><td><p>Double-click <b>Security Center</b>.</p></td></tr><tr valign="top"><td class="listNumber" nowrap="" align="right"><p>3.</p></td><td><p>In the Security Center, under <b>Resources</b>, click <b>Change the way Security Center alerts me</b>.</p></td></tr><tr valign="top"><td class="listNumber" nowrap="" align="right"><p>4.</p></td><td><p>In the <b>Alert Settings</b> dialog box, clear the <b>Firewall, Automatic Updates, or Virus Protectio</b><b>n</b> check boxes, and then click <b>OK</b>.</p></td></tr></table><p>When you use this procedure, the Security Center still displays your status, but does not send you alerts. </p><p><b>Note</b> If your computer is part of a domain (a group of computers on a network), your security settings are typically managed by your network administrator. In this case, the Security Center does not display your security status or send alerts.</p><br clear="all" style="font-size: 0pt"><div style="margin-top: 16px; margin-bottom: 20px; width: 100%"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td><a href="#top"><img width="7" height="9" border="0" src="/business/templates/MNP2.GenericArticle/../MNP2.Common/images/arrow_px_up.gif&#xD;&#xA;                " alt="Top of page"></a><a class="topOfPage" href="#top">Top of page</a></td></tr></table></div></div></td></tr></table></td></tr></table></td></tr></table><br clear="all" style="line-height: 1px; overflow: hidden"><table id="msviFooter" width="100%" cellpadding="0" cellspacing="0"><tr valign="bottom"><td id="msviFooter2" style="filter:progid:DXImageTransform.Microsoft.Gradient(startColorStr='#FFFFFF', endColorStr='#6487DB', gradientType='1')"><div id="msviLocalFooter"><nobr><a href="http://go.microsoft.com/?linkid=317027" target="_top">Manage Your Profile</a> |</nobr><wbr></wbr><nobr><a href="http://go.microsoft.com/?linkid=2028376" target="_parent">Contact Us</a> |</nobr><wbr></wbr><nobr><a href="/windowsxp/newsletters/default.mspx?mg_id=10025" target="_top">Free Newsletter</a> |</nobr><wbr></wbr><nobr><a href="/windows/rss/" target="_parent">RSS Feeds</a></nobr></div><div id="msviGlobalFooter"><span dir="ltr">&#169; 2011 Microsoft Corporation. All rights reserved.&nbsp;</span><nobr><a href="http://support.microsoft.com/contactus/?ws=mscom" target="_parent">Contact Us</a> |</nobr><wbr></wbr><nobr><a href="http://go.microsoft.com/?linkid=4412892" target="_parent">Terms of Use</a> |</nobr><wbr></wbr><nobr><a href="http://go.microsoft.com/?linkid=4412893" target="_parent">Trademarks</a> |</nobr><wbr></wbr><nobr><a href="http://go.microsoft.com/?linkid=4412894" target="_parent">Privacy Statement</a></nobr></div></td><td bgcolor="#6487DB" width="105"><img src="/library/toolbar/3.0/text.aspx?text=TQ%3d%3d&amp;fore=FFFFFF&amp;b=6487DB&amp;font=Microsoft+Logo+95%2c+13pt&amp;w=105&amp;h=29&amp;a=0&amp;l=0&amp;v=0&amp;c=DeMqBqiN3ORi7XLcgI%2fvxqO1OI4%3d" width="105" height="29" alt="Microsoft" title="" border="0" /></td></tr></table><div style="display:none"><script type="text/javascript">var gDomain="m.webtrends.com";var gDcsId="dcsjwb9vb00000c932fd0rjc7_5p3t";var gFpc="WT_FPC";if(document.cookie.indexOf(gFpc+"=")==-1){document.write("<SCR"+"IPT TYPE='text/javascript' SRC='"+"http"+(window.location.protocol.indexOf('https:')==0?'s':'')+"://"+gDomain+"/"+gDcsId+"/wtid.js"+"'><\/SCR"+"IPT>");}</script><script src="http://js.microsoft.com/library/mnp/2/wt/js/wt.js" type="text/javascript"></script><noscript><img border="0" name="DCSIMG" width="1" height="1" src="http://m.webtrends.com/dcsjwb9vb00000c932fd0rjc7_5p3t/njs.gif?dcsuri=/nojavascript&WT.js=No"/></noscript></div><layer visibility="hide"><div style="display:none"><img alt="" width="0" height="0" border="0" hspace="0" vspace="0" src="http://c.microsoft.com/trans_pixel.asp?source=www&amp;TYPE=PV&amp;p=windowsxp_using_security_internet_sp2&amp;URI=%2fwindowsxp%2fusing%2fsecurity%2finternet%2fsp2_disablescalerts.mspx&amp;GUID=1F4FC18C-F71E-47FB-8FC9-612F8EE59C61&amp;r=http%3a%2f%2fwww.google.ca%2fsearch%3fq%3dwindows%2bxp%2bremove%2bsecurity%2balerts%26ie%3dutf-8%26oe%3dutf-8%26aq%3dt%26rls%3dorg.mozilla%3aen-US%3aofficial%26client%3dfirefox-a&amp;lc=en-us"></div></layer></body></html>

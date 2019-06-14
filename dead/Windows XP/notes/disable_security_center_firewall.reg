@@ -1,0 +1,5 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Security Center]
+"FirewallOverride"=dword:1
+"FirstRunDisabled"=dword:1

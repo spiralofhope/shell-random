@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Security Center]
+"AntiVirusDisableNotify"=dword:1
+"FirewallDisableNotify"=dword:1
+"UpdatesDisableNotify"=dword:1
+"FirstRunDisabled"=dword:1

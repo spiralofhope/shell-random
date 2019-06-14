@@ -1,0 +1,281 @@
+Windows Registry Editor Version 5.00
+
+; usually 0 = disable (off/no), 1 = enable (on/yes)
+
+; VISUAL TWEAKS
+
+; Use Classic Start Menu
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer]
+"NoSimpleStartMenu"=dword:00000001
+
+; Remove "Shortcut To" text on shortcuts
+; [HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer]
+; "link"=hex:00,00,00,00
+
+; Remove Shortcut Arrows on shortcuts
+; [HKEY_CLASSES_ROOT\lnkfile]
+; "IsShortcut"=-
+
+; Show translucent selection rectangle
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"ListviewAlphaSelect"=dword:00000000
+
+;Use drop shadows for icon labels on the desktop
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"ListviewShadow"=dword:00000001
+
+; Use background image for each folder type
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"ListviewWatermark"=dword:00000000
+
+; Slide taskbar buttons
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"TaskbarAnimations"=dword:00000000
+
+; Smooth Edges Of Screen Fonts 0=no, 2=yes
+[HKEY_CURRENT_USER\Control Panel\Desktop]
+"FontSmoothing"="2"
+
+; Animate windows when minimizing and maximizing
+[HKEY_CURRENT_USER\Control Panel\Desktop\WindowMetrics]
+"MinAnimate"="0"
+
+; Use this to keep the registry in-line with the above changes
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects]
+"VisualFXSetting"=dword:00000003
+
+; XP Visual Effects "adjust for..."
+; mine = to TweakUI General Section Options, all off except optimize hard disk
+;UserPreferencesMask appearance=1e,2c,07,80, performance=10,00,01,80, mine=10,00,03,80
+[HKEY_CURRENT_USER\Control Panel\Desktop]
+"UserPreferencesMask"=hex:10,00,03,80
+
+; Disable Ballon Tips
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"EnableBalloonTips"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"StartButtonBalloonTip"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"ShowInfoTip"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\tips]
+"Show"=dword:00000000
+
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"FolderContentsInfoTip"=dword:00000000
+
+; Start Menu Tweaks
+
+; Add Admin Tools To Start Menu
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"StartMenuAdminTools"="YES"
+
+; Add/Remove Favorites To Start Menu
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"StartMenuFavorites"=dword:00000000
+
+; ; Expand Control Panel
+; [HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+; "CascadeControlPanel"="YES"
+
+; Use Personalized menus
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"IntelliMenus"=dword:00000000
+
+; Recent docs history
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer]
+"NoRecentDocsHistory"=hex:01,00,00,00
+
+; Remove Recent Documents from the start menu
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer]
+"NoRecentDocsMenu"=dword:00000001
+
+; Don't Group Similar Taskbar Buttons
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"TaskbarGlomming"=dword:00000000
+
+; Explorer tweaks
+; Don't Cache Thumbnails
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"DisableThumbnailCache"=dword:00000001
+
+; show hidden files
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"SuperHidden"=dword:00000001
+"ShowSuperHidden"=dword:00000001
+
+; show hidden file ext
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced]
+"HideFileExt"=dword:00000000
+
+; TURN OFF ANNOYING WINDOWS STUFF and misc. tweaks
+
+;Disable Desktop Cleanup Wizard
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\CleanupWiz]
+"NoRun"=dword:00000001
+
+; Disable Error Reporting
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\PCHealth\ErrorReporting]
+"DoReport"=dword:00000000
+
+; Disable Fast User Switching
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\]
+"AllowMultipleTSSessions"=dword:00000000
+
+; Disable Low Disk Space Warning
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer]
+"NoLowDiskSpaceChecks"=dword:00000001
+
+; Auto Retsart Explorer After Crash
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon]
+"AutoRestartShell"=dword:00000001
+
+; Beep On Errors
+[HKEY_CURRENT_USER\Control Panel\Sound]
+"Beep"="No"
+"ExtendedSounds"="no"
+
+; PERFORMANCE
+
+; Set CPU Priority
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\PriorityControl]
+"Win32PrioritySeparation"=dword:00000026
+
+; These allow you to end tasks faster, shut down faster and speed up the menu display.
+[HKEY_CURRENT_USER\Control Panel\Desktop]
+"ForegroundLockTimeout"=dword:00000000
+"HungAppTimeout"="4000"
+"MenuShowDelay"="0"
+"WaitToKillAppTimeout"="5000"
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control]
+"WaitToKillServiceTimeout"="5000"
+
+; Explorer Fast Update
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Update]
+"UpdateMode"=hex:00
+
+; Disable User Tracking
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer]
+"NoInstrumentation"=dword:00000001
+
+; Disable 8.3 Name Creation
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem]
+"NtfsDisable8dot3NameCreation"=dword:00000001
+
+; Disable Last Access Time Stamp
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem]
+"NtfsDisableLastAccessUpdate"=dword:00000001
+
+; Stop Windows from looking for Scheduled Tasks when browsing network
+[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\
+
+RemoteComputer\NameSpace\{D6277990-4C6A-11CF-8D87-00AA0060F5BF}]
+@="Scheduled Tasks"
+
+; Prevent messenger from being run
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Messenger\Client]
+"PreventAutoRun"=dword:00000001
+"PreventRun"=dword:00000001
+
+; Make the "Find Files" Interface Cleaner and TURN THAT DAMN DOG OFF
+[HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState]
+"Use Search Asst"="no"
+
+; Make IE Behave
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Internet Explorer\Infodelivery\Restrictions]
+"NoUpdateCheck"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Internet Explorer\Main]
+"IEWatsonDisable"=dword:00000001
+
+; Make WMP Behave
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\MediaPlayer]
+"EnableAutoUpgrade"="no"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\WindowsMediaPlayer]
+"DisableAutoUpdate"=dword:00000001
+
+; SERVICES
+
+; 00000002=Automatic, 00000003=Manual, 00000004=Disabled
+
+
+; Computer Browser
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Browser]
+"Start"=dword:00000004
+
+; DHCP Client
+; [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Dhcp]
+; "Start"=dword:00000004
+
+; Error Reporting
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\ERSvc]
+"Start"=dword:00000004
+
+; Fast User Switching Compatibility
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\FastUserSwitchingCompatibility]
+"Start"=dword:00000004
+
+; Help and Support
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\helpsvc]
+"Start"=dword:00000004
+
+; Indexing Service
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\cisvc]
+"Start"=dword:00000004
+
+; Remote Desktop Help Session Manager
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\RDSessMgr]
+"Start"=dword:00000004
+
+; Remote Registry
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\RemoteRegistry]
+"Start"=dword:00000004
+
+; Secondary Logon
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\seclogon]
+"Start"=dword:00000004
+
+; Security Center
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\wscsvc]
+"Start"=dword:00000004
+
+; Server
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\lanmanserver]
+"Start"=dword:00000004
+
+; System Restore Service
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\srservice]
+"Start"=dword:00000004
+
+; TCP/IP NetBIOS Helper
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\LmHosts]
+"Start"=dword:00000004
+
+; Terminal Services
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\TermService]
+"Start"=dword:00000004
+
+; Themes
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Themes]
+"Start"=dword:00000004
+
+; Wireless Zero Configuration
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WZCSVC]
+"Start"=dword:00000004
+
+
+; Disabled for my SSD
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Dfrg\BootOptimizeFunction]
+"Enable"="N"
+
+; My tweaks..
+
+; Disable Performance Counters Entry
+; http://technet.microsoft.com/en-us/library/cc737243%28WS.10%29.aspx
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Perflib]
+"DisablePerformanceCounters"=dword:00000001
+; Also try running exctrlst.exe and un-checking Performance Counters Enabled.

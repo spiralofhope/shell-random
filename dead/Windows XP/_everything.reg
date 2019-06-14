@@ -1,0 +1,299 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Security Center]
+"AntiVirusDisableNotify"=dword:1
+"AntiVirusOverride"=dword:1
+"FirewallDisableNotify"=dword:1
+"UpdatesDisableNotify"=dword:1
+"FirstRunDisabled"=dword:1
+
+[HKEY_CURRENT_USER\Control Panel\Keyboard]
+"InitialKeyboardIndicators"=2
+
+[HKEY_USERS\.DEFAULT\Control Panel\Keyboard]
+"InitialKeyboardIndicators"=2
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default]
+@="Windows"
+"DispFileName"="@mmsys.cpl,-5856"
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\.Default]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\.Default\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\.Default\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,44,00,69,00,6e,00,67,00,2e,00,77,00,61,\
+  00,76,00,00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\AppGPFault]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\AppGPFault\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\AppGPFault\.Default]
+@=hex(2):00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\CCSelect]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\CCSelect\.current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\Close]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\Close\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\Close\.Default]
+@=hex(2):00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\CriticalBatteryAlarm]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\CriticalBatteryAlarm\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\CriticalBatteryAlarm\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,42,00,61,00,74,00,74,00,65,00,72,00,79,\
+  00,20,00,43,00,72,00,69,00,74,00,69,00,63,00,61,00,6c,00,2e,00,77,00,61,00,\
+  76,00,00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\DeviceConnect]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\DeviceConnect\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\DeviceConnect\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,48,00,61,00,72,00,64,00,77,00,61,00,72,\
+  00,65,00,20,00,49,00,6e,00,73,00,65,00,72,00,74,00,2e,00,77,00,61,00,76,00,\
+  00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\DeviceDisconnect]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\DeviceDisconnect\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\DeviceDisconnect\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,48,00,61,00,72,00,64,00,77,00,61,00,72,\
+  00,65,00,20,00,52,00,65,00,6d,00,6f,00,76,00,65,00,2e,00,77,00,61,00,76,00,\
+  00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\DeviceFail]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\DeviceFail\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\DeviceFail\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,48,00,61,00,72,00,64,00,77,00,61,00,72,\
+  00,65,00,20,00,46,00,61,00,69,00,6c,00,2e,00,77,00,61,00,76,00,00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\LowBatteryAlarm]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\LowBatteryAlarm\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\LowBatteryAlarm\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,42,00,61,00,74,00,74,00,65,00,72,00,79,\
+  00,20,00,4c,00,6f,00,77,00,2e,00,77,00,61,00,76,00,00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\MailBeep]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\MailBeep\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\MailBeep\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,4e,00,6f,00,74,00,69,00,66,00,79,00,2e,\
+  00,77,00,61,00,76,00,00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\Maximize]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\Maximize\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\Maximize\.Default]
+@=hex(2):00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\MenuCommand]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\MenuCommand\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\MenuCommand\.Default]
+@=hex(2):00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\MenuPopup]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\MenuPopup\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\MenuPopup\.Default]
+@=hex(2):00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\Minimize]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\Minimize\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\Minimize\.Default]
+@=hex(2):00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\Open]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\Open\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\Open\.Default]
+@=hex(2):00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\PrintComplete]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\PrintComplete\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\PrintComplete\.Default]
+@=hex(2):00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\RestoreDown]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\RestoreDown\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\RestoreDown\.Default]
+@=hex(2):00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\RestoreUp]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\RestoreUp\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\RestoreUp\.Default]
+@=hex(2):00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\ShowBand]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\ShowBand\.current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemAsterisk]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemAsterisk\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemAsterisk\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,45,00,72,00,72,00,6f,00,72,00,2e,00,77,\
+  00,61,00,76,00,00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemExclamation]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemExclamation\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemExclamation\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,45,00,78,00,63,00,6c,00,61,00,6d,00,61,\
+  00,74,00,69,00,6f,00,6e,00,2e,00,77,00,61,00,76,00,00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemExit]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemExit\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemExit\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,53,00,68,00,75,00,74,00,64,00,6f,00,77,\
+  00,6e,00,2e,00,77,00,61,00,76,00,00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemHand]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemHand\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemHand\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,43,00,72,00,69,00,74,00,69,00,63,00,61,\
+  00,6c,00,20,00,53,00,74,00,6f,00,70,00,2e,00,77,00,61,00,76,00,00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemNotification]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemNotification\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemNotification\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,42,00,61,00,6c,00,6c,00,6f,00,6f,00,6e,\
+  00,2e,00,77,00,61,00,76,00,00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemQuestion]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemQuestion\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemQuestion\.Default]
+@=hex(2):00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemStart]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemStart\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\SystemStart\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,53,00,74,00,61,00,72,00,74,00,75,00,70,\
+  00,2e,00,77,00,61,00,76,00,00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\WindowsLogoff]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\WindowsLogoff\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\WindowsLogoff\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,4c,00,6f,00,67,00,6f,00,66,00,66,00,20,\
+  00,53,00,6f,00,75,00,6e,00,64,00,2e,00,77,00,61,00,76,00,00,00
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\WindowsLogon]
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\WindowsLogon\.Current]
+@=""
+
+[HKEY_CURRENT_USER\AppEvents\Schemes\Apps\.Default\WindowsLogon\.Default]
+@=hex(2):25,00,53,00,79,00,73,00,74,00,65,00,6d,00,52,00,6f,00,6f,00,74,00,25,\
+  00,5c,00,6d,00,65,00,64,00,69,00,61,00,5c,00,57,00,69,00,6e,00,64,00,6f,00,\
+  77,00,73,00,20,00,58,00,50,00,20,00,4c,00,6f,00,67,00,6f,00,6e,00,20,00,53,\
+  00,6f,00,75,00,6e,00,64,00,2e,00,77,00,61,00,76,00,00,00
+
+[HKEY_CURRENT_USER\Software\Ventrilo]
+"Data"=hex:c3,c5,dd,2c,a7,6a,36,86,ab,6b,53,15,8e,55,16,82,62,c9,33,03,9a,37,\
+  e5,37,63,ea,e0,51,38,45,86,78,b0,4c,5d,6e,9b,66,c1,70,4e,60,d6,5e,3b,b6,c1,\
+  1c,c5,0e,18,38,52,06,96,cd,a1,2f,14,a7,5e,59,b4,a7,f3,12,60,69,a2,69,73,25,\
+  d0,f8,b5,d3,a4,21,8d,93,d1,97,72,4b,b0,20,a3,92,92,9a,18,cd,54,3c,b8,97,34,\
+  1f,cc,67,e2,fd,b4,6c,db,38,d8,bc,f2,1e,e2,ae,2f,6b,2b,84,dd,0f,72,4e,df,32,\
+  d4,0b,43,76,f8,10,1a,7c,8b,ae,86,a9,ec,0f,14,2a,28,61,4c,35,28,36,87,92,29,\
+  2b,01,5b,6d,c8,2f,00,30,a8,53,8d,de,da,4d,30,83,86,b4,f6,83,d4,25,d5,8b,09,\
+  db,ef,c7,f4,80,15,56,88,43,8a,fb,ca,2b,0a,15,ee,ab,0b,d1,bc,76,43,9e,39,94,\
+  6a,e1,84,b6,41,ea,fe,c7,d3,27,ad,c3,fb,98,e3,cc,26,83,1a,7b,5a,69,23,74,78,\
+  38,80,3d,be,c2,0e,50,8f,6e,e7,6e,77,2e,86,37,6a,b1,2c,f8,4c,d9,83,c4,b7,6f,\
+  81,c6,f8,16,90,d5,5a,7d,ec
