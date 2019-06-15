@@ -36,14 +36,20 @@ setup() {
 build_array_of_directories() {
   if [ -z "$1" ]; then continue; fi
   for i in "$1"/*; do
+    \echo  "processing - $i"
     if [ -z "$i" ]; then continue; fi
     # Skip non-directories
     # Note that this will not skip symlinks.
     if ! [ -d "$i" ]; then
       \echo  "skipping non-directory  $i"
       continue
+    elif [ "$i" = '/l/$RECYCLE.BIN' ] ||
+         [ "$i" = '/l/System Volume Information' ]
+    then
+      \echo  "skipping $i"
+      continue
     fi
-    #\echo  "processing - $i"
+    #exit 0
     # I don't know why this won't work:
     #array_of_directories="$array_of_directories$IFS$i"
     # Technically I shouldn't be adding a \r to the beginning of the array, but it doesn't seem to matter.
@@ -81,7 +87,7 @@ build_array_of_files() {
       \echo  "skipping 0-byte file:  $file"
       continue
     fi
-    \echo  "processing - $file"
+    #\echo  "processing - $file"
     array_of_files="$array_of_files` \printf \"\r\" `$file"
   done
   #echo --v
@@ -96,25 +102,21 @@ build_array_of_files() {
 open_array_of_files() {
   if [ -d '/mnt/c' ]; then
     \geany  --new-instance \
-      $l/__/__.txt \
+      $l/live/__/__.txt \
       $l/live/projects/projects.txt \
-      $l/_outbox--0/_outbox--0.txt \
       $array_of_files \
-      $l/__/__.txt \
+      $l/live/__/__.txt \
     &
   else
     #echo  \geany  $array_of_files
     #\geany  $array_of_files
     \geany  --new-instance \
-      $l/__/__.txt \
+      $l/live/__/__.txt \
       $l/live/projects/projects.txt \
       ` # A major project of mine which ought to be reviewed very regularly. ` \
-      '/l/unplugging/unplugging.txt' \
-      $l/_outbox--0/_outbox--0.txt \
-      '/mnt/1/windows-data/live/_outbox--0/_outbox--0.txt' \
-      '/mnt/1/windows-data/live/_outbox--1/_outbox--1.txt' \
+      $l/live/projects/unplugging/unplugging.txt \
       $array_of_files \
-      $l/__/__.txt \
+      $l/live/__/__.txt \
     &
   fi
 }
@@ -139,8 +141,7 @@ if [ -d '/mnt/c' ]; then
 else
   build_array_of_directories  $l
   build_array_of_directories  $l/live/projects
-  build_array_of_directories  '/mnt/1/windows-data/live'
-  build_array_of_directories  '/mnt/1/windows-data/live/projects'
+  build_array_of_directories  $l/live/outboxes
 fi
 build_array_of_files  "$array_of_directories"
 
