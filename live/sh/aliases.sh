@@ -49,5 +49,5 @@ alias  pm-suspend='\sudo  /usr/sbin/pm-suspend'
 alias  reboot="    /bin/su  -c  '/sbin/shutdown  -r  -t now  now  rebooting'"
 alias  poweroff='  \sudo  /sbin/poweroff'
 
-alias  current=' \cd  /l/OS/current/'
-alias  previous='\cd  /l/OS/previous/'
+alias  current=" \cd  ~/l/OS/current/"
+alias  previous="\cd  ~/l/OS/previous/"
