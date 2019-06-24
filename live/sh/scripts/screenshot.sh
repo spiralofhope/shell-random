@@ -47,11 +47,12 @@ case "$result" in
 esac
 
 
+# Note that these are not colons (:), but ։ for NTFS compatibility.
 \scrot  \
-  'screenshot--%Y-%m-%d_%H:%M:%S--$wx$h.png' \
+  'screenshot--%Y-%m-%d_%H։%M։%S--$wx$h.png' \
   "$one"  \
   "$two"  \
   --exec  '\
-    \mv  $f   /l/__    ;\
-    \gpicview /l/__/$f ;\
+    \mv  $f   /l/live/__    ;\
+    \gpicview /l/live/__/$f ;\
   '
