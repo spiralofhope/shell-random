@@ -26,7 +26,7 @@ _connected_true() {
   #
   # IRC, WeeChat
   #
-  #\setsid  /l/OS/bin-mine/shell-random/git/live/terminal.sh  FORCE \
+  #\setsid  ~/l/shell-random/git/live/terminal.sh  FORCE \
   #  \urxvtc \
   #    -geometry 239x64 \
   #    +sb                   ` # Remove the scroll bar ` \
@@ -50,9 +50,13 @@ _connected_true() {
   #
   # Web browser
   #
+:<<'}'
+{
   profile_name='default'
   '/l/OS/bin/Pale Moon/delete_parentlock.sh'       "$profile_name"
   \setsid  '/l/OS/bin/Pale Moon/_installation/palemoon'  -P "$profile_name"  -new-tab "about:blank" &
+}
+palemoon&
 
 
   #
@@ -129,7 +133,7 @@ _connected=
 
 if [ "$_connected" = 'true' ]; then
   ~/vpn-launch.sh
-  __=` /l/OS/bin-mine/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' `
+  __=` ~/l/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' `
   if [ "$__" -eq 0 ]; then
     _connected_true
     \echo .
@@ -149,10 +153,10 @@ fi
 # An initial terminal
 # \xterm  -fn 9x15  -bg black  -fg gray  -sl 10000  -geometry 80x24+0+0 &
 # \Terminal  --geometry 80x24+10+10 &
-# \setsid  /l/OS/bin-mine/shell-random/git/live/terminal.sh
+# \setsid  ~/l/shell-random/git/live/terminal.sh
 
 
 
 # Notes
 # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-\setsid  /l/OS/bin-mine/shell-random/git/live/sh/scripts/projects.sh &
+\setsid  ~/l/shell-random/git/live/sh/scripts/projects.sh &
