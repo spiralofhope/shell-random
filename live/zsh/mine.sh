@@ -265,6 +265,8 @@ ytdl() {
     -f best  \
     "$@"
 
+if [ $? -ne 0 ]; then return 1; fi
+
   # Trailing periods are invalid on Windows; remove them:
   #
   # Testing:
