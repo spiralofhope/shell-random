@@ -8,28 +8,36 @@
 # Prefer loading some files first, so they will appear as the first tabs.
 
 
-# Windows Subsystem for Linux
+
+:<<'}'  # Old Windows Subsystem for Linux code
+# This could be replaced by my system distinguishing code:
+#   \uname  --kernel-name
+# See usage in zsh/dot_zsh/3-interactive.sh
+{
 if [ -d '/mnt/c' ]; then
   l='/mnt/d/live'
 else
   l='/l'
 fi
+}
+
 
 
 # FIXME - If run multiple times, it will attempt to open a new tab with a nonexistent file.
 #         This is likely because I have a leading or trailing printf in the final command.
 
-# TODO - read a file which has a list of directories to skip
-# TODO - skip directories containing a directory or file named `ECRYPTFS_FNEK_ENCRYPTED.*`
+# TODO - Read a file which has a list of directories to skip
+# TODO - Skip directories containing a directory or file named `ECRYPTFS_FNEK_ENCRYPTED.*`
+#        This is a not-decrypted directory made/managed by the eCryptFS (ecryptfs.org) encryption program.
 
 setup() {
   \echo  ' * begin'
-  NEW_PROJECT_MESSAGE="New project notes started ` \date `"
+  NEW_PROJECT_MESSAGE="New project notes started $( \date )"
   # Case-insensitivity.
   LC_COLLATE=en_US ; export LC_COLLATE
   # IFS (Internal Field Separator), change to a carriage return.
   IFS_original=$IFS
-  IFS=` \printf "\r" `
+  IFS=$( \printf "\r" )
 }
 
 
@@ -53,7 +61,7 @@ build_array_of_directories() {
     # I don't know why this won't work:
     #array_of_directories="$array_of_directories$IFS$i"
     # Technically I shouldn't be adding a \r to the beginning of the array, but it doesn't seem to matter.
-    array_of_directories="$array_of_directories` \printf \"\r\" `$i"
+    array_of_directories="$array_of_directories$( \printf "\r" )$i"
   done
   #echo --v
   #for i in $array_of_directories; do
@@ -70,7 +78,7 @@ build_array_of_files() {
   # This $1 must not be quoted! :
   for i in $1; do
     if [ -z "$i" ]; then continue; fi
-    file="$i/` \basename  "$i" `".txt
+    file="$i/$( \basename  "$i" )".txt
     # Create files as necessary
     # TODO? - Skip files in an array of exclusions
     # TODO - check if this will work properly with symlinks.
@@ -82,13 +90,13 @@ build_array_of_files() {
       \touch  "$file"
       \echo  "$NEW_PROJECT_MESSAGE" >> "$file"
     fi
-    size_of_file=` \stat  --printf="%s"  "$file"  |  \cut -f 1 `
+    size_of_file=$( \stat  --printf="%s"  "$file"  |  \cut -f 1 )
     if [ "$size_of_file" = "0" ] ; then
       \echo  "skipping 0-byte file:  $file"
       continue
     fi
     #\echo  "processing - $file"
-    array_of_files="$array_of_files` \printf \"\r\" `$file"
+    array_of_files="$array_of_files$( \printf "\r" )$file"
   done
   #echo --v
   #for i in $array_of_files; do
@@ -135,6 +143,10 @@ teardown() {
 # --
 
 setup
+
+
+:<<'}'  # Old Windows Subsystem for Linux code
+{
 if [ -d '/mnt/c' ]; then
   # Windows Subsystem for Linux
   build_array_of_directories  $l
@@ -143,7 +155,12 @@ else
   build_array_of_directories  $l/live/projects
   build_array_of_directories  $l/live/outboxes
 fi
-build_array_of_files  "$array_of_directories"
+}
+build_array_of_directories  '/live'
+build_array_of_directories  '/live/projects'
+build_array_of_directories  '/live/outboxes'
 
+
+build_array_of_files  "$array_of_directories"
 open_array_of_files
 teardown
