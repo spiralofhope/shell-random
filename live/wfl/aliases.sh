@@ -25,7 +25,7 @@ alias  f:='wfl_mount_drive  f'
 alias  F:f:
 
 
-local  l='/mnt/c/live'
+local  l='/mnt/a/live'
 
 alias  l="nocorrect  \cd  $l"
 
