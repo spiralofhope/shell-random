@@ -96,12 +96,13 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
 
 {  #  Paths
 
-#  PATH="$( \realpath  ${a_drive}/live/OS/bin )":"$PATH"
-  PATH="$( \realpath  /mnt/a/live/OS/bin )":"$PATH"
+  #PATH="$(         \realpath  ${a_drive}/live/OS/bin )":"$PATH"
+  PATH="$(         \realpath  /mnt/a/live/OS/bin )":"$PATH"
   PATH="$PATH":"$( \realpath  "$zshdir/../" )"
   PATH="$PATH":"$( \realpath  "$zshdir/../sh/scripts" )"
   PATH="$PATH":"$( \realpath  "$zshdir/../bash/scripts" )"
   PATH="$PATH":"$( \realpath  "$zshdir/scripts" )"
+  PATH="$PATH":"$( \realpath  "$HOME/l/path" )"
   # FIXME/TODO - Babun:  Tentative testing suggests there are valid applications within, but Babun is running as user.
   if [ $( \whoami ) = 'root' ]; then
     PATH="$PATH":'/sbin'
