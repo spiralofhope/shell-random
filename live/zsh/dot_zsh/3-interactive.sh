@@ -51,6 +51,31 @@ if [ -d '/c' ];     then  local  c_drive='/c';     fi   #
 if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
 
 
+
+{  #  Paths
+
+  #PATH="$(         \realpath  ${a_drive}/live/OS/bin )":"$PATH"
+  PATH="$(         \realpath  /mnt/a/live/OS/bin )":"$PATH"
+  PATH="$PATH":"$( \realpath  "$zshdir/../" )"
+  PATH="$PATH":"$( \realpath  "$zshdir/../sh/scripts" )"
+  PATH="$PATH":"$( \realpath  "$zshdir/../bash/scripts" )"
+  PATH="$PATH":"$( \realpath  "$zshdir/scripts" )"
+  PATH="$PATH":"$( \realpath  "$HOME/l/path" )"
+  # FIXME/TODO - Babun:  Tentative testing suggests there are valid applications within, but Babun is running as user.
+  if [ $( \whoami ) = 'root' ]; then
+    PATH="$PATH":'/sbin'
+    PATH="$PATH":'/usr/sbin'
+  fi
+
+  if [ "$this_kernel_release" = 'Cygwin'                      ] ||  \
+     [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]; then
+    PATH="$PATH":"$( \realpath  "$zshdir/../wfl/scripts" )"
+  fi
+
+}
+
+
+
 {  # 'source' additional scripting and settings.
 
   function sourceallthat() {
@@ -89,30 +114,6 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
 
 
   \unset -f sourceallthat
-
-}
-
-
-
-{  #  Paths
-
-  #PATH="$(         \realpath  ${a_drive}/live/OS/bin )":"$PATH"
-  PATH="$(         \realpath  /mnt/a/live/OS/bin )":"$PATH"
-  PATH="$PATH":"$( \realpath  "$zshdir/../" )"
-  PATH="$PATH":"$( \realpath  "$zshdir/../sh/scripts" )"
-  PATH="$PATH":"$( \realpath  "$zshdir/../bash/scripts" )"
-  PATH="$PATH":"$( \realpath  "$zshdir/scripts" )"
-  PATH="$PATH":"$( \realpath  "$HOME/l/path" )"
-  # FIXME/TODO - Babun:  Tentative testing suggests there are valid applications within, but Babun is running as user.
-  if [ $( \whoami ) = 'root' ]; then
-    PATH="$PATH":'/sbin'
-    PATH="$PATH":'/usr/sbin'
-  fi
-
-  if [ "$this_kernel_release" = 'Cygwin'                      ] ||  \
-     [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]; then
-    PATH="$PATH":"$( \realpath  "$zshdir/../wfl/scripts" )"
-  fi
 
 }
 
