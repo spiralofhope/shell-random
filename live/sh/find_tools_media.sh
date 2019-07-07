@@ -1,15 +1,21 @@
-# TODO - Just check for deadbeef and use it by default?
-#local  deadbeef=1
-local  deadbeef=0
+# Note that deadbeef probably isn't installed, and will need a manual symlink in  $HOME/l/path  pointing to its executable.
+\which  deadbeef  >  /dev/null
+#false   #  Un-comment to trigger the fallback (audacious).
+if [[ $? -eq 0 ]]; then
+  local  deadbeef_is_installed=true
+else
+  local  deadbeef_is_installed=false
+fi
 
 
 
+:<<'}'   #  old, for testing purposes
 # TODO - shouldn't there be an audacious version?
 fq() {
   \find  .  -iname "*$1*"  -type f  -print0  |\
     \xargs  \
       --null  \
-      '/l/OS/bin/deadbeef-0.7.2/deadbeef'  \
+      "$( \which deadbeef )"  \
         --queue "{}"  \
       > /dev/null 2> /dev/null &
 }
@@ -17,42 +23,55 @@ fq() {
 
 
 
-if [[ x$deadbeef == x1 ]]; then                                     {   #  Deadbeef
+if [[ $deadbeef_is_installed == 'true' ]]; then                     {   #  Deadbeef
 
 findqueue() {
-  ## Make sure it's running first.
-  #\setsid  '/l/OS/bin/deadbeef-0.7.2/deadbeef'  > /dev/null 2> /dev/null  &
-  ## Wait for it to launch
-  #until pids=$( \pidof  '/l/OS/bin/deadbeef-0.7.2/deadbeef' ); do
-    ##\ps | \grep  'deadbeef-gtkui$'
-    #\sleep  0.1
-  #done
+
+  \echo  ' * Launching deadbeef..'
+  # For reasons unknown, a symlink will not work.  Directly using  `which`  solves that.
+  \setsid  $( \which deadbeef )  > /dev/null 2> /dev/null  &
+  until pids=$( \pidof  "$( \which deadbeef )" ); do   
+    \echo  ' * .. waiting'
+    \ps  alx | \grep  "$( \which deadbeef )"
+    \sleep  0.1
+  done
+
 
   local _queue() {
+
     local  extension="$1"
     shift
     local  iname="*${@}*${extension}"
     \echo  "Searching for:  $iname"
     #\find  .  -type f  -iname "$iname"
 
+    # I don't like using  --verbose  so this will do:
     \find  .  -type f  -iname "$iname"  -print0  |\
-        \xargs  \
+      \xargs  \
+      --no-run-if-empty  \
+      --null  \
+      -I file  \
+      \echo  file
+
+    \find  .  -type f  -iname "$iname"  -print0  |\
+      \xargs  \
         --no-run-if-empty  \
         --null  \
         -I file  \
-        '/l/OS/bin/deadbeef-0.7.2/deadbeef'  \
+        'deadbeef'  \
           --queue file  \
         > /dev/null 2> /dev/null
-    \waitpid  $!
-
   }
 
   # TODO - As deadbeef empties a playlist once it hits an invalid file, I'm going over its more common file types manually.
+  # This might blank the playlist, but format is supported.  It's something being offered into the queue that's blanking it.  This was reproduced with a ։ in the filename.
+  #   Therefore I'll put this first, so it won't be so awful if it's triggered.
+  _queue  '.m4a'  "$@"
   _queue  '.mp3'  "$@"
   _queue  '.ogg'  "$@"
   _queue  '.flac' "$@"
-  _queue  '.m4a'  "$@"
-  # Oldschool, via plugins
+  _queue  '.opus' "$@"
+  ## Oldschool, via plugins
   _queue  '.sid'  "$@"
   # FIXME - more extensions
 
@@ -61,15 +80,22 @@ findqueue() {
 }  else                                                             {   #  Audacious
 
 findqueue() {
-  # Make sure it's running first.
+  \echo  ' * Launching audacious..'
   \setsid  \audacious  --show-main-window  > /dev/null 2> /dev/null  &
-  # Wait for it to launch
   until pids=$( \pidof  'audacious' ); do   
-    echo  'waiting for audacious to launch..'
+    \echo  ' * .. waiting'
     \ps  alx | \grep  'audacious'
     \sleep  0.1
   done
   # sleep 1
+
+  # I don't like using  --verbose  so this will do:
+  \find  .  -type f  -iname "*${*}*"  -print0  |\
+    \xargs  \
+      --no-run-if-empty  \
+      --null  \
+      -I file  \
+      \echo  file
 
   \find  .  -type f  -iname "*${*}*"  -print0  |\
     \xargs  \
@@ -90,7 +116,7 @@ findqueue() {
 
 
 
-if [[ x$deadbeef == x1 ]]; then                                     {   #  Deadbeef
+if [[ $deadbeef_is_installed == 'true' ]]; then                     {   #  Deadbeef
 
 findplay() {
 
@@ -104,28 +130,33 @@ DBPL
 ) > "$tempfile"
   }
 
-  {  # Launch with the empty playlist
-    \setsid  '/l/OS/bin/deadbeef-0.7.2/deadbeef'  "$tempfile"   > /dev/null 2> /dev/null  &
-    # Wait for it to launch
-    until pids=$( \pidof  '/l/OS/bin/deadbeef-0.7.2/deadbeef' ) ; do
-      #\ps  alx | \grep  'deadbeef' | \grep  -v  'grep deadbeef'
-      # I think this will work.
-      \ps  alx | \grep  -E '.* deadbeef$'
+  {  # Launch
 
+    # Make sure it's running first.
+    # For reasons unknown, a symlink will not work.  Directly using  `which`  solves that.
+    \setsid  $( \which deadbeef "$tempfile" )  > /dev/null 2> /dev/null  &
+    # Wait for it to launch
+    until pids=$( \pidof  "$( \which deadbeef )" ); do   
+      \echo  ' * Waiting for deadbeef to launch..'
+      \ps  alx | \grep  "$( \which deadbeef )"
       \sleep  0.1
     done
+
   }
     
   {  # Queue
-    findqueue $*
+    findqueue  $*
   }
   
   {  #  Play
-    '/l/OS/bin/deadbeef-0.7.2/deadbeef'  --play
-    # If findplay() is run without deadbeef already running, if it begins playing at all, then it begins playing at the second item!
-    # .. so force it.
-    # .. which doesn't really work..
-    '/l/OS/bin/deadbeef-0.7.2/deadbeef'  --prev
+    \deadbeef  --play
+    # BUG:  It plays the second song in the now-populated playlist.
+    #   Workaround:
+    \deadbeef  --prev
+  }
+
+  {  # Teardown
+    \rm   --force  --verbose  "$tempfile"
   }
 
 }
@@ -161,6 +192,7 @@ XSPF
 </asx>
 ASXv3
 
+    # ASX seems nice.
     local  tempfile=$( \mktemp  --suffix="--audacious-empty-playlist.asx" )
     \echo  'making tempfile: ' $tempfile
 (\cat << 'audacious-empty-playlist'
@@ -175,9 +207,7 @@ audacious-empty-playlist
   }
 
   {  # Launch with the empty playlist
-      #\audacious  --enqueue-to-temp  /tmp/ASXv3.asx    > /dev/null 2> /dev/null  &
-      \audacious  --enqueue-to-temp  "$tempfile"  > /dev/null 2> /dev/null  &
-    #  Why in the everloving fuck doesn't this work?
+    \audacious  --enqueue-to-temp  "$tempfile"  > /dev/null 2> /dev/null  &
     until pids=$( \pidof  'audacious' ); do   
       echo  'waiting for audacious to launch..'
       \ps  alx | \grep  'audacious'
@@ -187,11 +217,10 @@ audacious-empty-playlist
   }
 
   {  # Queue
-    findqueue $*
+    findqueue  $*
   }
 
   {  # Play
-    # FIXME - this no longer works..
     \audacious  --play
   }
 
