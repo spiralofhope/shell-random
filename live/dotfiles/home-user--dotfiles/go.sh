@@ -6,6 +6,8 @@ debug=true
 
 # FIXME - must not be run as root
 # TODO - It's stupid of me to house files and directories without their leading dot.  Untangle this.
+# FIXME - zsh_histfile cannot be converted into a symlink while in a zsh shell!
+#         workaround:  \sh, then \ln, then \kill zsh (which also kills the terminal)
 
 if [ -z $1 ]; then
   dot='.'
