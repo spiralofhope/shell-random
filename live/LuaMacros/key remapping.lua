@@ -119,8 +119,11 @@ lmc.minimizeToTray = true
 --     In Windows explorer:
 --        a) Right-click in an empty space
 --        b) New > Shortcut
---        c) Make it something like "C:\CUSTOMIZE\LuaMacros.exe" "C:\CUSTOMIZE\key remapping.lua"
+--        c) Make it something like
+--           "C:\CUSTOMIZE\LuaMacros.exe" "C:\CUSTOMIZE\key remapping.lua"
 --           Change "CUSTOMIZE" to the appropriate path.
+--        d) If you want to automatically run the script when you launch the shortcut, then append -r like:
+--           "C:\CUSTOMIZE\LuaMacros.exe" "C:\CUSTOMIZE\key remapping.lua" -r
 -- 18) You are now done!
 --     From now on, you can use the shortcut to start LuaMacros with this script loaded, and run this script using the triangle pointing to the right at the top of the LuaMacros window.
 
