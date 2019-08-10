@@ -1,4 +1,6 @@
 #!/usr/bin/env  sh
+#
+# 2019-08-09 on Debian 9.9.0-i386-xfce-CD-1
 
 
 
