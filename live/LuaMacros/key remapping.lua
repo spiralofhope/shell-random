@@ -39,7 +39,7 @@ usb_device_name_1='hfsecurity Triple Foot Switch'
 --     You can un-plug and re-plug your device and run this script as much as you want until you find your string.
 -- 11) Look at the above string, Learn your usb_device_code.  For example, the above is "A377D60".  Look carefully, in that same place, for your own code.  It is between "#8&" and "&0&0000".
 --     Edit the following line:
-       usb_device_code_1='A377D60'
+       if not usb_device_code_1 then usb_device_code_1='A377D60' end
 --     (Note:  Every time Windows goes through the "setting up" process for this device, you will need to determine your usb_device_code again.)
 --     Continue to step 12.
 --
@@ -175,7 +175,7 @@ lmc.minimizeToTray = true
 --
 -- <unassigned>  :  \\?\HID#VID_13BA&PID_0001#8&5C15E41&0&0000#{884B96C3-56EF-11D1-BC8C-00A0C91405DD} [772079993] :  keyboard
 --
-usb_device_code_2='5C15E41'
+if not usb_device_code_2 then usb_device_code_2='5C15E41' end
 usb_device_name_2='usb number pad'
 lmc_device_set_name( usb_device_name_2, usb_device_code_2 )
 lmc_set_handler(     usb_device_name_2, function( button, direction )
@@ -246,4 +246,3 @@ end)
 -- TODO - Do not repeat keys when held down.  Check the time?
 -- IDEA - Just cut the appropriate stuff out ot lmc_print_devices()
 --        The problem is that it outputs content with escaped stuff, which doesn't neatly fit into a string if simply copy-pasted.  This doesn't seem worth attempting.
-
