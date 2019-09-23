@@ -13,12 +13,22 @@
 : <<'HERE_DOCUMENT'
   this text is ignored
   even code is ignored
-  echo ignored
+  \echo  'ignored'
   note that the HERE_DOCUMENT text can be changed to any string.
 HERE_DOCUMENT
 # The HERE_DOCUMENT text must be at the very beginning of the line.
 # Omitting the above HERE_DOCUMENT will have the below code ignored as well.
 \echo  'not ignored'
+
+
+
+# A whole HEREDOC block which can be trivially commented in or out to enable/disable the block.
+# Also code foldable.
+# My own design!
+:<<'}'
+{
+  \echo  'stuff'
+}
 
 
 
