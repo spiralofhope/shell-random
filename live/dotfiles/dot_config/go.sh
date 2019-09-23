@@ -2,6 +2,9 @@
 
 # FIXME - must not be run as root
 
+PWD="$( \realpath "$PWD" )"
+
+
 date="$( \date +%Y-%m-%d--%H-%M-%S )"
 \echo  ""
 \echo  " * Preparing home/user/ dot files and directories.."
@@ -19,7 +22,9 @@ for i in *; do
   if [ -d ~/.config/"$i" -a ! -L ~/.config/"$i" ]; then
     \mv  ~/.config/"$i"  ~/.config/"${i}"--"$date"
   fi
-  \ln  --force  --no-target-directory  --symbolic  "$PWD"/"$i"  ~/.config/"$i"
+  \ln  --force  --no-target-directory  --symbolic  "$PWD"/"$i"          ~/.config/"$i"
+  \ln  --force  --no-target-directory  --symbolic  "$PWD"/descript.ion  ~/.config/descript.ion
+  \ln  --force  --no-target-directory  --symbolic  "$PWD"/              ~/.config/00--dot_config
 done
 
 \echo " .. done. "
