@@ -2,6 +2,20 @@
 
 
 
+# Change directory into a file's location.
+# I'd love to hijack 'cd', but that doesn't work.
+cdd() {
+  if   [ ! -e $1 ]; then
+    \echo  'cdd: no such file or directory:'  $*
+  elif [ -L $1 ]; then
+    \cd  $( \dirname  $( \realpath "$1" ) )
+  else   # whatever else it happens to be.. just do whatever.
+    \cd  "$*"
+  fi
+}
+
+
+
 # FIXME: I don't understand why I cannot call this ls()
 dir() {
   \ls \
