@@ -1,4 +1,13 @@
 #!/usr/bin/env  zsh
+# Uncompress an archive into its own directory.
+#
+# Make a directory based on the archive filename
+# Learn which software to use on the archive based on its extension
+# Extract the contents
+# cd into the directory
+
+
+
 # TODO - Keep this as a separate .sh and just have an alias refer to it.  Dumbass.  Then move this script elsewhere.
 # TODO - Rework things to check for bash-windows and use alternate executables.
 
