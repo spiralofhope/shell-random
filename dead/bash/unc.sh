@@ -1,3 +1,10 @@
+# Because this script deposits the user in a new directory, it has to be added into .bashrc as a function.
+# But what I do is dump this into a file.  Then in my .bashrc I can do:
+#   source filename.ext
+# NOTE: This also uses a bash .bashrc mcd() function.
+
+
+
 unc() {
 
 VERSION="0.1.0, 2009-03-25"
