@@ -12,7 +12,7 @@
 # TODO: Proper pass/fail test cases?
 delme() {
   until [ 'sky' = 'falling' ]; do
-#     if [ ! "$#" -eq 0 ]; then \echo "This script does not accept parameters." ; break ; fi
+#     if [ ! "$#" -eq 0 ]; then \echo 'This script does not accept parameters.' ; break ; fi
     if [ "$PWD" = '/' ]; then \echo  'Are you insane, trying to delete root?' ; break ; fi
 
     MYDIR="$PWD"
