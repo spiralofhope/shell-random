@@ -11,12 +11,6 @@ Note:  Scan this file for other misc. 'TODO' items.
 - Complete some documentation
 - Consider other archivers
 - Build a full list of archivers in here, and list the tested version numbers, testing date and author/website ?
-
--------
-History
--------
-0.1.1, 2009-03-29 -- Since most filename.tar.gz will create "filename" already, detect it and avoid the duplicate directory structure.
-0.1.0, 2009-03-25 -- First successful beta, thanks to figuring "break" out.
 COMMENTBLOCK
 
   # TODO: Put some of this crap in another script somewhere, then use 'source filename.sh'?  (test)
