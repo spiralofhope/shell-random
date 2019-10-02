@@ -16,34 +16,31 @@ delme() {
     if [ "$PWD" = '/' ]; then \echo  'Are you insane, trying to delete root?' ; break ; fi
 
     MYDIR="$PWD"
-    # TODO - Is there a long form?
-    \cd  -P  ../
+    \cd  ../
     # If it's blank, don't even prompt!
     # TODO: Remember the state of shopt and restore it after this script.
     # bash:
     # shopt -s dotglob
     # zsh:
-    \setopt dotglob
-    ANSWER=$( \ls "$MYDIR"/* 2> /dev/null )
+    # \setopt  dotglob
+    ANSWER=$( \ls  -A  "$MYDIR" 2> /dev/null ) 
     ERROR=$?
     if [ "$ANSWER" = '' ] || [ $ERROR -ne 0 ]; then
       \rmdir "$MYDIR"
       \echo  'Auto-deleted...'
     else
       \echo  -n  "deltree $MYDIR/? [yes/NO]:  "
-      # DANGER DANGER DANGER.. heh
       if [ "$1" = '-f' ]; then
         ANSWER='y'
       else
-        \read ANSWER
+        \read  ANSWER
       fi
       if [[ "$ANSWER" =~ '^(y)' ]]; then
         \rm  --force  --recursive  --verbose  "$MYDIR"
         \echo  'Deleted...'
       else
         \echo  'Aborting...'
-        # TODO - Is there a long form?
-        \cd  -P  "$MYDIR"
+        \cd  -
         break
       fi
     fi
@@ -61,7 +58,7 @@ delme() {
     # bash:
     # shopt -s dotglob
     # zsh:
-    setopt  dotglob
+    #\setopt  dotglob
     for i in "$MYDIR".* ; do
       # Don't let this loop iterate if there's no success.
       if [ "$i" = "$MYDIR"'.*' ]; then continue ; fi
