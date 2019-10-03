@@ -10,7 +10,7 @@
 
 if [ -z $1 ]; then
   # TODO - implement a more explicit enable/disable feature..
-  __=$( /l/OS/bin-mine/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable second monitor?' )
+  __=$( /live/OS/Linux/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable second monitor?' )
   if [ $__ = 0 ]; then
     # Extend the little screen to its left.
     # Note that the main screen is the little one.

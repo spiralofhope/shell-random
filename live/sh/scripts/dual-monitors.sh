@@ -45,7 +45,7 @@ _right_enable() {
 
 
 if [ -z "$1" ]; then
-  __=$( /l/OS/bin-mine/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable second monitor?' )
+  __=$( /live/OS/Linux/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable second monitor?' )
   if [ $__ = 0 ]; then
     _right_enable
   else

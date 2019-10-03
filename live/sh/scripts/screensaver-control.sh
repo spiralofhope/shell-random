@@ -99,7 +99,7 @@ case "$1" in
     screensaver_locknow
   ;;
   *)
-    __=`/l/OS/bin-mine/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh  'Enable screen saver?'`
+    __=`/live/OS/Linux/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh  'Enable screen saver?'`
     if [ "$__" = 0 ]; then
       screensaver_enable
     else

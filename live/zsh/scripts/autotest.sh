@@ -175,7 +175,7 @@ setup() {
     # Windows Subsystem for Linux
     \source  '/mnt/d/live/OS/bin-mine/shell-random/git/live/zsh/colours.sh'
   else
-    \source  '/l/OS/bin-mine/shell-random/git/live/zsh/colours.sh'
+    \source  '/live/OS/Linux/shell-random/git/live/zsh/colours.sh'
   fi
 }
 setup
