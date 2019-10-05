@@ -1,4 +1,6 @@
 #!/usr/bin/env  sh
+# Re-using code blocks.
+# Variously called functions, procedures, methods, etc. in various programming languages.
 
 
 
@@ -42,6 +44,3 @@
   _fun
   _fun
 }
-
-
-

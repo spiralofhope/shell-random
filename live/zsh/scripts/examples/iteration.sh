@@ -37,9 +37,21 @@ variable=(
 #variable=( string "two words" 1 )
 
 
-:<<'}'  #  Iterate by line, ignoring beginning spaces
+:<<'}'  #  Iterate by line, ignoring beginning spaces.
 {
   for i in ${variable[@]}; do
     echo $i
   done
+}
+
+
+
+#:<<'}'  #  Pass an array to a function, then iterate through it.
+{
+  example() {
+    for element in ${@[@]}; do
+      echo some text $element
+    done
+  }
+  example  "my text" two 3
 }

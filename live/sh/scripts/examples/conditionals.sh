@@ -23,10 +23,10 @@ fi
 
 # dash 0.5.7-4+b1
 __=1
-if [ $__ -eq 1 ]; then echo 'EQUAL TO a number'; fi
-if [ $__ -lt 2 ]; then echo 'LESS THAN a number'; fi
-__=2
-if [ $__ -gt 1 ]; then echo 'GREATER THAN a number'; fi
+if [ $__ -eq 1 ]; then echo "$__ is equal to 1"; fi
+if [ $__ -ne 2 ]; then echo "$__ is not equal to 2"; fi
+if [ $__ -lt 2 ]; then echo "$__ is less than 2"; fi
+if [ $__ -gt 0 ]; then echo "$__ is greater than 0"; fi
 
 
 

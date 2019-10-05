@@ -61,7 +61,8 @@
 
 
 
-{  #  Build an array
+#<<'}'  #  Build an array
+{
   variable="
     one  two   three
     second
