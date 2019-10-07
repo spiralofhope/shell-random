@@ -22,9 +22,9 @@
 # What's the URL to your website?  Don't forget www. if you use that.
 WEBSITE=example.com
 
-# The "syali_mediawiki" is the name of my wiki.
+# The "username_mediawiki" is the name of my wiki.
 # Update it to match yours.
-FILES=sitemap-syali_mediawiki-NS_*.xml
+FILES=sitemap-username_mediawiki-NS_*.xml
 
 # Where should search engines go to see your sitemap file?
 SITEMAP_URL=http://example.com/sitemap.xml
