@@ -245,8 +245,11 @@ DOCUMENTATION
         mcd  "$BASENAME"
         \tar  -xvvf  ../"$FILE"
       ;;
-      'zip'|'xpi')
-        # xpi is used for Mozilla Firefox addons.
+      'zip'|'xpi'|'maff'|'mht')
+        # xpi  - Mozilla Firefox - Used by addons
+        # maff - Mozilla Firefox - Mozilla Archive File Format (MAFF) for Firefox, but made available to Pale Moon via an extension:
+        #   https://github.com/Lootyhoof/mozarchiver
+        # mht  - Internet Explorer (MHT) probably also uses the zip format.  UNTESTED.  Viewable with mozarchiver.
         # \touch 1 ; \zip 1.zip 1 ; \rm -f 1
         mcd  "$BASENAME"
         \unzip  ../"$FILE"
