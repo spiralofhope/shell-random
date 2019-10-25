@@ -39,8 +39,14 @@ dir() {
 
 #  Make and change into a directory:
 mcd() {
-  \mkdir  "$1" &&\
-  \cd  "$1"
+  if [ -z $1 ]; then
+    _date_time=$( \date +%Y-%m-%d )
+    \mkdir  "$_date_time"  &&\
+    \cd     "$_date_time"
+  else
+    \mkdir  "$1"  &&\
+    \cd     "$1"
+  fi
 }
 
 
