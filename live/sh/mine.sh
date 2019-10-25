@@ -39,14 +39,15 @@ dir() {
 
 #  Make and change into a directory:
 mcd() {
-  if [ -z $1 ]; then
-    _date_time=$( \date +%Y-%m-%d )
-    \mkdir  "$_date_time"  &&\
-    \cd     "$_date_time"
-  else
-    \mkdir  "$1"  &&\
-    \cd     "$1"
+  directory="$1"
+  if   [ -z $1 ]; then
+    directory="$( \date  +%Y-%m-%d )"
+  elif [ -f $1 ]; then   #  File
+    directory="$( \dirname  "$1" )"
   fi
+  # Silent errors:
+  \mkdir  --parents "$directory"
+  \cd               "$directory"
 }
 
 
