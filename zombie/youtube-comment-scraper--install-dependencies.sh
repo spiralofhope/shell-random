@@ -1,6 +1,7 @@
 #!/usr/bin/env  sh
 # Download and install the dependencies for youtube-comment-scraper:
 #   https://github.com/philbot9/youtube-comment-scraper/
+# Tested 2019-10-29 on 9.9.0-i386-xfce-CD-1 though the actual youtube-comment-scraper has not been tested.
 
 
 
