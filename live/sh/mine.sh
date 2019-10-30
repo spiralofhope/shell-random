@@ -5,9 +5,9 @@
 # Change directory into a file's location.
 # I'd love to hijack 'cd', but that doesn't work.
 cdd() {
-  if   [ ! -e $1 ]; then
+  if   [ ! -e "$1" ]; then
     \echo  'cdd: no such file or directory:'  $*
-  elif [ -L $1 ]; then
+  elif [ -L "$1" ]; then
     \cd  $( \dirname  $( \realpath "$1" ) )
   else   # whatever else it happens to be.. just do whatever.
     \cd  "$*"
@@ -40,13 +40,13 @@ dir() {
 #  Make and change into a directory:
 mcd() {
   directory="$1"
-  if   [ -z $1 ]; then
+  if   [ -z "$1" ]; then
     directory="$( \date  +%Y-%m-%d )"
-  elif [ -f $1 ]; then   #  File
+  elif [ -f "$1" ]; then   #  File
     directory="$( \dirname  "$1" )"
   fi
   # Silent errors:
-  \mkdir  --parents "$directory"
+  \mkdir  --parents  "$directory"
   \cd               "$directory"
 }
 
