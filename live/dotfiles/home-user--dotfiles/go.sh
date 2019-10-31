@@ -21,7 +21,8 @@ for i in *; do
   if [ ! -f "$i" ]; then
     continue
   fi
-  if [ "$i" = 'go.sh' ]; then
+  if [ "$i" = 'go.sh' ] || 
+     [ "$i" = 'README.markdown' ]; then
     continue
   fi
   if [ $debug ]; then
