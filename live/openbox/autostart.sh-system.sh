@@ -79,8 +79,8 @@
 
 
 # This also launches fbpanel
-/live/OS/Linux/shell-random/git/live/sh/scripts/dual-monitors.sh  'right disable'
-#/live/OS/Linux/shell-random/git/live/sh/scripts/dual-monitors.sh  'right enable'
+~/l/shell-random/live/sh/scripts/dual-monitors.sh  'right disable'
+#~/l/shell-random/live/sh/scripts/dual-monitors.sh  'right enable'
 
 # Wait until fbpanel launches.
 # .. because fbpanel might not pick up on an application's tray icon unless fbpanel is started first.

@@ -26,7 +26,7 @@ _connected_true() {
   #
   # IRC, WeeChat
   #
-  #\setsid  ~/l/shell-random/git/live/terminal.sh  FORCE \
+  #\setsid  ~/l/shell-random/live/terminal.sh  FORCE \
   #  \urxvtc \
   #    -geometry 239x64 \
   #    +sb                   ` # Remove the scroll bar ` \
@@ -133,7 +133,7 @@ _connected=
 
 if [ "$_connected" = 'true' ]; then
   ~/vpn-launch.sh
-  __=` ~/l/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' `
+  __=` ~/l/shell-random/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' `
   if [ "$__" -eq 0 ]; then
     _connected_true
     \echo .
@@ -153,10 +153,10 @@ fi
 # An initial terminal
 # \xterm  -fn 9x15  -bg black  -fg gray  -sl 10000  -geometry 80x24+0+0 &
 # \Terminal  --geometry 80x24+10+10 &
-# \setsid  ~/l/shell-random/git/live/terminal.sh
+# \setsid  ~/l/shell-random/live/terminal.sh
 
 
 
 # Notes
 # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-\setsid  ~/l/shell-random/git/live/sh/scripts/projects.sh &
+\setsid  ~/l/shell-random/live/sh/scripts/projects.sh &
