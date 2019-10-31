@@ -102,6 +102,7 @@ terminal_setup() {
     /usr/bin/qterminal
     /usr/bin/sakura
     /usr/bin/Terminal
+    /usr/bin/xfce4-terminal
     /usr/bin/gnome-terminal
     /usr/bin/Terminal
     /usr/bin/terminal
@@ -123,6 +124,7 @@ terminal_setup() {
     /usr/bin/qterminal
     /usr/bin/sakura
     /usr/bin/Terminal
+    /usr/bin/xfce4-terminal
     /usr/bin/evilvte
     /usr/bin/st
     /usr/bin/xterm
