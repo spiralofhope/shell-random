@@ -79,16 +79,19 @@
 
 
 # This also launches fbpanel
-~/l/shell-random/live/sh/scripts/dual-monitors.sh  'right disable'
+#~/l/shell-random/live/sh/scripts/dual-monitors.sh  'right disable'
 #~/l/shell-random/live/sh/scripts/dual-monitors.sh  'right enable'
 
+panel.sh
+:<<'}'  # panel
+{
 # Wait until fbpanel launches.
 # .. because fbpanel might not pick up on an application's tray icon unless fbpanel is started first.
-#until pids=$( \pidof  'fbpanel' ) ; do
-  #\ps  alx | \grep  -E '.* fbpanel$'
-  #\sleep  0.1
-#done
-
+until pids=$( \pidof  'fbpanel' ) ; do
+  \ps  alx | \grep  -E '.* fbpanel$'
+  \sleep  0.1
+done
+}
 
 
 {  #  KeepassXC (passwords)

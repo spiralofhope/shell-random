@@ -132,7 +132,7 @@ _connected=
 
 
 if [ "$_connected" = 'true' ]; then
-  ~/vpn-launch.sh
+#  ~/vpn-launch.sh
   __=` ~/l/shell-random/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' `
   if [ "$__" -eq 0 ]; then
     _connected_true

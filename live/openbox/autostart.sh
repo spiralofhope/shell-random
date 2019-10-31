@@ -1,5 +1,11 @@
 #!/usr/bin/env  sh
 
+# NOTE - if this isn't working, then check that you have "default session" selected via your dm (lightdm/etc)
+# Check that you use a ~/.xsession and it has something like "openbox-session" in it.
+# ~/.config/openbox is not used unless you use the default stuff and use ~/.xsession
+# /etc/xdg/openbox/ has the default stuff
+
+
 # This shell script is run before Openbox launches.
 # Environment variables set here are passed to the Openbox session.
 
