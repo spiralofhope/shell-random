@@ -4,8 +4,16 @@
 
 # dash 0.5.7-4+b1
 __='a'
-#__=
-if [ -z "$__" ]; then echo 'variable IS NOT set'
+#__=''
+#unset  a
+if [ -z "$__" ]; then echo 'variable IS NOT set or is a blank string'
+else                  echo 'variable IS set'
+fi
+
+# dash 0.5.10.2-5
+#__='a'
+unset  a
+if [ -n "$__" ]; then echo 'variable IS NOT set'
 else                  echo 'variable IS set'
 fi
 
