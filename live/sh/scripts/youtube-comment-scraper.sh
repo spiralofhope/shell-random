@@ -44,15 +44,17 @@ else
     \rm  /var/run/docker.pid
     \umount  /var/lib/docker/overlay2/*
 
+    # I have permissions issues where things get re-owned by systemd-coredump.
+    # This seems to be the right thing to do
+    \echo  ' * Fixing symlinks (because this software is shit)..'
+    \find  /home/user/  -exec \chmod  g+rw       {} \;
+    # This will work, for a while.
+    #\find  /home/user/  -exec \chown  user:user  {} \;
+
     \echo  ''
     \echo ' * Stopped.'
     \echo  ''
 
-    # I have permissions issues where things get re-owned by systemd-coredump.
-    # This seems to be the right thing to do
-    #\find  /home/user/  -exec \chmod  g+rw       {} \;
-    # This will work, for a while.
-    #\find  /home/user/  -exec \chown  user:user  {} \;
   }
 
 
