@@ -129,32 +129,15 @@ DOCUMENTATION
       'deb')
         mcd  "$BASENAME"
         \ar  vx  ../"$FILE"
-        \mkdir  control
-        \cd     control
+        mcd  control
+        # It would be nice if there were a trivial way to delete items from the archive while I extract them, to save working disk space.
         \tar  -xvvzf  ../control.tar.gz
-        \mkdir  data
-        \cd     data
+        \rm  --force  ../control.tar.gz
+        \cd  ..
+        mcd  data
         \tar  -xvvzf  ../data.tar.gz
-      'gz') # check more:
-        EXTENSION="${BASENAME##*.}"
-        case $EXTENSION in
-          'tar') # .tar.gz
-            # \touch 1 ; \tar -cf 1.tar 1 ; \gzip 1.tar ; \rm -f 1
-            # strip out .tar
-            BASENAME="${BASENAME%.*}"
-            mcd  "$BASENAME"
-            \tar  -xvvzf  ../"$FILE"
-          ;;
-          *) # .gz
-            # \touch 1 ; \gzip 1
-            mcd  "$BASENAME"
-            # --to-stdout and the redirect are done so that the original file is kept.
-            \gzip  --decompress  --to-stdout  ../"$FILE"  >  ./"$BASENAME"
-          ;;
-        esac
-      ;;
-
-        
+        \rm  --force  --verbose  ../data.tar.gz
+        \cd  ..
       ;;
       # This needs quite a rework, because this works something like bzip2.. double-extensions, decompresses in the same directory as the source, blah.
       #'xz')
