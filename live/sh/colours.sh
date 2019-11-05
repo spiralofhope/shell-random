@@ -4,10 +4,16 @@
 
 :<<'}'   #  UPDATE:  There is actual functionality hidden away.
 {
-  tput setaf 1
-  echo This is red
-  tput sgr0
-  echo This is back to normal
+  \tput  setaf  1
+  \echo  'This is red'
+  \tput  sgr0
+  \echo  'This is back to normal'
+
+  for i in {1..256}; do
+    \tput  setaf  $i
+    echo -n "$i"\ 
+  done
+  \tput  sgr0
 }
 
 
