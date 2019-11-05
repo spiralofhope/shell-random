@@ -98,58 +98,22 @@
 
 
 #:<<'}'   #  List files, DOS-style like `dir`
+# TODO? - Allow the user to pass a wildcard to restrict the listing.
 {
-  #  Works well, though it has various dependencies.  So what.
-  dir() {
-    \tree  -a  -C  -i  -L 1  |\
-      \tail -n +2  |\
-      \head -n -2  |\
-      \sort  |\
-      \less  --RAW-CONTROL-CHARS  --quit-if-one-screen
-  }
-}
-
-
-
-#:<<'}'   #  List files, DOS-style like `dir`, with all information.
-{
-  #  Works well, though it has various dependencies.  So what.
-  dira() {
-    \tree  -pugDF  -a  -C  -i  -L 1  |\
-      \tail -n +2  |\
-      \head -n -2  |\
-      \sort  |\
-      \less  --RAW-CONTROL-CHARS  --quit-if-one-screen
-  }
-}
-
-
-
-#:<<'}'   #  List directories, DOS-style like `dir /ad`
-{
-  #  Works well, though it has various dependencies.  So what.
-  lsd() {
-    \tree  -a  -C  -d  -i  -L 1  |\
-      \tail -n +2  |\
-      \head -n -2  |\
-      \sort  |\
-      \less  --RAW-CONTROL-CHARS  --quit-if-one-screen
-  }
-}
-alias ddir=lsd
-
-
-
-#:<<'}'   #  List directories, DOS-style like `dir /ad`, with all information.
-{
-  lsda() {
+  dir_tools(){
     #  Works well, though it has various dependencies.  So what.
     #  -Q  will add double quotes around everything.
-    \tree  -pugDF  -a  -C  -d  -i  -L 1  |\
+    \tree  $@  -C  -i  -L 1  --dirsfirst  |\
       \tail -n +2  |\
       \head -n -2  |\
-      \sort  |\
       \less  --RAW-CONTROL-CHARS  --quit-if-one-screen
   }
+  dir() {
+    if   [ "$1" == "/ad" ] || [ "$1" == "/AD" ]; then  dir_tools  -ad  -pugDF
+    elif [ "$1" == "/a"  ] || [ "$1" == "/A"  ]; then  dir_tools  -ah  -pugDF
+    elif [ "$1" == "/d"  ] || [ "$1" == "/D"  ]; then  dir_tools  -d
+    else                                               dir_tools
+    fi
+  }
 }
-alias ddira=lsda
+alias DIR='dir $@'
