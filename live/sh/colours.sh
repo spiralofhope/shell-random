@@ -2,6 +2,41 @@
 
 
 
+:<<'}'   #  UPDATE:  There is actual functionality hidden away.
+{
+  tput setaf 1
+  echo This is red
+  tput sgr0
+  echo This is back to normal
+}
+
+
+
+:<<'}'   #  Perl alternative
+         # https://unix.stackexchange.com/a/276478/80293
+{
+  1. create this script as the text file 'color'
+  2. put it in your path
+
+  #!/usr/bin/env perl
+
+  use strict;
+  use warnings;
+  use Term::ANSIColor; 
+
+  my $color=shift;
+  while (<>) {
+      print color("$color").$_.color("reset");
+  } 
+
+  3. usage
+
+  echo "some text" | color blue
+
+}
+
+
+
 # This was also integrated into backup/backup-lib.sh, but expect this
 # script here to have more functionality.
 
