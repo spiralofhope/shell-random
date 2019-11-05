@@ -1,4 +1,6 @@
 #!/usr/bin/env  sh
+#
+# FIXME - Does none of this work with pure Dash?  Sigh.
 
 
 
