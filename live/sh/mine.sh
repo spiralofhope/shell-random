@@ -71,32 +71,6 @@
 
 
 
-:<<'}'   #  List files, DOS-style like `dir`
-#  FIXME: I don't understand why I cannot call this ls()
-# OLD:
-{
-  dir() {
-    \ls \
-      -1 \
-      --almost-all \
-      --color=always \
-      --group-directories-first \
-      --no-group \
-      --quoting-style=shell \
-      --size \
-      "$@"  |\
-        \less \
-          --raw-control-chars \
-          --no-init \
-          --QUIT-AT-EOF \
-          --quit-on-intr \
-          --quiet
-      ` # `
-  }
-}
-
-
-
 #:<<'}'   #  List files, DOS-style like `dir`
 # TODO? - Allow the user to pass a wildcard to restrict the listing.
 {

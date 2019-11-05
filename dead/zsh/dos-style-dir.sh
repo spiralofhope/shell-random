@@ -4,6 +4,34 @@
 
 
 
+:<<'}'   #  List files, DOS-style like `dir`
+#  FIXME: I don't understand why I cannot call this ls()
+# OLD:
+{
+  dir() {
+    \ls \
+      -1 \
+      --almost-all \
+      --color=always \
+      --group-directories-first \
+      --no-group \
+      --quoting-style=shell \
+      --size \
+      "$@"  |\
+        \less \
+          --raw-control-chars \
+          --no-init \
+          --QUIT-AT-EOF \
+          --quit-on-intr \
+          --quiet
+      ` # `
+  }
+}
+
+
+
+
+
 # dir() { /bin/ls --color -gGh "$@"|cut -d" " -f4-100 ; }
 # dir() { \ls --color -gGh "$@" | \cut -b14- | \less -F -r ; }
 # Challenges:
