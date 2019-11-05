@@ -92,6 +92,10 @@ ddir() {
   OLD_LC_COLLATE=
 }
 
+
+
+#:<<'}'   #  DOS-style `dir /ad`
+{
 lsd() {
   #originally:
   # Stopped working; was only showing the first word of a directory name
@@ -107,7 +111,7 @@ lsd() {
     \tput  sgr0
   }
 
-  #:<<'  }'
+  #:<<'  }'   #  Works well.
   {
   # This outputs things in color, but doesn't have pagination
   # For pagination, one would have to manually do  `lsd | less`
@@ -125,9 +129,7 @@ lsd() {
   \tput  sgr0
   }
 
-
-  # An experiment to paginate
-  :<<'  }'
+  :<<'  }'   # FAILED - An experiment to paginate.
   {
   # The array is a zshism
   # There's probably a bashism but I don't care enough to explore using Bash.
@@ -145,11 +147,14 @@ lsd() {
   \tput  sgr0
   unset  array
   }
-
-
-
 }
 alias ddir=lsd
-lsda() {
+
+
+
+lsda() {   #  List directories, with all information.
+  #originally:
+  # Stopped working; was only showing the first word of a directory name
   \ls  --almost-all  -l  --color=always | \grep ^d
 }
+alias ddira=lsda
