@@ -2,17 +2,24 @@
 
 
 
-# 2017-10-23 - Tested on Devuan-1.0.0-jessie-i386-DVD with:
-#   dash 0.5.7-4
-#   libav 6:11.9-1~deb8u1
-#debug=true
-
-
+# 2019-11-05 - Tested on Debian 10.1.0-amd64-xfce-CD-1 with:
+#   dash 0.5.10.2-5
+#   7:4.1.4-1~deb10u1
+debug=true
 
 # Requirements:
+# ffmpeg
+#   https://ffmpeg.org/
+
+# Note that "avconv" is a drop-in replacement for ffmpeg
 # avconv (libav)
 #   http://libav.org/
-# Note that  \avconv  is a drop-in replacement for the \ffmpeg
+
+
+
+first_word(){
+  \echo  "$@"  |  \cut  --delimiter=' '  --fields=1
+}
 
 
 
@@ -24,7 +31,8 @@ debug() {
 
 
 
-{  # source expanded path
+#:<<'}'   # source expanded path
+{
   input="$1"
   source_file="$( \realpath "$input" )"
 
@@ -34,7 +42,8 @@ debug() {
 
 
 
-{  # target expanded path
+#:<<'}'   # target expanded path
+{
   directory_without_file="$( \dirname "$source_file" )"
   filename="$( \basename "$source_file" )"
   filename_without_path_or_extension="${filename%.*}"
@@ -48,7 +57,13 @@ debug() {
     debug  'audio_codec is:'
     debug  "$audio_codec"
   }
-  append=".${audio_codec}"
+  __=$( first_word  "$audio_codec" )
+  if [ "$__" = 'aac' ]; then
+    append='.aac'
+    debug  "appending .aac"
+  else
+    append=".${audio_codec}"
+  fi
 
   target_file="${directory_without_file}/${filename_without_path_or_extension}${append}"
 
@@ -58,7 +73,8 @@ debug() {
 
 
 
-{  # rip
+#:<<'}'   #  rip
+{
   \ffmpeg \
     -i "$source_file" \
     -acodec copy \
