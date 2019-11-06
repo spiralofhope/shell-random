@@ -1,5 +1,6 @@
 #!/usr/bin/env  sh
 
+# TODO - return to using ffmpeg
 
 
 # TODO - Figure out how to convert to ogg.  My passing attempt failed and I gave up too easily.
@@ -17,7 +18,7 @@ _convert_flac_to_mp3() {
   \echo  ''
   \echo  'Note:  Adding _ to identify this as a transcoded item.'
   \echo  'Note:  Adding = to identify this as self-created mp3.'
-  # Note that  \avconv  is a drop-in replacement for the depreciated  \ffmpeg
+  # Note that "avconv"  is a drop-in replacement for "ffmpeg"
   \avconv \
     -i "$1" \
     -qscale:a 0 \
