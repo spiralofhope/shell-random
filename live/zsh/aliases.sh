@@ -25,4 +25,5 @@ alias  ping='nocorrect  \ping'
 # -- Linux console Applications
 # --
 
-alias git='nocorrect  \git'
+alias  git='nocorrect  \git'
+alias  apt='nocorrect  \apt'
