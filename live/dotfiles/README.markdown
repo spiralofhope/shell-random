@@ -1,20 +1,16 @@
-Newly-run applications will deposit new configuration files which are 
-mixed with existing configuration files from preferred applications.
+- Programs create user preference information in `$HOME`.
+- The name of the files may not be easily mapped to the name of the program.
+- Files within `$HOME` might be overwritten by a new distribution's install.
+- Maintaining a separate partition for `$HOME` is annoying.
+- Testing new software may deposit more content in `$HOME`.
 
-There is no consistency between the name of a program and the name of 
-its configuration directory/file(s).
+Sooner or later `$HOME` will be completely cluttered and confused.
 
-Installing a Linux distribution will destroy existing configuration 
-files when it overwrites  `/home` -- if  `/home`  is not kept on a 
-separate partition (or equivalent).
+----
 
+To solve these problems, I manually identify the configuration directory/file for each application whose configuration I want to survive a re-install.  I move those data away from `$HOME` and instead use symlinks to them.
 
-To solve these problems, I identified the configuration directory/file 
-for each application whose configuration I want to survive a 
-re-install.  I keep that content away from /home and use symlinks.
-
-This scripting was created to make it trivial to re-create those 
-symlinks after re-installing.
+This scripting was created to make it trivial to re-create those symlinks after re-installing.
 
 
 Example:
@@ -24,22 +20,19 @@ If git's configuration is stored in the file  `~/.gitconfig`
 I can move it into this directory structure.
 
 ```bash
-  \mv  ~/.gitconfig  ./home-user--dotfiles/gitconfig
+  target='/path/to/home-user--dotfiles/'
+  \mkdir             $target/
+  \mv  ~/.gitconfig  $target/
 ```
 
-Note that I've renamed it from  `.gitconfig`  to just  `gitconfig`  
-with no preceding period.  This makes life a little easier when 
-browsing through these directory structures.  I was also afraid that on 
-some bad day I may see an "empty" directory and just delete it.
-
-Then I can run the script and have this equivalent done automatically:
+Then I can run this script and have this action done automatically:
 
 ```bash
-  \ln  --symbolic  ./home-user--dotfiles/gitconfig  ~/.gitconfig
+  \ln  --symbolic  ./home-user--dotfiles/.gitconfig  ~/
 ```
 
-Having dozens of applications "backed up" like this becomes very easy 
-to restore after re-installing.
+(Target collisions are renamed.)
 
-I can also nuke  `/home`  and get rid of the configuration for any 
-software which I tried but never kept.
+It becomes very easy to restore configuration data "backed up" like this.
+
+I can also nuke all of `$HOME`, as with a distribution reinstall, to remove the configuration for any software which I tried but never kept.
