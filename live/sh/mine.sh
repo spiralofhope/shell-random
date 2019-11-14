@@ -93,3 +93,6 @@
   }
 }
 alias DIR='dir $@'
+alias dir/a='dir /a'
+alias dir/ad='dir /ad'
+alias dir/d='dir /d'
