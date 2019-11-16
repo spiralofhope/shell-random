@@ -26,8 +26,10 @@
 }
 
 
+# ---
 
-variable=(
+
+local  variable=(
   string
   "one quoted string"
   separated words
@@ -46,7 +48,7 @@ variable=(
 
 
 
-#:<<'}'  #  Pass an array to a function, then iterate through it.
+:<<'}'  #  Pass an array to a function, then iterate through it.
 {
   example() {
     for element in ${@[@]}; do
