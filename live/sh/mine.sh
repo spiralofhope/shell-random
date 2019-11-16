@@ -23,15 +23,15 @@
 #:<<'}'   #  Make and change into a directory:
 {
   mcd() {
-    directory="$1"
+    directory="$@"
     if   [ -z "$1" ]; then
       directory="$( \date  +%Y-%m-%d )"
-    elif [ -f "$1" ]; then   #  File
-      directory="$( \dirname  "$1" )"
+    elif [ -f "$*" ]; then   #  File
+      directory="$( \dirname  "$@" )"
     fi
     # Silent errors:
     \mkdir  --parents  "$directory"
-    \cd               "$directory"
+    \cd                "$directory"
   }
 }
 
