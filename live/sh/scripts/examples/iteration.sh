@@ -151,3 +151,13 @@
   done
   IFS=$OLDIFS
 }
+
+
+
+:<<'}'  #  Iteration through lines in a file
+{
+  # TODO - sh-specific
+  while IFS='' \read -r line; do
+    echo "Text read from file: $line"
+  done < 'file'
+}
