@@ -6,24 +6,18 @@
 # autoload -U zsh-mime-setup
 # zsh-mime-setup
 
-# --  Suffix aliases
-alias  -s txt=geany
-alias  -s pdf=xpdf
-
-# --  Aliases for builtins
-alias  ls='nocorrect  \ls  -1  --all  --classify  --color=always  --group-directories-first  --show-control-chars'
-alias  cp='nocorrect  \cp  --interactive  --preserve=all'
-alias  mv='nocorrect  \mv  --interactive'
-alias  rm='nocorrect  \rm  --interactive  --one-file-system'
+alias  apt='  nocorrect  \apt'
+alias  cp='   nocorrect  \cp  --interactive  --preserve=all'
+alias  git='  nocorrect  \git'
+alias  ls='   nocorrect  \ls  -1  --all  --classify  --color=always  --group-directories-first  --show-control-chars'
+alias  man='  nocorrect  \man'
 alias  mkdir='nocorrect  \mkdir'
-alias  man='nocorrect  \man'
-alias  ping='nocorrect  \ping'
+alias  mv='   nocorrect  \mv  --interactive'
+alias  ping=' nocorrect  \ping'
+alias  rm='   nocorrect  \rm  --interactive  --one-file-system'
 
 
 
-# --
-# -- Linux console Applications
-# --
-
-alias  git='nocorrect  \git'
-alias  apt='nocorrect  \apt'
+# --  Suffixes
+alias  -s pdf=xpdf
+alias  -s txt=geany

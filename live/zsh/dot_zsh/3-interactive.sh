@@ -9,9 +9,8 @@ IDEAS
 
 
 if [ $( \whoami ) = 'root' ]; then
-  zshdir="$( \dirname $( \dirname $( \realpath  /home/user/.zshrc ) ) )"
-else
-  zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc ) ) )"
+      zshdir="$( \dirname $( \dirname $( \realpath  /home/user/.zshrc ) ) )"
+else  zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc          ) ) )"
 fi
 
 
@@ -79,7 +78,7 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
 {  # 'source' additional scripting and settings.
 
   function sourceallthat() {
-#    \echo  "sourcing $1"
+    #\echo  "sourcing $1"
     \pushd > /dev/null
     \cd  "$1"
     if [ -f 'lib.sh' ]; then
@@ -124,10 +123,8 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
   HISTFILE="$HOME/.zsh_histfile"
   HISTSIZE=10000
   SAVEHIST=10000
-  # FIXME - Neither of these work to let me prepend a command with a space and have it not commit a command to the histfile.
-  #   https://www.reddit.com/r/commandline/comments/4knoj4/
-  #HISTCONTROL=ignoredups:ignorespace
-  #HISTCONTROL=ignoreboth
+  # prepend a command with a space and have it not commit a command to the histfile.
+  setopt HIST_IGNORE_SPACE
 }
 
 
@@ -139,8 +136,15 @@ zle_highlight=(region:bg=red special:underline)
 \export  WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 
-{  #  File colors
+{  #  File colors ($LS_COLORS) used for `ls`
+  # Note that there is some serious fuckery in NTFS dealing with mount permissions and NOT dircolors!
+  # I can see no solution using dircolors, and I don't know why.  This is not expected.
+  # Load defaults:
   \eval  $( \dircolors  --bourne-shell )
+  {   # Load custom dircolors
+    __="~/.dircolors"   ;  if [ -e "$__" ]; then  \eval  $( \dircolors  --bourne-shell  "$__" )  ;  fi
+    __="~/.dir_colors"  ;  if [ -e "$__" ]; then  \eval  $( \dircolors  --bourne-shell  "$__" )  ;  fi
+  }
   # Directories
   # 94 = text, light blue
   # 40 = background, black
@@ -151,8 +155,7 @@ zle_highlight=(region:bg=red special:underline)
   # Windows system files
   \export  LS_COLORS="${LS_COLORS}":'*.lnk=0;42'
   # Text files
-  # TODO? - Can I just use a regular filename, like README ?
-  \export  LS_COLORS="${LS_COLORS}":'*.txt=1;37':'*.md=1;37':'*.markdown=1;37'
+  \export  LS_COLORS="${LS_COLORS}":'*.txt=1;37':'*.md=1;37':'*.markdown=1;37':'README=1;37'
   # Videos
   \export  LS_COLORS="${LS_COLORS}":'*.flv=01;35'
 }

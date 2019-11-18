@@ -3,24 +3,26 @@
 # FIXME - sudo may not always exist
 
 
-alias  ls='\ls  -1  --all  --classify  --color=always  --group-directories-first  --show-control-chars'
+alias  cls='\clear'
 alias  cp='\cp  --interactive  --preserve=all'
+alias  dash='\sh  -l'
 #alias  df='_df_sorted 5'                                               # sorted by mountpoint
 alias  df='_df_sorted 1'                                                # sorted by filesystem
-alias  mv='\mv  --interactive'
-alias  rm='\rm  --interactive  --one-file-system'
-alias  md='\mkdir'
 alias  du='\du  --human-readable'
-alias  cls='\clear'
-alias  more='\less  --quit-at-eof  --quit-if-one-screen'
+alias  eject='\eject  -i 0 ; \eject'                                    # Force-eject
+alias  grep='\grep  --color'                                            # Note that bash-windows does not support --color
 #alias  less='\less  --force  --RAW-CONTROL-CHARS  --quit-if-one-screen  $@'
 alias  less='\less  --RAW-CONTROL-CHARS'
+alias  ls='\ls  -1  --all  --classify  --color=always  --group-directories-first  --show-control-chars'
+alias  md='\mkdir'
+alias  more='\less  --quit-at-eof  --quit-if-one-screen'
+alias  mv='\mv  --interactive'
 alias  nano='\nano  --mouse'
-alias  reboot="/bin/su  -c  '/sbin/shutdown  -r  -t now  now  rebooting'"
 alias  pm-suspend='\sudo  /usr/sbin/pm-suspend'
 alias  poweroff='\sudo  /sbin/poweroff'
-alias  grep='\grep  --color'                                            # Note that bash-windows does not support --color
-alias  eject='\eject  -i 0 ; \eject'                                    # Force-eject
+alias  reboot="/bin/su  -c  '/sbin/shutdown  -r  -t now  now  rebooting'"
+alias  rm='\rm  --interactive  --one-file-system'
+alias  sh='\sh  -l'
 
 
 # This won't work on cygwin, and I'm not even sure what it was for..
