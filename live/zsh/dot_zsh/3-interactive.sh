@@ -155,7 +155,8 @@ zle_highlight=(region:bg=red special:underline)
   # Windows system files
   \export  LS_COLORS="${LS_COLORS}":'*.lnk=0;42'
   # Text files
-  \export  LS_COLORS="${LS_COLORS}":'*.txt=1;37':'*.md=1;37':'*.markdown=1;37':'README=1;37'
+  # README isn't *exactly* matched, but it's close enough!
+  \export  LS_COLORS="${LS_COLORS}":'*.txt=1;37':'*.md=1;37':'*.markdown=1;37':'*README=1;37'
   # Videos
   \export  LS_COLORS="${LS_COLORS}":'*.flv=01;35'
 }
