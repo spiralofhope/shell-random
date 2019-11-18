@@ -1,7 +1,7 @@
 # Note that deadbeef probably isn't installed, and will need a manual symlink in  $HOME/l/path  pointing to its executable.
 \which  deadbeef  >  /dev/null
 #false   #  Un-comment to trigger the fallback (audacious).
-if [[ $? -eq 0 ]]; then
+if [ $? -eq 0 ]; then
   local  deadbeef_is_installed=true
 else
   local  deadbeef_is_installed=false
@@ -23,7 +23,7 @@ fq() {
 
 
 
-if [[ $deadbeef_is_installed == 'true' ]]; then                     {   #  Deadbeef
+if [ "$deadbeef_is_installed" = 'true' ]; then                     {   #  Deadbeef
 
 findqueue() {
 
@@ -37,7 +37,7 @@ findqueue() {
   done
 
 
-  local _queue() {
+  _queue() {
 
     local  extension="$1"
     shift
@@ -74,6 +74,8 @@ findqueue() {
   ## Oldschool, via plugins
   _queue  '.sid'  "$@"
   # FIXME - more extensions
+  
+  \unset  -f  _queue
 
 }
 
@@ -116,7 +118,7 @@ findqueue() {
 
 
 
-if [[ $deadbeef_is_installed == 'true' ]]; then                     {   #  Deadbeef
+if [ "$deadbeef_is_installed" = 'true' ]; then                     {   #  Deadbeef
 
 findplay() {
 

@@ -2,8 +2,9 @@
 
 
 
-#:<<'}}'  #  From sh
-{{
+#:<<'} }'
+{
+{
 findhelper() {
   case  $_findhelper_type  in
     'file')
@@ -97,12 +98,13 @@ findhere() {
   _findhelper_file_contents  1   $*
 }
 
-}}
+} }
 
 
 
 :<<'}}'  #  From zsh
-{{
+{
+{
 # Roughly copied here.
 # TODO - audit
 
