@@ -96,6 +96,7 @@ if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
 
 
   sourceallthat  "$zshdir/../sh/"
+  sourceallthat  "$zshdir/../sh/functions/"
   sourceallthat  "$zshdir/"
 
 

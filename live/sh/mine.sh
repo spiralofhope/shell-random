@@ -55,22 +55,6 @@
 
 
 
-#:<<'}'   #  youtube-comment-scraper
-{
-  ytcs() {
-    if [ -n "$1" ]; then
-      source_video_id="$1"
-      \echo  " * Downloading comments..."
-  #    \youtube-comment-scraper  --format csv  "$source_video_id"  >  comments-"$source_video_id".csv
-      \youtube-comment-scraper  --format csv  --outputFile comments-"$source_video_id".csv  "$source_video_id"
-    else
-      \youtube-comment-scraper  "$@"
-    fi
-  }
-}
-
-
-
 #:<<'}'   #  List files, DOS-style like `dir`
 # TODO? - Allow the user to pass a wildcard to restrict the listing.
 {
