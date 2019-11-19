@@ -8,9 +8,9 @@ IDEAS
 
 
 
-if [ $( \whoami ) = 'root' ]; then
-      zshdir="$( \dirname $( \dirname $( \realpath  /home/user/.zshrc ) ) )"
-else  zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc          ) ) )"
+if [ $( \whoami ) = 'root' ];
+  then  zshdir="$( \dirname $( \dirname $( \realpath  /home/user/.zshrc ) ) )"
+  else  zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc          ) ) )"
 fi
 
 
@@ -170,13 +170,10 @@ zle_highlight=(region:bg=red special:underline)
 
   # This block lets me copy this .zshrc for the root user.
   # Test for permission.
-  if [ $( \whoami ) = root ]; then
-    prompt_end_color='red'
-  else
-    prompt_end_color='blue'
+  if [ $( \whoami ) = root ];
+    then  prompt_end_color='red'
+    else  prompt_end_color='blue'
   fi
-
-
 
   # precmd is a zsh function which runs before a prompt.
   precmd() {
@@ -186,10 +183,10 @@ zle_highlight=(region:bg=red special:underline)
 
     if [ $( \echo  "$PWD"  |  \wc  --chars ) -lt $[($COLUMNS/2)-1] ]; then
       # This is a little odd, to allow copy-paste from whole commandlines without fucking things up.
-      PS1="%{$fg[black]%}\`# %{$reset_color%}%~ %{$fg_bold[$prompt_end_color]%}>%{$fg_no_bold[black]%}\`;%{$reset_color%}"
+      PS1="%{$reset_color%}%{$fg[black]%}\`# %{$reset_color%}%~ %{$fg_bold[$prompt_end_color]%}>%{$fg_no_bold[black]%}\`;%{$reset_color%}"
     else
       # I want to display the full path, but I'm sick of starting off right at the end of a long one.
-      PS1="%{$fg[black]%}\`# %{$reset_color%}%~ %{$fg_bold[$prompt_end_color]%}>%{$fg_no_bold[black]%}\`;%{$reset_color%}
+      PS1="%{$reset_color%}%{$fg[black]%}\`# %{$reset_color%}%~ %{$fg_bold[$prompt_end_color]%}>%{$fg_no_bold[black]%}\`;%{$reset_color%}
     %{$fg_bold[$prompt_end_color]%}>%{$reset_color%} "
     fi
   }

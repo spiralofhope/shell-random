@@ -128,16 +128,16 @@ initializeANSI() {
   invoff="${esc}[27m"
 
   # Foreground colour, bolded
-  black_bold="${boldon}${esc}[30m"
-  red_bold="${boldon}${esc}[31m"
-  green_bold="${boldon}${esc}[32m"
-  yellow_bold="${boldon}${esc}[33m"
-  blue_bold="${boldon}${esc}[34m"
-  purple_bold="${boldon}${esc}[35m"
-  cyan_bold="${boldon}${esc}[36m"
-  white_bold="${boldon}${esc}[37m"
+  black_bold="${boldon}${esc}${black}"
+  red_bold="${boldon}${esc}${red}"
+  green_bold="${boldon}${esc}${green}"
+  yellow_bold="${boldon}${esc}${yellow}"
+  blue_bold="${boldon}${esc}${blue}"
+  purple_bold="${boldon}${esc}${purple}"
+  cyan_bold="${boldon}${esc}${cyan}"
+  white_bold="${boldon}${esc}${white}"
 
-  reset="${esc}[0m"
+  reset_color="${esc}[0m"
 
   cursor_position_save="\033[s"
   cursor_position_restore="\033[u"
@@ -149,12 +149,12 @@ initializeANSI
 :<< '}'   #  Testing
 {
   \echo  "${yellow}This is a phrase in yellow${redb} and red"
-  \echo  -n  "${reset}"
+  \echo  -n  "${reset_color}"
   \echo  "${ulon}This is underlined${uloff} and this is not"
   \echo  "${boldon}This is bold${boldoff} and this is not"
   \echo  "${italicson}This is italics${italicsoff} and this is not"
   \echo  "${ulon}This is ul${uloff} and this is not"
   \echo  "${invon}This is inv${invoff} and this is not"
   \echo  "${yellow}${redb}Warning I ${yellowb}${red}Warning II"
-  \echo  -n  "${reset}"
+  \echo  -n  "${reset_color}"
 }
