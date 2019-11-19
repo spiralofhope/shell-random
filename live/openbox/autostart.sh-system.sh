@@ -56,10 +56,7 @@
   #  \xscreensaver  -no-splash > /dev/null &
   #fi
 
-  # xautolock is a really simple monitor for inactivity.
-  # slock is a really simple screen saver/locker.
-# I don't use this under VirtualBox
-#  \setsid  \xautolock  -time 5  -locker \slock &
+  screensaver-control.sh disable
 }
 
 
