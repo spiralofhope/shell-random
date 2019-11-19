@@ -49,7 +49,7 @@ if [ "x$1" = 'x' ]; then
   \echo  ' * Converting all flac files in the current directory..'
   for i in *.flac; do
     # Seems like a straightforward way to bail out.
-    if [[ $i == "*.flac" ]]; then
+    if [ $i = "*.flac" ]; then
       \echo  'ERROR:  No .flac files found.'
       continue
     fi
