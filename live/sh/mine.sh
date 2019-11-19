@@ -10,7 +10,7 @@
   cdd() {
     local  target="$( \realpath "$*" )"
     if   [ -L "$*" ] && [ -d "$target" ] ; then  \cd  "$target"
-    elif                [ -f "$target" ] ; then  \cd  $( \dirname  "$target" )
+    elif                [ -f "$target" ] ; then  \cd  "$( \dirname  "$target" )"
     else                                         \cd  "$*"
     fi
   }
