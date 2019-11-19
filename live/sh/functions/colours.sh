@@ -148,12 +148,13 @@ initializeANSI
 
 :<< '}'   #  Testing
 {
-cat << EOF
-${yellowf}This is a phrase in yellow${redb} and red${reset}
-${boldon}This is bold${ulon} this is italics${reset} bye bye
-${italicson}This is italics${italicsoff} and this is not
-${ulon}This is ul${uloff} and this is not
-${invon}This is inv${invoff} and this is not
-${yellowf}${redb}Warning I${yellowb}${redf}Warning II${reset}
-EOF
+  \echo  "${yellow}This is a phrase in yellow${redb} and red"
+  \echo  -n  "${reset}"
+  \echo  "${ulon}This is underlined${uloff} and this is not"
+  \echo  "${boldon}This is bold${boldoff} and this is not"
+  \echo  "${italicson}This is italics${italicsoff} and this is not"
+  \echo  "${ulon}This is ul${uloff} and this is not"
+  \echo  "${invon}This is inv${invoff} and this is not"
+  \echo  "${yellow}${redb}Warning I ${yellowb}${red}Warning II"
+  \echo  -n  "${reset}"
 }
