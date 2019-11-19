@@ -146,7 +146,8 @@ initializeANSI
 
 
 
-test_initializeANSI() {
+:<< '}'   #  Testing
+{
 cat << EOF
 ${yellowf}This is a phrase in yellow${redb} and red${reset}
 ${boldon}This is bold${ulon} this is italics${reset} bye bye
@@ -156,5 +157,3 @@ ${invon}This is inv${invoff} and this is not
 ${yellowf}${redb}Warning I${yellowb}${redf}Warning II${reset}
 EOF
 }
-#test_initializeANSI
-unset -f test_initializeANSI
