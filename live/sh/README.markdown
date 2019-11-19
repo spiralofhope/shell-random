@@ -8,6 +8,7 @@ It's very likely that I'm using `dash`
 
 ----
 
-On Debian, you can learn the version of `dash` with:
+On Debian, you can learn the version of `dash` with one of:
 
-`\apt-cache  policy  dash`
+  - `\apt-cache  showpkg  dash`
+  - `\apt-cache  policy   dash`

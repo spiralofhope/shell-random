@@ -1,6 +1,10 @@
-# youtube-comment-scraper
+#!/usr/bin/env  sh
+# Scrape comments from YouTube videos
 # https://github.com/philbot9/youtube-comment-scraper/
 # https://blog.spiralofhope.com/?p=45279
+
+
+
 ytcs() {
   if [ -n "$1" ]; then
     source_video_id="$1"

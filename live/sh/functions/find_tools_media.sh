@@ -1,3 +1,8 @@
+#!/usr/bin/env  sh
+# Helper tools to queue or play media from the commandline.
+
+
+
 # Note that deadbeef probably isn't installed, and will need a manual symlink in  $HOME/l/path  pointing to its executable.
 \which  deadbeef  >  /dev/null
 #false   #  Un-comment to trigger the fallback (audacious).
