@@ -27,8 +27,8 @@ _ddir() {
         local  line_file=$( \echo "$line" | awk -F'\ \ \ +' '{print $1}' )
         # After three or more spaces
         local  line_text=$( \echo "$line" | awk -F'\ \ \ +' '{print $2}' )
-        if [ "$line_file"    == "$file_to_match" ]  ||\
-           [ "$line_file"'/' == "$file_to_match" ]       ` # directory ` ;\
+        if [ "$line_file"    = "$file_to_match" ]  ||\
+           [ "$line_file"'/' = "$file_to_match" ]       ` # directory ` ;\
         then
           description="   $line_text"
         fi
