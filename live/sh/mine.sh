@@ -4,16 +4,14 @@
 
 
 
-#:<<'}'   # Change directory into a directory-symbolic-link's real location.
+#:<<'}'   # Change directory into a directory-symbolic-link's real location, or a file's directory.
 {
   # I'd love to hijack 'cd' directly using cd(), but that doesn't work.
-  # While it's possible to configure zsh to maintain its prompt with the real location, this gives the functionality to vanilla sh and makes it optional.
   cdd() {
     local  target="$( \realpath "$*" )"
-    if   [ -L "$*" ] && [ -d "$target" ] ; then
-      \cd  "$target"
-    else   # whatever else it happens to be.. just do whatever.
-      \cd  "$*"
+    if   [ -L "$*" ] && [ -d "$target" ] ; then  \cd  "$target"
+    elif                [ -f "$target" ] ; then  \cd  $( \dirname  "$target" )
+    else                                         \cd  "$*"
     fi
   }
 }
