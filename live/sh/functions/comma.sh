@@ -8,7 +8,8 @@ comma() {
     # Incorrect usage.
     \echo  -n  ''
   elif [ -z $2 ]; then
-    \echo  "$1" | \sed  --expression=':a'  --expression='s/\(.*[0-9]\)\([0-9]\{3\}\)/\1,\2/;ta'
+    \echo  "$1"  |\
+      \sed  --expression=':a'  --expression='s/\(.*[0-9]\)\([0-9]\{3\}\)/\1,\2/;ta'
   else
     # Incorrect usage.
     \echo  -n  ''
