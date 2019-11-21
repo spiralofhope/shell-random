@@ -76,7 +76,7 @@ _connected_true() {
   #
   # BitTorrent
   #
-  \setsid  \transmission-gtk &
+  #\setsid  \transmission-gtk &
 
 
   #
