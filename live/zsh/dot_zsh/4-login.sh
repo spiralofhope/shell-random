@@ -3,6 +3,10 @@
 # See also /etc/default/console-setup
 
 
+########  This file cannot be written-to while the system is using it!
+# NOTE #  That means you cannot be in X.
+########
+
 
 # No need if booting is otherwise set up correctly:
 \setfont  Uni2-VGA16.psf.gz
