@@ -56,7 +56,7 @@
   #  \xscreensaver  -no-splash > /dev/null &
   #fi
 
-  screensaver-control.sh  disable
+  ~/l/shell-random/live/sh/scripts/screensaver-control.sh  disable
 }
 
 

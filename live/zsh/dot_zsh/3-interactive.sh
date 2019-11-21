@@ -8,10 +8,14 @@ IDEAS
 
 
 
+# It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
 if [ $( \whoami ) = 'root' ];
   then  zshdir="$( \dirname $( \dirname $( \realpath  /home/user/.zshrc ) ) )"
   else  zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc          ) ) )"
 fi
+
+# I don't actually use this variable anyway
+#shell_random="$( \realpath $( \dirname $( \realpath  /home/user/.zshrc ) )/../../../ )"
 
 
 

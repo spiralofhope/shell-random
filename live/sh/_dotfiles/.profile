@@ -20,9 +20,10 @@ if [ $( \whoami ) = 'root' ]; then
       shdir="$( \realpath $( \dirname $( \realpath  /home/user/.zshrc ) )/../../sh/ )"
 else  shdir="$( \realpath $( \dirname $( \realpath  ~/.zshrc          ) )/../../sh/ )"
 fi
-#
+
 # I don't actually use this variable anyway
 #shell_random="$( \realpath $( \dirname $( \realpath  /home/user/.zshrc ) )/../../../ )"
+
 
 
 {  # 'source' additional scripting and settings.
