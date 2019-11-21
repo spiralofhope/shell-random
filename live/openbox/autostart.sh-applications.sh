@@ -98,12 +98,13 @@ _connected_true() {
 
 _connected=
 
-#:<<'}'  # earlier method
+# This was moved into .zsh/4-login.sh
+:<<'}'  #  Working method
 {
   # 'lo' is localhost
-  for interface in ` \ls /sys/class/net/  |  \grep  --invert-match  lo `; do
+  for interface in $( \ls /sys/class/net/  |  \grep  --invert-match  lo ); do
     \echo "Processing $interface"
-    _result=` \cat /sys/class/net/"$interface"/carrier `
+    _result=$( \cat /sys/class/net/"$interface"/carrier )
     \echo  "$_result"
     if [ "$_result" = '1' ]; then
       _connected='true'
@@ -113,8 +114,7 @@ _connected=
     fi
   done
 }
-
-
+#
 :<<'}'   # Ping the default gateway.  Doesn't seem to always work.
 {
   # GW=$( \ip  route list  |  \sed -rn 's/^default via ([0-9a-f:.]+) .*/\1/p' )
@@ -131,9 +131,17 @@ _connected=
 }
 
 
+
+
+
+
+
+# This was moved into .zsh/4-login.sh to avoid problems with gui-yesno-dialog.sh
+:<<'}'   #  Ask to launch internet applications
+{
 if [ "$_connected" = 'true' ]; then
 #  ~/vpn-launch.sh
-  __=` ~/l/shell-random/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' `
+  __=$( ~/l/shell-random/live/sh/scripts/gui-yesno-dialog.sh 'Internet connection detected.\n\nRun internet-related applications?' )
   if [ "$__" -eq 0 ]; then
     _connected_true
     \echo .
@@ -143,6 +151,21 @@ if [ "$_connected" = 'true' ]; then
 else
   _connected_false
 fi
+}
+#
+#:<<'}'   #  If an internet connection is detected, ask what to do.
+{
+  __="/tmp/$( \whoami ).autostart-networking-applications"
+  if  [ -f  "$__" ]; then
+    _connected_true
+  else
+    _connected_false
+  fi
+  # I could keep it around if I really wanted to..
+  \rm  --force  "$__"
+  unset  __
+}
+
 
 
 # --

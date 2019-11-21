@@ -15,6 +15,54 @@
 if    [ "$TTY" = '/dev/tty1' ] ||\
       [ "$TTY" = '/dev/tty2' ]; then
 
+
+
+
+#:<<'}'  #  Detect network connection
+         #  FIXME? - This doesn't necessarily mean "internet connection"
+{
+  # 'lo' is localhost, which is always there so it doesn't count as an outside connection.
+  for interface in $( \ls /sys/class/net/  |  \grep  --invert-match  lo ); do
+    \echo "Processing $interface"
+    _result=$( \cat /sys/class/net/"$interface"/carrier )
+    #\echo  "$_result"
+    __="/tmp/$( \whoami ).autostart-networking-applications"
+    if [ "$_result" = '1' ]; then
+      \dialog  --yesno  "Network connection detected.\n\nAutostart related applications?"  0  0
+      if [ $? -eq 0 ];
+      then  \touch        "$__"
+      else  \rm  --force  "$__"
+      fi
+      \unset  __
+    else
+      \echo  ' * Network connection not detected.'
+      \rm  --force  "$__"
+    fi
+  done
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # This is a nice idea, but I think I need to chain zsh in the middle of things, unless I want to fuck around with the default shell..  perhaps `dtach` would work, but I don't know..
 #  echo $$ !> /tmp/zsh-launching-startx.ppid
 #  dtach -n /tmp/dtach.socket  \startx &
@@ -66,6 +114,7 @@ if    [ "$TTY" = '/dev/tty1' ] ||\
 # Launches X but doesn't switch to it:
 #nohup  setsid  \startx > /dev/null
 # Launches MATE:
+#\setsid  
 \xinit  /etc/X11/xinit/xinitrc -- /usr/bin/X :$( \expr "$tty_to_use" - 1 ) vt"$tty_to_use"  -auth $( \tempfile  --prefix='serverauth.' )
 logout
 
