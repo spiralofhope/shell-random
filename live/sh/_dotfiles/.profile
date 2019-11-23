@@ -84,8 +84,8 @@ export SHELL
   boldon="${esc}[1m"
   red="${esc}[31m"
   blue="${esc}[34m"
-  red_bold="${boldon}${esc}${red}"
-  blue_bold="${boldon}${esc}${blue}"
+  red_bold="${boldon}${red}"
+  blue_bold="${boldon}${blue}"
 
 
   :<<'  }'   #  A simple colored prompt:
