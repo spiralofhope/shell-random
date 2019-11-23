@@ -170,14 +170,14 @@ zle_highlight=(region:bg=red special:underline)
 :'*.lnk=0;37'`       # Windows links.  It is not usedful, so it is just being flagged like a text file. `\
 ` # Text files `\
 :'*.doc=1;37'\
-:'*.ods=1;37'`       # spreadsheet:  LibreOffice `\
 :'*.markdown=1;37'`  # markup language:  Markdown `\
 :'*.md=1;37'`        # markup language:  Markdown `\
+:'*.ods=1;37'`       # spreadsheet:  LibreOffice `\
 :'*.pdf=1;37'\
 :'*README=1;37'`     # text:  This is not  "^README$"   but this works well enough.`\
-:'*.txt=1;37'\
-:'*.torrent=1;37'\
 :'*.rtf=1;37'\
+:'*.torrent=1;37'\
+:'*.txt=1;37'\
 :'*.xls=1;37'`       # spreadsheet:  Microsoft Excel `\
 `  # Videos `\
 :'*.flv=01;35'\
