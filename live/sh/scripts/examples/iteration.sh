@@ -1,5 +1,5 @@
 #!/usr/bin/env  sh
-# Examples of iterating through a list / array
+# Examples of iterating through a list / array (dash-compatible)
 # 2018-05-17 - Dash 0.5.7-4+b1
 
 
@@ -74,67 +74,55 @@
 }
 
 
-:<<'}'  #  Literal / exact.
+:<<'}'  #  Iterate through the lines in a variable.
 {
-  echo '----'
-  for i in "$variable"; do
-    echo "$i"
+  for line in "$variable"; do
+    echo "$line"
   done
-  echo '----'
 }
 
 
 :<<'}'  #  Split by spaces, ignore extra spaces, ignore empty lines.
 {
-  echo '----'
-  for i in $variable; do
-    echo $i
+  for line in $variable; do
+    echo $line
   done
-  echo '----'
 }
 
 
-:<<'}'  #  Split by spaces, ignore extra spaces, ignore empty lines, append text.
+:<<'}'  #  Split by spaces, ignore extra spaces, ignore empty lines, add your own text.
 {
-  echo '----'
   for line in $variable; do
-    echo "_ $line"
+    echo "some text:  $line"
   done
-  echo '----'
 }
 
 
 
 :<<'}'  #  Split by lines, ignore extra spaces, accept empty lines.
 {
-  echo '----'
   echo "$variable" |\
   while read line; do
     echo $line
   done
-  echo '----'
 }
 
 
 :<<'}'  #  Split by lines, ignore extra spaces, accept empty lines, append text.
 {
-  echo '----'
   echo "$variable" |\
   while read line; do
     echo "_ $line"
   done
-  echo '----'
 }
 
 
 :<<'}'  #  Split by lines, ignore beginning spaces, accept empty lines, accept inner spaces.
 {
-  echo '----'
   echo "$variable" |\
   while read line; do
     echo "$line"
   done
-  echo '----'
 }
 
 
@@ -154,10 +142,32 @@
 
 
 
-:<<'}'  #  Iteration through lines in a file
+:<<'}'  #  Iteration through lines in a file, method one
 {
-  # TODO - sh-specific
+  while read line; do
+    echo "Text read from file: $line"
+  done < 'filename.ext'
+}
+
+
+
+:<<'}'  #  Iteration through lines in a file, method two
+{
   while IFS='' \read -r line; do
     echo "Text read from file: $line"
-  done < 'file'
+  done < 'filename.ext'
 }
+
+
+
+:<<'}'  #  Iteration through a command's output
+{
+  \find -type f -name 'filen*' | while read line; do
+    echo "Output of 'find': $line"
+  done
+}
+
+
+
+
+
