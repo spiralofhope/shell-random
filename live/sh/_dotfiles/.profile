@@ -15,14 +15,18 @@ mesg n || true
 }
 
 
+SHELL=/usr/bin/sh
+
+
+
 # It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
 if [ $( \whoami ) = 'root' ]; then
-      shdir="$( \realpath $( \dirname $( \realpath  /home/user/.zshrc ) )/../../sh/ )"
-else  shdir="$( \realpath $( \dirname $( \realpath  ~/.zshrc          ) )/../../sh/ )"
+      export  shdir="$( \realpath $( \dirname $( \realpath  /home/user/.zshrc ) )/../../sh/ )"
+else  export  shdir="$( \realpath $( \dirname $( \realpath  ~/.zshrc          ) )/../../sh/ )"
 fi
 
 # I don't actually use this variable anyway
-#shell_random="$( \realpath $( \dirname $( \realpath  /home/user/.zshrc ) )/../../../ )"
+#shell_random="$( \realpath "$shdir"/../../ )"
 
 
 
@@ -49,10 +53,6 @@ fi
   \unset  -f  sourceallthat
 
 }
-
-
-
-SHELL=/usr/bin/sh
 
 
 

@@ -1,82 +1,21 @@
 #!/usr/bin/env  zsh
 
-
-
 : << IDEAS
   TODO - Check out http://dotfiles.org/~brendano/.zshrc
 IDEAS
 
 
-
-# It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
-if [ $( \whoami ) = 'root' ];
-  then  zshdir="$( \dirname $( \dirname $( \realpath  /home/user/.zshrc ) ) )"
-  else  zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc          ) ) )"
-fi
-
-# I don't actually use this variable anyway
-#shell_random="$( \realpath $( \dirname $( \realpath  /home/user/.zshrc ) )/../../../ )"
-
-
-
-#  Distinguish between:
-#    Cygwin
-#    Linux
-#    Windows Subsystem for Linux
-case "$( \uname  --kernel-name )" in
-  # Cygwin / Babun
-  CYGWIN*)
-    this_kernel_release='Cygwin'
-  ;;
-  # This might be okay for git-bash
-  'Linux')
-    case "$( \uname  --kernel-release )" in
-      *-Microsoft)
-        this_kernel_release='Windows Subsystem for Linux'
-      ;;
-      *)
-        this_kernel_release='Linux'
-      ;;
-    esac
-  ;;
-  *)
-    \echo  " * No scripting has been made for:  $( \uname  --kernel-name )"
-  ;;
-esac
-
-
-
-if [ -d '/mnt/a' ]; then  local  c_drive='/mnt/a'; fi   # Windows Subsystem for Linux
-if [ -d '/mnt/c' ]; then  local  c_drive='/mnt/c'; fi   #
-if [ -d '/mnt/d' ]; then  local  d_drive='/mnt/d'; fi   #
-if [ -d '/a' ];     then  local  c_drive='/a';     fi   # Babun
-if [ -d '/c' ];     then  local  c_drive='/c';     fi   #
-if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
-
-
-
-{  #  Paths
-
-  #PATH="$(         \realpath  ${a_drive}/live/OS/bin )":"$PATH"
-  PATH="$(         \realpath  /mnt/a/live/OS/bin )":"$PATH"
-  PATH="$PATH":"$( \realpath  "$zshdir/../" )"
-  PATH="$PATH":"$( \realpath  "$zshdir/../sh/scripts" )"
-  PATH="$PATH":"$( \realpath  "$zshdir/../bash/scripts" )"
-  PATH="$PATH":"$( \realpath  "$zshdir/scripts" )"
-  PATH="$PATH":"$( \realpath  "$HOME/l/path" )"
-  # FIXME/TODO - Babun:  Tentative testing suggests there are valid applications within, but Babun is running as user.
-  if [ $( \whoami ) = 'root' ]; then
-    PATH="$PATH":'/sbin'
-    PATH="$PATH":'/usr/sbin'
+#:<<'}'  #  Variables
+{
+  # It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
+  if [ $( \whoami ) = 'root' ];
+    then  export  zshdir="$( \dirname $( \dirname $( \realpath  /home/user/.zshrc ) ) )"
+    else  export  zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc          ) ) )"
   fi
-
-  if [ "$this_kernel_release" = 'Cygwin'                      ] ||  \
-     [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]; then
-    PATH="$PATH":"$( \realpath  "$zshdir/../wfl/scripts" )"
-  fi
-
+  export  shdir="$( \realpath "$zshdir"/../sh/ )"
+  # I don't actually use this variable anyway
+  #shell_random="$( \realpath "$zshdir"/../../ )"
 }
-
 
 
 {  # 'source' additional scripting and settings.
@@ -141,51 +80,6 @@ zle_highlight=(region:bg=red special:underline)
 \export  WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 
-{  #  File colors ($LS_COLORS) used for `ls`
-  # Note that there is some serious fuckery in NTFS dealing with mount permissions and NOT dircolors!
-  # I can see no solution using dircolors, and I don't know why.  This is not expected.
-  # Load defaults:
-  \eval  $( \dircolors  --bourne-shell )
-  {   # Load custom dircolors
-    __="~/.dircolors"   ;  if [ -e "$__" ]; then  \eval  $( \dircolors  --bourne-shell  "$__" )  ;  fi
-    __="~/.dir_colors"  ;  if [ -e "$__" ]; then  \eval  $( \dircolors  --bourne-shell  "$__" )  ;  fi
-  }
-  # Directories
-  # 94 = text, light blue
-  # 40 = background, black
-  # Note that in order to have light blue in Windows Subsystem for Linux, you need Color Tool to enable 24-bit colors:  https://github.com/Microsoft/console/releases
-
-# Do note that .sh isn't explicitly colored because the executable flag is preferred.
-
-\export  LS_COLORS="${LS_COLORS}"\
-:'di=0;94;40'\
-` # Additional archives `\
-:'*.7z=01;31'\
-` # Executables from other operating systems `\
-:'*.bat=01;32'\
-:'*.btm=01;32'`      # 4DOS/4NT `\
-:'*.cmd=01;32'`      # Windows `\
-:'*.com=01;32'\
-:'*.exe=01;32'\
-:'*.lnk=0;37'`       # Windows links.  It is not useful, so it is just being flagged like a text file. `\
-` # Text files `\
-:'*.doc=1;37'\
-:'*.markdown=1;37'`  # markup language:  Markdown `\
-:'*.md=1;37'`        # markup language:  Markdown `\
-:'*.ods=1;37'`       # spreadsheet:  LibreOffice `\
-:'*.pdf=1;37'\
-:'*README=1;37'`     # text:  This is not  "^README$"   but this works well enough.`\
-:'*.rtf=1;37'\
-:'*.torrent=1;37'\
-:'*.txt=1;37'\
-:'*.xls=1;37'`       # spreadsheet:  Microsoft Excel `\
-`  # Videos `\
-:'*.flv=01;35'\
-` # `
-}
-
-
-
 {  #  Prompt
   # A decent default prompt:
   # autoload -U promptinit && promptinit && prompt suse
@@ -244,17 +138,37 @@ zle_highlight=(region:bg=red special:underline)
 
 
 
+{  #  Paths
+
+  PATH=\
+"$( \realpath  "$zshdir/scripts" )"\
+:"$PATH"
+
+  if [ "$this_kernel_release" = 'Cygwin'                      ] \
+  || [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]; then
+    PATH=\
+"$( \realpath  "$zshdir/../wfl/scripts" )"\
+:"$PATH"
+    fi
+
+:<<'}'  #  Not used/tested in a while..
+{
+  # FIXME/TODO - Babun:  Tentative testing suggests there are valid applications within, but Babun is running as user.
+  if [ $( \whoami ) = 'root' ]; then
+    PATH="$PATH":'/sbin'
+    PATH="$PATH":'/usr/sbin'
+  fi
+}
+
+}
+
+
+
 # Syntax highlighting magic
 #   https://github.com/zsh-users/zsh-syntax-highlighting
 #\source  ${a_drive}/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 #FIXME
 \source  /mnt/a/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-
-# GUI software support.
-if [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]; then
-  \export  DISPLAY=localhost:0.0
-fi
 
 
 
@@ -291,3 +205,18 @@ else
   echo tty
 fi
 OLD
+
+
+
+:<<'}'
+{
+if [ -d '/mnt/a' ]; then  local  c_drive='/mnt/a'; fi   # Windows Subsystem for Linux
+if [ -d '/mnt/c' ]; then  local  c_drive='/mnt/c'; fi   #
+if [ -d '/mnt/d' ]; then  local  d_drive='/mnt/d'; fi   #
+if [ -d '/a' ];     then  local  c_drive='/a';     fi   # Babun
+if [ -d '/c' ];     then  local  c_drive='/c';     fi   #
+if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
+}
+
+
+
