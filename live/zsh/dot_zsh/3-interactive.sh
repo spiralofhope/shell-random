@@ -167,7 +167,7 @@ zle_highlight=(region:bg=red special:underline)
 :'*.cmd=01;32'`      # Windows `\
 :'*.com=01;32'\
 :'*.exe=01;32'\
-:'*.lnk=0;37'`       # Windows links.  It is not usedful, so it is just being flagged like a text file. `\
+:'*.lnk=0;37'`       # Windows links.  It is not useful, so it is just being flagged like a text file. `\
 ` # Text files `\
 :'*.doc=1;37'\
 :'*.markdown=1;37'`  # markup language:  Markdown `\
