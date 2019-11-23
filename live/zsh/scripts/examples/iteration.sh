@@ -4,6 +4,20 @@
 
 
 
+# TODO
+:<<'}'  #  Build an array from the output of a command.
+{
+  array=( \find -type d -name 'file*' )
+    \echo $element
+  done
+}
+
+
+
+
+
+
+
 :<<'}'  #  Iterate 1 to 3
 {
   numa=0 ; numb=3
