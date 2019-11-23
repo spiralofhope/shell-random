@@ -6,7 +6,7 @@
 
 :<<'}'  # Increment 1 to 5, one at a time
 {
-  for i in $( \seq 1 2 5 ); do
+  for i in $( seq 1 2 5 ); do
     echo $i
   done
 }
@@ -14,7 +14,7 @@
 
 :<<'}'  # Increment 1 to 5, one at a time, starting at 2
 {
-  for i in $( \seq 2 1 5 ); do
+  for i in $( seq 2 1 5 ); do
     echo $i
   done
 }
@@ -22,7 +22,7 @@
 
 :<<'}'  # Increment 1 to 10, two at a time (odd numbers)
 {
-  for i in $( \seq 1 2 10 ); do
+  for i in $( seq 1 2 10 ); do
     echo $i
   done
 }
@@ -30,7 +30,7 @@
 
 :<<'}'  # Increment 2 to 10, two at a time (even numbers)
 {
-  for i in $( \seq 2 2 10 ); do
+  for i in $( seq 2 2 10 ); do
     echo $i
   done
 }
@@ -38,7 +38,7 @@
 
 :<<'}'  # Decrement 5 to 1, one at a time
 {
-  for i in $( \seq 5 -1 1 ); do
+  for i in $( seq 5 -1 1 ); do
     echo $i
   done
 }
@@ -49,9 +49,7 @@
 {  # Using grep
   echo '----'
   variable="two words"
-  echo $variable |\
-  grep --only-matching . |\
-  while read character;  do
+  echo $variable | grep --only-matching . | while read character;  do
     echo $character
     # An example, with prepending text:
     #echo "_ $character"
@@ -63,20 +61,21 @@
 
 #<<'}'  #  Build an array
 {
-  variable="
+  # Build an array manually:
+  array="
     one  two   three
     second
     third
   "
 
-  # You can also build your content from a command:
-  #variable=$( \find . -maxdepth 1 )
+  # Build an array from the output of a command:
+  #array=$( find . -maxdepth 1 )
 }
 
 
 :<<'}'  #  Iterate through the lines in a variable.
 {
-  for line in "$variable"; do
+  for line in "$array"; do
     echo "$line"
   done
 }
@@ -84,7 +83,7 @@
 
 :<<'}'  #  Split by spaces, ignore extra spaces, ignore empty lines.
 {
-  for line in $variable; do
+  for line in $array; do
     echo $line
   done
 }
@@ -92,7 +91,7 @@
 
 :<<'}'  #  Split by spaces, ignore extra spaces, ignore empty lines, add your own text.
 {
-  for line in $variable; do
+  for line in $array; do
     echo "some text:  $line"
   done
 }
@@ -101,8 +100,7 @@
 
 :<<'}'  #  Split by lines, ignore extra spaces, accept empty lines.
 {
-  echo "$variable" |\
-  while read line; do
+  echo "$array" | while read line; do
     echo $line
   done
 }
@@ -110,8 +108,7 @@
 
 :<<'}'  #  Split by lines, ignore extra spaces, accept empty lines, append text.
 {
-  echo "$variable" |\
-  while read line; do
+  echo "$array" | while read line; do
     echo "_ $line"
   done
 }
@@ -119,8 +116,7 @@
 
 :<<'}'  #  Split by lines, ignore beginning spaces, accept empty lines, accept inner spaces.
 {
-  echo "$variable" |\
-  while read line; do
+  echo "$array" | while read line; do
     echo "$line"
   done
 }
@@ -134,8 +130,8 @@
   # FIXME - 2018-05-17 - Dash 0.5.7-4+b1  --  This does not work as-expected.
   OLDIFS=$IFS
   IFS=$'\n'
-  for line in $variable; do
-    \echo  "_ $line"
+  for line in $array; do
+    echo  "_ $line"
   done
   IFS=$OLDIFS
 }
@@ -153,7 +149,7 @@
 
 :<<'}'  #  Iteration through lines in a file, method two
 {
-  while IFS='' \read -r line; do
+  while IFS='' read -r line; do
     echo "Text read from file: $line"
   done < 'filename.ext'
 }
@@ -162,12 +158,7 @@
 
 :<<'}'  #  Iteration through a command's output
 {
-  \find -type f -name 'filen*' | while read line; do
+  find . -maxdepth 1 | while read line; do
     echo "Output of 'find': $line"
   done
 }
-
-
-
-
-

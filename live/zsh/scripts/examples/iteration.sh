@@ -4,20 +4,6 @@
 
 
 
-# TODO
-:<<'}'  #  Build an array from the output of a command.
-{
-  array=( \find -type d -name 'file*' )
-    \echo $element
-  done
-}
-
-
-
-
-
-
-
 :<<'}'  #  Iterate 1 to 3
 {
   numa=0 ; numb=3
@@ -43,20 +29,20 @@
 # ---
 
 
-local  variable=(
+local  array=(
   string
   "one quoted string"
   separated words
   1
 )
 # This is the same:
-#variable=( string "two words" 1 )
+#array=( string "two words" 1 )
 
 
 
 :<<'}'  #  Iterate by line, ignoring beginning spaces.
 {
-  for i in ${variable[@]}; do
+  for i in ${array[@]}; do
     echo $i
   done
 }
@@ -86,25 +72,25 @@ local  variable=(
     fi
   done
   # These all act the same:
-  \echo  '---'
-  \echo  $array
-  \echo  '---'
-  \echo  "$array"
-  \echo  '---'
+  echo  '---'
+  echo  $array
+  echo  '---'
+  echo  "$array"
+  echo  '---'
   for i in $array; do
     echo $i
   done
-  \echo  '---'
+  echo  '---'
 
   # Some setups may need to fiddle with IFS, but this is not necessary with my testing with zsh 5.7.1-1
   # IFS (Internal Field Separator), change to a carriage return:
   #IFS_original="$IFS"
-  #IFS=$( \printf "\r" )
+  #IFS=$( printf "\r" )
   # (the script)
   # Reset:
   #IFS="$IFS_original"
   
   # This was an alternative one-liner which doesn't work with zsh 5.7.1-1
   # Technically I shouldn't be adding a \r to the beginning of the array, but it doesn't seem to matter.
-  #array="$array$( \printf "\r" )$i"
+  #array="$array$( printf "\r" )$i"
 }
