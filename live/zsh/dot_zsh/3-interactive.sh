@@ -162,11 +162,11 @@ zle_highlight=(region:bg=red special:underline)
 ` # Additional archives `\
 :'*.7z=01;31'\
 ` # Executables from other operating systems `\
-:'*.bat=01;31'\
-:'*.btm=01;31'`      # 4DOS/4NT `\
-:'*.cmd=01;31'`      # Windows `\
-:'*.com=01;31'\
-:'*.exe=01;31'\
+:'*.bat=01;32'\
+:'*.btm=01;32'`      # 4DOS/4NT `\
+:'*.cmd=01;32'`      # Windows `\
+:'*.com=01;32'\
+:'*.exe=01;32'\
 :'*.lnk=0;37'`       # Windows links.  It is not usedful, so it is just being flagged like a text file. `\
 ` # Text files `\
 :'*.doc=1;37'\
