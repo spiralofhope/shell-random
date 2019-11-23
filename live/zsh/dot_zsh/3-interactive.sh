@@ -68,7 +68,7 @@ IDEAS
   HISTSIZE=10000
   SAVEHIST=10000
   # prepend a command with a space and have it not commit a command to the histfile.
-  setopt HIST_IGNORE_SPACE
+  setopt  HIST_IGNORE_SPACE
 }
 
 
