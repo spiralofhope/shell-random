@@ -1,6 +1,8 @@
 #!/usr/bin/env  zsh
 # Examples of iterating through a list / array (zsh-specific)
 # zsh 5.0.7 (i586-pc-linux-gnu)
+# Universal examples are found with sh/iteration.sh
+
 
 
 
@@ -37,6 +39,13 @@ local  array=(
 )
 # This is the same:
 #array=( string "two words" 1 )
+
+
+# Count the number of items in an array:
+#echo  ${#array[@]}
+#  =>  3
+# You can also count the number of arguments passed to a script:
+#echo  ${#*[@]}
 
 
 
