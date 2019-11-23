@@ -121,18 +121,22 @@ zle_highlight=(region:bg=red special:underline)
   chpwd() {
     [[ -t 1 ]] || return
     print -Pn "\e]2;%~\a"
-
-    # I don't think I've ever needed this complexity:
-    #case $TERM in
-      #sun-cmd)
-        #print -Pn "\e]l%~\e\\"
-      #;;
-      #*xterm*|rxvt(-unicode)|(dt|k|E)term|screen)
-        #print -Pn "\e]2;%~\a"
-      #;;
-    #esac
-
   }
+
+  :<<'  }'   # I don't think I've ever needed this complexity
+  {
+    chpwd() {
+      case $TERM in
+        sun-cmd)
+          print -Pn "\e]l%~\e\\"
+        ;;
+        *xterm*|rxvt(-unicode)|(dt|k|E)term|screen)
+          print -Pn "\e]2;%~\a"
+        ;;
+      esac
+    }
+  }
+
   chpwd
 }
 
