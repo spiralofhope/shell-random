@@ -154,16 +154,34 @@ zle_highlight=(region:bg=red special:underline)
   # 94 = text, light blue
   # 40 = background, black
   # Note that in order to have light blue in Windows Subsystem for Linux, you need Color Tool to enable 24-bit colors:  https://github.com/Microsoft/console/releases
-  \export  LS_COLORS="${LS_COLORS}":'di=0;94;40'
-  # Additional archives
-  \export  LS_COLORS="${LS_COLORS}":'*.7z=01;31'
-  # Windows system files
-  \export  LS_COLORS="${LS_COLORS}":'*.lnk=0;42'
-  # Text files
-  # README isn't *exactly* matched, but it's close enough!
-  \export  LS_COLORS="${LS_COLORS}":'*.txt=1;37':'*.md=1;37':'*.markdown=1;37':'*README=1;37'
-  # Videos
-  \export  LS_COLORS="${LS_COLORS}":'*.flv=01;35'
+
+# Do note that .sh isn't explicitly colored because the executable flag is preferred.
+
+\export  LS_COLORS="${LS_COLORS}"\
+:'di=0;94;40'\
+` # Additional archives `\
+:'*.7z=01;31'\
+` # Executables from other operating systems `\
+:'*.bat=01;31'\
+:'*.btm=01;31'`      # 4DOS/4NT `\
+:'*.cmd=01;31'`      # Windows `\
+:'*.com=01;31'\
+:'*.exe=01;31'\
+:'*.lnk=0;37'`       # Windows links.  It is not usedful, so it is just being flagged like a text file. `\
+` # Text files `\
+:'*.doc=1;37'\
+:'*.ods=1;37'`       # spreadsheet:  LibreOffice `\
+:'*.markdown=1;37'`  # markup language:  Markdown `\
+:'*.md=1;37'`        # markup language:  Markdown `\
+:'*.pdf=1;37'\
+:'*README=1;37'`     # text:  This is not  "^README$"   but this works well enough.`\
+:'*.txt=1;37'\
+:'*.torrent=1;37'\
+:'*.rtf=1;37'\
+:'*.xls=1;37'`       # spreadsheet:  Microsoft Excel `\
+`  # Videos `\
+:'*.flv=01;35'\
+` # `
 }
 
 
