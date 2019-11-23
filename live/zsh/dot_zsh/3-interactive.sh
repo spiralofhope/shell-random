@@ -171,7 +171,7 @@ zle_highlight=(region:bg=red special:underline)
 # Syntax highlighting magic
 #   https://github.com/zsh-users/zsh-syntax-highlighting
 #\source  ${a_drive}/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-#FIXME
+#FIXME - a smarter path
 \source  /mnt/a/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 

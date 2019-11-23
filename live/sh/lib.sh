@@ -46,27 +46,22 @@
 
 
 
-
-
 #:<<'{'   #  File colors ($LS_COLORS) used for `ls`
 {
   # Note that there is some serious fuckery in NTFS dealing with mount permissions and NOT dircolors!
   # I can see no solution using dircolors, and I don't know why.  This is not expected.
-  # Load defaults:
+  # Load default dircolors:
   \eval  $( \dircolors  --bourne-shell )
-  {   # Load custom dircolors
-    __="~/.dircolors"   ;  if [ -e "$__" ]; then  \eval  $( \dircolors  --bourne-shell  "$__" )  ;  fi
-    __="~/.dir_colors"  ;  if [ -e "$__" ]; then  \eval  $( \dircolors  --bourne-shell  "$__" )  ;  fi
-  }
-  # Directories
-  # 94 = text, light blue
-  # 40 = background, black
+  # Load manually-specified dircolors:
+  __="~/.dircolors"   ;  if [ -e "$__" ]; then  \eval  $( \dircolors  --bourne-shell  "$__" )  ;  fi
+  __="~/.dir_colors"  ;  if [ -e "$__" ]; then  \eval  $( \dircolors  --bourne-shell  "$__" )  ;  fi
+
   # Note that in order to have light blue in Windows Subsystem for Linux, you need Color Tool to enable 24-bit colors:  https://github.com/Microsoft/console/releases
+  #
+  # Note that *.sh isn't explicitly colored because the executable flag is preferred.
 
-# Do note that .sh isn't explicitly colored because the executable flag is preferred.
-
-\export  LS_COLORS="${LS_COLORS}"\
-:'di=0;94;40'\
+  export  LS_COLORS="${LS_COLORS}"\
+:'di=0;94;40'`       # Directories `\
 ` # Additional archives `\
 :'*.7z=01;31'\
 ` # Executables from other operating systems `\
@@ -87,10 +82,22 @@
 :'*.torrent=1;37'\
 :'*.txt=1;37'\
 :'*.xls=1;37'`       # spreadsheet:  Microsoft Excel `\
-`  # Videos `\
-:'*.flv=01;35'\
-` # `
+` #  ` > /dev/null 2>&1
+
+# 2019-11-23
+# The above redirection is to avoid errors with "#" actually trying to be executed.
+#
+# This is seen on Debian 64bit
+#   dash  0.5.10.2-5
+#   zsh   5.7.1-1
+# But not Debian 32bit
+#   dash  0.5.8-2.4
+#   zsh   5.3.1-4+b3
+# But not Windows Subsystem for Linux / Debian
+#   dash  0.5.8-2.4
+#   zsh   5.3.1-4+b3
+#
+# Future self will probably re-discover this problem, so hopefull this note helps.
+
 }
-
-
 
