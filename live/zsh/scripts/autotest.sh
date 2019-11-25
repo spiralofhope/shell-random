@@ -2,7 +2,8 @@
 
 
 
-todo() {
+:<<'}'   #  TODO
+{
 # TODO: Distinctly identify debugging vs regular.  Maybe a simple colour change, or some text..?
 
 : <<TODO_LIST
@@ -176,33 +177,32 @@ HEREDOC
 setup() {
   MYSHELL="$( \basename  $( \readlink  /proc/$$/exe ) )"
   ORIGINAL_PWD="$PWD"
-  if   [ -d '/mnt/c' ]; then
-    # Windows Subsystem for Linux
-    \source  '/mnt/c/live/OS/bin-mine/shell-random/git/live/zsh/colours.sh'
-  elif [ -d '/mnt/d' ]; then
-    # Windows Subsystem for Linux
-    \source  '/mnt/d/live/OS/bin-mine/shell-random/git/live/zsh/colours.sh'
-  else
-    \source  '/live/OS/Linux/shell-random/git/live/zsh/colours.sh'
-  fi
+
+  #:<<'  }'   #  Distinguish between platforms
+            #  - Cygwin
+            #  - Linux
+            #  - Windows Subsystem for Linux
+  {
+  case "$( \uname  --kernel-name )" in
+    # Cygwin / Babun
+    CYGWIN*)          export  this_kernel_release='Cygwin' ;;
+    MINGW*)           export  this_kernel_release='Mingw' ;;
+    # This might be okay for git-bash
+    'Linux')
+      case "$( \uname  --kernel-release )" in
+        *-Microsoft)  export  this_kernel_release='Windows Subsystem for Linux' ;;
+        *)            export  this_kernel_release='Linux' ;;
+      esac
+    ;;
+    *)
+      \echo  " * No scripting has been made for:  $( \uname  --kernel-name )"
+    ;;
+  esac
+  }
+
+  \source  "$HOME/l/shell-random/live/sh/functions/colours.sh"
 }
 setup
-
-
-
-#:<<'}'   #  Determine what sort of machine we're on
-{
-  #  -s
-  unameOut="$( \uname  --kernel-name )"
-  case "${unameOut}" in
-    CYGWIN*)    machine=Cygwin;;
-    Darwin*)    machine=Mac;;
-    Linux*)     machine=Linux;;
-    MINGW*)     machine=MinGw;;
-    *)          machine="UNKNOWN:${unameOut}"
-  esac
-  #echo ${machine}
-}
 
 
 
@@ -511,7 +511,7 @@ get_file_ext() {
           \echo      "\$SHELL has not been set."
           ansi_echo  'What the hell is wrong with you?'
           \echo      'Falling back to sh.'
-          MYSHELL=sh
+          MYSHELL='sh'
         fi
       esac
       \echo  "Using $MYSHELL"
@@ -536,8 +536,8 @@ get_file_ext() {
           execute_with_debugging() {
             # FIXME - maybe it is.. but I'd have to check if I'm sh or dash
             # -o verbose  -o +xtrace
-            ansi_echo  'debugging is not supported'
-            execute
+            #ansi_echo  'debugging is not supported'
+            \dash  -o xtrace  -c  \""$AUTOTEST_FILE"\" ; RESULT="$?"
           }
         ;;
         'sh' )
@@ -546,8 +546,8 @@ get_file_ext() {
             \sh  -c  \""$AUTOTEST_FILE"\" ; RESULT="$?"
           }
           execute_with_debugging() {
-            # TODO - I don't know if there are debugging-esque things I can do.  See dash, above.
-            ansi_echo  'debugging is not supported'
+            # TODO - This script can't tell the difference between sh and dash.
+            ansi_echo  "This script can't tell if debugging is supported; assuming it isn't."
             execute
           }
         ;;
@@ -685,10 +685,8 @@ main_foreground() {
     #\exec  "$EDITOR"  "$AUTOTEST_FILE" &
     # Fuck the configurability, let's do this manually..
 
-
-    case "${unameOut}" in
-      # Babun
-      CYGWIN*|MINGW*|Linux)
+    case "$this_kernel_release" in
+      'Cygwin'|'Mingw')
         geany () {
           for file in "$@"
           do
@@ -706,6 +704,8 @@ main_foreground() {
         editor_pid=$( \ps  -efW | \grep  'C:\\Program Files (x86)\\Geany\\bin\\geany.exe' | \awk '{ print $2 }' )
       ;;
       *)
+        #'Linux'|'Windows Subsystem for Linux'
+        # Note that Windows Subsystem for Linux needs to have something like XLaunch running in order to launch a GUI program.
         \geany  --new-instance  "$AUTOTEST_FILE" &
         exit_code=$?
         editor_pid=$!
@@ -755,10 +755,8 @@ main_foreground() {
       # kill -0 $editor_pid 2> /dev/null
       # Interesting how --quiet and --silent don't work, and the name of the executable keeps being echoed on each iteration.  I wonder if this is a bug, because it's certainly unexpected.  But then again, GNU is all about difficult programs with unexpected results.  They are generally anti-POLS (principle of least surprise).
 
-
-      case "${unameOut}" in
-        # Babun
-        CYGWIN*|MINGW*|Linux)
+      case "$this_kernel_release" in
+        'Cygwin'|'Mingw')
           geany () {
             for file in "$@"
             do
@@ -775,6 +773,7 @@ main_foreground() {
           exit_code=$?
         ;;
         *)
+          #'Linux'|'Windows Subsystem for Linux'
           \readlink  /proc/"$editor_pid"/exe > /dev/null
           exit_code=$?
         ;;
@@ -875,6 +874,16 @@ else
 fi
 }
 
+
+
+
+#:<<'}'   #  For testing
+{
+if [ -z $1 ]; then
+  "$0"  $HOME/foo.sh
+  return
+fi
+}
 
 
 main  $@
