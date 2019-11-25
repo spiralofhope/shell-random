@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+
+
 todo() {
 # TODO: Distinctly identify debugging vs regular.  Maybe a simple colour change, or some text..?
 
@@ -32,6 +34,7 @@ TODO_LIST
 }
 
 
+
 :<<'}'   #  git-bash:  ANSI under Windows
 Use ANSICON
   https://blog.spiralofhope.com/?p=37580
@@ -44,6 +47,7 @@ on Windows 10:
   3. go to its unzipped location, to x64
   4. ansicon.exe -I
 }
+
 
 
 user_preferences() {
@@ -87,6 +91,8 @@ user_preferences() {
   # AGGRESSIVE_CHECK_AUTOTEST_FILE='no'
 }
 user_preferences
+
+
 
 usage() {
 \cat  <<'HEREDOC'
@@ -165,6 +171,8 @@ TODO:  `head` is used by .my
 HEREDOC
 }
 
+
+
 setup() {
   MYSHELL="$( \basename  $( \readlink  /proc/$$/exe ) )"
   ORIGINAL_PWD="$PWD"
@@ -180,7 +188,10 @@ setup() {
 }
 setup
 
-{   #  Determine what sort of machine we're on
+
+
+#:<<'}'   #  Determine what sort of machine we're on
+{
   #  -s
   unameOut="$( \uname  --kernel-name )"
   case "${unameOut}" in
@@ -192,6 +203,8 @@ setup
   esac
   #echo ${machine}
 }
+
+
 
 spinner() {   #  Traditional bar-spinner with these characters:  -\|/
   if [ -z $SPINNER ]; then return 0 ; fi
@@ -220,6 +233,8 @@ spinner() {   #  Traditional bar-spinner with these characters:  -\|/
   \printf  '  '
 }
 
+
+
 ansi_echo() {
   STRING="$1"
   if [ "$ANSI" = 'no' ]; then
@@ -229,6 +244,8 @@ ansi_echo() {
     \echo  -e  "\x1b\x5b1;33;40m$STRING\x1b\x5b0;37;40m\n"
   fi
 }
+
+
 
 check_file() {
   # TODO: Allow parameters to be passed to only perform certain checks.  Then export this to make it a universal procedure.
@@ -300,6 +317,8 @@ check_file() {
   # If we survived this, then the file seems to be sane.
   return 0
 }
+
+
 
 get_file_ext() {
   AUTOTEST_FILE="$1"
@@ -569,6 +588,8 @@ get_file_ext() {
   return  0
 }
 
+
+
 get_file_time() {
   AUTOTEST_FILE="$1"
   AUTOTEST_FILE_TIME=''
@@ -592,6 +613,8 @@ get_file_time() {
       AUTOTEST_FILE_TIME="$( \echo "$AUTOTEST_FILE_TIME_TEMP"|"cut" --delimiter " " --fields 4,5 )"
   esac
 }
+
+
 
 run_script() {
   AUTOTEST_FILE="$1"
@@ -639,6 +662,8 @@ run_script() {
   # It'll see the non-zero $RESULT and run execute_with_debugging
   if [ ! "$RESULT" -eq 0 ]; then run_script_main  "$AUTOTEST_FILE" ; fi
 }
+
+
 
 main_foreground() {
   until [ "MAIN_ROUTINE" = 'finished' ]; do
@@ -768,6 +793,9 @@ main_foreground() {
     break # MAIN_ROUTINE
   done
 }
+
+
+
 main_background() {
   PID_FILE="$TMP/$( \basename "$0" )".$$.lock
   \echo  . >> "$PID_FILE"
@@ -823,6 +851,8 @@ main_background() {
   done
 }
 
+
+
 # TODO:  No spinner
 main() {
 if [ -z $1 ]; then
@@ -844,4 +874,7 @@ else
   return  1
 fi
 }
+
+
+
 main  $@
