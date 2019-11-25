@@ -200,6 +200,7 @@ setup() {
   esac
   }
 
+  # FIXME - This is a zshism isn't it?
   \source  "$HOME/l/shell-random/live/sh/functions/colours.sh"
 }
 setup
@@ -248,6 +249,9 @@ ansi_echo() {
 
 
 check_file() {
+  local break_if_failed() {
+    if [ $? -ne 0 ]; then  \echo  'check_file failed, aborting' ; break ; fi
+  }
   # TODO: Allow parameters to be passed to only perform certain checks.  Then export this to make it a universal procedure.
   #   Then also have specific error codes for failing to correct certain checks.
   AUTOTEST_FILE="$1"
@@ -267,55 +271,16 @@ check_file() {
       \echo  >  "$AUTOTEST_FILE" ; RESULT=$?
       if [ ! -e "$AUTOTEST_FILE" ] || [ $RESULT -ne 0 ] ; then
         \echo  'There were issues creating the file.  Aborting.'
-        return  1
+        break
       fi
     else
       \echo 'Opted to not create the file.  Aborting.'
-      return 1
+      break
     fi
   fi
-  # The file does exist.
-  # Readable?
-  if [ ! -r "$AUTOTEST_FILE" ]; then
-    \echo  "The file isn't readible.  Trying to correct that."
-    \chmod  u+r  "$AUTOTEST_FILE" ; RESULT=$?
-    if [ $RESULT -ne 0 ]; then
-      \echo  "I couldn't correct that.  Aborting."
-      return  1
-    else
-      \echo  'It looks like it worked.'
-    fi
-  fi
-  # Writable?
-  if [ ! -w "$AUTOTEST_FILE" ]; then
-    \echo  "The file isn't writable.  Trying to correct that."
-    \chmod  u+w  "$AUTOTEST_FILE" ; RESULT=$?
-    if [ $RESULT -ne 0 ]; then
-      \echo  "I couldn't correct that.  Aborting."
-      return  1
-    else
-      \echo  'It looks like it worked.'
-    fi
-  fi
-  # Executable?
-  
-  if [ ! -x "$AUTOTEST_FILE" ]; then
-    case "$EXT" in
-    'c')
-    ;;
-    *)
-      \echo  "The file isn't executable.  Trying to correct that."
-      \chmod  u+x  "$AUTOTEST_FILE" ; RESULT=$?
-      if [ $RESULT -ne 0 ]; then
-        \echo  "I couldn't correct that.  Aborting."
-        return  1
-      else
-        \echo  'It looks like it worked.'
-      fi
-    esac
-  fi
-  # If we survived this, then the file seems to be sane.
-  return 0
+  if [ ! -r "$AUTOTEST_FILE" ]; then  \chmod  --verbose  u+r  "$AUTOTEST_FILE"; break_if_failed ; fi
+  if [ ! -w "$AUTOTEST_FILE" ]; then  \chmod  --verbose  u+w  "$AUTOTEST_FILE"; break_if_failed ; fi
+  if [ ! -x "$AUTOTEST_FILE" ]; then  \chmod  --verbose  u+x  "$AUTOTEST_FILE"; break_if_failed ; fi
 }
 
 
@@ -434,7 +399,7 @@ get_file_ext() {
           \cat  "$AUTOTEST_FILE"  >> $mythryl_file
           \echo                   >> $mythryl_file
           \echo  '};'             >> $mythryl_file
-          \chmod  +x  $mythryl_file
+          \chmod  --verbose  +x  $mythryl_file
           "$mythryl_file" ; RESULT="$?"
           \rm  --force  $mythryl_file
         else
@@ -492,11 +457,10 @@ get_file_ext() {
         if  \test  -n  "$SHELL"; then
           \echo  "\$SHELL has been set to:  $SHELL"
           case "$SHELL" in
-            # TODO/FIXME - It's possible for there to be other paths I need to work with.  I just don't care.
-            '/bin/bash' ) MYSHELL=bash ;;
-            '/bin/dash' ) MYSHELL=dash ;;
-            '/bin/sh'   ) MYSHELL=sh   ;;
-            '/bin/zsh'  ) MYSHELL=zsh  ;;
+            '/bin/bash' | '/usr/bin/bash' ) MYSHELL=bash ;;
+            '/bin/dash' | '/usr/bin/dash' ) MYSHELL=dash ;;
+            '/bin/sh'   | '/usr/bin/sh'   ) MYSHELL=sh   ;;
+            '/bin/zsh'  | '/usr/bin/zsh'  ) MYSHELL=zsh  ;;
             *)
               ansi_echo  "While \$SHELL has been set, this script has not been programmed to use it."
               \echo      "Don't fret, it's not too hard to hack this script to add functionality."
@@ -519,8 +483,7 @@ get_file_ext() {
       case "$MYSHELL" in
         'bash')
           execute() {
-            #source "$AUTOTEST_FILE" ; RESULT="$?"
-            \bash  "$AUTOTEST_FILE" ; RESULT="$?"
+            \bash  -c  "$AUTOTEST_FILE" ; RESULT="$?"
           }
           execute_with_debugging() {
             # TODO: I should remember and then restore it, but how?
@@ -543,17 +506,19 @@ get_file_ext() {
         'sh' )
           execute() {
             # Tested under dash
+            #\chmod  --verbose  u+x  "$AUTOTEST_FILE"
             \sh  -c  \""$AUTOTEST_FILE"\" ; RESULT="$?"
           }
           execute_with_debugging() {
             # TODO - This script can't tell the difference between sh and dash.
-            ansi_echo  "This script can't tell if debugging is supported; assuming it isn't."
+            ansi_echo  "This script can't tell if debugging is supported or not; assuming it isn't."
             execute
           }
         ;;
         'zsh' | 'zsh4' | 'zsh5')
           execute() {
-            source  "$AUTOTEST_FILE" ; RESULT="$?"
+            #\chmod  --verbose  u+x  "$AUTOTEST_FILE"
+            \zsh  -c  "$AUTOTEST_FILE" ; RESULT="$?"
           }
           execute_with_debugging() {
             # TODO: I should remember and then restore it, but how?
@@ -639,6 +604,8 @@ run_script() {
       ansi_echo  " * begin  $( \date )"
 
       if [ "$RESULT" -eq 0 ]; then
+        # For some reason I have to move the check_file here, for VirtualBox Linux-guest, Windows-host.
+        check_file  "$AUTOTEST_FILE"
         execute
       else
         execute_with_debugging
@@ -669,13 +636,13 @@ main_foreground() {
   until [ "MAIN_ROUTINE" = 'finished' ]; do
     AUTOTEST_FILE="$( \readlink  --canonicalize  "$1" )"
 
-    get_file_ext "$AUTOTEST_FILE"
+    get_file_ext  "$AUTOTEST_FILE"
     if [ $? -ne 0 ]; then  break ; fi
 
-    check_file "$AUTOTEST_FILE"
+    check_file  "$AUTOTEST_FILE"
     if [ $? -ne 0 ]; then  break ; fi
 
-    get_file_time "$AUTOTEST_FILE"
+    get_file_time  "$AUTOTEST_FILE"
     if [ $? -ne 0 ]; then  break ; fi
 
     NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
@@ -800,7 +767,6 @@ main_background() {
   \echo  . >> "$PID_FILE"
 
   check_file "$AUTOTEST_FILE"
-  if [ $? -ne 0 ]; then  break ; fi
   # Launch it automatically.
   run_script  "$AUTOTEST_FILE"
 
@@ -854,36 +820,36 @@ main_background() {
 
 # TODO:  No spinner
 main() {
-if [ -z $1 ]; then
-  usage
-  return  0
-fi
-if [ "x${2}" = 'x' ]; then
-  SPINNER=0
-  main_foreground  $@
-elif [ "x${2}" = 'x-bg' ]; then
-  SPINNER=0
-  main_background  $@
-elif [ "x${2}" = 'x--nodebug' ]; then
-  SPINNER=0
-  DEBUG='false'
-  main_foreground  $@
-else
-  usage
-  return  1
-fi
+  if [ -z $1 ]; then
+    usage
+    return  0
+  fi
+  if [ "x${2}" = 'x' ]; then
+    SPINNER=0
+    main_foreground  $@
+  elif [ "x${2}" = 'x-bg' ]; then
+    SPINNER=0
+    main_background  $@
+  elif [ "x${2}" = 'x--nodebug' ]; then
+    SPINNER=0
+    DEBUG='false'
+    main_foreground  $@
+  else
+    usage
+    return  1
+  fi
 }
 
 
 
-
-#:<<'}'   #  For testing
+:<<'}'   #  For testing
 {
-if [ -z $1 ]; then
-  "$0"  $HOME/foo.sh
-  return
-fi
+  if [ -z $1 ]; then
+    "$0"  $HOME/foo.sh
+    return
+  fi
 }
+
 
 
 main  $@
