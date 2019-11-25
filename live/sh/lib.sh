@@ -25,7 +25,8 @@
   case "$( \uname  --kernel-name )" in
     # Cygwin / Babun
     CYGWIN*)          export  this_kernel_release='Cygwin'  ;;
-    # This might be okay for git-bash
+    MINGW*)           export  this_kernel_release='Mingw' ;;
+    # This might be okay for git-bash:
     'Linux')
       case "$( \uname  --kernel-release )" in
         *-Microsoft)  export  this_kernel_release='Windows Subsystem for Linux' ;;
