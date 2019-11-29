@@ -206,27 +206,6 @@ jpegoptim80()  { _jpegoptimize  80 "$@" }
 jpegoptim50()  { _jpegoptimize  50 "$@" }
 
 
-# TODO - deduplicate this
-vbrfixit() {
-  if [ -z $1 ]; then
-    for i in *; do
-      \echo ----- "$i"
-      if [ -f "$i" ]; then
-        \vbrfix  -always  "$i"  out
-        \mv  --force  out  "$i"
-      fi
-    done
-  else
-    if [ -f "$i" ]; then
-      \vbrfix  -always  "$i"  out
-      \mv  --force  out  "$i"
-    fi
-  fi
-}
-
-
-
-
 # I don't know why I had this uncommented in aliases.sh, but I'm moving it here and disabling it.
 :<<'}'   #  Disabled rm
 #alias  rm='nocorrect  \rm  --interactive'
