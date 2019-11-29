@@ -1,10 +1,18 @@
 #!/usr/bin/env  sh
-# geany overwrites symlinks when the target is on an NTFS filesystem
+# Instead of opening the symlink, open the file's realpath.
+# Workaround for Geany overwriting symlinks when the target is on an NTFS filesystem.
 
 
 
 geany() {
+  local  commandline=
+  for i in "$@"; do
+    if [ -f $i ]; then
+      commandline="$commandline $( \realpath  "$i" )"
+    else
+      commandline="$commandline $i"
+    fi
+  done
   # I don't understand why \geany won't work.
-  # FIXME - This prevents the use of commandline switches.
-  /usr/bin/geany "$( \realpath  $* )"
+  /usr/bin/geany  $commandline
 }
