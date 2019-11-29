@@ -1,4 +1,9 @@
 #!/usr/bin/env  sh
+# youtube-dl
+# A download helper for YouTube and other video hosts.
+# https://youtube-dl.org/
+# https://blog.spiralofhope.com/?p=41260
+
 
 
 #` # I suspect this is important for an NTFS filesystem. `  \
