@@ -42,11 +42,11 @@ findqueue() {
   done
 
 
-  _queue() {
+  local  _queue() {
 
     local  extension="$1"
     shift
-    local  iname="*${@}*${extension}"
+    local  iname="*${@}${extension}"
     \echo  "Searching for:  $iname"
     #\find  .  -type f  -iname "$iname"
 
@@ -71,17 +71,15 @@ findqueue() {
   # TODO - As deadbeef empties a playlist once it hits an invalid file, I'm going over its more common file types manually.
   # This might blank the playlist, but format is supported.  It's something being offered into the queue that's blanking it.  This was reproduced with a ։ in the filename.
   #   Therefore I'll put this first, so it won't be so awful if it's triggered.
-  _queue  '.m4a'  "$@"
-  _queue  '.mp3'  "$@"
-  _queue  '.ogg'  "$@"
-  _queue  '.flac' "$@"
-  _queue  '.opus' "$@"
+  _queue  'm4a'  "$@"
+  _queue  'mp3'  "$@"
+  _queue  'ogg'  "$@"
+  _queue  'flac' "$@"
+  _queue  'opus' "$@"
   ## Oldschool, via plugins
-  _queue  '.sid'  "$@"
-  # FIXME - more extensions
+  _queue  'sid'  "$@"
+  # TODO - more extensions
   
-  \unset  -f  _queue
-
 }
 
 }  else                                                             {   #  Audacious
