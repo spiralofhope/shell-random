@@ -146,6 +146,7 @@ zle_highlight=(region:bg=red special:underline)
 
   PATH=\
 "$( \realpath  "$zshdir/scripts" )"\
+:"$( \realpath  "$zshdir/../bash/scripts" )"\
 :"$PATH"
 
   if [ "$this_kernel_release" = 'Cygwin'                      ] \
