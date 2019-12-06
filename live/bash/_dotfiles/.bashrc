@@ -14,4 +14,4 @@ fi
 
 
 # I don't really care about the stuff above.  Just copy-paste it from whatever default is given.
-source ~/.bashrc_mine.sh
+source  ~/.bashrc_mine.sh
