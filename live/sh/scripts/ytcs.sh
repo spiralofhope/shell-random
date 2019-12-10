@@ -1,7 +1,10 @@
 #!/usr/bin/env  sh
 # Scrape comments from YouTube videos
-# https://github.com/philbot9/youtube-comment-scraper/
+# For the commandline executable of youtube-comment-scraper:
+#   https://github.com/philbot9/youtube-comment-scraper/
 # https://blog.spiralofhope.com/?p=45279
+#
+# See  `youtube-comment-scraper.sh`  for a web-GUI version.
 
 
 
