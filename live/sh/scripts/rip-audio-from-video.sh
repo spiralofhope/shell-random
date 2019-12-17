@@ -18,14 +18,15 @@ debug=true
 
 
 first_word(){
-  \echo  "$@"  |  \cut  --delimiter=' '  --fields=1
+  \echo  "$@"  |\
+    \cut  --delimiter=' '  --fields=1
 }
 
 
 
 debug() {
   if [ $debug ]; then
-    \echo  $*
+    \echo  "$@"
   fi
 }
 
@@ -36,7 +37,8 @@ debug() {
   input="$1"
   source_file="$( \realpath "$input" )"
 
-  debug  'source is:'
+  debug  ''
+  debug  ' * source is:'
   debug  "$source_file"
 }
 
@@ -53,21 +55,16 @@ debug() {
       \ffmpeg  -i "$source_file"  2>&1 |\
       \sed  --quiet  's/.* Audio: \([^,]*\).*/\1/p' \
     )"
-
-    debug  'audio_codec is:'
+    debug  ''
+    debug  ' * audio_codec is:'
     debug  "$audio_codec"
   }
-  __=$( first_word  "$audio_codec" )
-  if [ "$__" = 'aac' ]; then
-    append='.aac'
-    debug  "appending .aac"
-  else
-    append=".${audio_codec}"
-  fi
+  extension="$( first_word  "$audio_codec" )"
 
-  target_file="${directory_without_file}/${filename_without_path_or_extension}${append}"
+  target_file="${directory_without_file}/${filename_without_path_or_extension}.${extension}"
 
-  debug  'target is:'
+  debug  ''
+  debug  ' * target is:'
   debug  "$target_file"
 }
 
@@ -75,9 +72,16 @@ debug() {
 
 #:<<'}'   #  rip
 {
-  \ffmpeg \
-    -i "$source_file" \
-    -acodec copy \
-    "$target_file" \
+  debug  ''
+  debug  ' * Ripping'
+  debug  ''
+  \ffmpeg  \
+    -i  "$source_file"  \
+    -acodec  copy  \
+    "$target_file"  \
   ` # `
+
+
+  debug  ''
+  debug  ' * Done.'
 }
