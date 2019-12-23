@@ -4,7 +4,7 @@
 
 # As root:
 if ! [ "$USER" = 'root' ]; then
-  \echo  "enter root password"
+  \echo  'enter root password'
   /bin/su  --command  "$0"
 else
 
