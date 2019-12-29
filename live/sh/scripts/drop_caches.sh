@@ -9,8 +9,7 @@
 
 
 
-# /sbin/sysctl -w vm.drop_caches=3
 # 1 to free pagecache
 # 2 to free dentries and inodes
 # 3 to free pagecache, dentries and inodes
-
+\sudo  /sbin/sysctl  --write vm.drop_caches=3
