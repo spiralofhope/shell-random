@@ -1,14 +1,18 @@
 #!/usr/bin/env  sh
+# Drop any caches in memory.
+# This is helpful for having less working memory to dump to a hibernation file.
+# For example, using VirtualBox's "save the machine state".
 
 
 
-\sync
-\sudo  \echo -n ''
-\sudo  \echo  3  >!  /proc/sys/vm/drop_caches
-
-
+\sudo  \sync
 
 # 1 to free pagecache
 # 2 to free dentries and inodes
 # 3 to free pagecache, dentries and inodes
-\sudo  /sbin/sysctl  --write vm.drop_caches=3
+__=3
+
+\sudo  \sh  -c "/usr/bin/echo $__ > /proc/sys/vm/drop_caches"
+\sudo  /sbin/sysctl  --write vm.drop_caches=$__
+
+\sudo  \sync
