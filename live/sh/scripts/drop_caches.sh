@@ -4,7 +4,6 @@
 
 \sync
 \sudo  \echo -n ''
-# I have no idea why this line won't fucking work.  I have to manually sudo above.
 \sudo  \echo  3  >!  /proc/sys/vm/drop_caches
 
 
