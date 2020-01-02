@@ -10,6 +10,7 @@ alias  dash='\sh  -l'
 alias  df='_df_sorted 1'                                                # sorted by filesystem
 alias  du='\du  --human-readable'
 alias  eject='\eject  -i 0 ; \eject'                                    # Force-eject
+alias  free='\free  --human  --si'
 alias  grep='\grep  --color'                                            # Note that bash-windows does not support --color
 #alias  less='\less  --force  --RAW-CONTROL-CHARS  --quit-if-one-screen  $@'
 alias  less='\less  --RAW-CONTROL-CHARS'
