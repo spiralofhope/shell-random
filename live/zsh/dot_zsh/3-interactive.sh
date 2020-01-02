@@ -69,6 +69,9 @@ IDEAS
   SAVEHIST=10000
   # prepend a command with a space and have it not commit a command to the histfile.
   setopt  HIST_IGNORE_SPACE
+  # Disable history expansion using "!" so that things like this work to clobber contents:
+  #  \echo  'text to clobber with'  >!  'filename.ext'
+  set  +H
 }
 
 
