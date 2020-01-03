@@ -1,4 +1,4 @@
-test#!/usr/bin/env  sh
+#!/usr/bin/env  sh
 
 # NOTE - if this isn't working, then check that you have "default session" selected via your dm (lightdm/etc)
 # Check that you use a ~/.xsession and it has something like "openbox-session" in it.

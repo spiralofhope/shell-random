@@ -57,6 +57,8 @@
   #fi
 
   ~/l/shell-random/live/sh/scripts/screensaver-control.sh  disable
+  # The above doesn't seem to work.. maybe this will:
+  \xset  -dpms
 }
 
 
