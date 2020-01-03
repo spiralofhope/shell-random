@@ -12,7 +12,7 @@
 # 3 to free pagecache, dentries and inodes
 __=3
 
-\sudo  \sh  -c "/usr/bin/echo $__ > /proc/sys/vm/drop_caches"
+\sudo  \sh  -c "/bin/echo $__ > /proc/sys/vm/drop_caches"
 \sudo  /sbin/sysctl  --write vm.drop_caches=$__
 
 \sudo  \sync
