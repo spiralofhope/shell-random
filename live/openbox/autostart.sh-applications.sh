@@ -183,3 +183,6 @@ fi
 # Notes
 # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
 \setsid  ~/l/shell-random/live/sh/scripts/projects.sh &
+
+# Maybe if I put this here it will work..
+~/l/shell-random/live/sh/scripts/screensaver-control.sh  disable
