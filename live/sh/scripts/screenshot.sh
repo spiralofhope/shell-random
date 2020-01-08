@@ -54,5 +54,5 @@ esac
   "$two"  \
   --exec  '\
     \mv  $f   /l/live/__    ;\
-    \gpicview /l/live/__/$f ;\
+    \geequie /l/live/__/$f ;\
   '
