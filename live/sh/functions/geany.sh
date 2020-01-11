@@ -6,13 +6,13 @@
 
 geany() {
   local  commandline=
+  # I don't understand why \geany won't work.
+  #/usr/bin/geany  &
   for i in "$@"; do
     if [ -f $i ]; then
-      commandline="$commandline $( \realpath  "$i" )"
+      /usr/bin/geany  "$( \realpath  "$i" )" &
     else
-      commandline="$commandline $i"
+      /usr/bin/geany  "$i" &
     fi
   done
-  # I don't understand why \geany won't work.
-  /usr/bin/geany  $commandline
 }
