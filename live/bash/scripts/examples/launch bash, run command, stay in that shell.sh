@@ -8,7 +8,7 @@
 
 
 \bash  --rcfile  <(  \
-  \echo '.  ~/.bashrc  ;\
+  \echo  '.  ~/.bashrc  ;\
     \ls  --color=never  ;\
     \ls  --color=auto   ;\
   '  \
