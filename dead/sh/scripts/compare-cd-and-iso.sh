@@ -4,7 +4,7 @@
 
 
 
-:<<'IDEAS'
+:<<'NOTES'
 * TODO - Use dialog, or have a file selection or a file auto-selection feature.
 
 * TODO - Have a progress bar.  If this were wrapped up into something nice, I'd use bar:
@@ -13,7 +13,21 @@
 * TODO - Make it scan the directory
   **  If there is only one .iso file then use that.
   **  If there is no md5sum file, generate it from the ISO and create that file, and then use it
-IDEAS
+  
+* How to burn Fedora DVDs to avoid readahead bug?
+  **  https://www.redhat.com/archives/fedora-list/2007-May/msg01261.html
+  
+* Instead of using  `md5sum`  or  `dd`  , consider using  `cmp`  (maybe with --bytes= ) to avoid using a pipe and head.
+
+* Check out  `isosize`  for checking the .iso structure without any padding.
+
+* `dd`  might replace  `head`  if you use bs= and count=
+  **  CDs normally have a blocksize of 2048, so the size ought to be a multiple of 2048; isosize can do division.  Untested:
+        COUNT=`isosize -d 2048 $DEVICE`
+        DISK_MD5=`dd if=$DEVICE bs=2048 count=$COUNT | md5sum`
+      --  piping is a bad idea
+      --  TODO - Learn the actual blocksize with  `isosize`
+NOTES
 
 
 
@@ -37,6 +51,7 @@ FILESIZE=$( \stat -c%s "$ISO_FILENAME" )
 
 # Get the disk's md5:
 # This tests ok and should work for most computers:
+# FIXME - just use  `dd`  ?
 DISK_MD5=$( \md5sum "$DEVICE" )
 # But some computers may instead need to use this command (tested and works):
 #   DISK_MD5=`dd if=$DEVICE | head -c $FILESIZE | md5sum`
