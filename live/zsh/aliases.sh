@@ -15,7 +15,7 @@ alias  mkdir='nocorrect  \mkdir'
 alias  mv='   nocorrect  \mv  --interactive'
 alias  ping=' nocorrect  \ping'
 alias  rm='   nocorrect  \rm  --interactive  --one-file-system'
-
+alias  geany='nocorrect  geany'
 
 
 # --  Suffixes
