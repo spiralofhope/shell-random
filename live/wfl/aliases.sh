@@ -39,7 +39,6 @@ alias  z:='nocorrect                   z: '
 
 # -X is to sort by extension.
 # alias  ls='\ls  -1  --all  --classify  --color=auto  --show-control-chars  -X'
-\alias  current="\cd  /$l/OS/"
 
 # World of Warcraft
 alias  addons="nocorrect  \cd  /mnt/c/live/games/World_of_Warcraft/_dotfiles/Interface/AddOns/"
