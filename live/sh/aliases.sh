@@ -34,8 +34,8 @@ alias  ..='  \cd  ..'
 alias  cd..='\cd  ..'
 
 
-alias  current=" \cd  ~/l/path/current/"
-alias  previous="\cd  ~/l/path/previous/"
+alias  current=" \cd  $( \realpath  ~/l/path/current/  )"
+alias  previous="\cd  $( \realpath  ~/l/path/previous/ )"
 
 
 # 2016-03-26 - Lubuntu (version not recorded)
