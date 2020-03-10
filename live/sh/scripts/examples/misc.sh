@@ -19,8 +19,5 @@
 
 # Learn the pid of the current process with:
 \echo  "$$PID"
-# You can do things with this like make a quick-and-dirty tempfile
-# \touch  /temp/some_tempfile.$PPID
-# Though it's better for you to use `mktemp` (check my other scripts for my uses)
 
 
