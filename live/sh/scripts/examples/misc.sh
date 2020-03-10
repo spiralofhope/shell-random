@@ -13,11 +13,13 @@
 \echo  "this is some text $( ls ) and some more"
 
 
-\read  variable < filename.ext
+\read  variable < 'filename.ext'
 \echo  "$variable"
 
 
-# Learn the pid of the current process with:
-\echo  "$$PID"
+# Learn the pid of the parent's process with:
+\echo  "$PPID"
 
+# Learn the pid of the current's process with:
+\echo  "$$"
 
