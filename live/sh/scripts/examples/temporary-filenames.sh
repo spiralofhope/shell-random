@@ -12,5 +12,11 @@
 }
 
 
-
-# Though it's better for you to use `mktemp` (check my other scripts for my uses)
+#:<<'}'   #  Using  \mktemp
+{
+  tempfile=$( \mktemp  --suffix="_example" )
+  \echo  " * Created example tempfile:  $tempfile"
+  \ls  "$tempfile"
+  # Don't forget to clean up after yourself.
+  \rm  --force  --verbose  "$tempfile"
+}
