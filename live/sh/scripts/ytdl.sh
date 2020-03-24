@@ -108,5 +108,5 @@ fi
 # See  `ytcs.sh`
 \echo  ' * Downloading comments..'
 source_video_id="$( \echo  "$1"  |  \sed  's/.*v=//' )"
-comment_filename="comments - $( \date  +%Y-%m-%d\ %H։%M ).csv"
+comment_filename="comments - $( \date  --utc  +%Y-%m-%d\ %H։%M ).csv"
 \youtube-comment-scraper  --format csv  --outputFile "$comment_filename"  "$source_video_id"
