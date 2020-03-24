@@ -8,24 +8,49 @@
 
 
 #debug=true
-#debug  '\n\n________________________________________________________________________________\n\n' ; return
 SPINNER=true
 
 
 time_source=$( \date  --date 'now'  +%s )
 
 
+{   #  Determine what sort of machine we're on
+  #  -s
+  unameOut="$( \uname  --kernel-name )"
+  case "$unameOut" in
+    # Babun
+    CYGWIN*)
+      ANSI_escape_code=''
+      _ps='--process'
+    ;;
+    # This might also be okay for git-bash
+    MINGW*|'Linux')
+      ANSI_escape_code='\033'
+      _ps='--pid'
+    ;;
+    *)
+      ANSI_escape_code=''
+      _ps='--process'
+    ;;
+  esac
+  cursor_position_save() {    \printf   '%b[s'  "$ANSI_escape_code" ; }
+  cursor_position_restore() { \printf   '%b[u'  "$ANSI_escape_code" ; }
+}
+
+
+
 debug() {
   if [ "$debug" ]; then
     #\printf  "$*"
-
-  reset="${ANSI_escape_code}[0m"
-  yellow="${ANSI_escape_code}[33m"
-  blackb="${ANSI_escape_code}[40m"
-
-    \printf  "${blackb}${yellow}$*${reset}"
+    reset="${ANSI_escape_code}[0m"
+    yellow="${ANSI_escape_code}[33m"
+    blackb="${ANSI_escape_code}[40m"
+    \printf  '%b'  \
+      "${blackb}${yellow}$*${reset}"
   fi
 }
+#debug  '\n\n________________________________________________________________________________\n\n'
+#return
 
 
 
@@ -44,60 +69,24 @@ on Windows 10:
 
 
 
-{   #  Determine what sort of machine we're on
-  #  -s
-  unameOut="$( \uname  --kernel-name )"
-  case "${unameOut}" in
-    CYGWIN*)    machine=Cygwin;;
-    Darwin*)    machine=Mac;;
-    Linux*)     machine=Linux;;
-    MINGW*)     machine=MinGw;;
-    *)          machine="UNKNOWN:${unameOut}"
-  esac
-  #echo ${machine}
-
-  case "${unameOut}" in
-    # Babun
-    CYGWIN*)
-      ANSI_escape_code=''
-      _ps='--process'
-    ;;
-    # This might be okay for git-bash
-    MINGW*|'Linux')
-      ANSI_escape_code='\033'
-      _ps='--pid'
-    ;;
-    *)
-      _ps='--process'
-      ANSI_escape_code=''
-    ;;
-  esac
-  cursor_position_save() {    \echo -n  "$ANSI_escape_code[s" ; }
-  cursor_position_restore() { \echo -n  "$ANSI_escape_code[u" ; }
-  debug  "$unameOut means _ps=$_ps\n"
-  debug  '\n'
-}
-
-
-
 spinner() {   #  Traditional bar-spinner with these characters:  -\|/
   if [ -z $SPINNER ]; then return 0 ; fi
   \printf  '   '
   case $SPINNER in
     1)
-      \echo  -n  '-'
+      \printf  '-'
       SPINNER=2
     ;;
     2)
-      \echo  -n  '\'
+      \printf  "\\"
       SPINNER=3
     ;;
     3)
-      \echo  -n  '|'
+      \printf  '|'
       SPINNER=4
     ;;
     *)
-      \echo  -n  '/'
+      \printf  '/'
       SPINNER=1
     ;;
   esac
@@ -110,7 +99,7 @@ _sleep_if_possible(){
   debug  "_sleep_if_possible()  $*\n\n"
 
   {  # Attempt to sleep
-    \sleep  $*  2> /dev/null  &  _pid=$!
+    \sleep  "$@"  2> /dev/null  &  _pid=$!
   }
 
 
@@ -126,10 +115,12 @@ _sleep_if_possible(){
     loop=0
     until [ $loop -eq 1 ]; do
       \sleep  1
-      _elapsed_time_seconds=$(( $_elapsed_time_seconds + 1 ))
+      _elapsed_time_seconds=$(( _elapsed_time_seconds + 1 ))
       cursor_position_save
       spinner
-      \printf  "sleeping until $* - ${_elapsed_time_seconds} seconds elapsed.                  "
+      \printf  'sleeping until %s - %s seconds elapsed.                  '  \
+        "$@"  \
+        "$_elapsed_time_seconds"
       if [ "$debug" ]; then
         \printf  '\n'
       fi
@@ -137,8 +128,8 @@ _sleep_if_possible(){
 
       check_for_sleep_process() {
         debug  "check_for_sleep_process()  $*\n\n"
-        debug  "\ps  "$_ps"  "$1" | \grep  sleep  2> /dev/null\n"
-        # This may be required for Windows
+        debug  "\ps  \"$_ps\"  \"$1\" | \grep  sleep  2> /dev/null\n"
+        # This may be required for Windows:
         #\ps  "$_ps"  "$1" | \grep  sleep  2> /dev/null
 
         \ps  "$_ps"  "$1"  > /dev/null  2> /dev/null
@@ -165,14 +156,15 @@ _sleep_if_possible(){
 
 get_seconds_using_date(){
   debug  "get_seconds_using_date()  $*\n\n"
-  time_target=$( \date  --date "$*"  +%s  2>  /dev/null )
-  if [ $? -ne 0 ]; then
+  if  !  \
+    time_target=$( \date  --date "$@"  +%s  2>  /dev/null )
+  then
     debug  "date invalid:  $*\n"
     return 0
   fi
-  time_to_wait=$(( $time_target - $time_source ))
-  debug  'time, now -- seconds since "epoch" (1970-01-01 00:00:00 UTC):  '$time_source'\n'
-  debug  'time, target:  '$time_target'\n'
+  time_to_wait=$(( time_target - time_source ))
+  debug  "time, now -- seconds since \"epoch\" (1970-01-01 00:00:00 UTC):  $time_source\n"
+  debug  "time, target:  \'$time_target\'\n"
   if [ $time_to_wait -lt 2 ]; then
     debug  'time to wait invalid:  '$time_to_wait' returning 0\n'
     time_to_wait=0
@@ -184,24 +176,24 @@ get_seconds_using_date(){
 
 _sleep() {
   debug  "_sleep()  $*\n\n"
-  _sleep_if_possible  $*
+  _sleep_if_possible  "$@"
   if [ $? -eq 1 ]; then
-    get_seconds_using_date  $*
+    get_seconds_using_date  "$@"
     seconds="$?"
     _sleep_if_possible  "$seconds"
   fi
 }
 
 
-_sleep  $*
+_sleep  "$*"
 
 
 
 # TODO - don't trigger these alerts if the sleep wasn't for very long..
 :<<'}'
-time_source=$( \date  --date  @$time_source +%s )
-time_target=$( \date  --date  'now'         +%s )
-time_target=$(( $time_target + 2 ))
+time_source="$( \date  --date  @$time_source +%s )"
+time_target="$( \date  --date  'now'         +%s )"
+time_target="$(( time_target + 2 ))"
 if [ $time_target -lt 4 ]; then return; fi
 if [ $then -lt 3 ]; then return; fi
 }
@@ -211,7 +203,7 @@ else
 
   _alert_audio() {
     debug  "_alert_audio()  $*\n\n"
-    case "${unameOut}" in
+    case "$unameOut" in
       CYGWIN*|MINGW*)
         powershell.exe -Command '
           [console]::beep(1000,300) ;
@@ -236,14 +228,14 @@ else
 
   _alert_visual() {
     debug  "_alert_visual()  $*\n\n"
-    case "${unameOut}" in
+    case "$unameOut" in
       CYGWIN*)
         # This seems like an okay idea.
         cygstart.exe cmd /K "\
           echo Alarm! & \
           echo. & \
-          echo Started $( \date  --date  @$time_source  +"%Y-%m-%d - %l:%M:%S %P" ) & \
-          echo Ended   $( \date  --date  'now'          +"%Y-%m-%d - %l:%M:%S %P" ) & \
+          echo Started $( \date  --date  @"$time_source"  +"%Y-%m-%d - %l:%M:%S %P" ) & \
+          echo Ended   $( \date  --date  'now'            +"%Y-%m-%d - %l:%M:%S %P" ) & \
         "
       ;;
       MINGW*)
@@ -257,14 +249,14 @@ else
         \echo \
 "Alarm!
 
-Started  $( \date  --date  @$time_source  +"%Y-%m-%d - %l:%M:%S %P" )
-Ended    $( \date  --date  'now'          +"%Y-%m-%d - %l:%M:%S %P" )
+Started  $( \date  --date  @"$time_source"  +"%Y-%m-%d - %l:%M:%S %P" )
+Ended    $( \date  --date  'now'            +"%Y-%m-%d - %l:%M:%S %P" )
 "  | \leafpad &
     esac
   }
 
-  _alert_visual
-  _alert_audio
+  _alert_visual  ''
+  _alert_audio   ''
 fi
 
 
