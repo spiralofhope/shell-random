@@ -26,24 +26,24 @@ findhelper() {
       \sed  's/^/"/'  |\
         \sed  's/$/"/'  |\
           \grep  \
-            --colour=$_findhelper_color  \
+            --colour="$_findhelper_color"  \
             --ignore-case  "$1"  \
   ` # `
 
-  _findhelper_type=
-  _findhelper_color=
+  unset  _findhelper_type
+  unset  _findhelper_color
 }
 
 
 findfile() {
   _findhelper_type='file'
   _findhelper_color='always'
-  findhelper  $*
+  findhelper  "$*"
 }
 findfile_color_off() {
   _findhelper_type='file'
   _findhelper_color='never'
-  findhelper  $*
+  findhelper  "$*"
 }
 
 
@@ -51,26 +51,29 @@ findfile_color_off() {
 finddir() {
   _findhelper_type='directory'
   _findhelper_color='always'
-  findhelper  $*
+  findhelper  "$*"
 }
 finddir_color_off() {
   _findhelper_type='directory'
   _findhelper_color='never'
-  findhelper  $*
+  findhelper  "$*"
 }
 
 
 
-# Can double-quote to quote a single-quote.
-#   "I don't know"
-# Can backslash to escape.
-#   I don\'t know
+:<<'}'   #  Usage
+{
+ Can double-quote to quote a single-quote.
+   "I don't know"
+ Can backslash to escape.
+   I don\'t know
+}
 _findhelper_file_contents() {
-  local  maxdepth=$1
+  maxdepth=$1
   shift
   \find  \
     .  \
-    -maxdepth $maxdepth  \
+    -maxdepth "$maxdepth"  \
     -type f  \
     -print0  \
     -iname  \'"$*"\' |\
@@ -84,19 +87,20 @@ _findhelper_file_contents() {
           --regexp="$*"  \
     ` # `
 
-  _findhelper_type=
-  _findhelper_color=
+  unset  _findhelper_type
+  unset  _findhelper_color
+  unset  maxdepth
 }
 
 # TODO - Technically I could make a `findin` that applies to only one file, but I won't bother.
 findinall() {
-  _findhelper_file_contents  999   $*
+  _findhelper_file_contents  999   "$*"
 }
 
 
 # TODO - Technically I could make a `findin` that applies to only one file, but I won't bother.
 findhere() {
-  _findhelper_file_contents  1   $*
+  _findhelper_file_contents  1   "$*"
 }
 
 } }
@@ -158,10 +162,12 @@ findreplace() {
     \echo  "Usage:  $0 search replace [file|wildcard]."
     \return  1
   fi
-  local  search=$1
-  local  replace=$2
+  search=$1
+  replace=$2
   shift
   shift
   \sed  --in-place  "s/$search/$replace/g"  $*
+  unset  search
+  unset  replace
 }
 }}
