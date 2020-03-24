@@ -4,32 +4,27 @@
 
 # Maybe there's a better way to do this, but I don't know it.
 get_the_number_of_processors() {
-  \echo  $( \
-    \cat  /proc/cpuinfo |\
-      \grep processor |\
-      \tail  --lines=1 |\
-      \cut  --bytes=13- \
-    )
+  \grep  'processor'  /proc/cpuinfo  |\
+    \tail  --lines=1  |\
+    \cut  --bytes=13-
 }
 
 
 
 _processor_heat() {
-  \echo -n ' - cpufreq: Heating up the processor'
   case $( get_the_number_of_processors ) in
     0)
-      \echo ''
+      \echo  ' - cpufreq: Heating up the processor'
     ;;
     *)
-      \echo 's'
+      \echo  ' - cpufreq: Heating up the processors'
   esac
 
   # `hardinfo` will prove that the CPU settings will change.
 
-  for i in $( \seq 0 $( get_the_number_of_processors ) ); do
-    \echo  '   heating up processor' $i
-    \cpufreq-set  --cpu $i  --governor performance
-    pid=$!
+  for i in $( \seq 0 "$( get_the_number_of_processors )" ); do
+    \echo  '   heating up processor '  "$i"
+    \cpufreq-set  --cpu "$i"  --governor performance
   done
 }
 
@@ -49,13 +44,13 @@ get_char() {
   #\stty  -cbreak
   #\stty  -icanon
   \stty  -raw
-  \echo  $char
+  \echo  "$char"
 }
 
 
 
-if ! [ $USER = 'root' ]; then
-  /bin/su  -c  $0
+if ! [ "$USER" = 'root' ]; then
+  /bin/su  -c  "$0"
 else
   case "$1" in
     '-y'|'--yes'|'')
