@@ -45,7 +45,7 @@ command_two() {
 }
 
 { # setup
-  pipe_file='./pipe_file'
+  pipe_file="$( \mktemp )"
   \rm  --force        "$pipe_file"
   \mkfifo --mode=700  "$pipe_file"
 }
@@ -59,6 +59,7 @@ command_one > "$pipe_file"
 \echo  $?
 
 { # teardown
+  \sync
   \rm  --force  "$pipe_file"
 }
 
@@ -66,7 +67,7 @@ command_one > "$pipe_file"
 exit
 
 check() {
-  pipe_file='./pipe_file'
+  pipe_file="$( \mktemp )"
   \rm  --force  "$pipe_file"
   \mkfifo       "$pipe_file"
 
