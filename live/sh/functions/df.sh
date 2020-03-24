@@ -15,5 +15,5 @@ _df_sorted(){
   # The actual list of stuff
   _df |\
     \tail --lines='+2'  |\
-    \sort --key=${1}
+    \sort --key="$1"
 }

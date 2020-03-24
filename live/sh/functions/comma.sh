@@ -4,15 +4,15 @@
 
 
 comma() {
-  if [ -z $1 ]; then
+  if [ -z "$*" ]; then
     # Incorrect usage.
-    \echo  -n  ''
-  elif [ -z $2 ]; then
+    return  1
+  elif [ -z "$2" ]; then
     \echo  "$1"  |\
       \sed  --expression=':a'  --expression='s/\(.*[0-9]\)\([0-9]\{3\}\)/\1,\2/;ta'
   else
     # Incorrect usage.
-    \echo  -n  ''
+    return  1
   fi
 }
 :<<'USAGE'

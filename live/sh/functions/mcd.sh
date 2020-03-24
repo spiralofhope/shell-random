@@ -4,13 +4,13 @@
 
 
 mcd() {
-  directory="$@"
+  directory="$*"
   if   [ -z "$1" ]; then
     directory="$( \date  +%Y-%m-%d )"
   elif [ -f "$*" ]; then   #  File
-    directory="$( \dirname  "$@" )"
+    directory="$( \dirname  "$*" )"
   fi
   # Silent errors:
   \mkdir  --parents  "$directory"
-  \cd                "$directory"
+  \cd                "$directory"  ||  exit
 }

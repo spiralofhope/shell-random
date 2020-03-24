@@ -5,11 +5,10 @@
 
 
 geany() {
-  local  commandline=
   # I don't understand why \geany won't work.
   #/usr/bin/geany  &
   for i in "$@"; do
-    if [ -f $i ]; then
+    if [ -f "$i" ]; then
       /usr/bin/geany  "$( \realpath  "$i" )" &
     else
       /usr/bin/geany  "$i" &

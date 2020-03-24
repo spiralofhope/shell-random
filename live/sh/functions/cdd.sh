@@ -5,9 +5,10 @@
 
 # I'd love to hijack 'cd' directly using cd(), but that doesn't work.
 cdd() {
-  local  target="$( \realpath "$*" )"
-  if   [ -L "$*" ] && [ -d "$target" ] ; then  \cd  "$target"
-  elif                [ -f "$target" ] ; then  \cd  "$( \dirname  "$target" )"
-  else                                         \cd  "$*"
+  _target="$( \realpath "$*" )"
+  if   [ -L "$*" ] && [ -d "$_target" ] ; then  \cd  "$_target"                   ||  exit
+  elif                [ -f "$_target" ] ; then  \cd  "$( \dirname  "$_target" )"  ||  exit
+  else                                          \cd  "$*"                         ||  exit
   fi
+  unset  _target
 }
