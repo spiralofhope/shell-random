@@ -9,19 +9,31 @@
 
 
 
-\echo  ' * Directly'
-\basename  $( \readlink  --canonicalize /proc/$$/exe )
+#:<<'}'   #  Directly
+{
+  \basename  "$( \readlink  --canonicalize /proc/$$/exe )"
+  # =>
+  # dash
+}
 
-\echo
-\echo  ' * Using `ps`'
-\echo  $( \ps  -o cmd  --no-heading $$ | \cut --delimiter=' ' --fields=1 )
 
-\echo
-\echo  ' * Checking for builtins'
-#help >/dev/null 2>&1 || \echo  'not bash?'
-help >/dev/null 2>&1
-if [ $? -eq 0 ]; then
-  \echo  'bash?'
-else
-  \echo  'not bash?'
-fi
+#:<<'}'   #  Using `ps`'
+{
+  \ps  -o cmd  --no-heading $$  |\
+    \cut --delimiter=' ' --fields=1
+  # =>
+  # sh
+}
+
+
+
+#:<<'}'   #  Using builtins
+{
+  if  !  \
+    help  >  /dev/null 2>&1
+  then
+    \echo  'bash?'
+  else
+    \echo  'not bash?'
+  fi
+}

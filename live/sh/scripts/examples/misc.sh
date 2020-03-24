@@ -13,7 +13,7 @@
 \echo  "this is some text $( ls ) and some more"
 
 
-\read  variable < 'filename.ext'
+\read  -r  variable < 'filename.ext'
 \echo  "$variable"
 
 

@@ -21,8 +21,9 @@ timeout_not_running(){
 
 timeout_run
 \sleep $timeout
-\kill -0 $checkpid 2> /dev/null
-if [ $? -eq 0 ]; then
+if  !  \
+  \kill -0 $checkpid 2> /dev/null
+then
   timeout_running
 else
   timeout_not_running

@@ -51,7 +51,7 @@ directory_without_file="$( \dirname "$input" )"
 \echo  '  Note - This "fills out" things like ./dir'
 # e.g.:  /some/dir'
 \echo  '  Note - You might want to add a trailing slash yourself.'
-expanded_directory_without_file="$( \dirname $( \realpath "$input" ) )"
+expanded_directory_without_file="$( \dirname "$( \realpath "$input" )" )"
 \echo  "$expanded_directory_without_file"
 
 

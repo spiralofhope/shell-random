@@ -1,14 +1,18 @@
 #!/usr/bin/env  sh
 
 
+# This functionality not be available in all shells:
+\echo  $(( 1 + 1 ))
 
-# You need to use an external program like:
+
+# Using `expr`:
 \expr  "1 + 1"
 
-\echo  "1 + 1" | \bc
 
-# For more complex things
+# Using `bc`:
+\echo  "1 + 1"  | \bc
+# Using `bc` for more complex math:
 \echo  "10 / 3" | \bc  --mathlib
 
 
-# More is possible with awk
+# TODO - More is possible with awk

@@ -21,7 +21,6 @@ result=$( \dialog  --menu 'Example Menu'  "$height"  "$width"  "$menu_height" \
   '3' 'third' \
   '4' 'fourth' \
   --output-fd 1 )
-
 if [ $? -ne 0 ]; then
   #\echo  "$? was returned"
   \echo  'Cancel was pressed'

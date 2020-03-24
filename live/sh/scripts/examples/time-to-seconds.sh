@@ -1,3 +1,4 @@
+#!/usr/bin/env  sh
 # See also:
 # Parse ps' "etime" output and convert it into seconds
 # https://stackoverflow.com/questions/14652445
@@ -7,12 +8,12 @@
 
 
 
-local  t='00:02:01.08'
+t='00:02:01.08'
 echo $t
 
 
 to_seconds() {
-  local epoch=$( \date --utc  --date @0  +%F )
+  epoch=$( \date --utc  --date @0  +%F )
   \date  --utc  --date "$epoch $1"  +%s.%09N
 }
 
@@ -32,19 +33,17 @@ to_seconds  $t
 
 
 # hh:mm:ss
-local t="04:20:40"
+t="04:20:40"
 # mm:ss
-local t="20:40"
+t="20:40"
 # ss
-local t="40"
+t="40"
 # ss.ms
-local t="40.2"
+t="40.2"
 # This would work even if you don't specify hours or minutes: 
 \echo "$t" |\
-  \sed -E \
-  's/(.*):(.+):(.+)/ \
-  \1 * 3600 + \2 * 60 + \3 / ; s/(.+):(.+)/ \
-  \1 * 60 + \2 / ' |\
+  \sed  -E  \
+  's/(.*):(.+):(.+)/\1 * 3600 + \2 * 60 + \3 / ; s/(.+):(.+)/\1 * 60 + \2 / ' |\
   \bc
 
 

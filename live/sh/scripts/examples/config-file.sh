@@ -14,7 +14,7 @@ So, for example, if your script worked with usernames, it would not need it hard
 
 # Or more complicated, like:
 # file called 'config-file' in this directory.
-. "$( \dirname $( \realpath "$0" ) )"/config-file
+. "$( \dirname "$( \realpath "$0" )" )"/config-file
 
 
 

@@ -24,7 +24,7 @@
 #:<<'}'
 {  #  Sending information to code
   _fun() {
-    \echo  'some text'  $1
+    \echo  'some text'  "$1"
   }
 
   _fun  one
