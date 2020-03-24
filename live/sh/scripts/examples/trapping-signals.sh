@@ -1,5 +1,7 @@
 #!/usr/bin/env  sh
 # Tested 2017-10-24 on Devuan 1.0.0-jessie-i386-DVD with dash 0.5.7-4+b1
+# 
+# http://man7.org/linux/man-pages/man1/trap.1p.html
 
 
 
