@@ -6,7 +6,7 @@
 
 
 file="$1"
-#debug=true
+debug=true
 #file='test.mp3'
 
 
@@ -19,7 +19,7 @@ fi
 
 debug() {
   if [ $debug ]; then
-    \echo  $*
+    \echo  "$@"
   fi
 }
 
@@ -33,7 +33,7 @@ debug  exiftool reports "$duration"
 
 
 #  Nuke the starting text
-duration="$( \echo  $duration  |  \sed  "s/Duration: //" )"
+duration="$( \echo  "$duration"  |  \sed  "s/Duration: //" )"
 # Duration: 0:02:20 (approx)
 # => 
 # 0:02:20 (approx)
@@ -41,7 +41,7 @@ debug  "$duration"
 
 
 #  Nuke the ending text
-duration="$( \echo  $duration  |  \sed  "s/ (approx)//" )"
+duration="$( \echo  "$duration"  |  \sed  "s/ (approx)//" )"
 # 0:02:20 (approx)
 # => 
 # 0:02:20
@@ -51,25 +51,26 @@ debug  "$duration"
 hours=$(   \echo  "$duration"  |  \cut -f 1 -d ':' )                    #  0:02:20  =>  0
 minutes=$( \echo  "$duration"  |  \cut -f 2 -d ':' )                    #  0:02:20  =>  02
 seconds=$( \echo  "$duration"  |  \cut -f 3 -d ':' )                    #  0:02:20  =>  20
+#minutes=$( \echo  "$minutes" | sed 's/^0*//' )
 debug  hours   "$hours"
 debug  minutes "$minutes"
 debug  seconds "$seconds"
 
 
 # Minutes => Seconds
-__=$( \expr  "$minutes" \* 60 )                                         #  02  =>  120
-debug  "$__"
+__=$(( minutes * 60 ))                                                 #  02  =>  120
+debug  "minutes preprocessing:  $__"
 # Adding
-seconds=$( \expr  "$seconds" + "$__" )                                  #  120 + 20  =>  140
-debug  "$seconds"
+seconds=$(( seconds + __ ))                                           #  120 + 20  =>  140
+debug  "seconds:  $seconds"
 
 
 # Hours => Seconds
-__=$( \expr  "$hours" \* 60 \* 60 )                                     #  0 * 60 * 60  =>  0
-debug  "$__"
+__=$(( hours * 60 * 60 ))                                              #  0 * 60 * 60  =>  0
+debug  "hours to seconds:  $__"
 # Adding
-seconds=$( \expr  "$seconds" + "$__" )                                  #  140 + 0  =>  140
-debug  "$seconds"
+seconds=$(( seconds + __ ))                                           #  140 + 0  =>  140
+debug  "seconds:  $seconds"
 
 
 
