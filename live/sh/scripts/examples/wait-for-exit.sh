@@ -12,4 +12,4 @@
 # This is the alternative which would work on other systems:
 #checkpid=$!
 #\wait $checkpid &> /dev/null
-\echo ' * Ended. '
+\echo  ' * Ended. '
