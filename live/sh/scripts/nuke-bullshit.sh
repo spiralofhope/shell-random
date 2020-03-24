@@ -25,7 +25,7 @@
   -delete  -o  -type f  -name 'Thumbs.db'  \
   -delete  -o  -type f  -name 'desktop.ini' ` # Windows `  \
   -delete  \
-  $dry_run \
+  "$dry_run" \
 ` # `
 }
 
@@ -56,7 +56,8 @@
 
 
 
-# I want to use something like this:
+:<<'}'   #  TODO - use an array
+{
 variable='
   .DS_Store
   .BridgeCache
@@ -64,6 +65,7 @@ variable='
   Thumbs.db
   desktop.ini
 '
+}
 # Idea:  Use items in a plain text file.
 
 

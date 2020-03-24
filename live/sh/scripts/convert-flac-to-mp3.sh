@@ -19,13 +19,14 @@ _convert_flac_to_mp3() {
   \echo  'Note:  Adding _ to identify this as a transcoded item.'
   \echo  'Note:  Adding = to identify this as self-created mp3.'
   # Note that "avconv"  is a drop-in replacement for "ffmpeg"
-  \avconv \
-    -i "$1" \
-    -qscale:a 0 \
-    "$2"
-  if ! [ $? = 0 ]; then
+  if  !  \
+    \avconv \
+      -i "$1" \
+      -qscale:a 0 \
+      "$2"
+  then
     \echo  'pausing..'
-    read  __
+    \read  -r
   fi
 }
 
@@ -34,6 +35,7 @@ _convert_flac_to_mp3() {
 _convert_vbrfix() {
   \echo  ''
   \echo  ' * Fixing the mp3 length..'
+  # FIXME - did I misplace the code to get $audio_codec  ?
   working_filename=ripping_temp.$$."$audio_codec"
 
   \vbrfix  -always  -makevbr  "$1"  "$working_filename"
@@ -49,7 +51,7 @@ if [ "x$1" = 'x' ]; then
   \echo  ' * Converting all flac files in the current directory..'
   for i in *.flac; do
     # Seems like a straightforward way to bail out.
-    if [ $i = "*.flac" ]; then
+    if [ "$i" = "*.flac" ]; then
       \echo  'ERROR:  No .flac files found.'
       continue
     fi

@@ -9,10 +9,10 @@
 
 
 
-:<<'}'  # Old Windows Subsystem for Linux code
-# This could be replaced by my system distinguishing code:
-#   \uname  --kernel-name
-# See usage in zsh/dot_zsh/3-interactive.sh
+#:<<'}'   #  Old Windows Subsystem for Linux code
+          #  TODO - replace this with my system distinguishing code:
+          #    \uname  --kernel-name
+          #  See usage in zsh/dot_zsh/3-interactive.sh
 {
 if [ -d '/mnt/c' ]; then
   l='/mnt/d/live'
@@ -42,7 +42,7 @@ setup() {
 
 
 build_array_of_directories() {
-  if [ -z "$1" ]; then continue; fi
+  if [ -z "$1" ]; then return; fi
   for i in "$1"/*; do
     \echo  "processing - $i"
     if [ -z "$i" ]; then continue; fi
@@ -73,7 +73,7 @@ build_array_of_directories() {
 
 
 build_array_of_files() {
-  if [ -z "$1" ]; then continue; fi
+  if [ -z "$1" ]; then return; fi
   # $1 is an array of directories
   # This $1 must not be quoted! :
   for i in $1; do
@@ -109,22 +109,22 @@ build_array_of_files() {
 
 open_array_of_files() {
   if [ -d '/mnt/c' ]; then
-    \geany  --new-instance \
-      $l/live/__/__.txt \
-      $l/live/projects/projects.txt \
-      $array_of_files \
-      $l/live/__/__.txt \
+    \geany  --new-instance  \
+      "$l/live/__/__.txt"  \
+      "$l/live/projects/projects.txt"  \
+      $array_of_files  \
+      "$l/live/__/__.txt"  \
     &
   else
     #echo  \geany  $array_of_files
     #\geany  $array_of_files
-    \geany  --new-instance \
-      $l/live/__/__.txt \
-      $l/live/projects/projects.txt \
-      ` # A major project of mine which ought to be reviewed very regularly. ` \
-      $l/live/projects/unplugging/unplugging.txt \
-      $array_of_files \
-      $l/live/__/__.txt \
+    \geany  --new-instance  \
+      "$l/live/__/__.txt"  \
+      "$l/live/projects/projects.txt"  \
+      ` # A major project of mine which ought to be reviewed very regularly. `  \
+      "$l/live/projects/unplugging/unplugging.txt"  \
+      $array_of_files  \
+      "$l/live/__/__.txt"  \
     &
   fi
 }

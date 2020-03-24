@@ -23,7 +23,7 @@
 #verbose='--verbose'
 debug() {
   if [ $debug ]; then
-    \echo  $*
+    \echo  "$*"
   fi
 }
 
@@ -70,7 +70,7 @@ debug() {
   # (directly lifted from `vbrfixit.sh`)
   \echo  " * VBR fixing:  $file_source"
   tempfile=$( \mktemp  --suffix=".transcode-audio-into-mp3.$$" )
-  \vbrfix  -always  -makevbr  "$file_source"  $tempfile
-  \mv  --force  $tempfile  "$file_source"
-  \rm  --force  $verbose  vbrfix.log  vbrfix.tmp  $tempfile
+  \vbrfix  -always  -makevbr  "$file_source"  "$tempfile"
+  \mv  --force  "$tempfile"  "$file_source"
+  \rm  --force  "$verbose"  vbrfix.log  vbrfix.tmp  "$tempfile"
 }

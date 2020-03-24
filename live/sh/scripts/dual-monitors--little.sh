@@ -8,10 +8,10 @@
 # Fix the resolution of the big screen
 \xrandr  --output DVI-D-1  --mode 1920x1080  --pos 0x0
 
-if [ -z $1 ]; then
+if [ -z "$*" ]; then
   # TODO - implement a more explicit enable/disable feature..
   __=$( /live/OS/Linux/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh 'Enable second monitor?' )
-  if [ $__ = 0 ]; then
+  if [ "$__" = 0 ]; then
     # Extend the little screen to its left.
     # Note that the main screen is the little one.
 

@@ -20,7 +20,7 @@ result=$( \dialog  --menu 'Example Menu'  "$height"  "$width"  "$menu_height" \
   '2' 'select:  border on' \
   '3' 'select:  border off' \
   --output-fd 1 )
-
+#
 if [ $? -ne 0 ]; then
   #\echo  "$? was returned"
   \echo  'Cancel was pressed'

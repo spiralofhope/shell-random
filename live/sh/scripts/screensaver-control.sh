@@ -13,8 +13,9 @@ screensaver_enable() {
   \xset  +dpms
   \xset  dpms 0 0 295
 
-  \which  xscreensaver  > /dev/null 2> /dev/null
-  if [ $? -eq 0 ]; then
+  if  \
+    \which  xscreensaver  > /dev/null 2> /dev/null
+  then
     \xscreensaver  -no-splash &
   else
     #:<<'  }'   #  xautolock/slock
@@ -24,7 +25,7 @@ screensaver_enable() {
     # There are ways around using  `readlink`  if this ends up being a problem for others.  See https://stackoverflow.com/questions/4774054/
     \xautolock  -exit  2>  /dev/null
     \killall  xautolock  2>  /dev/null
-    \xautolock  -time 5  -locker "`\readlink -f $0` 'locknow'" &
+    \xautolock  -time 5  -locker "$( \readlink -f "$0" ) 'locknow'" &
     }
   fi
 
@@ -46,8 +47,9 @@ screensaver_disable() {
   \setterm  --blank
   }
 
-  \which  xscreensaver  > /dev/null 2> /dev/null
-  if [ $? -eq 0 ]; then
+  if  \
+    \which  xscreensaver  > /dev/null 2> /dev/null
+  then
     \xscreensaver-command  -exit
     #\killall  \xscreensaver-demo
   else
@@ -71,8 +73,9 @@ screensaver_locknow() {
   \xset  +dpms
   \xset  dpms 0 0 7
 
-  \which  xscreensaver  > /dev/null 2> /dev/null
-  if [ $? -eq 0 ]; then
+  if  \
+    \which  xscreensaver  > /dev/null 2> /dev/null
+  then
     screensaver_enable
     \xscreensaver-command  -lock
   else
@@ -99,7 +102,7 @@ case "$1" in
     screensaver_locknow
   ;;
   *)
-    __=`/live/OS/Linux/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh  'Enable screen saver?'`
+    __=$( /live/OS/Linux/shell-random/git/live/sh/scripts/gui-yesno-dialog.sh  'Enable screen saver?' )
     if [ "$__" = 0 ]; then
       screensaver_enable
     else

@@ -4,36 +4,38 @@
 
 # 2017-10-23 - Tested on Devuan-1.0.0-jessie-i386-DVD with:
 #   dash 0.5.7-4
-#debug=true
+debug=true
 
 
 
 debug() {
   if [ $debug ]; then
-    \echo  $*
+    \echo  "$*"
   fi
 }
 
 
 
 _go() {
-  if [ $debug ]; then
+  if [ "$debug" ]; then
     \echo  " * Processing:  $1"
   fi
 
   {  # Skip if not a directory
     if [ ! -d "$1" ]; then
       debug  "   Skipping (not a directory)"
-      continue
+      return
     fi
   }
 
 
   {  # Skip if more than one item.
+    # FIXME - use 'find'
+    # https://github.com/koalaman/shellcheck/wiki/SC2012
     number_of_files_in_directory=$( \ls  --almost-all  -1 "$1"/ | \wc  --lines )
     debug  "   $number_of_files_in_directory items within."
-    if [ $number_of_files_in_directory -ne 1 ]; then
-      continue
+    if [ "$number_of_files_in_directory" -ne 1 ]; then
+      return
     fi
   }
 
@@ -41,7 +43,7 @@ _go() {
   {  # Skip is that one item is not a subdirectory.
     if [ ! -d "$( \ls  --almost-all  -1 "$1"/ )" ]; then
       debug  "   Skipping (not a subdirectory)"
-      continue
+      return
     fi
   }
 

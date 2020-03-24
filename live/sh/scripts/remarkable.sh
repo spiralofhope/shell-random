@@ -54,6 +54,7 @@ setup() {
 
 go() {
   # This is a literal escape character embedded into this file.  While there may be another way to do this to avoid complications with a text file that has a binary thing in it, I don't know of it offhand and it doesn't seem to matter.
+  character_pressed=''
   until [ "$character_pressed" = "" ]; do
     read_char() {
       \stty  -icanon -echo
@@ -62,7 +63,7 @@ go() {
     }
     read_char  character_pressed
     _current_time=$(( $( \date  +%s%N ) / 1000000000 ))
-    _elapsed_total_seconds=$(( $_current_time - $_start_time ))
+    _elapsed_total_seconds=$(( _current_time - _start_time ))
     _hh_mm_ss=$( \date -d@$_elapsed_total_seconds -u +%H:%M:%S )
     # Formatted as comma-separated values (CSV)
     _output_string="$character_pressed,$_hh_mm_ss,$_elapsed_total_seconds"

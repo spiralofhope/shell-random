@@ -7,10 +7,11 @@ trytry() {
   # `setsid` is to force it to run in its own session, so that there's no lingering shell parent process.
   #
   \echo  "$1 attempt"
-  \killall  $1   >  /dev/null 2> /dev/null
-  \setsid   $*  2>  /dev/null &
-  \which    $1   >  /dev/null 2> /dev/null
-  if [ $? = 0 ]; then
+  \killall  "$1"   >  /dev/null 2> /dev/null
+  \setsid   "$@"  2>  /dev/null &
+  if  \
+    \which    "$1"   >  /dev/null 2> /dev/null
+  then
     \echo  "$* success"
     exit  0
   fi

@@ -9,8 +9,8 @@ if ! [ "$USER" = 'root' ]; then
 else
 
 set_scheduler() {
-  local  drive="$1"
-  local  scheduler="$2"
+  drive="$1"
+  scheduler="$2"
 
   \echo  'The scheduler is currently'
   \cat  "/sys/block/$drive/queue/scheduler"

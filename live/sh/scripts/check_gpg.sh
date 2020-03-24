@@ -11,9 +11,9 @@ _gpg_signature=gpg-key-file.asc
 
 
 \gpg  --keyid-format   long  --import  $_gpg_signature
-\gpg  --keyid-format 0xlong  --verify  $_file
-
-if [ $? = 0 ]; then
+if  \
+  \gpg  --keyid-format 0xlong  --verify  $_file
+then
   \echo
   \echo '--'
   \echo 'Your file was tested, and passed'
