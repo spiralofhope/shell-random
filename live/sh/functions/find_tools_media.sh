@@ -3,13 +3,14 @@
 
 
 
-# Note that deadbeef probably isn't installed, and will need a manual symlink in  $HOME/l/path  pointing to its executable.
-\which  deadbeef  >  /dev/null
-#false   #  Un-comment to trigger the fallback (audacious).
-if [ $? -eq 0 ]; then
-  local  deadbeef_is_installed=true
+# Note that DeaDBeeF probably isn't installed like a proper application (because of a joke license), and will need a manual symlink in a $PATH  (I use $HOME/l/path)  which points to its executable.
+if  \
+  \which  deadbeef  >  /dev/null
+  #false   #  Un-comment to trigger the fallback (audacious).
+then
+  deadbeef_is_installed=true
 else
-  local  deadbeef_is_installed=false
+  deadbeef_is_installed=false
 fi
 
 
@@ -20,36 +21,37 @@ fq() {
   \find  .  -iname "*$1*"  -type f  -print0  |\
     \xargs  \
       --null  \
-      "$( \which deadbeef )"  \
+      "$( \which  deadbeef )"  \
         --queue "{}"  \
       > /dev/null 2> /dev/null &
 }
 
 
 
-
+:<<'}   # /findqueue'
+{
 if [ "$deadbeef_is_installed" = 'true' ]; then                     {   #  Deadbeef
 
 findqueue() {
-
-  \echo  ' * Launching deadbeef..'
-  # For reasons unknown, a symlink will not work.  Directly using  `which`  solves that.
-  \setsid  $( \which deadbeef )  > /dev/null 2> /dev/null  &
-  until pids=$( \pidof  "$( \which deadbeef )" ); do   
+  # Note that the current playlist is:  "$HOME/.config/deadbeef/playlists/0.dbpl"
+  \echo  ' * Launching DeaDBeeF..'
+  \setsid  "$( \realpath  "$( \which  deadbeef )"  )"  > /dev/null 2> /dev/null  &
+  # Wait for it to launch
+  until  \
+    \pidof  'deadbeef'
+  do
     \echo  ' * .. waiting'
-    \ps  alx | \grep  "$( \which deadbeef )"
     \sleep  0.1
   done
 
 
-  local  _queue() {
-
-    local  extension="$1"
+  _queue() {
+    extension="$1"
     shift
-    local  iname="*${@}${extension}"
+    iname="*${*}${extension}"
     \echo  "Searching for:  $iname"
     #\find  .  -type f  -iname "$iname"
-
+    #
     # I don't like using  --verbose  so this will do:
     \find  .  -type f  -iname "$iname"  -print0  |\
       \xargs  \
@@ -57,7 +59,7 @@ findqueue() {
       --null  \
       -I file  \
       \echo  file
-
+    #
     \find  .  -type f  -iname "$iname"  -print0  |\
       \xargs  \
         --no-run-if-empty  \
@@ -68,7 +70,7 @@ findqueue() {
         > /dev/null 2> /dev/null
   }
 
-  # TODO - As deadbeef empties a playlist once it hits an invalid file, I'm going over its more common file types manually.
+  # TODO - As DeaDBeeF empties a playlist once it hits an invalid file, I'm going over its more common file types manually.
   # This might blank the playlist, but format is supported.  It's something being offered into the queue that's blanking it.  This was reproduced with a ։ in the filename.
   #   Therefore I'll put this first, so it won't be so awful if it's triggered.
   _queue  'm4a'  "$@"
@@ -87,9 +89,11 @@ findqueue() {
 findqueue() {
   \echo  ' * Launching audacious..'
   \setsid  \audacious  --show-main-window  > /dev/null 2> /dev/null  &
-  until pids=$( \pidof  'audacious' ); do   
+  # Wait for it to launch
+  until
+    \pidof  'audacious'
+  do
     \echo  ' * .. waiting'
-    \ps  alx | \grep  'audacious'
     \sleep  0.1
   done
   # sleep 1
@@ -113,55 +117,65 @@ findqueue() {
 }
 
 }  fi
+}   # /findqueue
 
 
 
 
 
 
-
-
-if [ "$deadbeef_is_installed" = 'true' ]; then                     {   #  Deadbeef
+#:<<'}   # /findplay'
+{
+if [ "$deadbeef_is_installed" = 'true' ]; then                     {   #  DeaDBeeF
 
 findplay() {
 
-  {  #  Make a Deadbeef empty playlist
-  # Deadbeef has no functionality to just empty out its existing play list, but I can load an empty one.
-  local  tempfile=$( \mktemp  --suffix="--deadbeef-empty-playlist.dbpl" )
+  #:<<'  }'   #  Make a DeaDBeeF empty playlist
+  {
+    # DeaDBeeF has no functionality to just empty out its existing play list, but I can load an empty one.
+    temporary_playlist=$( \mktemp  --suffix="--deadbeef-empty-playlist.dbpl" )
+    # As of DeaDBeeF 1.8.2 this doesn't actually work..
 (  #  It was a binary, so I encoded it with xxd
 \xxd  -r  <<  'DBPL'
-0000000: 4442 504c 0102 0000 0000 0000            DBPL........
+00000000: 4442 504c 0102 0000 0000 0000            DBPL........
 DBPL
-) > "$tempfile"
+) >> "$temporary_playlist"
+    # Note that DeaDBeeF 0.7.2 had an empty playlist with one less 0
+    #0000000: 4442 504c 0102 0000 0000 0000            DBPL........
   }
+#less  "$temporary_playlist"
 
-  {  # Launch
+\cp  --force  ~/untitled.dbpl  "$temporary_playlist"
 
+  #:<<'  }'   #  Launch
+  {
     # Make sure it's running first.
-    # For reasons unknown, a symlink will not work.  Directly using  `which`  solves that.
-    \setsid  $( \which deadbeef "$tempfile" )  > /dev/null 2> /dev/null  &
+    \setsid  "$( \realpath  "$( \which  deadbeef )"  )"  "$temporary_playlist"  > /dev/null 2> /dev/null  &
     # Wait for it to launch
-    until pids=$( \pidof  "$( \which deadbeef )" ); do   
-      \echo  ' * Waiting for deadbeef to launch..'
-      \ps  alx | \grep  "$( \which deadbeef )"
+    until
+      \pidof  'deadbeef'
+    do
+      \echo  ' * Waiting for DeaDBeeF to launch..'
       \sleep  0.1
     done
-
   }
     
-  {  # Queue
-    findqueue  $*
+  #:<<'  }'   #  Queue
+  {
+    findqueue  "$*"
   }
   
-  {  #  Play
+  #:<<'  }'   #  Play
+  {
     \deadbeef  --play
     # BUG:  It plays the second song in the now-populated playlist.
     #   Workaround:
     \deadbeef  --prev
   }
 
-  {  # Teardown
-    \rm   --force  --verbose  "$tempfile"
+  #:<<'  }'   #  Teardown
+  {
+    \rm   --force  --verbose  "$temporary_playlist"
   }
 
 }
@@ -198,41 +212,48 @@ XSPF
 ASXv3
 
     # ASX seems nice.
-    local  tempfile=$( \mktemp  --suffix="--audacious-empty-playlist.asx" )
-    \echo  'making tempfile: ' $tempfile
+    temporary_playlist=$( \mktemp  --suffix="--audacious-empty-playlist.asx" )
+    \echo  "making temporary playlist:  $temporary_playlist"
 (\cat << 'audacious-empty-playlist'
 <?xml version="1.0" encoding="UTF-8"?>
 <asx version="3.0">
   <title>Now Playing</title>
 </asx>
 audacious-empty-playlist
-) >> "$tempfile"
-#less "$tempfile"
+) >> "$temporary_playlist"
+#less "$temporary_playlist"
 
   }
 
-  {  # Launch with the empty playlist
-    \audacious  --enqueue-to-temp  "$tempfile"  > /dev/null 2> /dev/null  &
-    until pids=$( \pidof  'audacious' ); do   
+  #:<<'  }'   #  Launch with the empty playlist
+  {
+    \audacious  --enqueue-to-temp  "$temporary_playlist"  > /dev/null 2> /dev/null  &
+    # Wait for it to launch
+    until
+      \pidof  'audacious'
+    do
       echo  'waiting for audacious to launch..'
-      \ps  alx | \grep  'audacious'
       \sleep  0.1
     done
-    \sleep  1
+    #\sleep  1
   }
 
-  {  # Queue
-    findqueue  $*
+  #:<<'  }'   #  Queue
+  {
+    findqueue  "$*"
   }
 
-  {  # Play
+  #:<<'  }'   #  Play
+  {
     \audacious  --play
   }
 
-  {  # Teardown
-    \rm   --force  --verbose  "$tempfile"
+  #:<<'  }'   #  Teardown
+  {
+    \rm   --force  --verbose  "$temporary_playlist"
   }
 
 }
 
 }  fi
+}   # /findplay
