@@ -51,13 +51,13 @@ done
 
 for directory in *; do
   if [ -d "$directory" ]; then
-    \cd  "$directory"  > /dev/null
+    \cd  "$directory"  > /dev/null  ||  exit
     for subdirectory in *.; do
       if [ -d "$subdirectory" ]; then
         \mv  "$subdirectory" "$(basename "$subdirectory" .)"
       fi
     done
-    \cd  -  > /dev/null
+    \cd  -  > /dev/null  ||  exit
   fi
 done
 
@@ -66,7 +66,7 @@ done
 # \mkdir  --parents  a  '12345678 - one'  '1234-5678 - two'  '1234-56-78 - three'  a/a  'a/12345678 - one'  'a/1234-5678 - two'  'a/1234-56-78 - three'
 for directory in *; do
   if [ -d "$directory" ]; then
-    \cd  "$directory"  > /dev/null
+    \cd  "$directory"  > /dev/null  ||  exit
 
     # Testing:
     # \rmdir **/* ; \rmdir * ; \mkdir  --parents  a  '12345678 - one'  '1234-5678 - two'  '1234-56-78 - three'
@@ -79,6 +79,6 @@ for directory in *; do
       fi
     done
 
-    \cd  -  > /dev/null
+    \cd  -  > /dev/null  ||  exit
   fi
 done
