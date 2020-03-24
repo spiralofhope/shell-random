@@ -14,9 +14,9 @@ temporary_teardown_file="$temporary_directory/already_tearing_down"
 for signal in INT QUIT HUP TERM USR1; do
   trap "
     _teardown
-    \touch  "$temporary_teardown_file"
-    \trap  -  "$signal"  EXIT
-    \kill  --signal  "$signal"  "'"$$"'  "$signal"
+    \touch  \"$temporary_teardown_file\"
+    \trap  -  \"$signal\"  EXIT
+    \kill  --signal  \"$signal\"  "'"$$"'  "$signal"
 done
 
 
