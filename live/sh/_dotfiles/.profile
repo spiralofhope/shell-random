@@ -104,10 +104,10 @@ export  shdir
       else  color="${red_bold}"   # root
     fi
     if [ "$( \pwd  |  \wc  --chars )" -gt 20 ];
-      then  long_prompt='\n'
-      else  long_prompt=''
+      then  long_prompt="\n${color}> ${reset_color}"
+      else  long_prompt="${reset_color}"
     fi
-    \printf  '%b > %b'  "${reset_color}${PWD}${color}"  "${long_prompt}${reset_color}"
+    \printf  '%b > %b'  "${reset_color}${PWD}${color}"  "${long_prompt}"
   }
   if [ "$( \whoami )" = root ];
     then  PS1='$( sh_prompt  root )'
