@@ -1,3 +1,4 @@
+#!/usr/bin/env  sh
 # Used by dash (sh)
 
 
@@ -20,10 +21,11 @@ SHELL=/usr/bin/sh
 
 
 # It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
-if [ $( \whoami ) = 'root' ]; then
-      export  shdir="$( \realpath $( \dirname $( \realpath  /home/user/.zshrc ) )/../../sh/ )"
-else  export  shdir="$( \realpath $( \dirname $( \realpath  ~/.zshrc          ) )/../../sh/ )"
+if [ "$( \whoami )" = 'root' ]; then
+      shdir="$( \realpath "$( \dirname "$( \realpath  /home/user/.zshrc )" )"/../../sh/ )"
+else  shdir="$( \realpath "$( \dirname "$( \realpath  ~/.zshrc          )" )"/../../sh/ )"
 fi
+export  shdir
 
 # I don't actually use this variable anyway
 #shell_random="$( \realpath "$shdir"/../../ )"
@@ -34,7 +36,7 @@ fi
 
   sourceallthat() {
     #\echo  "sourcing $1"
-    \cd  "$1"
+    \cd  "$1"  ||  exit
     if [ -f 'lib.sh' ]; then
       .  './lib.sh'
     fi
@@ -95,21 +97,22 @@ fi
   #:<<'  } }'   #  A complex prompt:
   { {
   # This is theoretically slower since it executes a command every time the prompt is re-drawn.
+
   sh_prompt() {
-    if [ -z $1 ];
+    if [ -z "$*" ];
       then  color="${blue_bold}"  # user
       else  color="${red_bold}"   # root
     fi
-    if [ $( \echo  -n  $( pwd ) |  \wc  --chars ) -gt 20 ];
-      then  local  long_prompt="\n"
-      else  local  long_prompt=''
+    if [ "$( \pwd  |  \wc  --chars )" -gt 20 ];
+      then  long_prompt='\n'
+      else  long_prompt=''
     fi
-    \echo  "${reset_color}${PWD}${color} > ${long_prompt}${reset_color}"
+    \printf  '%b > %b'  "${reset_color}${PWD}${color}"  "${long_prompt}${reset_color}"
   }
-
-  if [ $( \whoami ) = root ];
+  if [ "$( \whoami )" = root ];
     then  PS1='$( sh_prompt  root )'
     else  PS1='$( sh_prompt       )'
   fi
+
   } }
 }
