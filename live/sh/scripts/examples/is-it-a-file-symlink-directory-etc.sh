@@ -1,3 +1,4 @@
+#!/usr/bin/env  sh
 # Determine if something is a file, directory, symlink, etc.
 # https://www.tldp.org/LDP/abs/html/fto.html
 
