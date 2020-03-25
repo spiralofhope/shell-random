@@ -9,21 +9,18 @@
 
 
 EXTENSIONS=( .jpg .gif .png .bmp )
-COMMAND=$( \which  gpicview )
+COMMAND="$( \realpath  gpicview )"
 
 
-if [ -a /tmp/temp.$PPID ]; then
-  \rm  --force  /tmp/temp.$PPID
-fi
 
+tempfile=$( \mktemp  --suffix=".my_temporary_file.$$" )
+  
 # iterate through the array of extensions.
-for element in ${EXTENSIONS[@]} ; do
+for element in "${EXTENSIONS[@]}" ; do
   # build one big list of matching files.
-  \ls  *$element >> /tmp/temp.$PPID
+  \ls  ./"*$element" >> "$tempfile"
 done
 
-\exec  $COMMAND $( \sort < /tmp/temp.$PPID | \sed  q )
+$COMMAND  $( \sort < "$tempfile" | \sed  q )
 
-if [ -a /tmp/temp.$PPID ]; then
-  \rm  --force  /tmp/temp.$PPID
-fi
+\rm  --force  "$tempfile"
