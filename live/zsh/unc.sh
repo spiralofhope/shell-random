@@ -29,7 +29,7 @@ COMMENTBLOCK
   BASENAME="${FILE%.*}"
 
 
-  mcd() { \mkdir "$1" && \cd "$1" ; }
+  mcd() { \mkdir "$1" && \cd "$1" || return ; }
 
 
   reset_colour() {
@@ -38,45 +38,45 @@ COMMENTBLOCK
     # Learn the current colours, and restore them intelligently?
     printf  '\x1b\x5b0;40;40m'
   }
-  black()       { printf  "\x1b\x5b0;30;40m$1\n" ; reset_colour ; }
-  darkgray()    { printf  "\x1b\x5b1;30;40m$1\n" ; reset_colour ; }
-  blue()        { printf  "\x1b\x5b0;34;40m$1\n" ; reset_colour ; }
-  lightblue()   { printf  "\x1b\x5b1;34;40m$1\n" ; reset_colour ; }
-  green()       { printf  "\x1b\x5b0;32;40m$1\n" ; reset_colour ; }
-  lightgreen()  { printf  "\x1b\x5b1;32;40m$1\n" ; reset_colour ; }
-  cyan()        { printf  "\x1b\x5b0;36;40m$1\n" ; reset_colour ; }
-  lightcyan()   { printf  "\x1b\x5b1;36;40m$1\n" ; reset_colour ; }
-  red()         { printf  "\x1b\x5b0;31;40m$1\n" ; reset_colour ; }
-  lightred()    { printf  "\x1b\x5b1;31;40m$1\n" ; reset_colour ; }
-  purple()      { printf  "\x1b\x5b0;35;40m$1\n" ; reset_colour ; }
-  lightpurple() { printf  "\x1b\x5b1;35;40m$1\n" ; reset_colour ; }
-  brown()       { printf  "\x1b\x5b0;33;40m$1\n" ; reset_colour ; }
-  yellow()      { printf  "\x1b\x5b1;33;40m$1\n" ; reset_colour ; }
-  lightgrey()   { printf  "\x1b\x5b0;37;40m$1\n" ; reset_colour ; }
-  white()       { printf  "\x1b\x5b1;37;40m$1\n" ; reset_colour ; }
+  black()       { printf  '\x1b\x5b0;30;40m%s\n'  "$1" ; reset_colour ; }
+  darkgray()    { printf  '\x1b\x5b1;30;40m%s\n'  "$1" ; reset_colour ; }
+  blue()        { printf  '\x1b\x5b0;34;40m%s\n'  "$1" ; reset_colour ; }
+  lightblue()   { printf  '\x1b\x5b1;34;40m%s\n'  "$1" ; reset_colour ; }
+  green()       { printf  '\x1b\x5b0;32;40m%s\n'  "$1" ; reset_colour ; }
+  lightgreen()  { printf  '\x1b\x5b1;32;40m%s\n'  "$1" ; reset_colour ; }
+  cyan()        { printf  '\x1b\x5b0;36;40m%s\n'  "$1" ; reset_colour ; }
+  lightcyan()   { printf  '\x1b\x5b1;36;40m%s\n'  "$1" ; reset_colour ; }
+  red()         { printf  '\x1b\x5b0;31;40m%s\n'  "$1" ; reset_colour ; }
+  lightred()    { printf  '\x1b\x5b1;31;40m%s\n'  "$1" ; reset_colour ; }
+  purple()      { printf  '\x1b\x5b0;35;40m%s\n'  "$1" ; reset_colour ; }
+  lightpurple() { printf  '\x1b\x5b1;35;40m%s\n'  "$1" ; reset_colour ; }
+  brown()       { printf  '\x1b\x5b0;33;40m%s\n'  "$1" ; reset_colour ; }
+  yellow()      { printf  '\x1b\x5b1;33;40m%s\n'  "$1" ; reset_colour ; }
+  lightgrey()   { printf  '\x1b\x5b0;37;40m%s\n'  "$1" ; reset_colour ; }
+  white()       { printf  '\x1b\x5b1;37;40m%s\n'  "$1" ; reset_colour ; }
 
   # And without the trailing carriage return:
-  pblack()       { printf  "\x1b\x5b0;30;40m$1" ; reset_colour ; }
-  pdarkgray()    { printf  "\x1b\x5b1;30;40m$1" ; reset_colour ; }
-  pblue()        { printf  "\x1b\x5b0;34;40m$1" ; reset_colour ; }
-  plightblue()   { printf  "\x1b\x5b1;34;40m$1" ; reset_colour ; }
-  pgreen()       { printf  "\x1b\x5b0;32;40m$1" ; reset_colour ; }
-  plightgreen()  { printf  "\x1b\x5b1;32;40m$1" ; reset_colour ; }
-  pcyan()        { printf  "\x1b\x5b0;36;40m$1" ; reset_colour ; }
-  plightcyan()   { printf  "\x1b\x5b1;36;40m$1" ; reset_colour ; }
-  pred()         { printf  "\x1b\x5b0;31;40m$1" ; reset_colour ; }
-  plightred()    { printf  "\x1b\x5b1;31;40m$1" ; reset_colour ; }
-  ppurple()      { printf  "\x1b\x5b0;35;40m$1" ; reset_colour ; }
-  plightpurple() { printf  "\x1b\x5b1;35;40m$1" ; reset_colour ; }
-  pbrown()       { printf  "\x1b\x5b0;33;40m$1" ; reset_colour ; }
-  pyellow()      { printf  "\x1b\x5b1;33;40m$1" ; reset_colour ; }
-  plightgrey()   { printf  "\x1b\x5b0;37;40m$1" ; reset_colour ; }
-  pwhite()       { printf  "\x1b\x5b1;37;40m$1" ; reset_colour ; }
+  pblack()       { printf  '\x1b\x5b0;30;40m%s'  "$1" ; reset_colour ; }
+  pdarkgray()    { printf  '\x1b\x5b1;30;40m%s'  "$1" ; reset_colour ; }
+  pblue()        { printf  '\x1b\x5b0;34;40m%s'  "$1" ; reset_colour ; }
+  plightblue()   { printf  '\x1b\x5b1;34;40m%s'  "$1" ; reset_colour ; }
+  pgreen()       { printf  '\x1b\x5b0;32;40m%s'  "$1" ; reset_colour ; }
+  plightgreen()  { printf  '\x1b\x5b1;32;40m%s'  "$1" ; reset_colour ; }
+  pcyan()        { printf  '\x1b\x5b0;36;40m%s'  "$1" ; reset_colour ; }
+  plightcyan()   { printf  '\x1b\x5b1;36;40m%s'  "$1" ; reset_colour ; }
+  pred()         { printf  '\x1b\x5b0;31;40m%s'  "$1" ; reset_colour ; }
+  plightred()    { printf  '\x1b\x5b1;31;40m%s'  "$1" ; reset_colour ; }
+  ppurple()      { printf  '\x1b\x5b0;35;40m%s'  "$1" ; reset_colour ; }
+  plightpurple() { printf  '\x1b\x5b1;35;40m%s'  "$1" ; reset_colour ; }
+  pbrown()       { printf  '\x1b\x5b0;33;40m%s'  "$1" ; reset_colour ; }
+  pyellow()      { printf  '\x1b\x5b1;33;40m%s'  "$1" ; reset_colour ; }
+  plightgrey()   { printf  '\x1b\x5b0;37;40m%s'  "$1" ; reset_colour ; }
+  pwhite()       { printf  '\x1b\x5b1;37;40m%s'  "$1" ; reset_colour ; }
 
 
   error() {
     pred ERROR:
-    \echo  "  \""$FILE"\" $1"
+    \echo  "  \"$FILE\" $1"
     \echo  ''
     help
   }
@@ -95,7 +95,7 @@ COMMENTBLOCK
   while :; do
 
     help() {
-      echo "Usage: $( \basename  $0 ) filename.ext"
+      echo "Usage: $( \basename  "$0" ) filename.ext"
       echo ''
 
       # I could use a here document like so:

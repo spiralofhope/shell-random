@@ -11,14 +11,15 @@
 cd() {
   # This isn't working..
   dir=${*:gs/~/\\\\~/}
-  builtin cd "$dir"
+  builtin cd "$dir" || return
 }
+
 :<<'}'
 ccd() {
   a="$@"
-  \echo $a
+  \echo  "$a"
   # b=${a:gs/ /\\\\ /}
   b=${(q)a}
-  \echo $b
-  \cd $b
+  \echo  "$b"
+  \cd  "$b" || return
 }

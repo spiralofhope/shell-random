@@ -174,9 +174,9 @@ case $TERM in
 
   *)
     \echo
-    \echo  'WARNING:  This $TERM edge case has not been planned-for: ' $TERM
+    \echo  'WARNING:  This $TERM edge case has not been planned-for: '  "$TERM"
     \echo  "  To add support, edit:"
-    \echo  "  "$( \realpath $0 )
+    \echo  "  $( \realpath  "$0" )"
     \echo
   ;;
 esac

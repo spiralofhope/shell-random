@@ -15,5 +15,5 @@ fi
 
 # Iterate through parameters
 for parameter in ${*[@]}; do
-  echo  "some text:" $parameter
+  \echo  "some text:  $parameter"
 done

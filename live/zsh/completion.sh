@@ -6,7 +6,7 @@
 # completion for *lots* of commands - man, ssh, etc
 zmodload  -i  zsh/complist
 ## Tab completion.
-zstyle      ':completion:*'                 list-colors  ${(s.:.)LS_COLORS}  matcher-list  'm:{a-zA-Z}={A-Za-z}'
+zstyle      ':completion:*'                 list-colors  "${(s.:.)LS_COLORS}"  matcher-list  'm:{a-zA-Z}={A-Za-z}'
 zstyle      ':completion:*'                 matcher-list  'm:{[:lower:][:upper:]}={[:upper:][:lower:]}'  'r:|[._-]=* r:|=*'  'l:|=* r:|=*'
 #zstyle      ':completion:*'                 _approximate  completer  _complete  _ignored
 zstyle      ':completion::complete:*'       use-cache  1

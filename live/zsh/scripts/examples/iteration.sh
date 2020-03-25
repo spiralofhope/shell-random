@@ -9,22 +9,22 @@
 :<<'}'  #  Iterate 1 to 3
 {
   numa=0 ; numb=3
-  until [ $numa -eq $numb ]; do
+  until [ "$numa" -eq "$numb" ]; do
     ((numa++))
-    echo $numa
+    \echo  "$numa"
   done
 }
 
 
 :<<'}'  #  Increment 1 to 10.
 {
-  for i in {1..10}; do echo $i; done
+  for i in {1..10}; do \echo  "$i"; done
 }
 
 
 :<<'}'  #  Increment 1 to 10, with no line breaks.
 {
-  for i in {1..10}; do printf $i; done
+  for i in {1..10}; do \printf '%s'  "$i"; done
 }
 
 
@@ -52,7 +52,7 @@ local  array=(
 :<<'}'  #  Iterate by line, ignoring beginning spaces.
 {
   for i in ${array[@]}; do
-    echo $i
+    \echo  "$i"
   done
 }
 
@@ -62,7 +62,7 @@ local  array=(
 {
   example() {
     for element in ${@[@]}; do
-      echo some text $element
+      \echo  "some text $element"
     done
   }
   example  "my text" two 3
@@ -81,25 +81,25 @@ local  array=(
     fi
   done
   # These all act the same:
-  echo  '---'
-  echo  $array
-  echo  '---'
-  echo  "$array"
-  echo  '---'
+  \echo  '---'
+  \echo  $array
+  \echo  '---'
+  \echo  "$array"
+  \echo  '---'
   for i in $array; do
-    echo $i
+    \echo  "$i"
   done
-  echo  '---'
+  \echo  '---'
 
   # Some setups may need to fiddle with IFS, but this is not necessary with my testing with zsh 5.7.1-1
   # IFS (Internal Field Separator), change to a carriage return:
   #IFS_original="$IFS"
-  #IFS=$( printf "\r" )
+  #IFS=$( \printf  '\r' )
   # (the script)
   # Reset:
   #IFS="$IFS_original"
   
   # This was an alternative one-liner which doesn't work with zsh 5.7.1-1
   # Technically I shouldn't be adding a \r to the beginning of the array, but it doesn't seem to matter.
-  #array="$array$( printf "\r" )$i"
+  #array="$array$( \printf  '\r' )$i"
 }

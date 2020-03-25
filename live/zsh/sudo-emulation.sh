@@ -11,58 +11,54 @@
 #alias  sul='\sudo  \su  --login'
 
 
-suu() {   # Let root become the user.
-  # TODO - tweak this to make a sort of `sudouser`
-  if [ -z $1 ]; then
-    \sudo  -u user  $SHELL
-  else
-    \sudo  $*
-  fi
+#:<<'}'   #  Let root become the user.
+{
+  suu() {
+    # TODO - tweak this to make a sort of `sudouser`
+    if [ -z "$1" ]; then
+      \sudo  -u user  "$SHELL"
+    else
+      \sudo  "$@"
+    fi
+  }
 }
 
 
-suul() {
-  suu  '--login  -u user'
+#:<<'}'   #  I have no idea..
+{
+  suul() {
+    suu  '--login  -u user'
+  }
 }
 
 
-
-{   # If `sudo` does or does not exist.
-\which  sudo > /dev/null
-if [ $? -eq 0 ]; then   # sudo exists
-
-  su() {
-    \sudo  $1  \screen  -q  -X setenv currentdir `\pwd`
-    \sudo  $1  \screen  -q  -X eval 'chdir $currentdir' screen
-    # This logs out of any existing instance of root.
-    \sudo  $1  \screen -A  -D -q  -RR
-  }
-
-
-  sul() {
-    \sudo  --login  $1  \screen  -q  -X setenv currentdir `\pwd`
-    \sudo  --login  $1  \screen  -q  -X eval 'chdir $currentdir' screen
-    # This logs out of any existing instance of root.
-    \sudo  --login  $1  \screen -A  -D -q  -RR
-  }
-
-
+#:<<'}'  #  If `sudo` does or does not exist.
+{
+  if
+    _=$( \realpath  sudo )
+  then   # sudo exists
+    su() {
+      \sudo  "$1"  \screen  -q  -X setenv currentdir "$( \pwd )"
+      \sudo  "$1"  \screen  -q  -X eval 'chdir $currentdir' screen
+      # This logs out of any existing instance of root.
+      \sudo  "$1"  \screen -A  -D -q  -RR
+    }
+    sul() {
+      \sudo  --login  "$1"  \screen  -q  -X setenv currentdir "$( \pwd )"
+      \sudo  --login  "$1"  \screen  -q  -X eval 'chdir $currentdir' screen
+      # This logs out of any existing instance of root.
+      \sudo  --login  "$1"  \screen -A  -D -q  -RR
+    }
   else   # sudo does not exist
-
-
-  su() {
-    /bin/su
-  }
-
-
-  sul() {
-    /bin/su  '--login'
-  }
-
-
-  sudo() {
-    /bin/su  --close-from=$*
-  }
-
-fi  # If `sudo` does or does not exist.
+    su() {
+      /bin/su
+    }
+    sul() {
+      /bin/su  '--login'
+    }
+    sudo() {
+      # 2020-03-25 - I have no idea what that parameter is..
+      /bin/su  --close-from=$*
+    }
+  fi
 }

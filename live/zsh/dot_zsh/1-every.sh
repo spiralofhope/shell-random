@@ -1,3 +1,4 @@
+#!/usr/bin/env  zsh
 # /etc/zshenv is the 1st file zsh reads; it's read for every shell, even if started with -f (setopt NO_RCS)
 # ~/.zshenv is the same, except that it's _not_ read if zsh is started with -f
 
@@ -30,12 +31,14 @@ esac
 
 
 
-if [ "$this_kernel_release" = 'Cygwin' ]; then ;  exit 0  ; fi
+if [ "$this_kernel_release" = 'Cygwin' ]; then  exit 0  ; fi
 
 
-
-\which  smartctl > /dev/null
-if [ $? -eq 0 ] && [ $( \whoami ) = 'root' ] && [ "$this_kernel_release" = 'Linux' ]; then
+if
+  _="$( \realpath  smartctl )" &&
+  [ "$( \whoami )" = 'root' ] &&
+  [ "$this_kernel_release" = 'Linux' ]
+then
   __() {
     \smartctl  --quietmode=errorsonly  --smart=on  "$1"
 #    \smartctl  --smart=on  "$1"

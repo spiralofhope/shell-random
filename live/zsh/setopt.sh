@@ -126,6 +126,7 @@
 
 
 {  #  [unused] - Initialization
+  false
 }
 
 
@@ -176,11 +177,13 @@
 
 
 {  #  [unused- Prompting
+  false
 }
 
 
 
 {  #  [unused] - Scripts and Functions
+  false
 }
 
 
@@ -194,6 +197,7 @@
 
 
 {  #  [unused] - Shell State
+  false
 }
 
 

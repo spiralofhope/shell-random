@@ -9,9 +9,10 @@
 # For files:  **
 # This doesn't work..
 global() {
-  if [ x$1 = x ]; then return 0; fi
+  if [ -z "$1" ]; then return 0; fi
   for i in *; do
-    $@
+    \echo  "$i" > /dev/null
+    "$@"
   done
 }
 :<<'}'   #  
@@ -26,10 +27,10 @@ globaldirs() {
 globaldirs() {
   EXEC="$@"
   EXEC=(${=EXEC})
-  \echo $EXEC
+  \echo  "$EXEC"
   for globaldirs in **/; do
-    cd "$globaldirs"
-    #\echo $EXEC
-    cd -
+    \cd  "$globaldirs" || return
+    #\echo  "$EXEC"
+    cd - || return
   done
 }

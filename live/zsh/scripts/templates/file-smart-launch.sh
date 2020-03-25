@@ -9,10 +9,10 @@
 
 
 # Sometimes the user knows what they're doing, and there's really no need for this script at all.
-if [[ "x$1" == 'xFORCE' ]]; then
+if [ "x$1" = 'xFORCE' ]; then
   # Nuke $1
   shift
-  \echo  "Force-running \"$@\""
+  \echo  "Force-running \"$*\""
   \setsid  "$@" &
   \exit  0
 fi
@@ -34,7 +34,7 @@ setup() {
 
 determine_which_program_to_run() {
   for i in $programs_list; do
-    if [ -f $i ]; then
+    if [ -f "$i" ]; then
       program_to_run="$i"
       break
     fi
@@ -44,7 +44,7 @@ determine_which_program_to_run() {
 
 
 launch_program() {
-  if [[ -z $1 ]]; then
+  if [ -z "$1" ]; then
     \echo  'ERROR:  No valid program was found.  Edit this script to add one.'
     exit  1
   else
@@ -58,7 +58,7 @@ launch_program() {
   case "$i" in
 
     /usr/bin/xterm)
-      \setsid  $i \
+      \setsid  "$i" \
         ` # Output to the window should not have it scroll to the bottom.` \
       -si \
         ` # No visual bell. ` \
@@ -80,7 +80,7 @@ launch_program() {
     ;;
 
     /usr/bin/rxvt)
-      \setsid  $i \
+      \setsid  "$i" \
         ` # Output to the window should not have it scroll to the bottom.` \
       -si \
         ` # No visual bell. ` \
@@ -98,7 +98,7 @@ launch_program() {
     ;;
 
     /usr/bin/xfce4-terminal)
-      \setsid  $i \
+      \setsid  "$i" \
         "$@" &
     ;;
 

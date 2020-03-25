@@ -16,7 +16,7 @@
 unpercent() {
   search=%${1}
   replace=\\${2}
-  \rename --verbose "s/${search}/${replace}/gi" *
+  \rename - -verbose  "s/${search}/${replace}/gi"  ./*
 }
 
 

@@ -16,7 +16,7 @@ delme() {
     if [ "$PWD" = '/' ]; then \echo  'Are you insane, trying to delete root?' ; break ; fi
 
     MYDIR="$PWD"
-    \cd  ../
+    \cd  ../ || return
     # If it's blank, don't even prompt!
     # TODO: Remember the state of shopt and restore it after this script.
     # bash:
@@ -33,21 +33,21 @@ delme() {
       if [ "$1" = '-f' ]; then
         ANSWER='y'
       else
-        \read  ANSWER
+        \read  -r  ANSWER
       fi
-      if [[ "$ANSWER" =~ '^(y)' ]]; then
+      if [[ "$ANSWER" =~ ^(y) ]]; then
         \rm  --force  --recursive  --verbose  "$MYDIR"
         \echo  'Deleted...'
       else
         \echo  'Aborting...'
-        \cd  -
+        \cd  -  ||  return
         break
       fi
     fi
 
     # Check if the rmdir or rm worked completely.
     # No need to be verbose here, since any error would get echoed to the terminal anyways.
-    if [ -d "$MYDIR" ]; then cd  "$MYDIR" ; fi
+    if [ -d "$MYDIR" ]; then \cd  "$MYDIR" || return ; fi
 
     # .tar.gz and the like will extract into a similar name
     # If I decide to nuke the directory, then prompt to nuke the file too.
@@ -67,9 +67,9 @@ delme() {
       if [ "$1" = '-f' ]; then
         ANSWER='n'
       else
-        \read  ANSWER
+        \read  -r  ANSWER
       fi
-      if [[ "$ANSWER" =~ '^(y)' ]]; then
+      if [[ "$ANSWER" =~ ^(y) ]]; then
         \rm  --force  --verbose  "$i"
       else
         \echo  'Aborting...'
@@ -82,18 +82,18 @@ done
 
 delme_test() {
   delme_temp=/tmp/delme.$$
-  \mkdir  "$delme_temp"
-  \cd  "$delme_temp"
+  \mkdir  "$delme_temp" || return
+  \cd  "$delme_temp" || return
   # The test "archive" to be deleted when its associated directory is killed
   # togglable to test similar archive deletion
 #  \echo :> delme_killme.tar.gz
 #  \echo :> delme_killme.tar
-  \mkdir   delme_killme
-  \cd      delme_killme
+  \mkdir   delme_killme || return
+  \cd      delme_killme || return
   # togglable to test empty directories
 #  echo :> somefile
-  \delme
-  \cd  /tmp
+  \delme  ''
+  \cd  /tmp || return
   # togglable
   \rm  --force  --recursive  "$delme_temp"
 #  \ls  "$delme_temp"

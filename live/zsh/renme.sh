@@ -24,21 +24,21 @@ renme() {
     else
       \echo  'Rename $MYDIR to:'
       \echo  -n  '> '
-      \read  ANSWER
+      \read  -r  ANSWER
       # ^c already works as expected.
       if [[ "$ANSWER" = '' ]]; then \echo  'Aborting...' ; break ; fi
     fi
 
-    \cd  ../
+    \cd  ../ || exit
     \mv  "$MYDIR"  "$ANSWER"
 
     # Check if the rename worked completely
     if [ -d "$ANSWER" ]; then
       # The rename worked, cd into it.
-      \cd  "$ANSWER"
+      \cd  "$ANSWER" || exit
     else
       # The rename must have failed, return to the original directory.
-      \cd  "$MYDIR"
+      \cd  "$MYDIR" || exit
     fi
     break
   done

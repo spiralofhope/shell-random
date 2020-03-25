@@ -1,3 +1,4 @@
+#!/usr/bin/env  zsh
 # /etc/zlogin and ~/.zlogin
 # Read after zshrc, if the shell is a login shell.
 # See also /etc/default/console-setup
@@ -26,16 +27,19 @@ if    [ "$TTY" = '/dev/tty1' ] ||\
          #  FIXME? - This doesn't necessarily mean "internet connection"
 {
   # 'lo' is localhost, which is always there so it doesn't count as an outside connection.
-  for interface in $( \ls /sys/class/net/  |  \grep  --invert-match  lo ); do
+  for interface in /sys/class/net/*; do
+    if [ "$interface" = 'lo' ]; then continue; fi
     \echo "Processing $interface"
     _result=$( \cat /sys/class/net/"$interface"/carrier )
     #\echo  "$_result"
     __="/tmp/$( \whoami ).autostart-networking-applications"
     if [ "$_result" = '1' ]; then
-      \dialog  --yesno  "Network connection detected.\n\nAutostart related applications?"  0  0
-      if [ $? -eq 0 ];
-      then  \touch        "$__"
-      else  \rm  --force  "$__"
+      if
+        \dialog  --yesno  "Network connection detected.\n\nAutostart related applications?"  0  0
+      then
+        \touch        "$__"
+      else
+        \rm  --force  "$__"
       fi
       \unset  __
     else
@@ -75,8 +79,8 @@ if    [ "$TTY" = '/dev/tty1' ] ||\
   #  e.g.  /dev/tty2  =>  2
   string="$TTY"
   pattern='/dev/tty'
-  local  tty_to_use=${string##${pattern}}
-  tty_to_use=${string##*${pattern}}
+  local  tty_to_use="${string##${pattern}}"
+  tty_to_use="${string##*${pattern}}"
 
 #less /usr/bin/startx
 
@@ -119,7 +123,7 @@ if    [ "$TTY" = '/dev/tty1' ] ||\
 #nohup  setsid  \startx > /dev/null
 # Launches MATE:
 #\setsid  
-\xinit  /etc/X11/xinit/xinitrc -- /usr/bin/X :$( \expr "$tty_to_use" - 1 ) vt"$tty_to_use"  -auth $( \tempfile  --prefix='serverauth.' )
+\xinit  /etc/X11/xinit/xinitrc -- /usr/bin/X :$(( tty_to_use - 1 )) vt"$tty_to_use"  -auth "$( \mktemp  --prefix='serverauth.' )"
 logout
 
 

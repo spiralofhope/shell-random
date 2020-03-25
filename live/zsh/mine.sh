@@ -2,7 +2,7 @@
 
 
 
-# This would be a nice idea to get rmdir to shut the fuck up.
+ #This would be a nice idea to get rmdir to shut the fuck up.
 :<<'}'   #  
 rmdir2() {
   for i in $i; do if [ -f "$i" ]; then \rmdir "$i"; fi; done
@@ -45,8 +45,9 @@ be_root_or_die() {
 
 #:<<'}'   #  Re-load all these zsh libraries.
 re_source() {
-  for i in /live/OS/Linux/shell-random/git/live/zsh/*.sh
-    source  $i
+  for i in /live/OS/Linux/shell-random/git/live/zsh/*.sh; do
+    source  "$i"
+  done
 }
 
 

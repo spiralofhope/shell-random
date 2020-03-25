@@ -21,18 +21,18 @@ cd() {
 #  fi
 #
   __="$1"
-  if [ -f $1 ]; then
+  if [ -f "$1" ]; then
     # delete the crap off of the trailing slash
     __=$( \dirname "$1" )
  fi
   # check that what remains is sane
-  [ -d $__ ]
-  if [ $! -ne 0 ]; then
-    \echo  ERROR:  This is not a directory:
-    \echo  $__
+  [ -d "$__" ]
+  if [ "$!" -ne 0 ]; then
+    \echo  'ERROR:  This is not a directory:'
+    \echo  "$__"
     return  1
   fi
-  # I have no idea what -P means.  Screw you, past self.  Document more.
-  # FIXME - is there a long form for -P ?  There is no  man cd
-  \cd  -P  "$__"
+  # -P  do not follow symbolic links
+  # -L  follow symbolic links
+  \cd  -P  "$__" || return
 }

@@ -8,13 +8,15 @@ IDEAS
 #:<<'}'  #  Variables
 {
   # It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
-  if [ $( \whoami ) = 'root' ];
-    then  export  zshdir="$( \dirname $( \dirname $( \realpath  /home/user/.zshrc ) ) )"
-    else  export  zshdir="$( \dirname $( \dirname $( \realpath  ~/.zshrc          ) ) )"
+  if [ "$( \whoami )" = 'root' ];
+    then  zshdir="$( \dirname "$( \dirname "$( \realpath  /home/user/.zshrc )" )" )"
+    else  zshdir="$( \dirname "$( \dirname "$( \realpath  ~/.zshrc          )" )" )"
   fi
-  export  shdir="$( \realpath "$zshdir"/../sh/ )"
+  shdir="$( \realpath "$zshdir"/../sh/ )"
   # I don't actually use this variable anyway
   #shell_random="$( \realpath "$zshdir"/../../ )"
+  export  zshdir
+  export   shdir
 }
 
 
@@ -22,19 +24,15 @@ IDEAS
 
   function sourceallthat() {
     #\echo  "sourcing $1"
-    \pushd > /dev/null
-    \cd  "$1"
-    if [ -f 'lib.sh' ]; then
-      \source  'lib.sh'
-    fi
+    \pushd > /dev/null || return
+    \cd  "$1" || return
+    if [ -f 'lib.sh' ]; then \source  'lib.sh';  fi
     for i in *.sh; do
-      if [ "$i" = 'lib.sh' ]; then
-        continue
-      fi
+      if [ "$i" = 'lib.sh' ]; then continue; fi
       \source  "$i"
     done
     # Note that it's intentional that this will generate an error if  suu()  is called by root, when root is currently sitting in an directory that denies permission to the user.
-    \popd > /dev/null
+    \popd > /dev/null || return
   }
 
 
@@ -79,8 +77,9 @@ IDEAS
 zle_highlight=(region:bg=red special:underline)
 
 # The default:
-# export  WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
-\export  WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+# WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+export  WORDCHARS
 
 
 {  #  Prompt
@@ -89,7 +88,7 @@ zle_highlight=(region:bg=red special:underline)
 
   # This block lets me copy this .zshrc for the root user.
   # Test for permission.
-  if [ $( \whoami ) = root ];
+  if [ "$( \whoami )" = root ];
     then  prompt_end_color='red'
     else  prompt_end_color='blue'
   fi
@@ -100,7 +99,7 @@ zle_highlight=(region:bg=red special:underline)
     #   http://scarff.id.au/blog/2011/window-titles-in-screen-and-rxvt-from-zsh/
     # There are other solutions for things like tmux.
 
-    if [ $( \echo  "$PWD"  |  \wc  --chars ) -lt $[($COLUMNS/2)-1] ]; then
+    if [ "$( \echo  "$PWD"  |  \wc  --chars )" -lt $[ ( $COLUMNS / 2 ) - 1 ] ]; then
       # This is a little odd, to allow copy-paste from whole commandlines without fucking things up.
       PS1="%{$reset_color%}%{$fg[black]%}\`# %{$reset_color%}%~ %{$fg_bold[$prompt_end_color]%}>%{$fg_no_bold[black]%}\`;%{$reset_color%}"
     else
@@ -123,7 +122,7 @@ zle_highlight=(region:bg=red special:underline)
 {  #  Update the title of a terminal
   chpwd() {
     [[ -t 1 ]] || return
-    print -Pn "\e]2;%~\a"
+    print  -Pn  "\e]2;%~\a"
   }
 
   :<<'  }'   # I don't think I've ever needed this complexity
@@ -162,12 +161,12 @@ zle_highlight=(region:bg=red special:underline)
 :<<'}'  #  Not used/tested in a while..
 {
   # FIXME/TODO - Babun:  Tentative testing suggests there are valid applications within, but Babun is running as user.
-  if [ $( \whoami ) = 'root' ]; then
+  if [ "$( \whoami )" = 'root' ]; then
     PATH="$PATH":'/sbin'
     PATH="$PATH":'/usr/sbin'
   fi
 }
-
+  export  PATH
 }
 
 
@@ -176,7 +175,7 @@ zle_highlight=(region:bg=red special:underline)
 #   https://github.com/zsh-users/zsh-syntax-highlighting
 #\source  ${a_drive}/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 #FIXME - a smarter path
-\source  /mnt/a/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+\source  '/mnt/a/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
 
 
 
@@ -195,7 +194,7 @@ df
 # 2017-10-26 - Testing with this disabled.
 # 
 # http://www.zsh.org/mla/workers/1996/msg00191.html
-if [[ $( \whoami ) = *\) ]]; then
+if [[ "$( \whoami )" = *\) ]]; then
   # We are remote
   # Do nothing
 else

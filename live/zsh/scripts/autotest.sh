@@ -1,5 +1,6 @@
 #!/usr/bin/env zsh
 
+# TODO - this has not been subject to a shellcheck
 
 
 :<<'}'   #  TODO
