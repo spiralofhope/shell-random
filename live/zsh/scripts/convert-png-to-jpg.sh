@@ -1,4 +1,4 @@
-#!/usr/bin/env  zsh
+#!/usr/bin/env  sh
 
 # requires imagemagick
 
@@ -12,34 +12,23 @@
 #   for i in **/*.png; convert "$i" "$i".jpg ; jpegoptim **/*.png.jpg -p ; rename 's/\.png\.jpg/\.jpg/' **/*.jpg ; rm -f **/*.png
 
 
-_die_on_failure(){
-  if [ $? -ne 0 ]; then
-    _exit=$?
-    \echo "skipping!"
-    exit $_exit
-  fi
-}
-
-
 
 # TODO - use find for everything, all in one go.  My early attempts sucked..
 # FIXME - errors should be checked for and delt with!
 # I can't effectively do this.. if there are no .PNG (caps) files then it fails.. sigh.
 #for i in **/*.png  **/*.PNG; do
-for i in "$1"; do
+for i in "$@"; do
   \echo  " * Converting $i"
 
-  \convert  "$i" "$i".jpg
-  # It's ok if something fails to convert (usually because it's a broken image), just don't try to do anything else with it..
-  if [ $? -ne 0 ]; then continue ; fi
+  if ! \
+    \convert  "$i" "$i".jpg
+  then
+    # It's ok if something fails to convert (usually because it's a broken image), just don't try to do anything else with it..
+    continue
+  fi
 
   # I don't think `jpegoptim` is _ever_ useful for images processed by `convert` (imagemagick).  It seems to do things The Right Way.
-  \jpegoptim  --quiet  "$i".jpg  --preserve
-  _die_on_failure
-
-  \rename  's/\.png\.jpg/\.jpg/i'  "$i".jpg
-  _die_on_failure
-
+  \jpegoptim  --quiet  "$i".jpg  --preserve || \echo "skipping!" ; exit
+  \rename  's/\.png\.jpg/\.jpg/i'  "$i".jpg || \echo "skipping!" ; exit
   \rm  --force  "$i"
-  _die_on_failure
 done
