@@ -3,14 +3,14 @@
 
 
 wfl_mount_drive() {
-  if  ! [ -d /mnt/$1 ]; then
-    \sudo  \mkdir  --parents  /mnt/$1
+  if  ! [ -d "/mnt/$1" ]; then
+    \sudo  \mkdir  --parents  "/mnt/$1"
   fi
-    \mount | \grep $1
-    if [ $? == 1 ]; then
-      \sudo  \mount  -t drvfs  $1:  /mnt/$1
+    \mount | \grep "$1"
+    if [ $? = 1 ]; then
+      \sudo  \mount  -t drvfs  "$1":  "/mnt/$1"
     fi
-  \cd  /mnt/$1
+  \cd  "/mnt/$1" || exit
 }
 alias  a:='nocorrect  wfl_mount_drive  a  '
 alias  A:='nocorrect                   a: '
@@ -41,8 +41,8 @@ alias  z:='nocorrect                   z: '
 # alias  ls='\ls  -1  --all  --classify  --color=auto  --show-control-chars  -X'
 
 # World of Warcraft
-alias  addons="nocorrect  \cd  /mnt/c/live/games/World_of_Warcraft/_dotfiles/Interface/AddOns/"
-alias     wow="nocorrect  \cd  /mnt/c/live/games/World_of_Warcraft/"
+alias  addons="nocorrect  \cd  /mnt/c/live/games/World_of_Warcraft/_dotfiles/Interface/AddOns/ || return"
+alias     wow="nocorrect  \cd  /mnt/c/live/games/World_of_Warcraft/ || return"
 
 
 screen() {
@@ -50,5 +50,5 @@ screen() {
     \sudo  \mkdir      /run/screen
     \sudo  \chmod 777  /run/screen
   fi
-  /usr/bin/screen  $@
+  /usr/bin/screen  "$@"
 }
