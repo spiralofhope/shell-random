@@ -1,8 +1,11 @@
-# .bashrc
+#!/usr/bin/env  bash
+# $HOME/.bashrc
+
+
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
-        . /etc/bashrc
+        .  /etc/bashrc
 fi
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
@@ -14,4 +17,4 @@ fi
 
 
 # I don't really care about the stuff above.  Just copy-paste it from whatever default is given.
-source  ~/.bashrc_mine.sh
+source  $HOME/.bashrc_mine.sh
