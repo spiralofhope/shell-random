@@ -1,5 +1,4 @@
-#!/usr/bin/env  zsh
-# Untested under sh/bash
+#!/usr/bin/env  sh
 
 
 
@@ -12,10 +11,11 @@
 
 # FIXME - shouldn't I just test the zip files?
 for i in *.zip; do
-  \mkdir  --parents  ${i}_
+  \mkdir  --parents  "${i}_"
 #  \unzip  -t  $i
-  \unzip  $i  -d  ${i}_
-  if [ $? -ne 0 ]; then
+  if ! \
+    \unzip  "$i"  -d  "${i}_"
+  then
     \echo  "ERROR"
     exit  $?
   fi
