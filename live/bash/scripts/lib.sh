@@ -3,18 +3,20 @@
 
 
 # It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
-if [ $( \whoami ) = 'root' ]; then
-      export  shdir="$( \realpath $( \dirname $( \realpath  /home/user/.zshrc ) )/../../sh/ )"
-else  export  shdir="$( \realpath $( \dirname $( \realpath  ~/.zshrc          ) )/../../sh/ )"
+if [ "$( \whoami )" = 'root' ]; then
+      shdir="$( \realpath "$( \dirname "$( \realpath  /home/user/.zshrc )" )"/../../sh/ )"
+else  shdir="$( \realpath "$( \dirname "$( \realpath  ~/.zshrc          )" )"/../../sh/ )"
 fi
+export  shdir
 
 
 
 #:<<'}'  #  Paths
 {
 
-  \export  PATH="$PATH"\
+  PATH="$PATH"\
 :"$( \realpath  "$bashdir/../bash/scripts" )"\
 ` # `
+  \export  PATH
 
 }
