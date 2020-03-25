@@ -4,7 +4,7 @@
 # TODO: deal with "+" or "-" characters.  Should be easy.
 
 round() {
-  until [ "sky" = "falling" ]; do
+  while :; do
     if [ "$#" -lt 1 ] || [ "$#" -gt 2 ] || [ "$1" = "" ]; then echo "Needs one or two parameters: a number and an optional position"; break ; fi
 
     # Check $1

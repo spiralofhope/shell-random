@@ -1,5 +1,5 @@
 # -----------------------------
-until [ "sky" = "falling" ]; do
+while :; do
 # -----------------------------
 
 if [ ! "$1" == "/home/user/bin/bash/bashplay/temp.sh" ]; then

@@ -13,7 +13,7 @@ divide() {
   }
 
   # Since "exit" also exits xterm, I do this to allow "break" to end this procedure.
-  until [ "sky" = "falling" ]; do
+  while :; do
   if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ] ; then \echo "Needs two parameters"; break ; fi
   # FIXME - \isnumber doesn't exist on Slackware 14.1
   #         Maybe it existed in my previous Lubuntu installation, but I haven't used this in a long time.
@@ -41,7 +41,7 @@ done
 
 
 multiply() {
-  until [ 'sky' = 'falling' ]; do
+  while :; do
   # I should use -z and not = ''
     if [ ! "$#" -eq 2 ] || [ "$1" = '' ] || [ "$2" = '' ] ; then \echo  'Needs two parameters'; break ; fi
     if [ ! $( isnumber $1 ) -eq 0 ] || [ ! $( isnumber $2 ) -eq 0 ] ; then \echo  'Needs two numbers'; break; fi

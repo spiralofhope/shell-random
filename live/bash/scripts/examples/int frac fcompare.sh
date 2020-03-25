@@ -33,7 +33,7 @@ int() {
     *.*) _INT=${1%.*} ;;
     *) _INT=$1 ;;
   esac
-  [ "$_SILENT_FUNCS" = 1 ] || echo ${_INT}
+  [ "$_SILENT_FUNCS" = 1 ] || \echo "${_INT}"
 }
 
 
@@ -45,7 +45,7 @@ dec() {
     *.) _DEC=0 ;;
     *.*) _DEC=${1#*.} ;;
   esac
-  [ "$_SILENT_FUNCS" = 1 ] || echo ${_DEC}
+  [ "$_SILENT_FUNCS" = 1 ] || \echo "${_DEC}"
 
 }
 
@@ -58,9 +58,9 @@ fpcompare() {
   case $1 in -*) neg1=-; num1=${1#-} ;; esac
   case $2 in -*) neg2=-; num2=${2#-} ;; esac
   _FPCOMPARE=0
-  _SILENT_FUNCS=1 int $num1
+  _SILENT_FUNCS="1 int $num1"
   int1=$_INT
-  _SILENT_FUNCS=1 int $num2
+  _SILENT_FUNCS="1 int $num2"
   int2=$_INT
   if [ "$neg1$int1" -gt "$neg2$int2" ]
   then
@@ -69,10 +69,10 @@ fpcompare() {
   then
     _FPCOMPARE=-1
   else
-    _SILENT_FUNCS=1 dec $1
-    dec1=$_DEC
-    _SILENT_FUNCS=1 dec $2
-    dec2=$_DEC
+    _SILENT_FUNCS="1 dec $1"
+    dec1="$_DEC"
+    _SILENT_FUNCS="1 dec $2"
+    dec2="$_DEC"
     while [ ${#dec1} -ne ${#dec2} ]
     do
       [ ${#dec1} -gt ${#dec2} ] && dec2=${dec2}0
@@ -86,5 +86,5 @@ fpcompare() {
         _FPCOMPARE=-1
     fi
   fi
-  [ "$_SILENT_FUNCS" = 1 ] || echo ${_FPCOMPARE}
+  [ "$_SILENT_FUNCS" = 1 ] || \echo "${_FPCOMPARE}"
 }

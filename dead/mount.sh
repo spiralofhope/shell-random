@@ -7,7 +7,7 @@
 # FIXME: This doesn't handle stupid mounting, like trying to mount a 
 # PDF.  Hrmph.
 
-until [ "sky" = "falling" ]; do
+while :; do
 
 echo $#
   case "$#" in

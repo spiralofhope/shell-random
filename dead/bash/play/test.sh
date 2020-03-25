@@ -1,5 +1,5 @@
 # -----------------------------
-until [ "sky" = "falling" ]; do
+while :; do
 # -----------------------------
 
 # Allow filenames with spaces.

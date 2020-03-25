@@ -34,7 +34,7 @@ check_time() {
 
 time=`check_time "$CHECKFILE"`
 
-until [ "sky" = "falling" ]; do
+while :; do
   newtime=`check_time "$CHECKFILE"`
   if [ ! "$newtime" = "$time" ]; then time=$newtime ; clear ; source "$CHECKFILE" ; fi
   sleep 2s

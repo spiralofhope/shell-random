@@ -30,7 +30,7 @@ USAGE_NOTES
 TODO_LIST
 
 autotest() {
-  until [ "sky" = "falling" ]; do
+  while :; do
     if [ "$1" = "" ]; then echo specify a file to watch ; break ; fi
     # TODO: Check parameters
     # I could be nice and accept lots of parameters and then generate a
@@ -113,7 +113,7 @@ autotest_run() {
   # When things start up, give it a go.
   run_rerun "$CHECKFILE"
 
-  until [ "sky" = "falling" ]; do
+  while :; do
     newtime=`check_time "$CHECKFILE"`
     if [ ! "$newtime" = "$time" ]; then
       time=$newtime

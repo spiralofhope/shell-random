@@ -2,7 +2,7 @@
 
 
 
-#test=true
+test=true
 
 
 # ----------------------
@@ -10,9 +10,13 @@
 # ----------------------
 searchstring() {
   unset searchstring_success
-  until [ 'sky' = 'falling' ]; do
+  while :; do
     # 2 parameters, no blanks, first parameter  must be one character.
-    if [ ! "$#" -eq 2 ] || [ "$1" = '' ] || [ "$2" = '' ] || [ $( \expr  length  "$1" ) -gt 1 ]; then
+    if [ ! "$#" -eq 2  ] ||\
+       [   "$1"   = '' ] ||\
+       [   "$2"   = '' ] ||\
+       [ "$( \echo  "$1" | \wc  -c )" -gt 1 ];\
+    then
       \echo  'ERROR - Needs two parameters: a character, and a string'
       break
     fi
@@ -54,9 +58,13 @@ searchstring_test() {
 # returns a character's position from the left of a string
 searchstring_right_l() {
   unset searchstring_success
-  until [ 'sky' = 'falling' ]; do
+  while :; do
     # 2 parameters, no blanks, first parameter  must be one character.
-    if [ ! "$#" -eq 2 ] || [ "$1" = '' ] || [ "$2" = '' ] || [ $( \expr  length  "$1" ) -gt 1 ]; then
+    if [ ! "$#" -eq 2  ] ||\
+       [   "$1"   = '' ] ||\
+       [   "$2"   = '' ] ||\
+       [ "$( \echo  "$1" | \wc  -c )" -gt 1 ];\
+    then
       \echo  'ERROR - Needs two parameters: a character, and a string'
       break
     fi
@@ -64,8 +72,8 @@ searchstring_right_l() {
     string="$2"
 
     position=0
-    length=${#string}
-    until [ $length = -1 ]; do
+    length="${#string}"
+    until [ "$length" = -1 ]; do
       if [ "${string:$length:1}" = "$character" ]; then
         searchstring_success="$length"
       fi
@@ -96,9 +104,13 @@ searchstring_right_l_test() {
 # returns a character's position from the right of a string
 searchstring_right_r() {
   unset searchstring_success
-  until [ 'sky' = 'falling' ]; do
+  while :; do
     # 2 parameters, no blanks, first parameter  must be one character.
-    if [ ! "$#" -eq 2 ] || [ "$1" = '' ] || [ "$2" = '' ] || [ $( \expr  length  "$1" ) -gt 1 ]; then
+    if [ ! "$#" -eq 2  ] ||\
+       [   "$1"   = '' ] ||\
+       [   "$2"   = '' ] ||\
+       [ "$( \echo  "$1" | \wc  -c )" -gt 1 ];\
+    then
       \echo  'ERROR - Needs two parameters: a character, and a string'
       break
     fi

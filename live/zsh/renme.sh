@@ -11,7 +11,7 @@
 #   vanilla shell doesn't properly leave me cd'd into the renamed directory.
 
 renme() {
-  until [ 'sky' = 'falling' ]; do
+  while :; do
     if [ $# -gt 0 ] && [ "$1" = '' ]; then \echo  'Uses an optional string.  No quoting is required.' ; break ; fi
     if [ "$PWD" = '/' ]; then \echo  'Are you insane, trying to rename root?' ; break ; fi
 

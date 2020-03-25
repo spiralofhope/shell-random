@@ -7,21 +7,21 @@
 
 
 isnumber() {
-  until [ 'sky' = 'falling' ]; do
+  while :; do
     if [ ! "$#" -eq 1 ]; then echo 1 ; break ; fi
     # "nn" or "nn.nn" or "nn." or ".nn"
-    if [[ "$1" =~ '^([0-9]+)$'             ]]   ||\
-       [[ "$1" =~ '^([0-9]+\.[0-9]+)$'     ]]   ||\
-       [[ "$1" =~ '^([0-9]+\.)$'           ]]   ||\
-       [[ "$1" =~ '^(\.[0-9]+)$'           ]]   ||\
-       [[ "$1" =~ '^(\-[0-9]+)$'           ]]   ||\
-       [[ "$1" =~ '^(\-[0-9]+\.)$'         ]]   ||\
-       [[ "$1" =~ '^(\-[0-9]+\.[0-9]+)$'   ]]   ||\
-       [[ "$1" =~ '^(\-\.[0-9]+)$'         ]]   ||\
-       [[ "$1" =~ '^(\+[0-9]+)$'           ]]   ||\
-       [[ "$1" =~ '^(\+[0-9]+\.)$'         ]]   ||\
-       [[ "$1" =~ '^(\+[0-9]+\.[0-9]+)$'   ]]   ||\
-       [[ "$1" =~ '^(\+\.[0-9]+)$'         ]]   ; then
+    if [[ "$1" =~ ^([0-9]+)$             ]]   ||\
+       [[ "$1" =~ ^([0-9]+\.[0-9]+)$     ]]   ||\
+       [[ "$1" =~ ^([0-9]+\.)$           ]]   ||\
+       [[ "$1" =~ ^(\.[0-9]+)$           ]]   ||\
+       [[ "$1" =~ ^(\-[0-9]+)$           ]]   ||\
+       [[ "$1" =~ ^(\-[0-9]+\.)$         ]]   ||\
+       [[ "$1" =~ ^(\-[0-9]+\.[0-9]+)$   ]]   ||\
+       [[ "$1" =~ ^(\-\.[0-9]+)$         ]]   ||\
+       [[ "$1" =~ ^(\+[0-9]+)$           ]]   ||\
+       [[ "$1" =~ ^(\+[0-9]+\.)$         ]]   ||\
+       [[ "$1" =~ ^(\+[0-9]+\.[0-9]+)$   ]]   ||\
+       [[ "$1" =~ ^(\+\.[0-9]+)$         ]]   ; then
       \echo  0
     else
       \echo  1
@@ -38,29 +38,19 @@ if [ ! $test ]; then exit 0; fi
 
 
 isnumber_test() {
-  result=$( isnumber "$1" )
-  expecting=$2
+  result="$( isnumber "$1" )"
+  expecting="$2"
 
-  if [ "$expecting" = 'yes' ]; then
-    expecting=0
-  elif [ "$expecting" = 'no' ]; then
-    expecting=1
-  else
-    \printf  'TEST CODE FAILED - 1'
+  if   [ "$expecting" = 'yes' ]; then  expecting=0
+  elif [ "$expecting" = 'no'  ]; then  expecting=1
+  else                                 \printf  'TEST CODE FAILED - 1'
   fi
   
-  if [ $expecting -eq 1 ] && [ $result -eq 1 ]; then
-    \printf  'pass'
-  elif [ $expecting -eq 0 ] && [ $result -eq 0 ]; then
-    \printf  'pass'
-  elif [ $expecting -eq 1 ] && [ $result -eq 0 ]; then
-    ((fail_count++))
-    \printf  'fail'
-  elif [ $expecting -eq 0 ] && [ $result -eq 1 ]; then
-    ((fail_count++))
-    \printf  'fail'
-  else
-    \printf  'TEST CODE FAILED - 2'
+  if   [ "$expecting" -eq 1 ] && [ "$result" -eq 1 ]; then  \printf  'pass'
+  elif [ "$expecting" -eq 0 ] && [ "$result" -eq 0 ]; then  \printf  'pass'
+  elif [ "$expecting" -eq 1 ] && [ "$result" -eq 0 ]; then  ((fail_count++)) ; \printf  'fail'
+  elif [ "$expecting" -eq 0 ] && [ "$result" -eq 1 ]; then  ((fail_count++)) ; \printf  'fail'
+  else                                                      \printf  'TEST CODE FAILED - 2'
   fi
 
   \echo  " ($2) - $1"

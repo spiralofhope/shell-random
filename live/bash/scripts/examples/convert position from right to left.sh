@@ -16,7 +16,7 @@ NOTES
 
 
 position_from_right_to_left() {
-  until [ 'sky' = 'falling' ]; do
+  while :; do
     if [ ! "$#" -eq 2 ] || [ "$1" = '' ] || [ "$2" = '' ]; then
       \echo  'ERROR - Needs two parameters: a string and a number'
       break

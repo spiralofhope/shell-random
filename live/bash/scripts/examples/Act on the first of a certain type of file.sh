@@ -13,7 +13,7 @@ COMMAND="$( \realpath  gpicview )"
 
 
 
-tempfile=$( \mktemp  --suffix=".my_temporary_file.$$" )
+tempfile="$( \mktemp  --suffix=".my_temporary_file.$$" )"
   
 # iterate through the array of extensions.
 for element in "${EXTENSIONS[@]}" ; do
@@ -21,6 +21,6 @@ for element in "${EXTENSIONS[@]}" ; do
   \ls  ./"*$element" >> "$tempfile"
 done
 
-$COMMAND  $( \sort < "$tempfile" | \sed  q )
+$COMMAND  "$( \sort < "$tempfile" | \sed  q )"
 
 \rm  --force  "$tempfile"

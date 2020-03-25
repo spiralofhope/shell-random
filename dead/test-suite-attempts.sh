@@ -1,5 +1,5 @@
 # -----------------------------
-until [ "sky" = "falling" ]; do
+while :; do
 # -----------------------------
 
 # NOTE: This won't work on internals like 'setopt' !!

@@ -1,5 +1,5 @@
 isnumber() {
-  until [ "sky" = "falling" ]; do
+  while :; do
     if [ ! "$#" -eq 1 ]; then echo 1 ; break ; fi
     # "nn" or "nn.nn" or "nn." or ".nn"
     if [[ "$1" =~ '^([0-9]+)$' ]]; then echo 0

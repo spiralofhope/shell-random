@@ -1,7 +1,7 @@
 # Delete the current directory and related files
 # TODO: Proper pass/fail test cases?
 delme() {
-  until [ "sky" = "falling" ]; do
+  while :; do
     if [ ! "$#" -eq 0 ]; then echo "This script does not accept parameters." ; break ; fi
     if [ "$PWD" = "/" ]; then echo "Are you insane, trying to delete root?" ; break ; fi
 

@@ -4,7 +4,7 @@
 
 insert_character() {
   unset searchstring_success
-  until [ 'sky' = 'falling' ]; do
+  while :; do
   # 2 parameters, no blanks, first parameter  must be one character.
   # I should use -z and not = ''
   if [ ! "$#" -eq 3 ] || [ "$1" = '' ] || [ "$2" = '' ] || [ "$3" = '' ] || [ $( \expr length $1 ) -gt 1 ]; then \echo  'Needs three parameters: a character, a string and a position'; break ; fi
@@ -28,7 +28,7 @@ insert_character() {
 
 replace_character() {
   unset searchstring_success
-  until [ 'sky' = 'falling' ]; do
+  while :; do
   # 2 parameters, no blanks, first parameter  must be one character.
   # I should use -z and not = ''
   if [ ! "$#" -eq 3 ] || [ "$1" = '' ] || [ "$2" = '' ] || [ "$3" = '' ] || [ $( \expr length $1 ) -gt 1 ]; then \echo  'Needs three parameters: a character, a string and a position'; break ; fi

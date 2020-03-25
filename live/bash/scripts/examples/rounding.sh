@@ -70,7 +70,7 @@ Success
 # TODO: deal with "+" or "-" characters.  Should be easy.
 
 round() {
-  until [ "sky" = "falling" ]; do
+  while :; do
     if [ "$#" -lt 1 ] || [ "$#" -gt 2 ] || [ "$1" = '' ]; then
       \echo  'ERROR - Needs one or two parameters: a number and an optional position'
       break
@@ -78,24 +78,27 @@ round() {
 
     # Check $1
     # If I've only been given a number, then what the heck am I being called upon to do?  Bail out.
-    if [[ "$1" =~ '^([0-9]+)$' ]]; then
+    if [[ "$1" =~ ^([0-9]+)$ ]]; then
       \echo  "$1"
       break
     fi
-    if [[ "$1" =~ '^([0-9]+\.)$' ]]; then
+    if [[ "$1" =~ ^([0-9]+\.)$ ]]; then
       left=${1%.*}
       # FIXME: This coding cannot deal with a bad $2 ($rounding_digit_location) since that checking is done later on!!
-      number=$(
-        for i in {1..${#2}}; do
+      number="$(
+        # SC2051: Bash doesn''t support variables in brace range expansions:
+        #for i in {1..${#2}}; do
+        # Untested, but I think this replacement code would work..
+        for (( i=1; i<${#2}; i++ )); do
           \printf  0
         done
-      )
+      )"
     # ".123" => "0.123"
-    elif [[ "$1" =~ '^(\.[0-9]+)$' ]]; then
+    elif [[ "$1" =~ ^(\.[0-9]+)$ ]]; then
       left=0
       number=${1#*.}
     # If it's a number in the form of nnn.nnn
-    elif [[ "$1" =~ '^([0-9]+\.[0-9]+)$' ]]; then
+    elif [[ "$1" =~ ^([0-9]+\.[0-9]+)$ ]]; then
       left=${1%.*}
       number=${1#*.}
     else
@@ -108,7 +111,7 @@ round() {
       # By default round to this many digits
       rounding_digit_location=0
     else
-      if [[ ! "$2" =~ '^([0-9]+)$' ]]; then
+      if [[ ! "$2" =~ ^([0-9]+)$ ]]; then
         \echo  "$2 is not a number."
         break
       fi
@@ -118,9 +121,9 @@ round() {
     fi
 
     # If I've been given a boring number, don't even bother to do rounding
-    if [ $number = 0 ]; then
+    if [ "$number" -eq 0 ]; then
       # there a much better way to do this with some kind of {} thing, but I can't remember where I saw that note.
-      until [ $rounding_digit_location -eq -1 ]; do
+      until [ "$rounding_digit_location" -eq -1 ]; do
         final=$final"0"
         ((rounding_digit_location--))
       done
@@ -141,20 +144,20 @@ round() {
     
     ## Increase it by 1 if the next digit is 6 or more, or a 5 followed by one or more non-zero digits.
     ## ... the next digit
-    item_after=${number:$(( $rounding_digit_location + 1 )):1}
+    item_after=${number:$(( rounding_digit_location + 1 )):1}
     if [ "$item_after" = '' ]; then item_after=0 ; fi
     ## ... is 6 or more
     if [ "$item_after" -ge 6 ]; then
-      result=$(( $item + 1 ))
+      result=$(( item + 1 ))
     fi
     ## ... or a 5 followed by one or more non-zero digits.
     if [ $item_after -eq 5 ]; then
       ## ... followed by one or more non-zero digits
-      string_after=${number:$(( $rounding_digit_location + 2))}
+      string_after=${number:$(( rounding_digit_location + 2))}
       # and if I run past the edge of the string, it's 0
       if [ "$string_after" = '' ]; then string_after=0 ; fi
       if [ $string_after -gt 0 ]; then
-        result=$(( $item + 1 ))
+        result=$(( item + 1 ))
       fi
     fi
     
@@ -164,13 +167,13 @@ round() {
     ## Otherwise, if all that follows the last digit is a 5 and possibly trailing zeroes; then increase the rounded digit if it is currently odd; else, if it is already even, leave it alone.
     if [ $item_after -eq 5 ]; then
       ## ... followed by one or more zero digits
-      string_after=${number:$(( $rounding_digit_location + 2))}
+      string_after=${number:$(( rounding_digit_location + 2))}
       # and if I run past the edge of the string, it's 0
       if [ "$string_after" = '' ]; then string_after=0 ; fi
       if [ $string_after -eq 0 ]; then
-        if [ $(( $item % 2 )) -ne 0 ]; then
+        if [ $(( item % 2 )) -ne 0 ]; then
           # ... then increase the rounded digit if it is currently odd
-          result=$(( $item + 1 ))
+          result=$(( item + 1 ))
         else
           # ... else, if it is already even, leave it alone.
           result=$item
@@ -179,10 +182,10 @@ round() {
     fi
     
     # take the rounded digit and slap it overtop of the original:
-    final=$( replace_character $result $number $rounding_digit_location )
+    final="$( replace_character  "$result"  "$number"  "$rounding_digit_location" )"
     
     # Truncate everything past the rounded digit:
-    truncate=${final:$(( $rounding_digit_location + 1 ))}
+    truncate=${final:$(( rounding_digit_location + 1 ))}
     final=${final%$truncate*}
 
     if [ "$left" = '' ]; then
@@ -205,12 +208,12 @@ round() {
 # Testing
 # --------------
 round_test() {
-  result=$( round $1 $2 )
+  result="$( round  "$1"  "$2" )"
   expected=$3
   if [ "$result" = "$expected" ]; then
     \printf  'pass'
   else ((fail_count++))
-    printf  "fail - got $result"
+    \printf  'fail - got %s'  "$result"
   fi
   \echo  " - $1 ($2) => $3"
 }
@@ -318,7 +321,7 @@ round() (
     fi
   }
 
-  until [ "sky" = "falling" ]; do
+  while :; do
   if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
     \echo  'ERROR - Needs a number and an optional round-to number'
     break

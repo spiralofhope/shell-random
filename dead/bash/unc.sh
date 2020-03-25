@@ -81,7 +81,7 @@ COMMENTBLOCK
   BASENAME=${FILE%.*}
 
   # Main loop
-  until [ "sky" = "falling" ]; do
+  while :; do
 
     help() {
       echo "Usage: `basename $0` filename.ext"

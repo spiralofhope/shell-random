@@ -92,7 +92,7 @@ COMMENTBLOCK
 
   # Main loop
   # TODO - Isn't there a better way to do this?
-  until [ 'sky' = 'falling' ]; do
+  while :; do
 
     help() {
       echo "Usage: $( \basename  $0 ) filename.ext"

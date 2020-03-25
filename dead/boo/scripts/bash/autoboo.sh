@@ -41,7 +41,7 @@ USAGE_NOTES
 TODO_LIST
 
 autoboo() {
-  until [ "sky" = "falling" ]; do
+  while :; do
     if [ "$1" = "" ]; then echo specify a file to watch ; break ; fi
     # TODO: Check parameters
     # I could be nice and accept lots of parameters and then generate a 
@@ -138,7 +138,7 @@ autoboo_run() {
   newtime=$time
   #run_rerun "$FILE"
   
-  until [ "sky" = "falling" ]; do
+  while :; do
     newtime=`check_time "$FILE"`
     if [ ! "$newtime" = "$time" ] && [ -s $FILE ]; then
       time=$newtime

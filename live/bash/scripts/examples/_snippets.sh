@@ -6,6 +6,7 @@
 
 string=abc
 length="${#string}"
+\echo  "$length"
 # => 3
 
 
@@ -13,7 +14,7 @@ length="${#string}"
 # Regular expression matching:
 
 string=abcdefg
-if [[ "$string" =~ '(.*)cd(.*)' ]]
+if [[ "$string" =~ (.*)cd(.*) ]]
 then
   \echo  'matched'
 else
@@ -51,10 +52,10 @@ truncate="${string%$truncate*}"
 
 # Take a string, output everything after another string.
 
-string=abcdefg
-match=abc
-if [[ $string =~ $match ]]; then : ; fi
-\echo  "${string#*$BASH_REMATCH}"
+string="abcdefg"
+match="abc"
+if [[ "$string" =~ $match ]]; then : ; fi
+\echo  "${string#*${BASH_REMATCH[@]}}"
 
 # I dunno... something like this?
 
@@ -69,8 +70,8 @@ string='0x01a00112 0 5745 localhost Mozilla Firefox'
 
 # String extraction, from position:
 
-string=abcdefg
-position=2
+string="abcdefg"
+position="2"
 \echo  "${string:$position}"
 # => cdefg
 
@@ -98,8 +99,10 @@ num=123.456
 
 # Break out of a parameter in .bashrc in xterm, without killing xterm
 parameter() {
-  until [ 'sky' = 'falling' ]; do
-    if [ ! 'foo' = 'bar' ]; then
+  while :; do
+    foo=1
+    bar=1
+    if [ ! "$foo" = "$bar" ]; then
       \echo  'this should be the only line!'
       break
     fi
@@ -121,8 +124,8 @@ testing
 
 
 
-testing() {
+testing2() {
   \echo  "it works! $1"
 }
-testing  'string'
+testing2  'string'
 # => it works! string

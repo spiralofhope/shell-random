@@ -7,8 +7,11 @@
 
 
 
-/usr/bin/env  bash  --rcfile  <( \echo  '  \
-  .  ~/.bashrc  ;\
-  \ls  --color=never  ;\
-  \ls  --color=auto  ;\
-' )
+/usr/bin/env  bash  --rcfile  <( \
+  \echo  \
+  '
+    .  $HOME/.bashrc    ;\
+    \ls  --color=never  ;\
+    \ls  --color=auto   ;\
+'\
+)
