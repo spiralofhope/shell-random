@@ -1,4 +1,4 @@
-#!/usr/bin/env  zsh
+#!/usr/bin/env  sh
 
 
 
@@ -25,7 +25,7 @@
 
 #verbose=--verbose
 
-if [ -z $2 ]; then
+if [ -z "$2" ]; then
 \echo  "
 Turn a series of files/directories into one directory of symbolic links.
 
@@ -42,26 +42,17 @@ fi
 
 
 
-target_directory=$1
+target_directory="$1"
 shift
-\mkdir  --parents  $target_directory
-if [ $? -ne 0 ]; then
-  \echo  'error'
-  \exit  1
-fi
+\mkdir  --parents  "$target_directory" || return
 
 
 
-_ln() {
-  \ln  --backup  --relative  --symbolic  $verbose  $1  --target-directory=$2
-}
-
-
-
-for i in $@; do
-  if [ -d $i ]; then
-    \find  $i  -L  -type d  -exec  _ln  {}  $target_directory \;
+for i in "$@"; do
+  if [ -d "$i" ]; then
+    \find  "$i"  -L  -type d  -exec  \
+    \ln  --backup=numbered  --relative  --symbolic  "$verbose"  "{}"  --target-directory="$target_directory"  \;  2> /dev/null
   else
-    _ln  $i  $target_directory
+    \ln  --backup=numbered  --relative  --symbolic  "$verbose"  "$i"  --target-directory="$target_directory"  2> /dev/null
   fi
 done
