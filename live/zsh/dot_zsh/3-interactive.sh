@@ -54,7 +54,7 @@ IDEAS
   esac
 
 
-  \unset -f sourceallthat
+  \unset  -f sourceallthat
 
 }
 

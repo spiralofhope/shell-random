@@ -10,6 +10,7 @@
 
 
 # No need if booting is otherwise set up correctly:
+# This is technically only usable by root, even though this works..
 \setfont  Uni2-VGA16.psf.gz
 
 
@@ -17,9 +18,10 @@
 
 # if [ -z "$DISPLAY" ] && [ $( \tty ) == /dev/tty1 ]; then
 
-if    [ "$TTY" = '/dev/tty1' ] ||\
-      [ "$TTY" = '/dev/tty2' ]; then
-
+if    [ "$TTY" = '/dev/tty1' ] ||
+      [ "$TTY" = '/dev/tty2' ] ||
+      [ "$TTY" = '/dev/pts1' ] ||
+      [ "$TTY" = '/dev/pts2' ]; then
 
 
 
@@ -30,7 +32,7 @@ if    [ "$TTY" = '/dev/tty1' ] ||\
   for interface in /sys/class/net/*; do
     if [ "$interface" = 'lo' ]; then continue; fi
     \echo "Processing $interface"
-    _result=$( \cat /sys/class/net/"$interface"/carrier )
+    _result=$( \cat "$interface"/carrier )
     #\echo  "$_result"
     __="/tmp/$( \whoami ).autostart-networking-applications"
     if [ "$_result" = '1' ]; then
@@ -52,25 +54,6 @@ if    [ "$TTY" = '/dev/tty1' ] ||\
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # This is a nice idea, but I think I need to chain zsh in the middle of things, unless I want to fuck around with the default shell..  perhaps `dtach` would work, but I don't know..
 #  echo $$ !> /tmp/zsh-launching-startx.ppid
 #  dtach -n /tmp/dtach.socket  \startx &
@@ -78,8 +61,12 @@ if    [ "$TTY" = '/dev/tty1' ] ||\
   # Find the TTY number
   #  e.g.  /dev/tty2  =>  2
   string="$TTY"
+  # FIXME - make this use either format..
+  # I don't know why this works, even though $TTY is actually /dev/pts1
   pattern='/dev/tty'
-  local  tty_to_use="${string##${pattern}}"
+  #pattern='/dev/pts'
+  local  tty_to_use
+  tty_to_use="${string##${pattern}}"
   tty_to_use="${string##*${pattern}}"
 
 #less /usr/bin/startx
@@ -121,10 +108,25 @@ if    [ "$TTY" = '/dev/tty1' ] ||\
 #setsid  \startx
 # Launches X but doesn't switch to it:
 #nohup  setsid  \startx > /dev/null
-# Launches MATE:
-#\setsid  
-\xinit  /etc/X11/xinit/xinitrc -- /usr/bin/X :$(( tty_to_use - 1 )) vt"$tty_to_use"  -auth "$( \mktemp  --prefix='serverauth.' )"
+
+# 2020-03-26 success
+# mktemp does not support --prefix
+\xinit  /etc/X11/xinit/xinitrc -- /usr/bin/X :$(( tty_to_use - 1 )) vt"$tty_to_use"  -auth "$( \tempfile  --prefix='serverauth.' )"
 logout
+
+
+:<<'}'
+{
+  \xinit  /etc/X11/xinit/xinitrc  \
+    --  \
+    /usr/bin/X  \
+    :$(( tty_to_use - 1 ))  \
+    vt"$tty_to_use"  &
+  \wait
+  # FIXME - This also logs out of every console:
+  \logout
+}
+
 
 
 fi  # ttys 1,2

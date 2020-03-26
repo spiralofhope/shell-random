@@ -7,7 +7,9 @@
 
 # This lingering parent task isn't necessary.
 # I don't know of a better way to break out of this subshell nonsense.  `setsid` all over the place hasn't been the answer.
-\kill  -9  $( \pgrep --full '/bin/sh /usr/bin/startx' )
+#\kill  -9  $( \pgrep --full '/bin/sh /usr/bin/startx' )
+# In theory I could do this instead, but this seems to really break things:
+#\kill  -9  $( \pgrep 'xinit' )
 
 
 {  # Background colour
@@ -72,7 +74,8 @@
 
 
 # Force-load .Xdefaults, for rxvt-unicode's colour preferences.
-\xrdb  -load ~/.Xdefaults
+# I no longer use .Xdefaults
+#\xrdb  -load ~/.Xdefaults
 # Fix urxvt:
 \xrdb  -load ~/.Xresources
 

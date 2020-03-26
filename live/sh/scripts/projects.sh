@@ -14,11 +14,11 @@
           #    \uname  --kernel-name
           #  See usage in zsh/dot_zsh/3-interactive.sh
 {
-if [ -d '/mnt/c' ]; then
-  l='/mnt/d/live'
-else
-  l='/l'
-fi
+  if [ -d '/mnt/c' ]; then
+    l='/mnt/d/live'
+  else
+    l='/l'
+  fi
 }
 
 
@@ -31,37 +31,37 @@ fi
 #        This is a not-decrypted directory made/managed by the eCryptFS (ecryptfs.org) encryption program.
 
 setup() {
-  \echo  ' * begin'
+  #\echo  ' * begin'
   NEW_PROJECT_MESSAGE="New project notes started $( \date )"
   # Case-insensitivity.
   LC_COLLATE=en_US ; export LC_COLLATE
   # IFS (Internal Field Separator), change to a carriage return.
   IFS_original=$IFS
-  IFS=$( \printf "\r" )
+  IFS="$( \printf '\r' )"
 }
 
 
 build_array_of_directories() {
   if [ -z "$1" ]; then return; fi
   for i in "$1"/*; do
-    \echo  "processing - $i"
+    #\echo  "processing - $i"
     if [ -z "$i" ]; then continue; fi
     # Skip non-directories
     # Note that this will not skip symlinks.
     if ! [ -d "$i" ]; then
-      \echo  "skipping non-directory  $i"
+      #\echo  "skipping non-directory  $i"
       continue
     elif [ "$i" = '/l/$RECYCLE.BIN' ] ||
          [ "$i" = '/l/System Volume Information' ]
     then
-      \echo  "skipping $i"
+      #\echo  "skipping $i"
       continue
     fi
     #exit 0
     # I don't know why this won't work:
     #array_of_directories="$array_of_directories$IFS$i"
     # Technically I shouldn't be adding a \r to the beginning of the array, but it doesn't seem to matter.
-    array_of_directories="$array_of_directories$( \printf "\r" )$i"
+    array_of_directories="$array_of_directories$( \printf '\r' )$i"
   done
   #echo --v
   #for i in $array_of_directories; do
@@ -92,11 +92,11 @@ build_array_of_files() {
     fi
     size_of_file=$( \stat  --printf="%s"  "$file"  |  \cut -f 1 )
     if [ "$size_of_file" = "0" ] ; then
-      \echo  "skipping 0-byte file:  $file"
+      #\echo  "skipping 0-byte file:  $file"
       continue
     fi
     #\echo  "processing - $file"
-    array_of_files="$array_of_files$( \printf "\r" )$file"
+    array_of_files="$array_of_files$( \printf '\r' )$file"
   done
   #echo --v
   #for i in $array_of_files; do
@@ -133,7 +133,7 @@ open_array_of_files() {
 
 teardown() {
   IFS=$IFS_original
-  \echo  ' * end'
+  #\echo  ' * end'
 }
 
 
