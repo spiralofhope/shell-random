@@ -4,6 +4,8 @@
 
 
 
+# shellcheck disable=2034
+# I don't actually understand how this all works..
 USAGE='[--cached] [<rev-list-options>...]
 
 Show file size changes between two commits or the index and a commit.
@@ -15,6 +17,7 @@ example of use:
 
 
 
+# shellcheck disable=1090
 .  "$( \git  --exec-path )/git-sh-setup"
 args=$( \git  rev-parse  --sq "$@" )
 [ -n "$args" ] || usage
@@ -26,6 +29,7 @@ if [ "$1" = '--cached' ]; then
 else
   cmd="diff-tree -r"
 fi
+# shellcheck disable=1117
 eval "\git $cmd $args" | {
   total=0
   while  \read  -r  A B C D M P; do

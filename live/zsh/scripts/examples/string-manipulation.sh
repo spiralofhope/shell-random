@@ -11,13 +11,13 @@ insert_character() {
      [   "$1"   = '' ] ||
      [   "$2"   = '' ] ||
      [   "$3"   = '' ] ||
-     [ $( \expr length $1 ) -gt 1 ];
+     [ ${#1} -gt 1 ];
   then
     \echo  'Needs three parameters: a character, a string and a position'
     break
   fi
   if ! \
-    _"$( \expr "$3" + 1 )"
+    _$(( $3 + 1 ))
   then
     \echo "$3 is not a number."
     break
@@ -29,7 +29,11 @@ insert_character() {
   i=0
   unset newstring
   until [ "$i" -eq "$length" ]; do
+    # zshism
+    # shellcheck disable=2039
     newstring="$newstring${string:$i:1}"
+    # zshism
+    # shellcheck disable=2039
     ((i++))
     if [ "$i" -eq "$position" ]; then newstring="$newstring$character" ; fi
   done
@@ -47,13 +51,13 @@ replace_character() {
        [   "$1"   = '' ] ||
        [   "$2"   = '' ] ||
        [   "$3"   = '' ] ||
-       [ "$( \expr length "$1" )" -gt 1 ];
+       [ ${#1} -gt 1 ];
     then
       \echo  'Needs three parameters: a character, a string and a position'
       break
     fi
     if ! \
-      _="$( \expr $3 + 1 )"
+      _="$(( $3 + 1 ))"
     then
       \echo "$3 is not a number."
       break
@@ -64,10 +68,14 @@ replace_character() {
     length=${#string}
     i=0
     unset newstring
+    # zshism
+    # shellcheck disable=2039
     until [ "$i" -eq "$length" ]; do
       if [ "$i" -eq "$position" ]; then  newstring="$newstring$character"
       else                               newstring="$newstring${string:$i:1}"
       fi
+      # zshism
+      # shellcheck disable=2039
       ((i++))
     done
     \echo  "$newstring"

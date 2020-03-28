@@ -1,8 +1,8 @@
 #!/usr/bin/env  bash
+# shellcheck disable=1091
 
 
 
-#test=true
 # REQUIREMENTS
 source  './is a string a number？.sh'
 source  './convert position from right to left.sh'
@@ -63,44 +63,42 @@ multiply() {
 
 
 
-# -----------------------------
-if [ ! $test ]; then exit 0; fi
+#:<<'}'   #  Tests
+{
+  \echo
+  # You can quote things, but you don't need to:
+  multiply  '1.2'  '1.2'
+  # =>
+  # 1.44
 
 
-
-\echo
-# You can quote things, but you don't need to:
-multiply  '1.2'  '1.2'
-# =>
-# 1.44
-
-
-\echo
-# You can capture things in a variable:
-a=$( multiply  1.2  1.2 ); \echo  "$a"
-# =>
-# 1.44
+  \echo
+  # You can capture things in a variable:
+  a=$( multiply  1.2  1.2 ); \echo  "$a"
+  # =>
+  # 1.44
 
 
-\echo
-multiply  12.34  56.78
-# =>
-# 700.6652
+  \echo
+  multiply  12.34  56.78
+  # =>
+  # 700.6652
 
 
-\echo
-multiply  10  12
-# =>
-# 120
+  \echo
+  multiply  10  12
+  # =>
+  # 120
 
 
-\echo
-multiply  10.0  12
-# =>
-# 120.0
+  \echo
+  multiply  10.0  12
+  # =>
+  # 120.0
 
 
-\echo
-multiply  10.0  12.0
-# =>
-# 120.00
+  \echo
+  multiply  10.0  12.0
+  # =>
+  # 120.00
+}

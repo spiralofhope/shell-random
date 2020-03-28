@@ -2,14 +2,11 @@
 
 
 
-#test=true
-
-
-
 isnumber() {
   while :; do
     if [ ! "$#" -eq 1 ]; then echo 1 ; break ; fi
     # "nn" or "nn.nn" or "nn." or ".nn"
+    # shellcheck disable=1001
     if [[ "$1" =~ ^([0-9]+)$             ]]   ||\
        [[ "$1" =~ ^([0-9]+\.[0-9]+)$     ]]   ||\
        [[ "$1" =~ ^([0-9]+\.)$           ]]   ||\
@@ -29,11 +26,6 @@ isnumber() {
     break
   done
 }
-
-
-
-# -----------------------------
-if [ ! $test ]; then exit 0; fi
 
 
 

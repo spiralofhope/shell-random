@@ -1,4 +1,6 @@
 #!/usr/bin/env  zsh
+# full of zshisms, obviously.
+# shellcheck disable=2039
 # NOTE: control-v and a key combination to learn that binding.
 
 
@@ -174,6 +176,7 @@ case $TERM in
 
   *)
     \echo
+    # shellcheck disable=2016
     \echo  'WARNING:  This $TERM edge case has not been planned-for: '  "$TERM"
     \echo  "  To add support, edit:"
     \echo  "  $( \realpath  "$0" )"

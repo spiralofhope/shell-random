@@ -14,8 +14,10 @@ So, for example, if your script worked with usernames, it would not need it hard
 
 # Or more complicated, like:
 # file called 'config-file' in this directory.
+# shellcheck disable=1090
 . "$( \dirname "$( \realpath "$0" )" )"/config-file
 
 
 
-\echo  "$variable"
+# It'll throw an error if the variable has not been set.
+\echo  "${variable:?}"

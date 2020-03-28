@@ -20,13 +20,16 @@ renme() {
     # If I was passed some text, then don't even prompt!
     # No quoting required baby!
     if [ $# -gt 0 ]; then
+      # zshism
+      # shellcheck disable=2124
       ANSWER=$@
     else
+      # shellcheck disable=2016
       \echo  'Rename $MYDIR to:'
-      \echo  -n  '> '
+      \printf  '> '
       \read  -r  ANSWER
       # ^c already works as expected.
-      if [[ "$ANSWER" = '' ]]; then \echo  'Aborting...' ; break ; fi
+      if [ "$ANSWER" = '' ]; then \echo  'Aborting...' ; break ; fi
     fi
 
     \cd  ../ || exit

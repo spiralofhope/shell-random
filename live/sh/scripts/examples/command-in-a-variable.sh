@@ -18,4 +18,5 @@ eval "$a" "$b"
 
 a='ls'
 b='-a -l'
+# shellcheck disable=2086
 $a $b

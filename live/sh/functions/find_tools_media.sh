@@ -5,7 +5,9 @@
 
 # Note that DeaDBeeF probably isn't installed like a proper application (because of a joke license), and will need a manual symlink in a $PATH  (I use $HOME/l/path)  which points to its executable.
 if  \
-  \which  deadbeef  >  /dev/null
+  # shellcheck disable=2230
+  # I'm not going to deal with alternatives
+  \command  -v  deadbeef  >  /dev/null
   #false   #  Un-comment to trigger the fallback (audacious).
 then
   deadbeef_is_installed=true
@@ -21,7 +23,7 @@ fq() {
   \find  .  -iname "*$1*"  -type f  -print0  |\
     \xargs  \
       --null  \
-      "$( \which  deadbeef )"  \
+      "$( \command  -v  deadbeef )"  \
         --queue "{}"  \
       > /dev/null 2> /dev/null &
 }
@@ -35,7 +37,7 @@ if [ "$deadbeef_is_installed" = 'true' ]; then                     {   #  Deadbe
 findqueue() {
   # Note that the current playlist is:  "$HOME/.config/deadbeef/playlists/0.dbpl"
   \echo  ' * Launching DeaDBeeF..'
-  \setsid  "$( \realpath  "$( \which  deadbeef )"  )"  > /dev/null 2> /dev/null  &
+  \setsid  "$( \realpath  "$( \command  -v  deadbeef )"  )"  > /dev/null 2> /dev/null  &
   # Wait for it to launch
   until  \
     \pidof  'deadbeef'
@@ -150,7 +152,9 @@ DBPL
   #:<<'  }'   #  Launch
   {
     # Make sure it's running first.
-    \setsid  "$( \realpath  "$( \which  deadbeef )"  )"  "$temporary_playlist"  > /dev/null 2> /dev/null  &
+    # shellcheck disable=2230
+    # I'm not going to deal with alternatives
+    \setsid  "$( \realpath  "$( \command  -v  deadbeef )"  )"  "$temporary_playlist"  > /dev/null 2> /dev/null  &
     # Wait for it to launch
     until
       \pidof  'deadbeef'

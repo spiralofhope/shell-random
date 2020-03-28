@@ -4,6 +4,7 @@
 
 :<<'}'  # Testing
 {
+  # FIXME - replace with an shism
   \touch  \
     '.DS_Store'  \
     '.BridgeCache'  \
@@ -14,43 +15,30 @@
 }
 
 
-#:<<'}'  #  Run `find` once.
+#:<<'}'  #  
 {
-#dry_run='-dry-run'
-\find  \
-  ./  \
-               -type f  -name '.DS_Store'  \
-  -delete  -o  -type f  -name '.BridgeCache' \
-  -delete  -o  -type f  -name '.BridgeCacheT' \
-  -delete  -o  -type f  -name 'Thumbs.db'  \
-  -delete  -o  -type f  -name 'desktop.ini' ` # Windows `  \
-  -delete  \
-  "$dry_run" \
-` # `
+  \find  \
+    ./  \
+        -type f  -name '.DS_Store'      -delete  \
+    -o  -type f  -name '.BridgeCache'   -delete  \
+    -o  -type f  -name '.BridgeCacheT'  -delete  \
+    -o  -type f  -name 'Thumbs.db'      -delete  \
+    ` # Windows `  \
+    -o  -type f  -name 'desktop.ini'    -delete  \
+     \
+  ` # `
 }
 
 #ls -a1 --color=always
 
 
-
-:<<'}'  #  Run `find` multiple times.
+:<<'}'  #  Via a regex
 {
-  \find  -type f  -name '.DS_Store'     -delete
-  \find  -type f  -name '.BridgeCache'  -delete
-  \find  -type f  -name '.BridgeCacheT' -delete
-  \find  -type f  -name 'Thumbs.db'     -delete
-  # Windows
-  \find  -type f  -name 'desktop.ini'   -delete
-}
-
-
-:<<'}'  #  Run `find` once.
-{
-\find  \
-  ./  \
-  -type f  \
-  -regex  '.*\/\(\.DS_Store\|\.BridgeCache\|\.BridgeCacheT\|Thumbs\.db\|desktop\.ini\)'  \
-` # `
+  \find  \
+    ./  \
+    -type f  \
+    -regex  '.*\/\(\.DS_Store\|\.BridgeCache\|\.BridgeCacheT\|Thumbs\.db\|desktop\.ini\)'  \
+  ` # `
 }
 
 
@@ -67,6 +55,7 @@ variable='
 '
 }
 # Idea:  Use items in a plain text file.
+
 
 
 # I don't understand why this doesn't work..

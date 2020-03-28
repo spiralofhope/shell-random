@@ -28,6 +28,7 @@ a='example'
 # Escape codes
 #   \n   line break
 # Without the quotes, the \ will just tell it to 'escape' the next character, so it has no special meaning.
+# shellcheck disable=1003
 \printf  'a backslash:  \\'
 \printf  '\n'
 

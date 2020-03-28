@@ -1,4 +1,5 @@
 #!/usr/bin/env  sh
+# shellcheck disable=1001
 # Drop any caches in memory.
 # This is helpful for having less working memory to dump to a hibernation file.
 # For example, using VirtualBox's "save the machine state".

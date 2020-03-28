@@ -1,6 +1,7 @@
 #!/usr/bin/env  zsh
 # Run through various terminals to find one which is installed.
 # Written in zsh, because fuck all of bash's heredoc and array bullshit.
+# shellcheck disable=1001
 
 
 
@@ -88,6 +89,8 @@ terminal_setup() {
   # Note that I am unable to do something like  \terminal_name  to guarantee I'm not bumping into an alias or the like.
   #   So instead, I am using absolute paths.
   #   TODO - Figure out how to use  \terminal_name
+  # zshism
+  # shellcheck disable=2039
   terminals_without_lines=(
     /usr/bin/urxvt
     /usr/bin/rxvt-unicode
@@ -112,6 +115,8 @@ terminal_setup() {
     /usr/bin/xterm
   )
 
+  # zshism
+  # shellcheck disable=2039
   terminals_with_lines=(
     /usr/bin/urxvt
     /usr/bin/rxvt-unicode
@@ -134,7 +139,7 @@ determine_which_terminal_to_run() {
     for i in "$@"; do
       i="$( trim_whitespace  "$i" )"
       if
-        _="$( \which  $i )"
+        _="$( \command  -v  "$i" )"
       then
         \echo  "$i"
         break
@@ -145,8 +150,14 @@ determine_which_terminal_to_run() {
   if [ "x$1" = 'xwith_lines' ]; then
     # Nuke $1
     shift
+    # shellcheck disable=2086
+    # zshism
+    # shellcheck disable=2128
     determine_terminal_existance  $terminals_with_lines
   else
+    # shellcheck disable=2086
+    # zshism
+    # shellcheck disable=2128
     determine_terminal_existance  $terminals_without_lines
   fi
 }
@@ -353,6 +364,7 @@ launch_terminal() {
           \setsid  \urxvtc  -bg black  -fg grey  "$@"
         fi
       fi
+      # shellcheck disable=2181
       if [ $? -ne 0 ]; then
         # Just fucking work..
         \setsid  \urxvtc  -fn 'xft:'

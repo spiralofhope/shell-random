@@ -48,6 +48,7 @@ build_array_of_directories() {
     if [ -z "$i" ]; then continue; fi
     # Skip non-directories
     # Note that this will not skip symlinks.
+    # shellcheck disable=2016
     if ! [ -d "$i" ]; then
       #\echo  "skipping non-directory  $i"
       continue
@@ -109,6 +110,7 @@ build_array_of_files() {
 
 open_array_of_files() {
   if [ -d '/mnt/c' ]; then
+    # shellcheck disable=2086
     \geany  --new-instance  \
       "$l/live/__/__.txt"  \
       "$l/live/projects/projects.txt"  \
@@ -118,6 +120,7 @@ open_array_of_files() {
   else
     #echo  \geany  $array_of_files
     #\geany  $array_of_files
+    # shellcheck disable=2086
     \geany  --new-instance  \
       "$l/live/__/__.txt"  \
       "$l/live/projects/projects.txt"  \

@@ -68,6 +68,8 @@ regexp='^[-|+|0-9|.][.0-9]*$'
 # using grep
 isnumber() {
   if
+    # shellcheck disable=2016
+    # shellcheck disable=2091
     $( \echo  "$1" | \grep '\($regexp\)' &> /dev/null )
   then
     return 0
@@ -82,6 +84,8 @@ isnumber() {
 # Set returns what it matched..
 
 isnumber() {
+    # shellcheck disable=1117
+    # shellcheck disable=2001
   check="$( \echo  "$1" | \sed  "s/\($regexp\)//" )"
   if [ -z "$check" ] ; then
     return 0
@@ -97,6 +101,9 @@ isnumber() {
 # FIXME - bash regular expression with =~
 isnumber() {
   if
+    # shellcheck disable=1117
+    # shellcheck disable=2003
+    # shellcheck disable=2091
     "$( \expr match "$1" "\($regexp\)" &> /dev/null )"
   then
     return 0
@@ -139,7 +146,7 @@ isnumber() {
 
 
 
-:<<NOTES
+#:<<NOTES
 isnumber() {
   if  \
     _="$(( $1 + 1 ))"

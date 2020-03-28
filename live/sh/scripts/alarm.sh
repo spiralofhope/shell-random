@@ -1,4 +1,5 @@
 #!/usr/bin/env  sh
+# shellcheck disable=1117
 # 2018-05-19 - Dash 0.5.7-4+b1
 
 
@@ -7,6 +8,7 @@
 
 
 
+debug=''
 #debug=true
 SPINNER=true
 
@@ -40,7 +42,7 @@ time_source=$( \date  --date 'now'  +%s )
 
 
 debug() {
-  if [ "$debug" ]; then
+  if [ "$debug" = 'true' ]; then
     #\printf  "$*"
     reset="${ANSI_escape_code}[0m"
     yellow="${ANSI_escape_code}[33m"

@@ -5,7 +5,10 @@
 divide() {
   # Just simple for now.  Elsewhere I have more complex code that's more thorough
   isnumber() {
-    if expr $1 + 1 &> /dev/null ; then
+    # shellcheck disable=2003
+    # zshism
+    # shellcheck disable=2039
+    if expr "$1" + 1 &> /dev/null ; then
       \echo "0"
     else
       \echo "1"
@@ -49,7 +52,11 @@ multiply() {
     b="$2"
 
     # remove the . from either.
+    # zshism
+    # shellcheck disable=2039
     a_nodot=${a//./""}
+    # zshism
+    # shellcheck disable=2039
     b_nodot=${b//./""}
 
     # Multiply the decimal-less numbers together:
@@ -61,8 +68,8 @@ multiply() {
 
     # Add one to it, to get its position in human terms.
     # If there was no dot (-1) then make it 0.
-    if [ "$a_dotloc" -gt '-1' ]; then ((a_dotloc--)) ; else a_dotloc=0 ; fi
-    if [ "$b_dotloc" -gt '-1' ]; then ((b_dotloc--)) ; else b_dotloc=0 ; fi
+    if [ "$a_dotloc" -gt '-1' ]; then _=$(( a_dotloc - 1 )) ; else a_dotloc=0 ; fi
+    if [ "$b_dotloc" -gt '-1' ]; then _=$(( b_dotloc - 1 )) ; else b_dotloc=0 ; fi
 
     # add the two positions of '.' together
     dotloc=$(( a_dotloc + b_dotloc ))

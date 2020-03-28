@@ -20,4 +20,5 @@ for i in *.zip; do
     exit  $?
   fi
 done | \leafpad
+# shellcheck disable=1117
 \echo  "rm  --force  *.zip  ;  rename  's/\.zip\_//' *"

@@ -37,6 +37,7 @@ if    [ "$TTY" = '/dev/tty1' ] ||
     __="/tmp/$( \whoami ).autostart-networking-applications"
     if [ "$_result" = '1' ]; then
       if
+        # shellcheck disable=1117
         \dialog  --yesno  "Network connection detected.\n\nAutostart related applications?"  0  0
       then
         \touch        "$__"
@@ -65,7 +66,7 @@ if    [ "$TTY" = '/dev/tty1' ] ||
   # I don't know why this works, even though $TTY is actually /dev/pts1
   pattern='/dev/tty'
   #pattern='/dev/pts'
-  local  tty_to_use
+  tty_to_use=''
   tty_to_use="${string##${pattern}}"
   tty_to_use="${string##*${pattern}}"
 
@@ -111,6 +112,7 @@ if    [ "$TTY" = '/dev/tty1' ] ||
 
 # 2020-03-26 success
 # mktemp does not support --prefix
+# shellcheck disable=2186
 \xinit  /etc/X11/xinit/xinitrc -- /usr/bin/X :$(( tty_to_use - 1 )) vt"$tty_to_use"  -auth "$( \tempfile  --prefix='serverauth.' )"
 logout
 

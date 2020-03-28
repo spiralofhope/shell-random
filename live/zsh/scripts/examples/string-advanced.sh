@@ -8,9 +8,9 @@ searchstring() {
   while :; do
     # 2 parameters, no blanks, first parameter  must be one character.
     if [ ! "$#" -eq 2  ] ||
-       [   "$1"   = "" ] ||
-       [   "$2"   = "" ] ||
-       [ "$( \expr length "$1" )" -gt 1 ]
+       [   "$1"   = '' ] ||
+       [   "$2"   = '' ] ||
+       [ ${#1} -gt 1 ]
     then
       \echo "Needs two parameters: a character, and a string"
       break
@@ -21,8 +21,12 @@ searchstring() {
     for i in $( \seq  0  $(( ${#string} - 1 )) ); do
       # Checking that location in the string, see if the character matches.
       # I should convert this into an 'until' so it makes sense to me, and it halts on the first success.
+      # zshism
+      # shellcheck disable=2039
       if [ "${string:$i:1}" = "$character" ]; then searchstring_success=$i ; fi
     done
+    # echo isn't using any flags..
+    # shellcheck disable=2039
     if [ ! "$searchstring_success" = '' ]; then \echo "$searchstring_success" ; else \echo "-1" ; fi
     break
   done
@@ -34,9 +38,9 @@ searchstring_right_l() {
   while :; do
     # 2 parameters, no blanks, first parameter  must be one character.
     if [ ! "$#" -eq  2 ] ||
-       [   "$1"   = "" ] ||
-       [   "$2"   = "" ] ||
-       [ "$( \expr length "$1" )" -gt 1 ]
+       [   "$1"   = '' ] ||
+       [   "$2"   = '' ] ||
+       [ ${#1} -gt 1 ]
     then
       \echo "Needs two parameters: a character, and a string"
       break
@@ -47,10 +51,18 @@ searchstring_right_l() {
     position=0
     length=${#string}
     until [ "$length" = -1 ]; do
+      # zshism
+      # shellcheck disable=2039
       if [ "${string:$length:1}" = "$character" ]; then searchstring_success="$length" ; fi
+      # zshism
+      # shellcheck disable=2039
       ((position++))
+      # zshism
+      # shellcheck disable=2039
       ((length--))
     done
+    # echo isn't using any flags..
+    # shellcheck disable=2039
     if [ ! "$searchstring_success" = '' ]; then \echo "$searchstring_success" ; else \echo '-1' ; fi
     break
   done
@@ -61,9 +73,9 @@ searchstring_right_r() {
   while :; do
     # 2 parameters, no blanks, first parameter  must be one character.
     if [ ! "$#" -eq  2 ] ||
-       [   "$1"   = "" ] ||
-       [   "$2"   = "" ] ||
-       [ "$( \expr length "$1" )" -gt 1 ]
+       [   "$1"   = '' ] ||
+       [   "$2"   = '' ] ||
+       [ ${#1} -gt 1 ]
     then
       \echo  "Needs two parameters: a character, and a string"
       break
@@ -73,11 +85,17 @@ searchstring_right_r() {
     position=0
     length="${#string}"
     until [ "$length" = -1 ]; do
-      if [ "${string:$length:1}" = "$character" ]; then searchstring_success=$position ; fi
+      # zshism
+      # shellcheck disable=2039
+      if [ "${string:$length:1}" = "$character" ]; then searchstring_success="$position" ; fi
+      # zshism
+      # shellcheck disable=2039
       ((position++))
+      # zshism
+      # shellcheck disable=2039
       ((length--))
     done
-    if [ ! "$searchstring_success" = "" ]; then \echo  $searchstring_success ; else \echo "-1" ; fi
+    if [ ! "$searchstring_success" = '' ]; then \echo  "$searchstring_success" ; else \echo s ; fi
     break
   done
 }
@@ -88,7 +106,7 @@ position_from_right_to_left() {
   while :; do
     if [ ! "$#" -eq 2 ] || [ "$1" = "" ] || [ "$2" = "" ]; then \echo "Needs two parameters: a string and a number"; break ; fi
     if ! \
-      _="$( \expr "$2" + 1 )"
+      _="$( "$2" + 1 )"
     then
       \echo  "$2 is not a number."
       break
@@ -98,7 +116,11 @@ position_from_right_to_left() {
     length="${#string}"
     iteration=0
     until [ "$length" -eq "$position" ]; do
+      # zshism
+      # shellcheck disable=2039
       ((iteration++))
+      # zshism
+      # shellcheck disable=2039
       ((length--))
     done
     \echo  "$iteration"

@@ -20,7 +20,7 @@ result=$( \dialog  --menu 'Example Menu'  "$height"  "$width"  "$menu_height" \
   '2' 'select:  border on' \
   '3' 'select:  border off' \
   --output-fd 1 )
-#
+# shellcheck disable=2181
 if [ $? -ne 0 ]; then
   #\echo  "$? was returned"
   \echo  'Cancel was pressed'
@@ -48,6 +48,8 @@ esac
 
 
 # Note that these are not colons (:), but ։ for NTFS compatibility.
+# shellcheck disable=1004
+# shellcheck disable=2016
 \scrot  \
   'screenshot--%Y-%m-%d_%H։%M։%S--$wx$h.png' \
   "$one"  \

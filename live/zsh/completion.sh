@@ -1,4 +1,8 @@
 #!/usr/bin/env  zsh
+# full of zshisms, obviously
+# shellcheck disable=2016
+# shellcheck disable=2039
+# shellcheck disable=2154
 # Note that `zstyle` is a zshism
 
 

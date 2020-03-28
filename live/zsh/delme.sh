@@ -29,12 +29,14 @@ delme() {
       \rmdir "$MYDIR"
       \echo  'Auto-deleted...'
     else
-      \echo  -n  "deltree $MYDIR/? [yes/NO]:  "
+      \printf  'deltree %s/? [yes/NO]:  '  "$MYDIR"
       if [ "$1" = '-f' ]; then
         ANSWER='y'
       else
         \read  -r  ANSWER
       fi
+      # zshism
+      # shellcheck disable=2039
       if [[ "$ANSWER" =~ ^(y) ]]; then
         \rm  --force  --recursive  --verbose  "$MYDIR"
         \echo  'Deleted...'
@@ -63,12 +65,14 @@ delme() {
       # Don't let this loop iterate if there's no success.
       if [ "$i" = "$MYDIR"'.*' ]; then continue ; fi
       ANSWER='no'
-      \echo  -n  "Also delete $i? [yes/NO]:  "
+      \printf  'Also delete %s? [yes/NO]:  '  "$i"
       if [ "$1" = '-f' ]; then
         ANSWER='n'
       else
         \read  -r  ANSWER
       fi
+      # zshism
+      # shellcheck disable=2039
       if [[ "$ANSWER" =~ ^(y) ]]; then
         \rm  --force  --verbose  "$i"
       else

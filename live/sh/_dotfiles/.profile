@@ -38,12 +38,14 @@ export  shdir
     #\echo  "sourcing $1"
     \cd  "$1"  ||  exit
     if [ -f 'lib.sh' ]; then
+      # shellcheck disable=1091
       .  './lib.sh'
     fi
     for i in *.sh; do
       if [ "$i" = 'lib.sh' ]; then
         continue
       fi
+      # shellcheck disable=1090
       .  "./$i"
     done
     \unset  i
@@ -103,8 +105,12 @@ export  shdir
       then  color="${blue_bold}"  # user
       else  color="${red_bold}"   # root
     fi
+    # shellcheck disable=1117
     if [ "$( \pwd  |  \wc  --chars )" -gt 20 ];
-      then  long_prompt="\n${color}> ${reset_color}"
+      then
+            # shellcheck disable=1117
+            # I want the \n
+            long_prompt="\n${color}> ${reset_color}"
       else  long_prompt="${reset_color}"
     fi
     \printf  '%b > %b'  "${reset_color}${PWD}${color}"  "${long_prompt}"

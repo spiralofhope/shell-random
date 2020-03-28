@@ -13,6 +13,7 @@ temporary_teardown_file="$temporary_directory/already_tearing_down"
 
 
 
+# shellcheck disable=1117
 for signal in INT QUIT HUP TERM USR1; do
   trap "
     _teardown

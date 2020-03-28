@@ -1,4 +1,5 @@
 #!/usr/bin/env  sh
+# shellcheck disable=2034
 
 
 
@@ -114,8 +115,8 @@ initializeANSI() {
 
   reset_color="${esc}[0m"
 
-  cursor_position_save="\033[s"
-  cursor_position_restore="\033[u"
+  cursor_position_save='\033[s'
+  cursor_position_restore='\033[u'
 }
 initializeANSI
 

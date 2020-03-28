@@ -55,6 +55,7 @@ setup() {
 go() {
   # This is a literal escape character embedded into this file.  While there may be another way to do this to avoid complications with a text file that has a binary thing in it, I don't know of it offhand and it doesn't seem to matter.
   character_pressed=''
+  # shellcheck disable=1117
   until [ "$character_pressed" = "" ]; do
     read_char() {
       \stty  -icanon -echo

@@ -13,6 +13,7 @@ _ddir() {
   _reset="${_esc}[0m"
   _blue="${_esc}[34m"
   _cyan="${_esc}[36m"
+  # shellcheck disable=2034
   _grey="${_boldoff}${_esc}[37m"
 
   # FIXME - this is slow because it's re-reading the description for every single file.

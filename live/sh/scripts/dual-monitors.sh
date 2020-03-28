@@ -1,4 +1,6 @@
 #!/usr/bin/env  sh
+# shellcheck disable=1001
+# shellcheck disable=1117
 # 2018-12-20 on devuan_ascii_2.0.0-rc_i386_dvd-1
   # Using the proprietary GeForce legacy drivers direct from NVIDIA:
   #   https://www.nvidia.com/Download/driverResults.aspx/137275/en-us

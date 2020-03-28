@@ -13,10 +13,8 @@ export  shdir
 
 #:<<'}'  #  Paths
 {
-
-  PATH="$PATH"\
-:"$( \realpath  "$bashdir/../bash/scripts" )"\
+  PATH="${PATH:?}"\
+:"$( \realpath  "${bashdir:?}/../bash/scripts" )"\
 ` # `
   \export  PATH
-
 }

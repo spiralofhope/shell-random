@@ -7,7 +7,7 @@
 
 # Or you can do it in-line:
 \set  -x
-\echo  "code goes here"
+\echo  'code goes here'
 # Stop debugging from here
 \set  +x
 

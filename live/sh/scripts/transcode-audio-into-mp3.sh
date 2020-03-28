@@ -19,10 +19,12 @@
 
 
 
+debug=''
 #debug=true
+verbose=''
 #verbose='--verbose'
 debug() {
-  if [ $debug ]; then
+  if [ "$debug" ]; then
     \echo  "$*"
   fi
 }

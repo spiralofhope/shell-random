@@ -1,8 +1,9 @@
 #!/usr/bin/env  zsh
+# shellcheck disable=1001
 
 
 
-# FIXME - can this run under vanilla sh ?
+# FIXME - Attempt to rework this with shisms
 # TODO - test case(s)
 # TODO - rework this so that I can ./unpercent filename.ext
 

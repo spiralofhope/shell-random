@@ -79,6 +79,7 @@ go() {
   # -y is to overwrite the target.  Might be a bit dangerous.
   \ffmpeg  -i "$filename_source"  -acodec copy  -vcodec copy  "${@}"  -y "$filename_target"
   \echo --
+  # shellcheck disable=1001
   \echo \ffmpeg  -i "$filename_source"  -acodec copy  -vcodec copy  "${@}"  -y  "$filename_target"
   \echo --
   # Catch and process the exit code from ffmpeg.
@@ -90,6 +91,7 @@ go() {
 before() {
   echo "(the last x) Cutting the head, keeping the tail."
   echo ".. the last $1 seconds."
+  # shellcheck disable=1117
   duration=$( \ffmpeg  -i "$filename_source" 2>&1 | \sed -n "s/.* Duration: \([^,]*\), start: .*/\1/p" )
   hours=$(   \echo  "$duration" | \cut -d":" -f1 )
   minutes=$( \echo  "$duration" | \cut -d":" -f2 )
@@ -106,6 +108,7 @@ after() {
   echo ".. the first $1 seconds."
   # I wonder if there's a way to leverage -itsoffset somehow. If -ss could be a negative number that would solve this whole thing.
   # TODO: remove the use of `sed` and use zsh string processing.
+  # shellcheck disable=1117
   duration=$( \ffmpeg  -i "$filename_source" 2>&1 | \sed -n "s/.* Duration: \([^,]*\), start: .*/\1/p" )
   #duration="  Duration: 12:34:56.78, start: 3.000000, bitrate: 4291 kb/s"
   #duration="  Duration: 00:00:20.00, start: 3.000000, bitrate: 4291 kb/s"
@@ -151,9 +154,13 @@ elif [ "${"${string}"[1]}" = '-' ]; then
   return 0
 else
   # ${#string} is the length of ${string}
+  # zshism
+  # shellcheck disable=2039
   for i in {2..${#string}}; do
     if [ ${i} != ${#string} ]; then
       # 10-20
+      # zshism
+      # shellcheck disable=2039
       if [ "${string[$i,$i]}" = '-' ]; then
         # In case anyone's a smartass.. 8-10 is just as valid as 10-8, they're the same 2 seconds.
         # But no, I'm not going to roll the video backwards for 10-8.  =p

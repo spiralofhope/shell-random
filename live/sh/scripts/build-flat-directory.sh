@@ -22,7 +22,7 @@
 #        ln has numbered backups
 
 
-
+verbose=''
 #verbose=--verbose
 
 if [ -z "$2" ]; then
@@ -49,10 +49,9 @@ shift
 
 
 for i in "$@"; do
-  if [ -d "$i" ]; then
-    \find  "$i"  -L  -type d  -exec  \
-    \ln  --backup=numbered  --relative  --symbolic  "$verbose"  "{}"  --target-directory="$target_directory"  \;  2> /dev/null
-  else
-    \ln  --backup=numbered  --relative  --symbolic  "$verbose"  "$i"  --target-directory="$target_directory"  2> /dev/null
+  # shellcheck disable=1001
+  if [ -d "$i" ]; then  \find  "$i"  -L  -type d  -exec  \
+        \ln  --backup=numbered  --relative  --symbolic  "$verbose"  "{}"  --target-directory="$target_directory"  \;  2> /dev/null
+  else  \ln  --backup=numbered  --relative  --symbolic  "$verbose"  "$i"  --target-directory="$target_directory"      2> /dev/null
   fi
 done

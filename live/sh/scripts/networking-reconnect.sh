@@ -10,6 +10,7 @@
 # \cat  /proc/net/dev
 
 
+# shellcheck disable=1001
 \sudo  \dhclient  enp0s3
 
 \echo  ''

@@ -11,10 +11,11 @@
   LESS=' --force  --ignore-case  --long-prompt  --no-init  --silent  --status-column  --tilde  --window=-2'
   export  LESS
 
+  # $shdir is set elsewhere, kinda.  FIXME - figure it out.
   PATH=\
 "$(  \realpath  "$HOME/l/path" )"\
 :"$( \realpath  /mnt/a/live/OS/bin )"\
-:"$( \realpath  "$shdir/scripts" )"\
+:"$( \realpath  "${shdir:?}/scripts" )"\
 :"$PATH"
   export  PATH
 

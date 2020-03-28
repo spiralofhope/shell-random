@@ -15,16 +15,18 @@ menu_height=4
 # The menu is built with two columns.
 # The left column is what is echoed
 # The right column is an optional second column of textjust text
+if  !  \
 result=$( \dialog  --menu 'Example Menu'  "$height"  "$width"  "$menu_height" \
   '1' 'first' \
   '2' 'second' \
   '3' 'third' \
   '4' 'fourth' \
   --output-fd 1 )
-if [ $? -ne 0 ]; then
-  #\echo  "$? was returned"
+then
+  __=$?
+  #\echo  "$__ was returned"
   \echo  'Cancel was pressed'
-  return $?
+  return $__
 fi
 
 case "$result" in

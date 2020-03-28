@@ -25,8 +25,15 @@ globaldirs() {
 }
 :<<'}'   #  
 globaldirs() {
+  # zshism
+  # shellcheck disable=2124
   EXEC="$@"
+  # zshism
+  # shellcheck disable=2039
+  # shellcheck disable=2206
   EXEC=(${=EXEC})
+  # zshism
+  # shellcheck disable=2128
   \echo  "$EXEC"
   for globaldirs in **/; do
     \cd  "$globaldirs" || return

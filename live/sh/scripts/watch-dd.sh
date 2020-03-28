@@ -8,6 +8,7 @@ if ! [ "$USER" = 'root' ]; then
   \sudo  "$0"
 else
 
+# shellcheck disable=2016
 \watch  --interval 5  \
   '\kill  -USR1  "$( \pgrep ^dd )"'
 

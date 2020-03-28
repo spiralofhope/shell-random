@@ -1,8 +1,7 @@
 #!/usr/bin/env  bash
+# TODO - I think this can be wholly replaced with sh
 
 
-
-#test=true
 
 :<<NOTES
 Problem:
@@ -21,6 +20,7 @@ position_from_right_to_left() {
       \echo  'ERROR - Needs two parameters: a string and a number'
       break
     fi
+    # FIXME - replace this with an shism
     \expr  "$2" + 1 &> /dev/null
     if [ $? -ne 0 ]; then
       \echo  "ERROR - $2 is not a number."
@@ -30,6 +30,7 @@ position_from_right_to_left() {
     position="$2"
     length="${#string}"
     iteration=0
+    # FIXME - replace this with an shism
     until [ "$length" -eq "$position" ]; do
       ((iteration++))
       ((length--))
@@ -41,10 +42,8 @@ position_from_right_to_left() {
 
 
 
-# -----------------------------
-if [ ! $test ]; then exit 0; fi
-
-
-
-position_from_right_to_left  0987654321  2  
-#position_from_right_to_left  abcd  b
+#:<<'}'   #  Testing
+{
+  position_from_right_to_left  0987654321  2  
+  #position_from_right_to_left  abcd  b
+}

@@ -41,11 +41,13 @@ if [ $__ -gt 0 ]; then echo "$__ is greater than 0"; fi
 
 
 # dash 0.5.7-4+b1
+# shellcheck disable=2050
 if [ a = a ] && [ b = b ]; then echo 'both'; fi
 
 
 
 # dash 0.5.7-4+b1
+# shellcheck disable=2050
 if [ a = a ] || [ a = b ]; then echo 'either'; fi
 
 

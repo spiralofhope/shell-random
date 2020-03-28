@@ -21,6 +21,7 @@ tempfile=$( \mktemp  --suffix="_gui-yesno-dialog" )
 
 
 # TODO - use alternate terminals..
+# shellcheck disable=1001
 \urxvt  -geometry 239x64  -e \
   \dialog  --yesno  "$text"  "$height"  "$width"  --trace  "$tempfile" 2>/dev/null
 

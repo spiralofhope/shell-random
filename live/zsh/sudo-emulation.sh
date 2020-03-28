@@ -1,4 +1,5 @@
 #!/usr/bin/env  zsh
+# shellcheck disable=1001
 
 
 
@@ -51,14 +52,17 @@
     }
   else   # sudo does not exist
     su() {
+      # shellcheck disable=2117
       /bin/su
     }
     sul() {
+      # shellcheck disable=2117
       /bin/su  '--login'
     }
     sudo() {
       # 2020-03-25 - I have no idea what that parameter is..
-      /bin/su  --close-from=$*
+      # shellcheck disable=2117
+      /bin/su  --close-from="$*"
     }
   fi
 }

@@ -2,10 +2,6 @@
 
 
 
-#test=true
-
-
-
 replace_character() {
   unset searchstring_success
   while :; do
@@ -14,7 +10,7 @@ replace_character() {
        [   "$1"   = '' ] ||\
        [   "$2"   = '' ] ||\
        [   "$3"   = '' ] ||\
-       [ "$( \echo "$1" | \wc -c )" -gt 1 ];\
+       [ ${#1} -gt 1 ];\
     then
       \echo  'ERROR - Needs three parameters: a character, a string and a position'
       break
@@ -47,11 +43,10 @@ replace_character() {
 
 
 
-# -----------------------------
-if [ ! $test ]; then exit 0; fi
-
-
-\echo  "replace_character 'c' '12345' '2'"
-replace_character 'c' '12345' '2'
-# =>
-# 12c45
+#:<<'}'   #  Test
+{
+  \echo  "replace_character 'c' '12345' '2'"
+  replace_character 'c' '12345' '2'
+  # =>
+  # 12c45
+}

@@ -23,6 +23,8 @@ setup() {
   # A list of programs.
   # Place them in the order you would prefer them, with the most preferred at the top.
   # These should be full paths to a file, to be safe.
+  # zshism
+  # shellcheck disable=2039
   programs_list=(
     /usr/bin/xterm
     /usr/bin/rxvt
@@ -33,6 +35,8 @@ setup() {
 
 
 determine_which_program_to_run() {
+  # zshism
+  # shellcheck disable=2128
   for i in $programs_list; do
     if [ -f "$i" ]; then
       program_to_run="$i"

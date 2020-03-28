@@ -2,10 +2,6 @@
 
 
 
-#test=true
-
-
-
 insert_character() {
   unset searchstring_success
   while :; do
@@ -14,7 +10,7 @@ insert_character() {
        [   "$1"   = '' ] ||\
        [   "$2"   = '' ] ||\
        [   "$3"   = '' ] ||\
-       [ "$( \echo  "$1" | \wc -c )" -gt 1 ];\
+       [ ${#1} -gt 1 ];\
     then
       \echo  'ERROR - Needs three parameters: a character, a string and a position'
       break
@@ -45,11 +41,10 @@ insert_character() {
 
 
 
-# -----------------------------
-if [ ! "$test" ]; then exit 0; fi
-
-
-\echo  "insert_character 'c' '12345' '2'"
-insert_character 'c' '12345' '2'
-# =>
-# 12c345
+#:<<'}'   #  Testing
+{
+  \echo  "insert_character 'c' '12345' '2'"
+  insert_character 'c' '12345' '2'
+  # =>
+  # 12c345
+}

@@ -7,6 +7,8 @@
 
 
 
+# shellcheck disable=1004
+# shellcheck disable=2016
 /usr/bin/env  bash  --rcfile  <( \
   \echo  \
   '

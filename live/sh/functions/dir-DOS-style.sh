@@ -23,6 +23,9 @@ dir() {
   # FIXME - I want --du but it can't exist alongside with a wildcard for unknown reasons.
   # I can remove the `tail` and things almost appear.  It's odd.
   #\echo "tree  -C  -i  -L 1  --dirsfirst  --timefmt '%Y-%m-%d'  --  $_my_parameters"
+  # shellcheck disable=2086
+  # I need word splitting for multiple parameters.
+  # shellcheck disable=1001
   \tree  --noreport  -C  -i  -L 1  --dirsfirst  $_my_parameters  |\
     ` # --no-init is mandatory for Windows Subsystem for Linux. `  \
     \less  --no-init  --RAW-CONTROL-CHARS  --quit-if-one-screen  --QUIT-AT-EOF
@@ -35,6 +38,8 @@ dir() {
   # du doesn't seem to work.
   #\du  --all  --human-readable  --max-depth=0  $*
   #\echo  "$( \ls -ARgo "$@" | awk '{q += $3} END {print q}' ) bytes"
+  # shellcheck disable=2012
+  # I'm not going to deal with the equivalent of `find` right now.
   __="$( \ls -ARgo "$@"  |  \awk '{q += $3} END {print q}' )"
   # add commas
   __=$( \echo  "$__"  |  \sed  --expression=':a'  --expression='s/\(.*[0-9]\)\([0-9]\{3\}\)/\1,\2/;ta' )

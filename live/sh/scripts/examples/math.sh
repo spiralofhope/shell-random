@@ -6,6 +6,7 @@
 
 
 # Using `expr`:
+# shellcheck disable=2003
 \expr  "1 + 1"
 
 

@@ -71,6 +71,7 @@ finddir_color_off() {
 _findhelper_file_contents() {
   maxdepth=$1
   shift
+  # shellcheck disable=1001
   \find  \
     .  \
     -maxdepth "$maxdepth"  \

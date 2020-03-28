@@ -8,6 +8,7 @@
 
 
 # You can run programs within programs like this:
+# shellcheck disable=2006
 \echo  "this is some text ` ls ` and some more"
 # However, it's better to do this:
 \echo  "this is some text $( ls ) and some more"

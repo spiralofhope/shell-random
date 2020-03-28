@@ -2,20 +2,23 @@
 
 
 
-{   # Find all characters after.
+#:<<'}'   #  Find all characters after.
+{
+  # After the first occurrance
+  string="test test"
+  pattern="s"
 
-# After the first occurrance
-string="test test"
-pattern="s"
+  # zshism
+  # shellcheck disable=2086
+  \echo  ${string#*${pattern}}
 
-\echo ${string#*${pattern}}
+  # ----
 
-# ----
+  # After the last occurrance
+  string="test test"
+  pattern="s"
 
-# After the last occurrance
-string="test test"
-pattern="s"
-
-\echo ${string##*${pattern}}
-
+  # zshism
+  # shellcheck disable=2086
+  \echo  ${string##*${pattern}}
 }

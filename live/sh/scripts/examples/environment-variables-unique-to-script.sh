@@ -25,6 +25,7 @@
 
 
 if [ -z "$1" ]; then
+  # shellcheck disable=2016
   \env  SHELL='replacement $SHELL'  HOME='replacement $HOME'   "$0"  'parameter 1'  'parameter 2'
   
   :<<'  }'   #  It can be more neatly written like:

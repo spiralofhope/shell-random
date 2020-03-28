@@ -5,7 +5,8 @@
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
-        .  /etc/bashrc
+  # shellcheck disable=1091
+  .  /etc/bashrc
 fi
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
@@ -17,4 +18,5 @@ fi
 
 
 # I don't really care about the stuff above.  Just copy-paste it from whatever default is given.
-source  $HOME/.bashrc_mine.sh
+# shellcheck disable=1090
+source  "$HOME/.bashrc_mine.sh"
