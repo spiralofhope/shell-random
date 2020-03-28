@@ -1,45 +1,53 @@
 #!/usr/bin/env  sh
 # Examples of iterating through a list / array (dash-compatible)
-# 2018-05-17 - Dash 0.5.7-4+b1
 
 
 
-#:<<'}'  # Increment 1 to 5, one at a time
+#:<<'}'   #  Counting up from 1 to 3
 {
-  for i in $( seq 1 2 5 ); do
-    \echo  "$i"
+  start='1'
+  end='3'
+  while [ "$start" -le "$end" ]; do
+    \echo  "$start"
+    start=$(( start + 1 ))
   done
 }
 
 
-#:<<'}'  # Increment 1 to 5, one at a time, starting at 2
+
+#:<<'}'   #  Counting up from 1 to 10, in steps of two.
 {
-  for i in $( seq 2 1 5 ); do
-    \echo  "$i"
+  start='1'
+  add='2'
+  end='10'
+  while [ "$start" -le "$end" ]; do
+    \echo  "$start"
+    start=$(( start + add ))
   done
 }
 
 
-#:<<'}'  # Increment 1 to 10, two at a time (odd numbers)
+
+#:<<'}'   #  Counting down from 3 to 1
 {
-  for i in $( seq 1 2 10 ); do
-    \echo  "$i"
+  start='3'
+  subtract='1'
+  while [ "$start" -ge "$end" ]; do
+    \echo  "$start"
+    start=$(( start - 1 ))
   done
 }
 
 
-#:<<'}'  # Increment 2 to 10, two at a time (even numbers)
-{
-  for i in $( seq 2 2 10 ); do
-    \echo  "$i"
-  done
-}
 
-
-#:<<'}'  # Decrement 5 to 1, one at a time
+#:<<'}'   #  Counting down from 10 to 1, in steps of two.
 {
-  for i in $( seq 5 -1 1 ); do
-    \echo  "$i"
+  start='10'
+  subtract='2'
+  end='1'
+  while [ "$start" -ge "$end" ]; do
+    \echo  "$start"
+    start=$(( start - subtract ))
   done
 }
 
