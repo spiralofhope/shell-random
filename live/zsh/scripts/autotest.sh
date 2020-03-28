@@ -1,6 +1,5 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env  zsh
 
-# TODO - this has not been subject to a shellcheck
 
 
 :<<'}'   #  TODO
@@ -84,6 +83,7 @@ user_preferences() {
   # I thought this would impact system performance, but it doesn't even register.  `ls` must really be smart!
   # Change this if you need to!
   SLEEP='0.4s'
+  \printf  '%s'  "$SLEEP" > /dev/null
 
   # Uncomment if you don't want your script execution timed.
   # TIME='no'
@@ -176,7 +176,7 @@ HEREDOC
 
 
 setup() {
-  MYSHELL="$( \basename  $( \readlink  /proc/$$/exe ) )"
+  MYSHELL="$( \basename  "$( \readlink  /proc/$$/exe )"s )"
   ORIGINAL_PWD="$PWD"
 
   #:<<'  }'   #  Distinguish between platforms
@@ -201,7 +201,9 @@ setup() {
   esac
   }
 
-  # FIXME - This is a zshism isn't it?
+  # shellcheck disable=1090
+  # zshism
+  # shellcheck disable=2039
   \source  "$HOME/l/shell-random/live/sh/functions/colours.sh"
 }
 setup
@@ -209,26 +211,25 @@ setup
 
 
 spinner() {   #  Traditional bar-spinner with these characters:  -\|/
-  if [ -z $SPINNER ]; then return 0 ; fi
-  # FIXME?  This doesn't handle a resized terminal window very well.  It should re-check / re-set its position somehow.
+  if [ -z "$SPINNER" ]; then return 0 ; fi
   # TODO: Implement sanity-checking then export this elsewhere so that this code can be used elsewhere.
-  # I could use printf, but I'd rather use echo.
   \printf  '   '
   case $SPINNER in
     1)
-      \echo  -n  '-'
+      \printf  '-'
       SPINNER=2
     ;;
     2)
-      \echo  -n  '\'
+      # shellcheck disable=1003
+      \printf  '\'
       SPINNER=3
     ;;
     3)
-      \echo  -n  '|'
+      \printf  '|'
       SPINNER=4
     ;;
     *)
-      \echo  -n  '/'
+      \printf  '/'
       SPINNER=1
     ;;
   esac
@@ -240,17 +241,20 @@ spinner() {   #  Traditional bar-spinner with these characters:  -\|/
 ansi_echo() {
   STRING="$1"
   if [ "$ANSI" = 'no' ]; then
-    \echo  $STRING
+    \echo  "$STRING"
   else
     # Note that this assumes you have light grey as your default text.  That's the end part after $STRING and before the final \n
-    \echo  -e  "\x1b\x5b1;33;40m$STRING\x1b\x5b0;37;40m\n"
+    \printf  '\x1b\x5b1;33;40m%s\x1b\x5b0;37;40m\n'  "$STRING"
   fi
 }
 
 
 
 check_file() {
-  local break_if_failed() {
+  break_if_failed() {
+    # shellcheck disable=2181
+    # zshism
+    # shellcheck disable=2104
     if [ $? -ne 0 ]; then  \echo  'check_file failed, aborting' ; break ; fi
   }
   # TODO: Allow parameters to be passed to only perform certain checks.  Then export this to make it a universal procedure.
@@ -259,23 +263,32 @@ check_file() {
   until [ ! -d "$AUTOTEST_FILE" ] && [ "$AUTOTEST_FILE" != '' ] ; do
     \echo  "That is a directory:  $AUTOTEST_FILE"
     # TODO:  Implement a file lister to choose another file - there's the zsh file lister I have somewhere around here...
+    # Does dialog have something I can leverage?
     \echo  'Type the name of the file to use, or ^c to abort:  '
-    \echo  -n  '> '
-    \read  AUTOTEST_FILE
-    trap  "{ \echo 'Aborting.' ; return 1 ; }" SIGINT SIGTERM
+    \printf  '> '
+    \read  -r  AUTOTEST_FILE
+    # shellcheck disable=1117
+    trap  "{ \echo 'Aborting.' ; return 1 ; }" INT TERM
   done
   if [ ! -e "$AUTOTEST_FILE" ]; then
     \echo  "File doesn't exist:  $AUTOTEST_FILE"
-    \echo  -n  'Shall I create it? [Y/n]  '
-    \read  ANSWER
+    \printf  'Shall I create it? [Y/n]  '
+    \read  -r  ANSWER
+    # zshism
+    # shellcheck disable=2039
+    # shellcheck disable=2076
     if [ "$ANSWER" = '' ] || [[ "$ANSWER" =~ "^(y)" ]]; then
       \echo  >  "$AUTOTEST_FILE" ; RESULT=$?
       if [ ! -e "$AUTOTEST_FILE" ] || [ $RESULT -ne 0 ] ; then
         \echo  'There were issues creating the file.  Aborting.'
+        # zshism
+        # shellcheck disable=2104
         break
       fi
     else
       \echo 'Opted to not create the file.  Aborting.'
+      # zshism
+      # shellcheck disable=2104
       break
     fi
   fi
@@ -308,9 +321,9 @@ get_file_ext() {
         ansi_echo  ' * booc finished'
         # Since problems can arise with booc, the mono execution should be smart.
         if [ "$RESULT" -eq 0 ]; then
-          \mono  ${AUTOTEST_FILE%.*}.exe ; RESULT="$?"
+          \mono  "${AUTOTEST_FILE%.*}.exe" ; RESULT="$?"
           ansi_echo  ' * mono finished'
-          \rm  --force  ${AUTOTEST_FILE%.*}.exe
+          \rm  --force  "${AUTOTEST_FILE%.*}.exe"
         fi
       }
       execute_with_debugging() {
@@ -348,8 +361,9 @@ get_file_ext() {
     ;;
     'rb') # Ruby programming language
       # Check if it's a shoes script
-      \cat "$AUTOTEST_FILE" | \grep -q 'Shoes.app' ; RESULT="$?"
-      if [ $RESULT = 1 ]; then
+      if  !  \
+        \grep  -q 'Shoes.app' < "$AUTOTEST_FILE"
+      then
         # Ruby programming language
         execute() {
           \ruby  "$AUTOTEST_FILE" ; RESULT="$?"
@@ -385,24 +399,26 @@ get_file_ext() {
         #/usr/bin/mythryl should only be invoked via ''#!...'' line in a script!
         #/usr/bin/mythryl  "$AUTOTEST_FILE" ; RESULT="$?"
         # Check for the shebang
-        local  head="$( \head  --lines=1  "$AUTOTEST_FILE" )"
-        local  mythryl_shebang='#!/usr/bin/mythryl'
-        if ! [[ $head == $mythryl_shebang ]]; then
+        head="$( \head  --lines=1  "$AUTOTEST_FILE" )"
+        mythryl_shebang='#!/usr/bin/mythryl'
+        if ! [ "$head" = "$mythryl_shebang" ]; then
           #\echo  'no shebang?'
           # No shebang?  Add one.
           # Also add braces, since I was probably lazy about that.
           # TODO:  Check if I already had braces?  Meh.
-          local mythryl_file="${AUTOTEST_DIR}/mythryl_shebanged.my"
+          mythryl_file="${AUTOTEST_DIR}/mythryl_shebanged.my"
           # TODO - replace this with a variable-heredoc
-          \echo   $mythryl_shebang > $mythryl_file
-          \echo                   >> $mythryl_file
-          \echo  '{'              >> $mythryl_file
-          \cat  "$AUTOTEST_FILE"  >> $mythryl_file
-          \echo                   >> $mythryl_file
-          \echo  '};'             >> $mythryl_file
-          \chmod  --verbose  +x  $mythryl_file
+          \echo  "$mythryl_shebang"  > "$mythryl_file"
+          # I'm lazy for now:
+          # shellcheck disable=2129
+          \echo                     >> "$mythryl_file"
+          \echo  '{'                >> "$mythryl_file"
+          \cat   "$AUTOTEST_FILE"   >> "$mythryl_file"
+          \echo                     >> "$mythryl_file"
+          \echo  '};'               >> "$mythryl_file"
+          \chmod  --verbose  +x  "$mythryl_file"
           "$mythryl_file" ; RESULT="$?"
-          \rm  --force  $mythryl_file
+          \rm  --force  "$mythryl_file"
         else
           #\echo  'found a shebang'
           "$AUTOTEST_FILE" ; RESULT="$?"
@@ -441,7 +457,9 @@ get_file_ext() {
     ;;
     'sh') # *nix shell scripting languages
       # Check for a shebang:
-      local head="$( \head --lines=1 "$AUTOTEST_FILE" )"
+      head="$( \head --lines=1 "$AUTOTEST_FILE" )"
+      # zshism
+      # shellcheck disable=2209
       case "$head" in
         '#!/usr/bin/env bash' | '#!/usr/bin/env  bash' | '#!/bin/bash' | '#!/usr/local/bin/bash' )  MYSHELL=bash ;;
         '#!/usr/bin/env dash' | '#!/usr/bin/env  dash' | '#!/bin/dash' | '#!/usr/local/bin/dash' )  MYSHELL=dash ;;
@@ -457,6 +475,8 @@ get_file_ext() {
         \echo  "  - or this script hasn't been programmed to use it"
         if  \test  -n  "$SHELL"; then
           \echo  "\$SHELL has been set to:  $SHELL"
+          # zshism
+          # shellcheck disable=2209
           case "$SHELL" in
             '/bin/bash' | '/usr/bin/bash' ) MYSHELL=bash ;;
             '/bin/dash' | '/usr/bin/dash' ) MYSHELL=dash ;;
@@ -467,6 +487,7 @@ get_file_ext() {
               \echo      "Don't fret, it's not too hard to hack this script to add functionality."
               \echo      'To add support, edit this script and:'
               \echo      '  1. Search for ERROR01 and edit the code just above it.'
+              # shellcheck disable=2016
               \echo      "  2. Also search for "\''case "$MYSHELL" in'\'" and edit that code."
               \echo      'Falling back to sh.'
               MYSHELL='sh'
@@ -534,8 +555,11 @@ get_file_ext() {
           \echo      "Don't fret, it's not too hard to hack this script to add functionality."
           \echo      "To add support, edit this script and:"
           \echo      "  1. Search for ERROR02 and edit the code just above it."
+          # shellcheck disable=2016
           \echo      "  2. Also search for "\''case "$MYSHELL" in'\'" and edit that code."
           \echo      ''
+          # zshism
+          # shellcheck disable=2104
           break
       esac
       return  0
@@ -587,15 +611,17 @@ run_script() {
   RESULT=0
 
   run_script_main() {
+    # zshism
+    # shellcheck disable=2193
     if [ "$RESULT" -ne 0 ] && [ "x${DEBUG}" != 'false' ]; then
-      # nothing
+      \printf  ''
     else
       AUTOTEST_FILE="$1"
       if [ "$CLEAR_SCREEN" = 'yes' ]; then clear; fi
       if [ "$CD_SCRIPTDIR" = 'yes' ]; then
-        \cd  $( \dirname  "$AUTOTEST_FILE" )
+        \cd  "$( \dirname  "$AUTOTEST_FILE" )"  ||  return  $?
       else
-        \cd  "$ORIGINAL_PWD"
+        \cd  "$ORIGINAL_PWD"  ||  return  $?
       fi
 
       if [ ! "$TIME" = 'no' ]; then
@@ -612,10 +638,10 @@ run_script() {
         execute_with_debugging
       fi
 
-      ansi_echo " * end [$RESULT]" $( \date )
+      ansi_echo " * end [$RESULT] $( \date )"
       if [ ! "$TIME" = 'no' ]; then
         TIMESTAMP_END="$( \date  +%s )"
-        \echo  "autotest:  The script ran for $(($TIMESTAMP_END - $TIMESTAMP_BEGIN)) seconds"
+        \echo  "autotest:  The script ran for $(( TIMESTAMP_END - TIMESTAMP_BEGIN )) seconds"
         # TODO: Detect if it's appropriate to list in minutes, then display in mm:ss
         #   Maybe also do hh:mm:ss, oh hell.. do yy:dd:mm:ss for kicks!
       fi
@@ -634,17 +660,20 @@ run_script() {
 
 
 main_foreground() {
-  until [ "MAIN_ROUTINE" = 'finished' ]; do
+  while :; do
     AUTOTEST_FILE="$( \readlink  --canonicalize  "$1" )"
 
-    get_file_ext  "$AUTOTEST_FILE"
-    if [ $? -ne 0 ]; then  break ; fi
+    if  !  \
+      get_file_ext  "$AUTOTEST_FILE"
+    then  break ; fi
 
-    check_file  "$AUTOTEST_FILE"
-    if [ $? -ne 0 ]; then  break ; fi
+    if  !  \
+      check_file  "$AUTOTEST_FILE"
+    then  break ; fi
 
-    get_file_time  "$AUTOTEST_FILE"
-    if [ $? -ne 0 ]; then  break ; fi
+    if  !  \
+      get_file_time  "$AUTOTEST_FILE"
+    then  break ; fi
 
     NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
 
@@ -669,6 +698,8 @@ main_foreground() {
         }
         geany  "$AUTOTEST_FILE"
         exit_code=$?
+        # TODO - explore using pgrep
+        # shellcheck disable=2009
         editor_pid=$( \ps  -efW | \grep  'C:\\Program Files (x86)\\Geany\\bin\\geany.exe' | \awk '{ print $2 }' )
       ;;
       *)
@@ -691,13 +722,16 @@ main_foreground() {
     # ----
     # Note that I'm still in MAIN_ROUTINE.  This is so that all the earlier procedures can still be relied upon to break out of the whole script, even during operation.  This is a good idea in case things go awry during operation (permissions change, the filesystem unmounts, etc).
 
-    until [ 'MAIN_ROUTINE_LOOP' = 'finished' ]; do
-
+    while :; do
     # Check the file
     # This is run every iteration of the main loop to see if the fundamental permissions of the script being edited change during operation.
       if [ ! "$AGGRESSIVE_CHECK_AUTOTEST_FILE" = 'no' ]; then
-       check_file  "$AUTOTEST_FILE"
-        if [ $? -ne 0 ]; then  \echo  'check_file failed, aborting' ; break ; fi
+        if  !  \
+          check_file  "$AUTOTEST_FILE"
+        then
+          \echo  'check_file failed, aborting'
+          break
+        fi
       fi
 
       # Status
@@ -705,10 +739,10 @@ main_foreground() {
         \echo  '.'
         \sleep  "$SLEEP"
       else
-        \echo  -n  -e  "${cursor_position_save}"
+        \printf  '%b'  "${cursor_position_save}"
         spinner
         \sleep  "$SLEEP"
-        \echo  -n  -e  "${cursor_position_restore}"
+        \printf  '%b'  "${cursor_position_restore}"
       fi
 
       # Check to see if the file has changed.  If so, run it.
@@ -737,6 +771,8 @@ main_foreground() {
             \cygstart  '/c/Program Files (x86)/Geany/bin/geany.exe'  "$string"
             \unset string
           }
+          # TODO - explore using pgrep
+          # shellcheck disable=2009
           \ps  -efW | \grep  'C:\\Program Files (x86)\\Geany\\bin\\geany.exe' > /dev/null 2> /dev/null
           exit_code=$?
         ;;
@@ -773,17 +809,20 @@ main_background() {
 
 #-----------
 
-  until [ 'MAIN_ROUTINE' = 'finished' ]; do
+  while :; do
     AUTOTEST_FILE="$( \readlink  --canonicalize  "$1" )"
 
-    check_file "$AUTOTEST_FILE"
-    if [ $? -ne 0 ]; then  break ; fi
+    if  !  \
+      check_file "$AUTOTEST_FILE"
+    then  break ; fi
 
-    get_file_ext "$AUTOTEST_FILE"
-    if [ $? -ne 0 ]; then  break ; fi
+    if  !  \
+      get_file_ext "$AUTOTEST_FILE"
+    then  break ; fi
 
-    get_file_time "$AUTOTEST_FILE"
-    if [ $? -ne 0 ]; then  break ; fi
+    if  !  \
+      get_file_time "$AUTOTEST_FILE"
+    then  break ; fi
 
     NEW_AUTOTEST_FILE_TIME="$AUTOTEST_FILE_TIME"
 
@@ -791,13 +830,14 @@ main_background() {
     # Main Routine:  The file change checking loop
     # ----
     # Note that I'm still in MAIN_ROUTINE.  This is so that all the earlier procedures can still be relied upon to break out of the whole script, even during operation.  This is a good idea in case things go awry during operation (permissions change, the filesystem unmounts, etc).
-    until [ 'MAIN_ROUTINE_LOOP' = 'finished' ]; do
+    while :; do
 
     # Check the file
     # This is run every iteration of the main loop to see if the fundamental permissions of the script being edited change during operation.
       if [ ! "$AGGRESSIVE_CHECK_AUTOTEST_FILE" = 'no' ]; then
-       check_file  "$AUTOTEST_FILE"
-        if [ $? -ne 0 ]; then  \echo  'check_file failed, aborting' ; break ; fi
+        if  !  \
+          check_file  "$AUTOTEST_FILE"
+        then  \echo  'check_file failed, aborting' ; break ; fi
       fi
 
       # Check to see if the file has changed.  If so, run it.
@@ -807,7 +847,7 @@ main_background() {
         run_script  "$AUTOTEST_FILE"
       fi
 
-      if [ ! -f $PID_FILE ]; then
+      if [ ! -f "$PID_FILE" ]; then
         break # MAIN_LOOP
       fi
 
@@ -821,20 +861,20 @@ main_background() {
 
 # TODO:  No spinner
 main() {
-  if [ -z $1 ]; then
+  if [ -z "$*" ]; then
     usage
     return  0
   fi
   if [ "x${2}" = 'x' ]; then
     SPINNER=0
-    main_foreground  $@
+    main_foreground  "$@"
   elif [ "x${2}" = 'x-bg' ]; then
     SPINNER=0
-    main_background  $@
+    main_background  "$@"
   elif [ "x${2}" = 'x--nodebug' ]; then
     SPINNER=0
     DEBUG='false'
-    main_foreground  $@
+    main_foreground  "$@"
   else
     usage
     return  1
@@ -843,14 +883,14 @@ main() {
 
 
 
-:<<'}'   #  For testing
+#:<<'}'   #  For testing
 {
-  if [ -z $1 ]; then
-    "$0"  $HOME/foo.sh
+  if [ -z "$*" ]; then
+    "$0"  "$HOME/foo.sh"
     return
   fi
 }
 
 
 
-main  $@
+main  "$@"
