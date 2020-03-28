@@ -34,8 +34,8 @@ go() {
 
 \echo  '* Building lists/'
 # rm  --force  --recursive  $lists_dir
-\mkdir  --parents  $lists_dir
-\cd  $lists_dir
+\mkdir  --parents  "$list_dir"  ||  return  $?
+\cd                "$list_dir"  ||  return  $?
 
 \echo  'Duplicates may be revealed during this list-building.'
 

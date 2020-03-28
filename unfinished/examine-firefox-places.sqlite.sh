@@ -1,4 +1,4 @@
-#!/usr/bin/env  zsh
+#!/usr/bin/env  sh
 
 
 # Goal:
@@ -49,7 +49,7 @@ last_folder=$( \
 )
 #echo $f
 
-some_ids=$( \sqlite3  places.sqlite  "select fk  from moz_bookmarks  where parent="$last_folder )
+some_ids="$( \sqlite3  places.sqlite  "select fk  from moz_bookmarks  where parent=$last_folder" )"
 #echo $some_ids
 
 ## Who the fuck knows why I have to do this echo trick..
@@ -61,9 +61,9 @@ some_ids=$( \sqlite3  places.sqlite  "select fk  from moz_bookmarks  where paren
 
 
 # Give complete info:
-for i in $( \echo  $some_ids ) ; do
-  \sqlite3  places.sqlite \
-  "select *  from moz_places  where id="$i
+for i in $some_ids ; do
+  \sqlite3  'places.sqlite' \
+  "select *  from moz_places  where id=$i"
 done
 
 # TODO - How do I learn the names of all the tables?

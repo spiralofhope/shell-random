@@ -83,7 +83,7 @@
 
 #:<<'}'  #  Iterate through the lines in a variable.
 {
-  for line in "$array"; do
+  for line in $array; do
     \echo  "$line"
   done
 }
