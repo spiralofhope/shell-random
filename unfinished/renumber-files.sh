@@ -14,59 +14,72 @@
 
 
 
-:<<'}'   #  Testing
+#:<<'}'   #  Testing
 {
-number=100
-for i in $( seq 1 $number ); do
-  touch $i.temporary
-done
+  start='1'
+  end='100'
+  while [ "$start" -le "$end" ]; do
+    # Create an empty file:
+    :>"$start.temporary"
+    start=$(( start + 1 ))
+  done
 }
 
 
-the_number_of_files=$( \ls  -1  |  \wc  --lines )
-#\echo  "files:  $the_number_of_files"
-
-the_maximum_number_of_characters=$( \echo  $the_number_of_files  |  \wc  --chars )
-the_maximum_number_of_characters=$( \echo  "$the_maximum_number_of_characters - 1"  |  \bc )
-#\echo  "characters:  $the_maximum_number_of_characters"
+count_items_in_directory() {
+  # Usage: count_items_in_directory /path/to/dir/*
+  #        count_items_in_directory /path/to/dir/*/
+  [ -e "$1" ] \
+    &&  \printf  '%s\n'  "$#"  \
+    ||  \printf  '%s\n'  0
+}
+the_number_of_files=$( count_items_in_directory "$PWD"/* )
+the_maximum_number_of_characters=${#the_number_of_files}
+\echo  "files:       $the_number_of_files"
+\echo  "characters:  $the_maximum_number_of_characters"
 
 
 generate_zeroes(){
-  local result
-  for i in $( \seq 1 $1 ); do
+  start='1'
+  end="$1"
+  while [ "$start" -le "$end" ]; do
+    #\printf  '%s\n' "$start"
     result="${result}0"
+    start=$(( start + 1 ))
   done
-  \echo  -n  $result
+  \printf  'requested %s, received:  %s'  "$1"  "$result"
 }
 :<<'}'   #  test
 {
 generate_zeroes  1
-echo  -n  "\n"
+printf  '\n'
 # => 0
 generate_zeroes  2
-echo  -n  "\n"
+printf  '\n'
 # => 00
 generate_zeroes  3
-echo  -n  "\n"
+printf  '\n'
 # => 000
 }
 
 
+#return
 #zeroes=$( generate_zeroes  $the_maximum_number_of_characters )
 #echo $zeroes
 
 
-## Count down the list
-for i in $( \seq  $the_maximum_number_of_characters -1 1 ); do
-echo $i
+# Count down the list
+start="$the_maximum_number_of_characters"
+while [ "$start" -ge 1 ]; do
   #zeroes=$( \seq  --separator=''  1 $i )
   #zeroes=$()
   #\rename 's/(?)\./$(/' ?\.*
+  \echo  "$start"
+  start=$(( start - 1 ))
 done
+
 
 
 #\rename 's/(.*?)\//$1append_this/' *
 #rename 's/(\d)/00/' ?
-
-
 
