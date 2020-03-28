@@ -139,7 +139,8 @@ determine_which_terminal_to_run() {
     for i in "$@"; do
       i="$( trim_whitespace  "$i" )"
       if
-        _="$( \command  -v  "$i" )"
+        #\which "$i"  > /dev/null  2> /dev/null
+        _=$( \which  "$i" )
       then
         \echo  "$i"
         break

@@ -18,7 +18,7 @@ trytry() {
   \killall  "$1"   >  /dev/null 2> /dev/null
   \setsid   "$@"  2>  /dev/null &
   if  \
-    \command  -v  "$1"  > /dev/null  2> /dev/null
+    _=$( \which "$1" )
   then
     \echo  "$* success"
     exit  0

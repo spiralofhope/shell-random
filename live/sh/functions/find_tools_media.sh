@@ -6,7 +6,7 @@
 
 # Note that DeaDBeeF probably isn't installed like a proper application (because of a joke license), and will need a manual symlink in a $PATH  (I use $HOME/l/path)  which points to its executable.
 if  \
-  \command  -v deadbeef  2>  /dev/null
+  _=$( \which  \deadbeef )
   #false   #  Un-comment to trigger the fallback (audacious).
 then
   deadbeef_is_installed=true

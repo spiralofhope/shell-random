@@ -14,7 +14,7 @@ screensaver_enable() {
   \xset  dpms 0 0 295
 
   if  \
-    \command  -v  xscreensaver  > /dev/null 2> /dev/null
+    _=$( \which  \xscreensaver )
   then
     \xscreensaver  -no-splash &
   else
@@ -48,7 +48,7 @@ screensaver_disable() {
   }
 
   if  \
-    \command  -v  xscreensaver  > /dev/null 2> /dev/null
+    _=$( \which  \xscreensaver )
   then
     \xscreensaver-command  -exit
     #\killall  \xscreensaver-demo
@@ -74,7 +74,7 @@ screensaver_locknow() {
   \xset  dpms 0 0 7
 
   if  \
-    \command  -v  xscreensaver  > /dev/null 2> /dev/null
+    _=$( \which  \xscreensaver )
   then
     screensaver_enable
     \xscreensaver-command  -lock
