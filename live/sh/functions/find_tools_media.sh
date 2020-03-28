@@ -1,13 +1,12 @@
 #!/usr/bin/env  sh
+# shellcheck disable=1001
 # Helper tools to queue or play media from the commandline.
 
 
 
 # Note that DeaDBeeF probably isn't installed like a proper application (because of a joke license), and will need a manual symlink in a $PATH  (I use $HOME/l/path)  which points to its executable.
 if  \
-  # shellcheck disable=2230
-  # I'm not going to deal with alternatives
-  \command  -v  deadbeef  >  /dev/null
+  \command  -v deadbeef  2>  /dev/null
   #false   #  Un-comment to trigger the fallback (audacious).
 then
   deadbeef_is_installed=true
@@ -23,7 +22,7 @@ fq() {
   \find  .  -iname "*$1*"  -type f  -print0  |\
     \xargs  \
       --null  \
-      "$( \command  -v  deadbeef )"  \
+      "$( \realpath  deadbeef )"  \
         --queue "{}"  \
       > /dev/null 2> /dev/null &
 }
@@ -37,7 +36,7 @@ if [ "$deadbeef_is_installed" = 'true' ]; then                     {   #  Deadbe
 findqueue() {
   # Note that the current playlist is:  "$HOME/.config/deadbeef/playlists/0.dbpl"
   \echo  ' * Launching DeaDBeeF..'
-  \setsid  "$( \realpath  "$( \command  -v  deadbeef )"  )"  > /dev/null 2> /dev/null  &
+  \setsid  "$( \realpath  deadbeef )"  > /dev/null 2> /dev/null  &
   # Wait for it to launch
   until  \
     \pidof  'deadbeef'
@@ -152,9 +151,8 @@ DBPL
   #:<<'  }'   #  Launch
   {
     # Make sure it's running first.
-    # shellcheck disable=2230
-    # I'm not going to deal with alternatives
-    \setsid  "$( \realpath  "$( \command  -v  deadbeef )"  )"  "$temporary_playlist"  > /dev/null 2> /dev/null  &
+    # shellcheck disable=1012
+    \setsid  "$( \realpath  deadbeef )"  "$temporary_playlist"  > /dev/null 2> /dev/null  &
     # Wait for it to launch
     until
       \pidof  'deadbeef'
@@ -179,6 +177,7 @@ DBPL
 
   #:<<'  }'   #  Teardown
   {
+    # shellcheck disable=1012
     \rm   --force  --verbose  "$temporary_playlist"
   }
 
@@ -254,6 +253,7 @@ audacious-empty-playlist
 
   #:<<'  }'   #  Teardown
   {
+    # shellcheck disable=1012
     \rm   --force  --verbose  "$temporary_playlist"
   }
 
