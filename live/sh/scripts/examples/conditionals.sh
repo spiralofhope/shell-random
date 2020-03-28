@@ -1,6 +1,8 @@
 #!/usr/bin/env  sh
 
 
+# -le   less than, or equal to
+
 
 # dash 0.5.7-4+b1
 __='a'
