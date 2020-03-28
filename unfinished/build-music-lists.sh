@@ -26,6 +26,8 @@ go() {
 #   \mkdir  ./"$1"
 
   # FIXME: Something is wrong here..  =/
+  # FIXME - run shellcheck for hints
+  # shellcheck disable=1001
   \find  -L  $music_dirs_list  -name \""$2\""  -exec \
     \ln  --symbolic  --target-directory="$list_dir"/"$1"/ $3{} \;
 }
@@ -94,30 +96,32 @@ go  'Tea Party'			'Tea Party *.mp3'
 go  'Brave Words & Bloody Knuckles/Knuckletracks'	'*Knuckletracks*.mp3'	../
 go  'Brave Words & Bloody Knuckles/Blood Tracks'	'*Blood Tracks*.mp3'	../
 
-:<<XMAS
+:<<'}'   #  XMAS
+{
+  # Proof of concept -- build a list of holiday-related songs:
+  # Would be nice to also organize things if they're comedy..
+  \mkdir  "_Xmas"  ||  return  $?
+  go  "_Xmas/1"			"*Christmas*"			../
+  go  "_Xmas/2"			"*Snow*"			../
+  go  "_Xmas/3"			"*Santa*"			../
+  go  "_Xmas/4"			"*Reindeer*"			../
+  # Link all files into the one root directory:
+  # ~DO: Intelligently move the links and re-link somehow?  Ugh!
+  \cd  ./_Xmas/  ||  return  $?
+  find -L ./1/ ./2/ ./3/ ./4/ -name "*" -exec ln -s --target-directory=./ {} \;
+  # remove the links that point to irrelevant files.
+  \rm  --verbose  ./Sevendust*Xmas\ day*
+  \rm  --verbose  ./Arch\ Enemy*Snow\ bound*
+  \rm  --verbose  ./Clannad*A\ dream\ in\ the\ night*
+  \rm  --verbose  ./Enigma*Snow\ of\ the\ sahara*
+  \rm  --verbose  ./Luca\ Turilli*Lord\ of\ the\ winter\ snow*
+  # shellcheck disable=1117
+  \rm  --verbose  ./Snow\ *			# The artist "Snow"
+  # shellcheck disable=1117
+  \rm  --verbose  ./Santana*		# The artist "Santana"  You're not santa!
+  \cd  ../  ||  return $?
+}
 
-# Proof of concept -- build a list of holiday-related songs:
-# Would be nice to also organize things if they're comedy..
-mkdir "_Xmas"
-go "_Xmas/1"			"*Christmas*"			../
-go "_Xmas/2"			"*Snow*"			../
-go "_Xmas/3"			"*Santa*"			../
-go "_Xmas/4"			"*Reindeer*"			../
-# Link all files into the one root directory:
-# ~DO: Intelligently move the links and re-link somehow?  Ugh!
-cd ./_Xmas/
-find -L ./1/ ./2/ ./3/ ./4/ -name "*" -exec ln -s --target-directory=./ {} \;
-# remove the links that point to irrelevant files.
-\rm  --verbose  ./Sevendust*Xmas\ day*
-\rm  --verbose  ./Arch\ Enemy*Snow\ bound*
-\rm  --verbose  ./Clannad*A\ dream\ in\ the\ night*
-\rm  --verbose  ./Enigma*Snow\ of\ the\ sahara*
-\rm  --verbose  ./Luca\ Turilli*Lord\ of\ the\ winter\ snow*
-\rm  --verbose  ./Snow\ *			# The artist "Snow"
-\rm  --verbose  ./Santana*		# The artist "Santana"  You're not santa!
-cd ../
-
-XMAS
 
 
 # Build one with songs that are about a "name" (ABBA - Maria, etc)

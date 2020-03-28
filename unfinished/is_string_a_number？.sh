@@ -16,7 +16,7 @@
 
 
 
-:<<'}'   #  Method one  --  FIXME - always returns "0"
+#:<<'}'   #  Method one  --  FIXME - always returns "0"
 {
   command_one() {
     # Expecting a return code of 0, because "bc 10 + 10" outputs "10"
@@ -38,7 +38,7 @@
 
 
 
-:<<'}'   #  Method two
+#:<<'}'   #  Method two
 {
   command_one() {
     # Expecting a return code of 0, because "bc 10 + 10" outputs "10"
@@ -68,14 +68,14 @@
 }
 
 
-:<<'}'   #  Using bc
+#:<<'}'   #  Using bc
 {
   check() {
     pipe_file="$( \mktemp )"
     \rm  --force  "$pipe_file"
     \mkfifo       "$pipe_file"
     #
-    bc > /dev/null < $pipe_file &
+    bc > /dev/null < "$pipe_file" &
     echo "$*" >  "$pipe_file"
     __=$?
     \rm  --force  "$pipe_file"
@@ -103,9 +103,10 @@
 isnumber() {
   \printf  ''
 
-:<<'}'   #  Using expr  (integers only)
+#:<<'}'   #  Using expr  (integers only)
 {
-  \expr 1 + $1  > /dev/null 2> /dev/null
+  # shellcheck disable=2003
+  \expr 1 + "$1"  > /dev/null 2> /dev/null
   __=$?
   if [ $__ -eq 2 ]; then
     \echo  "this is not a number:  $1"
@@ -117,7 +118,7 @@ isnumber() {
 }
 
 
-:<<'}'   #  Using bc  --  FIXME - everything is detected as a number
+#:<<'}'   #  Using bc  --  FIXME - everything is detected as a number
 {
   \echo  "10 + $1" | \bc   > /dev/null 2> /dev/null
   __=$?
@@ -131,7 +132,7 @@ isnumber() {
 }
 
 
-:<<'}'   #  Another  --  FIXME - everything is detected as a number?
+#:<<'}'   #  Another  --  FIXME - everything is detected as a number?
 {
   pipe_file="$( \mktemp )"
   \sync
@@ -156,7 +157,7 @@ isnumber() {
 }
 
 
-:<<'}'   #  Some notes some some other failure.
+#:<<'}'   #  Some notes some some other failure.
 {
   # Iterating through each character in a variable
   # Using grep
@@ -180,38 +181,38 @@ isnumber() {
 }
 
 
-:<<'}'   #  Another (incomplete)
+#:<<'}'   #  Another (incomplete)
          #  This has some fundamental limitations
 {
   variable=$*
   case "$variable" in
     '')
-      __="blank\t\tfalse"
+      __='blank\t\tfalse'
     ;;
     [-+][0-9]*)
-      __="signed number\ttrue"
+      __='signed number\ttrue'
     ;;
     [0-9])
-      __="single digit\ttrue"
+      __='single digit\ttrue'
     ;;
     [0-9][0-9])
-      __="double digit\ttrue"
+      __='double digit\ttrue'
     ;;
     [-+][0-9]*[.][0-9]*)
-      __="signed float\ttrue"
+      __='signed float\ttrue'
     ;;
     [0-9]*[.][0-9]+)
-      __="float\t\ttrue"
+      __='float\t\ttrue'
     ;;
     #[0-9]*[^^0-9])
     [0-9]*)
-      __="multiple digit\ttrue"
+      __='multiple digit\ttrue'
     ;;
     *)
-      __="not a number\tfalse"
+      __='not a number\tfalse'
     ;;
   esac
-  \printf  "%s\t$__"  "$variable"
+  \printf  '%s\t%s'  "$variable"  "$__"
 }
 
 }  # /isnumber()

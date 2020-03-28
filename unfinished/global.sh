@@ -21,6 +21,7 @@ global() {
     allofit="$allofit $i"
   done
   # Not having quotes around this removes the starting space.
+  # shellcheck disable=2086
   \echo  $allofit
 }
 
@@ -41,6 +42,7 @@ global_test() {
   done
 
   # Issue here:  This is doing matching.  =/
+  # shellcheck disable=1001
   global  "*.txt"  \echo  'hi'
   rm -rf $TEMP
 }
