@@ -267,6 +267,23 @@ DOCUMENTATION
         mcd  "$BASENAME"
         \unzip  ../"$FILE"
       ;;
+      'part')   #  check more:
+        EXTENSION="${BASENAME##*.}"
+        case $EXTENSION in
+          'zip')   #  .zip.part
+            \echo  " * Repairing file.."
+            # strip out .zip
+            BASENAME="${BASENAME%.*}".repaired
+            mcd  "$BASENAME"
+            \echo  'y'  |  \zip  --fixfix ../"$FILE"  --out "$BASENAME"
+            \unzip  "$BASENAME"
+            \rm  --force  "$BASENAME"
+          ;;
+          *)
+            \echo  "I don't know how to handle a $EXTENSION"
+          ;;
+        esac
+      ;;
       'rar')
         # \touch 1 ; \rar a 1.rar 1 ; \rm -f 1
         mcd  "$BASENAME"
