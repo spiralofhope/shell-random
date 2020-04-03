@@ -12,13 +12,9 @@
 # tabbed
 #
 #   http://tools.suckless.org/tabbed/
+#   https://blog.spiralofhope.com/?p=58866
 #   Invocation notes are at the bottom of this script.
-#   TODO - customize tabbed:
-#     - Set a maximum tab width.
-#     - control-pageup/pagedown to change tabs
-#     - control-shift-pageup/pagedown to move a tab
-#     - control-t to spawn a new tab
-#     - alt-n to change to a specific tab
+#   TODO - customize tabbed.
 #
 # (window manager)
 #
@@ -37,12 +33,14 @@
 # tmux
 #
 #   http://tmux.sourceforge.net/
+#   https://blog.spiralofhope.com/?p=5788
 #   TODO - customize the scrollback
 #     uses C-b [
 #
 # screen
 #
 #   https://www.gnu.org/software/screen/
+#   https://blog.spiralofhope.com/?p=5784
 #   TODO - customize the scrollback
 #     uses C-a ESC  --  This is the copy feature.  Sigh, GNU.
 #   One optimal invocation might be:  \screen  -a  -D  -R  -q  -T term  -h 1000  -x   .. but I can't get this to work for me.
@@ -182,6 +180,7 @@ launch_terminal() {
     /usr/bin/aterm)
       # aterm
       #   http://www.afterstep.org/aterm.php
+      #   https://blog.spiralofhope.com/?p=4150
       # Not tabbed
       # TODO - Does this thing actually have *no* dependencies?
       # In maintenance mode since 2007-08-01.
@@ -219,18 +218,18 @@ launch_terminal() {
 
     /usr/bin/evilvte)
       # evilvte
-      # TODO - website
+      #   http://www.calno.com/evilvte/
+      #   https://blog.spiralofhope.com/?p=56255
       # Tabbed
-      # TODO - font
-      # TODO - geometry
+      # The font and geometry are set within compilation.  See  `src/config.h`
       # evilvte CLAIMS to have a geometry feature, but it doesn't ACTUALLY have one!
       #   Maybe I can force something through the window manager, but I'd want it to only be temporarily forced.  evilvte can give itself a custom WM_CLASS class and WM_CLASS name.  Maybe I can leverage that.
       \setsid  "$i"  "$@" &
     ;;
 
     /usr/bin/gnome-terminal)
-      # TODO - name
-      # TODO - Website
+      # Terminal
+      #   https://help.gnome.org/users/gnome-terminal/
       # Bloated, but at least it can use the default system fixed width font so it looks right.
       # Tabbed
       # TODO - font
@@ -240,8 +239,9 @@ launch_terminal() {
     ;;
 
     /usr/bin/lilyterm)
-      # TODO - name
+      # LilyTerm
       #   http://lilyterm.luna.com.tw/
+      #   https://blog.spiralofhope.com/?p=1019
       # Tabbed
       # TODO - font
       # TODO - geometry
@@ -251,7 +251,7 @@ launch_terminal() {
     /usr/bin/lxterminal)
       # LXTerminal
       #   http://wiki.lxde.org/en/LXTerminal
-      #   http://sourceforge.net/projects/lxde/files/LXTerminal%20%28terminal%20emulator%29/
+      #   https://blog.spiralofhope.com/?p=6049
       # Tabbed
       #   New tabs are opened in the same directory as the current tab.
       # I cannot set a font at the command line.
@@ -263,6 +263,7 @@ launch_terminal() {
     /usr/bin/qterminal)
       # QTerminal
       #   https://github.com/lxqt/qterminal
+      #   https://blog.spiralofhope.com/?p=41077
       # Used with the LXQt desktop environment.
       #   http://lxqt.org/
       # Tabbed
@@ -274,9 +275,9 @@ launch_terminal() {
     ;;
 
     /usr/bin/mrxvt)
-      # TODO - name
+      # Mrxvt  (formerly materm)
       #   http://materm.sourceforge.net/wiki/
-      # (Formerly materm)
+      #   https://blog.spiralofhope.com/?p=27274
       # TODO - my options from the Zaurus
       # Tabbed
       # TODO - font
@@ -285,7 +286,7 @@ launch_terminal() {
     ;;
 
     /usr/bin/roxterm)
-      # TODO - name
+      # ROXTerm
       #   http://roxterm.sourceforge.net/
       # Tabbed
       # TODO - font selection
@@ -295,19 +296,20 @@ launch_terminal() {
     ;;
 
     /usr/bin/xfce4-terminal)
-      # TODO - name, comes with the xfce desktop
-      # TODO - website
+      # xfce4-terminal
+      #   https://docs.xfce.org/apps/terminal/start
+      #   https://git.xfce.org/apps/xfce4-terminal
       # Tabbed
       \setsid  "$i"  "$@" &
     ;;
 
     /usr/bin/rxvt)
-      # Under Slackware 14.1, it sets "xterm" as its terminal, but it doesn't act properly and zsh/bindkeys will be unhappy.
-
       # rxvt
       #   http://www.rxvt.org/
-      # rxvt is an alias to rxvt-unicode when rxvt-unicode is installed.
-      # I make changes to ~/.Xdefaults for things like fonts.
+      #   https://blog.spiralofhope.com/?p=4159
+      # I make changes to  `~/.Xdefaults`  for things like fonts.
+      # Under Slackware 14.1, it sets "xterm" as its terminal, but it doesn't act properly and zsh/bindkeys will be unhappy.
+      # `rxvt`  is an alias to  `rxvt-unicode`  when rxvt-unicode is installed.
       \setsid  "$i" \
         ` # Output to the window should not have it scroll to the bottom.` \
       -si \
@@ -329,6 +331,7 @@ launch_terminal() {
     /usr/bin/rxvt-unicode|/usr/bin/urxvt)
       # urxvt / rxvt-unicode
       #   http://software.schmorp.de/pkg/rxvt-unicode
+      #   https://blog.spiralofhope.com/?p=16005
       # This dumbass terminal does not have a proper fallback if I use an invalid font.
       # See ~/.Xresources
 
@@ -380,6 +383,7 @@ launch_terminal() {
     /usr/bin/sakura)
       # Sakura
       #   http://pleyades.net/david/sakura.php
+      #   https://blog.spiralofhope.com/?p=6411
       # Tabbed
       # When using bash as the default shell, the prompt doesn't immediately appear.
       #   zsh works fine.
@@ -432,8 +436,9 @@ launch_terminal() {
     ;;
 
     /usr/bin/xterm)
-      # TODO - name
+      # xterm
       #   http://invisible-island.net/xterm/
+      #   https://blog.spiralofhope.com/?p=15856
       # Tabbed
       \setsid  "$i" \
         ` # Output to the window should not have it scroll to the bottom.` \
