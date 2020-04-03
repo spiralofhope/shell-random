@@ -178,17 +178,17 @@ DOCUMENTATION
         # Maybe other software can extract it, but 7zip works.
         \7z  x  ../"$FILE"
       ;;
-      'bz2') # check more:
+      'bz2')   #  check more:
         EXTENSION="${BASENAME##*.}"
         case "$EXTENSION" in
-          'tar') # .tar.bz2
+          'tar')   #  .tar.bz2
             # \touch 1 ; \tar -cf 1.tar 1 ; \bzip2 1.tar ; \rm -f 1
             # strip out .tar
             BASENAME="${BASENAME%.*}"
             mcd  "$BASENAME"
             \tar  -xvvjf  ../"$FILE"
           ;;
-          *) # .bz2
+          *)   #  .bz2
             # \touch 1 ; \bzip2 1
             mcd  "$BASENAME"
             # --keep = Explicitly keep the original file.
@@ -197,17 +197,17 @@ DOCUMENTATION
           ;;
         esac
       ;;
-      'gz') # check more:
+      'gz')   #  check more:
         EXTENSION="${BASENAME##*.}"
         case $EXTENSION in
-          'tar') # .tar.gz
+          'tar')   #  .tar.gz
             # \touch 1 ; \tar -cf 1.tar 1 ; \gzip 1.tar ; \rm -f 1
             # strip out .tar
             BASENAME="${BASENAME%.*}"
             mcd  "$BASENAME"
             \tar  -xvvzf  ../"$FILE"
           ;;
-          *) # .gz
+          *)   #  .gz
             # \touch 1 ; \gzip 1
             mcd  "$BASENAME"
             # --to-stdout and the redirect are done so that the original file is kept.
@@ -215,12 +215,12 @@ DOCUMENTATION
           ;;
         esac
       ;;
-      'xz') # check more:
+      'xz')   #  check more:
         EXTENSION="${BASENAME##*.}"
         mcd  "$BASENAME"
         \tar  -xvJf  ../"$FILE"
 #        case $EXTENSION in
-#          'tar') # .tar.xz
+#          'tar')   #  .tar.xz
 #            # strip out .tar
 #            BASENAME="${BASENAME%.*}"
 #            mcd  "$BASENAME"
@@ -229,7 +229,7 @@ DOCUMENTATION
 #            \tar  -xvvzf  ./"$BASENAME"."$EXTENSION"
 #            \rm  --force  ./"$BASENAME"."$EXTENSION"
 #          ;;
-#          *) # .xz
+#          *)   #  .xz
 #            mcd  "$BASENAME"
 #            \7z  x  ../"$FILE"
 #          ;;
@@ -238,14 +238,14 @@ DOCUMENTATION
       Z)
         EXTENSION="${BASENAME##*.}"
         case $EXTENSION in
-          'tar') # .tar.Z
+          'tar')   #  .tar.Z
             # touch 1 ; tar -cf 1.tar 1 ; gzip 1.tar ; rm -f 1
             # strip out .tar
             BASENAME="${BASENAME%.*}"
             mcd  "$BASENAME"
             \tar  -xvvzf  ../"$FILE"
           ;;
-          *) # .Z
+          *)   #  .Z
             # \touch 1 ; \gzip 1
             mcd  "$BASENAME"
             # --to-stdout and the redirect are done so that the original file is kept.
@@ -271,7 +271,7 @@ DOCUMENTATION
         EXTENSION="${BASENAME##*.}"
         case $EXTENSION in
           'zip')   #  .zip.part
-            \echo  " * Repairing file.."
+            \echo  ' * Repairing file..'
             # strip out .zip
             BASENAME="${BASENAME%.*}".repaired
             mcd  "$BASENAME"
@@ -280,7 +280,7 @@ DOCUMENTATION
             \rm  --force  "$BASENAME"
           ;;
           *)
-            \echo  "I don't know how to handle a $EXTENSION"
+            \echo  "I don't know how to handle $EXTENSION"
           ;;
         esac
       ;;
@@ -292,7 +292,7 @@ DOCUMENTATION
       ;;
       *)
         # TODO: If there's no period in the name, spit out another error.
-        \echo  "I don't know how to handle a $EXTENSION"
+        \echo  "I don't know how to handle $EXTENSION"
       ;;
     esac
 
