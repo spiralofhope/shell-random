@@ -142,14 +142,14 @@ DOCUMENTATION
       # This needs quite a rework, because this works something like bzip2.. double-extensions, decompresses in the same directory as the source, blah.
       #'xz')
         ## I could probably test with something like..
-        ## \touch 1 ; \tar -cf 1.tar 1 ; \bzip2 1.tar ; \rm -f 1 ; \mv 1.tar.bzip2 1.tbz2
+        ## :> 1 ; \tar -cf 1.tar 1 ; \bzip2 1.tar ; \rm -f 1 ; \mv 1.tar.bzip2 1.tbz2
         #mcd  "$BASENAME"
         #\xz  --decompress  ../"$FILE"
         #\tar  -xvvf  "$FILE"
       #;;
       #'txz')
         ## I could probably test with something like:
-        ## \touch 1 ; \tar -cf 1.tar 1 ; \bzip2 1.tar ; \rm -f 1 ; \mv 1.tar.bzip2 1.tbz2
+        ## :> 1 ; \tar -cf 1.tar 1 ; \bzip2 1.tar ; \rm -f 1 ; \mv 1.tar.bzip2 1.tbz2
         #mcd  "$BASENAME"
         #\xz  --decompress  ../"$FILE"
         #\tar  -xvvf  "$FILE"
@@ -160,12 +160,12 @@ DOCUMENTATION
       ;;
       'tbz2')
         # I could probably test with something like:
-        # \touch 1 ; \tar -cf 1.tar 1 ; \bzip2 1.tar ; \rm -f 1 ; \mv 1.tar.bzip2 1.tbz2
+        # :> 1 ; \tar -cf 1.tar 1 ; \bzip2 1.tar ; \rm -f 1 ; \mv 1.tar.bzip2 1.tbz2
         mcd  "$BASENAME"
         \tar  -xvvjf  ../"$FILE"
       ;;
       'tgz')
-        # \touch 1 ; \tar -cf 1.tar 1 ; \gzip 1.tar ; \rm -f 1
+        # :> 1 ; \tar -cf 1.tar 1 ; \gzip 1.tar ; \rm -f 1
         mcd  "$BASENAME"
         \tar  -xvvzf  ../"$FILE"
       ;;
@@ -182,14 +182,14 @@ DOCUMENTATION
         EXTENSION="${BASENAME##*.}"
         case "$EXTENSION" in
           'tar')   #  .tar.bz2
-            # \touch 1 ; \tar -cf 1.tar 1 ; \bzip2 1.tar ; \rm -f 1
+            # :> 1 ; \tar -cf 1.tar 1 ; \bzip2 1.tar ; \rm -f 1
             # strip out .tar
             BASENAME="${BASENAME%.*}"
             mcd  "$BASENAME"
             \tar  -xvvjf  ../"$FILE"
           ;;
           *)   #  .bz2
-            # \touch 1 ; \bzip2 1
+            # :> 1 ; \bzip2 1
             mcd  "$BASENAME"
             # --keep = Explicitly keep the original file.
             # Using bzcat because bzip2 will try to extract to the same directory as the archive.
@@ -201,14 +201,14 @@ DOCUMENTATION
         EXTENSION="${BASENAME##*.}"
         case $EXTENSION in
           'tar')   #  .tar.gz
-            # \touch 1 ; \tar -cf 1.tar 1 ; \gzip 1.tar ; \rm -f 1
+            # :> 1 ; \tar -cf 1.tar 1 ; \gzip 1.tar ; \rm -f 1
             # strip out .tar
             BASENAME="${BASENAME%.*}"
             mcd  "$BASENAME"
             \tar  -xvvzf  ../"$FILE"
           ;;
           *)   #  .gz
-            # \touch 1 ; \gzip 1
+            # :> 1 ; \gzip 1
             mcd  "$BASENAME"
             # --to-stdout and the redirect are done so that the original file is kept.
             \gzip  --decompress  --to-stdout  ../"$FILE"  >  ./"$BASENAME"
@@ -239,14 +239,14 @@ DOCUMENTATION
         EXTENSION="${BASENAME##*.}"
         case $EXTENSION in
           'tar')   #  .tar.Z
-            # touch 1 ; tar -cf 1.tar 1 ; gzip 1.tar ; rm -f 1
+            # :> 1 ; tar -cf 1.tar 1 ; gzip 1.tar ; rm -f 1
             # strip out .tar
             BASENAME="${BASENAME%.*}"
             mcd  "$BASENAME"
             \tar  -xvvzf  ../"$FILE"
           ;;
           *)   #  .Z
-            # \touch 1 ; \gzip 1
+            # :> 1 ; \gzip 1
             mcd  "$BASENAME"
             # --to-stdout and the redirect are done so that the original file is kept.
             \gzip  --decompress  --to-stdout  ../"$FILE"  >  ./"$BASENAME"
@@ -254,7 +254,7 @@ DOCUMENTATION
         esac
       ;;
       'tar')
-        # \touch 1 ; \tar -cf 1.tar 1 ; \rm -f 1
+        # :> 1 ; \tar -cf 1.tar 1 ; \rm -f 1
         mcd  "$BASENAME"
         \tar  -xvvf  ../"$FILE"
       ;;
@@ -263,7 +263,7 @@ DOCUMENTATION
         # maff - Mozilla Firefox - Mozilla Archive File Format (MAFF) for Firefox, but made available to Pale Moon via an extension:
         #   https://github.com/Lootyhoof/mozarchiver
         # mht  - Internet Explorer (MHT) probably also uses the zip format.  UNTESTED.  Viewable with mozarchiver.
-        # \touch 1 ; \zip 1.zip 1 ; \rm -f 1
+        # :> 1 ; \zip 1.zip 1 ; \rm -f 1
         mcd  "$BASENAME"
         \unzip  ../"$FILE"
       ;;
@@ -285,7 +285,7 @@ DOCUMENTATION
         esac
       ;;
       'rar')
-        # \touch 1 ; \rar a 1.rar 1 ; \rm -f 1
+        # :> 1 ; \rar a 1.rar 1 ; \rm -f 1
         mcd  "$BASENAME"
 #        \rar  x ../"$FILE"
          \unrar  x ../"$FILE"

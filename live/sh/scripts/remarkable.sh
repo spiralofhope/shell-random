@@ -14,7 +14,6 @@
 
 
 Requirements:
-  touch
   date
   dd
 
@@ -39,7 +38,7 @@ setup() {
   \echo  "Press ESCAPE to exit"
   \echo  ''
   if [ -z "$DRY_RUN" ]; then
-    \touch  "$_filename"
+    :>  "$_filename"
     # Formatted as comma-separated values (CSV)
     # The header
     \echo  "character pressed,hh:mm:ss,elapsed seconds,$_date_time" >> "$_filename"

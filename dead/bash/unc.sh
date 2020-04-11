@@ -119,14 +119,14 @@ DOCUMENTATION
         EXTENSION=${BASENAME##*.}
         case $EXTENSION in
           tar) # .tar.bz2
-            # touch 1 ; tar -cf 1.tar 1 ; bzip2 1.tar ; rm -f 1
+            # :> 1 ; tar -cf 1.tar 1 ; bzip2 1.tar ; rm -f 1
             # strip out .tar
             BASENAME=${BASENAME%.*}
             mcd $BASENAME
             tar -xvvjf ../$FILE
           ;;
           *) # .bz2
-            # touch 1 ; bzip2 1
+            # :> 1 ; bzip2 1
             mcd $BASENAME
             # --keep = Explicitly keep the original file.
             # Using bzcat because bzip2 will try to extract to the same directory as the archive.
@@ -138,14 +138,14 @@ DOCUMENTATION
         EXTENSION=${BASENAME##*.}
         case $EXTENSION in
           tar) # .tar.gz
-            # touch 1 ; tar -cf 1.tar 1 ; gzip 1.tar ; rm -f 1
+            # :> 1 ; tar -cf 1.tar 1 ; gzip 1.tar ; rm -f 1
             # strip out .tar
             BASENAME=${BASENAME%.*}
             mcd $BASENAME
             tar -xvvzf ../$FILE
           ;;
           *) # .gz
-            # touch 1 ; gzip 1
+            # :> 1 ; gzip 1
             mcd $BASENAME
             # --to-stdout and the redirect are done so that the original file is kept.
             gzip --decompress --to-stdout ../$FILE > ./$BASENAME
@@ -153,17 +153,17 @@ DOCUMENTATION
         esac
       ;;
       tar)
-        # touch 1 ; tar -cf 1.tar 1 ; rm -f 1
+        # :> 1 ; tar -cf 1.tar 1 ; rm -f 1
         mcd $BASENAME
         tar -xvvf ../$FILE
       ;;
       zip)
-        # touch 1 ; zip 1.zip 1 ; rm -f 1
+        # :> 1 ; zip 1.zip 1 ; rm -f 1
         mcd $BASENAME
         unzip ../$FILE
       ;;
       rar)
-        # touch 1 ; rar a 1.rar 1 ; rm -f 1
+        # :> 1 ; rar a 1.rar 1 ; rm -f 1
         mcd $BASENAME
         rar x ../$FILE
       ;;

@@ -689,7 +689,7 @@ main_foreground() {
           do
             if ! [ -f "$file" ]
             then
-              \touch "$file"
+              :>  "$file"
             fi
             string=${string}' '\"$( \cygpath  --dos  "$file" )\"
           done
@@ -764,7 +764,7 @@ main_foreground() {
             do
               if ! [ -f "$file" ]
               then
-                \touch "$file"
+                :>  "$file"
               fi
               string=${string}' '\"$( \cygpath  --dos  "$file" )\"
             done

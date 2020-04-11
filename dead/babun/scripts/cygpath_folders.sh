@@ -6,8 +6,8 @@
 
 cygpath_folders_log="$0".txt
 \rm  --force  --verbose  "$cygpath_folders_log"
-\echo 
-\touch                   "$cygpath_folders_log"
+\echo  ''
+:>                       "$cygpath_folders_log"
 
 
 

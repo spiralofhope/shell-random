@@ -83,7 +83,7 @@ geany() {  #  The GUI editor
   for file in "$@"; do
     if ! [ -f "$file" ]; then
       # Workaround:  \cygpath  can't handle nonexistent files:
-      \touch  "$file"
+      :>  "$file"
     fi
     string=${string}' '\"$( \cygpath  --dos  "$file" )\"
   done

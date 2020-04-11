@@ -88,7 +88,7 @@ build_array_of_files() {
       \echo  "   New project $i, inserting message:"
       \echo  "$NEW_PROJECT_MESSAGE"
       \echo .
-      \touch  "$file"
+      :>  "$file"
       \echo  "$NEW_PROJECT_MESSAGE" >> "$file"
     fi
     size_of_file=$( \stat  --printf="%s"  "$file"  |  \cut -f 1 )

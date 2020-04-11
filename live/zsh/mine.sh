@@ -209,7 +209,7 @@ _jpegoptimize() {
   shift
   \jpegoptim  --max="$amount"  --preserve  "$@"
   if [ "$amount" -ne 100 ]; then
-    \touch  "zz--  jpegoptim -m$amount"
+    :>  "zz--  jpegoptim -m$amount"
   fi
 }
 

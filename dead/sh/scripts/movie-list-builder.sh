@@ -38,7 +38,7 @@ _setup() {
   \mkdir  $_directory
   # TODO - this will become $2
   _textfile=$_tempdir/textfile.txt
-  \touch  $_textfile
+  :>  $_textfile
   \echo  __begin__  >>  $_textfile
   _output=""
   # If the file is new, then create the necessary HTML header.

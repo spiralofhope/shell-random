@@ -19,7 +19,7 @@ fi
 
 
 # testing:
-# touch some_file ; zip some_zip.zip some_file ; rm -f some_file
+# :> some_file ; zip some_zip.zip some_file ; rm -f some_file
 
 
 

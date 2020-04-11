@@ -34,9 +34,8 @@ setup(){
   # Yes this could be smarter, but why bother.
   local verbosetouch() {
     \echo "created $1"
-    \touch "$1"
+    :>  "$1"
   }
-  # `touch` has no verbosity setting?!
   verbosetouch "$source"/test.asc
   \echo "some test content" >> "$source"/test.asc
   verbosetouch "$source"/test.fail

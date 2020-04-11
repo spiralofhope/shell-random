@@ -40,7 +40,7 @@ if    [ "$TTY" = '/dev/tty1' ] ||
         # shellcheck disable=1117
         \dialog  --yesno  "Network connection detected.\n\nAutostart related applications?"  0  0
       then
-        \touch        "$__"
+        :>            "$__"
       else
         \rm  --force  "$__"
       fi
