@@ -4,7 +4,13 @@
 
 
 
-:<<'}'   #  Create a blank file
+#:<<'}'   #  Create a blank file
 {
-:>filename.ext
+  # Instead of
+  #\touch  filename.ext
+  # Do:
+  tmp='replace-touch--filename.ext'
+  :>                       "$tmp"
+  \echo  'created'       \'"$tmp"\'
+  \rm  --force  --verbose  "$tmp"
 }
