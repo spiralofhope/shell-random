@@ -1,7 +1,38 @@
 #!/usr/bin/env  sh
+# Replace `seq`
 
 
 
+#:<<'}'   #  Simple:  Increment from 1 to $1 in steps of 1
+seq_replacement_increment() {
+  start='1'
+  end="$1"
+  while [ "$start" -le "$end" ]; do
+    \echo  "$start"
+    start=$(( start + 1 ))
+  done
+}
+#seq_replacement_increment   3
+#=>  1 2 3
+
+
+
+#:<<'}'   #  Simple:  Decrement from $1 to 1 in steps of 1
+seq_replacement_decrement() {
+  start="$1"
+  end="1"
+  while [ "$start" -ge "$end" ]; do
+    \echo  "$start"
+    start=$(( start - 1 ))
+  done
+}
+seq_replacement_decrement   3
+#=>  3 2 1
+
+
+
+#:<<'}'   #  Exactly replicate `seq`
+          #  (Personally I would have implemented this functionality differently)
 seq_replacement() {
   # usage:
   # seq_replacement LAST
