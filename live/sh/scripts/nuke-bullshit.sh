@@ -1,21 +1,30 @@
 #!/usr/bin/env  sh
+# Delete a list of files
+
+# TODO - Build the list as an array.
+# TODO - Build the list as a text file.
 
 
 
-:<<'}'  # Testing
+#:<<'}'  #  Create a list of files
 {
-  # FIXME - replace with an shism
-  \touch  \
-    '.DS_Store'  \
-    '.BridgeCache'  \
-    '.BridgeCacheT'  \
-    'Thumbs.db'  \
-    'desktop.ini'  \
-  ` # `
+  
+  for file in \
+    .DS_Store  \
+    .BridgeCache  \
+    .BridgeCacheT  \
+    Thumbs.db  \
+    desktop.ini  \
+  ; do
+    :>  "$file"
+  done
+  \echo  '--'
+  \ls  -A1
+  \echo  '--'
 }
 
 
-#:<<'}'  #  
+#:<<'}'   #   Delete using `find`, using multiple options
 {
   \find  \
     ./  \
@@ -29,47 +38,53 @@
   ` # `
 }
 
-#ls -a1 --color=always
 
 
-:<<'}'  #  Via a regex
+#:<<'}'   #   Delete using `find`, using a single long regex
 {
   \find  \
     ./  \
     -type f  \
+    -regextype  posix  \
     -regex  '.*\/\(\.DS_Store\|\.BridgeCache\|\.BridgeCacheT\|Thumbs\.db\|desktop\.ini\)'  \
+    -delete  \
   ` # `
 }
 
 
 
 
+
 :<<'}'   #  TODO - use an array
 {
-variable='
-  .DS_Store
-  .BridgeCache
-  .BridgeCacheT
-  Thumbs.db
-  desktop.ini
-'
+  variable='
+    .DS_Store
+    .BridgeCache
+    .BridgeCacheT
+    Thumbs.db
+    desktop.ini
+  '
 }
 # Idea:  Use items in a plain text file.
 
 
 
-# I don't understand why this doesn't work..
-:<<'}'  #  Run `find` once.
-#  Split by lines, ignore beginning spaces, accept empty lines, accept inner spaces.
+ #I don't understand why this doesn't work..
+:<<'}'   #  Run `find` once.
+          #  Split by lines, ignore beginning spaces, accept empty lines, accept inner spaces.
 {
-  echo '----'
-  echo "$variable" |\
-  while read line; do
-    #echo "$line"
-    __=$__$line
-    __=foo
-  done
-  echo '----'
+  \echo  '----'
+  \echo  "$variable"  |\
+    while  \read  -r  line; do
+      #echo "$line"
+      __=$__$line
+      __=foo
+    done
+  \echo  '----'
 
-  echo $__
+  \echo  $__
 }
+
+
+
+\ls  -A1
