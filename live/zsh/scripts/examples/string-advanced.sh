@@ -4,7 +4,6 @@
 
 searchstring() {
   unset searchstring_success
-  # TODO - I really need to stop doing this.
   while :; do
     # 2 parameters, no blanks, first parameter  must be one character.
     if [ ! "$#" -eq 2  ] ||
@@ -34,7 +33,6 @@ searchstring() {
 
 searchstring_right_l() {
   unset searchstring_success
-  # TODO - I really need to stop doing this.
   while :; do
     # 2 parameters, no blanks, first parameter  must be one character.
     if [ ! "$#" -eq  2 ] ||
