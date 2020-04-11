@@ -21,7 +21,7 @@ dir2="/tmp/test 2/"
 file="some file"
 \mkdir  "$dir1" \
         "$dir2"
-\touch  "$dir1""$file" \
+:>      "$dir1""$file" \
         "$dir2""$file"
 
 dual-commands.sh  \ls  "$dir1"  "$dir2"  "$file"
