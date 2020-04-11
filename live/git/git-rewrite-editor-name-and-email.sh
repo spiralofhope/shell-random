@@ -1,4 +1,9 @@
 #!/usr/bin/env  sh
+# FIXME - this doesn't seem to actually work
+# FIXME - I think this might rewrite the repository in which this script resides!
+# test with this?:
+# mkdir foo; cd foo; git clone --bare ../original-repo
+exit 1
 # Search-replace an editor's name and email address.
 # https://help.github.com/en/github/using-git/changing-author-info
 
