@@ -35,8 +35,7 @@ seq_replacement_decrement() {
 
 
 
-#:<<'}'   #  Exactly replicate `seq`
-          #  (Personally I would have implemented this functionality differently)
+#:<<'}'   #  A drop-in replacement for the common uses `seq`.
 seq_replacement() {
   # usage:
   # seq_replacement LAST
