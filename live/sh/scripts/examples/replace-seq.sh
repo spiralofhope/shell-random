@@ -12,8 +12,10 @@ seq_replacement_increment() {
     start=$(( start + 1 ))
   done
 }
-#seq_replacement_increment   3
-#=>  1 2 3
+#for i in $( seq_replacement_increment 3 ); do \echo  "ok $i"; done
+#=>  ok 1
+#=>  ok 2
+#=>  ok 3
 
 
 
@@ -26,8 +28,10 @@ seq_replacement_decrement() {
     start=$(( start - 1 ))
   done
 }
-seq_replacement_decrement   3
-#=>  3 2 1
+#for i in $( seq_replacement_decrement 3 ); do \echo  "ok $i"; done
+#=>  ok 3
+#=>  ok 2
+#=>  ok 1
 
 
 
@@ -82,15 +86,38 @@ seq_replacement() {
     *)  return  1  ;;
   esac
 }
-#seq_replacement   3
-#=>  1 2 3
-#seq_replacement   2   5
-#=>  2 3 4 5
-#seq_replacement   3   1   5
-#=>  3 4 5
-#seq_replacement   5  -1   3
-#=>  5 4 3
-#seq_replacement   6   2  10
-#=>  6 8 10
-#seq_replacement  10  -2   6
-#=>  10 8 6
+#for i in $( seq_replacement 3       ); do \echo "ok $i"; done
+#=>  ok 1
+#=>  ok 2
+#=>  ok 3
+
+#for i in $( seq_replacement 2  4    ); do \echo "ok $i"; done
+#=>  ok 2
+#=>  ok 3
+#=>  ok 4
+
+#for i in $( seq_replacement 2  1  4 ); do \echo "ok $i"; done
+#=>  ok 2
+#=>  ok 3
+#=>  ok 4
+
+#for i in $( seq_replacement 4 -1  2 ); do \echo "ok $i"; done
+#=>  ok 4
+#=>  ok 3
+#=>  ok 2
+
+#for i in $( seq_replacement 2  2  6 ); do \echo "ok $i"; done
+#=>  ok 2
+#=>  ok 4
+#=>  ok 6
+
+#for i in $( seq_replacement 6 -2  2 ); do \echo "ok $i"; done
+#=>  ok 6
+#=>  ok 4
+#=>  ok 2
+
+#for i in $( seq_replacement 2 -2 -4 ); do \echo "ok $i"; done
+#=>  ok 2
+#=>  ok 0
+#=>  ok -2
+#=>  ok -4
