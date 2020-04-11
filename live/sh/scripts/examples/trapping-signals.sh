@@ -85,7 +85,7 @@
       \echo  ' * Teardown..'
       # make the file
       :>  "$temporary_teardown_file"
-      for i in $( \seq  3  -1  1 ); do
+      for i in 3 2 1; do
         \echo  "Exiting in $i.."
         \sleep  1
       done

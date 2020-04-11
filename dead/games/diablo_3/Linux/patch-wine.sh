@@ -46,9 +46,21 @@ NOTES
 \winetricks vcrun2008
 
 \echo " * Downloading patches.."
-for i in `seq 86102 86105`; do
-  \wget -c http://source.winehq.org/patches/data/$i -O $i.patch
+
+
+#:<<'}'   #  Simple:  Increment from 1 to $1 in steps of 1
+seq_replacement_increment() {
+  start='1'
+  end="$1"
+  while [ "$start" -le "$end" ]; do
+    \echo  "$start"
+    start=$(( start + 1 ))
+  done
+}
+for i in $( seq_replacement_increment 86102 86105 ); do
+  \wget  --continue "source.winehq.org/patches/data/$i"  -O "$i.patch"
 done
+
 
 \echo " * Downloading the wine source code.."
 \echo "   This will take some time, be patient."

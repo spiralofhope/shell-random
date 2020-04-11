@@ -17,6 +17,7 @@ searchstring() {
     character="$1"
     string="$2"
     # Iterate through the string.
+    # FIXME - Can I replace this with an shism?  See `replace-seq.sh`
     for i in $( \seq  0  $(( ${#string} - 1 )) ); do
       # Checking that location in the string, see if the character matches.
       # I should convert this into an 'until' so it makes sense to me, and it halts on the first success.

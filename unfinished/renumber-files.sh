@@ -71,6 +71,7 @@ printf  '\n'
 # Count down the list
 start="$the_maximum_number_of_characters"
 while [ "$start" -ge 1 ]; do
+  # TODO? - replace `seq` with the shism from `replace-seq.sh`
   #zeroes=$( \seq  --separator=''  1 $i )
   #zeroes=$()
   #\rename 's/(?)\./$(/' ?\.*

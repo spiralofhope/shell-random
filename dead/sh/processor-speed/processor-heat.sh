@@ -21,8 +21,15 @@ _processor_heat() {
   esac
 
   # `hardinfo` will prove that the CPU settings will change.
-
-  for i in $( \seq 0 "$( get_the_number_of_processors )" ); do
+  seq_replacement() {
+    start="$1"
+    end="$2"
+    while [ "$start" -le "$end" ]; do
+      \echo  "$start"
+      start=$(( start + 1 ))
+    done
+  }
+  for i in $( seq_replacement 0 "$( get_the_number_of_processors )" ); do
     \echo  '   heating up processor '  "$i"
     \cpufreq-set  --cpu "$i"  --governor performance
   done
