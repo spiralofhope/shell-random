@@ -53,38 +53,4 @@
 
 
 
-
-
-:<<'}'   #  TODO - use an array
-{
-  variable='
-    .DS_Store
-    .BridgeCache
-    .BridgeCacheT
-    Thumbs.db
-    desktop.ini
-  '
-}
-# Idea:  Use items in a plain text file.
-
-
-
- #I don't understand why this doesn't work..
-:<<'}'   #  Run `find` once.
-          #  Split by lines, ignore beginning spaces, accept empty lines, accept inner spaces.
-{
-  \echo  '----'
-  \echo  "$variable"  |\
-    while  \read  -r  line; do
-      #echo "$line"
-      __=$__$line
-      __=foo
-    done
-  \echo  '----'
-
-  \echo  $__
-}
-
-
-
 \ls  -A1
