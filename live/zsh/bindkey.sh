@@ -102,7 +102,7 @@ typeset  -g  -A  key
 {  #  Quote everything after the first parameter
   # TODO - This turns the mark on, and it shouldn't.  I wasn't able to figure out how to stop that, but I don't care much.
   # Use case:
-  #   somecommand 
+  #   somecommand
   #   (paste)
   #   somecommand This is a string
   #   ^X
@@ -112,7 +112,7 @@ typeset  -g  -A  key
 
 
 # Respect word bounderies with:
-# vi-backward-word 
+# vi-backward-word
 # vi-forward-word
 # vi-backward-kill-word
 # There is no vi-kill-word ..  =/
