@@ -43,6 +43,10 @@ elif  [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]; then
   fi
 else                                                                    program='unset'
 fi
+#program='deadbeef'
+#program='audacious'
+#program='vlc'
+#program='unset'
 
 
 
@@ -53,8 +57,7 @@ if   [ "$program" = 'deadbeef'  ]; then
     # Note that the current playlist is:  "$HOME/.config/deadbeef/playlists/0.dbpl"
     \echo  ' * Launching DeaDBeeF..'
     # shellcheck disable=1012
-    \setsid  "$( \realpath  deadbeef )"  > /dev/null 2> /dev/null  &
-    \echo  ' * Waiting for it to launch..'
+    \setsid  deadbeef  > /dev/null 2> /dev/null  &
     until
       \pidof  'deadbeef'
     do
@@ -88,7 +91,7 @@ if   [ "$program" = 'deadbeef'  ]; then
     }
 
     # TODO - As DeaDBeeF empties a playlist once it hits an invalid file, I'm going over its more common file types manually.
-    # This might blank the playlist, but format is supported.  It's something being offered into the queue that's blanking it.  This was reproduced with a ։ in the filename.
+    # This might blank the playlist, but format is supported.  It's something being offered into the queue that's blanking it.  This was reproduced with a ։ in the filename (that is not a colon).
     #   Therefore I'll put this first, so it won't be so awful if it's triggered.
     _queue  'm4a'  "$@"
     _queue  'mp3'  "$@"
@@ -103,7 +106,6 @@ elif [ "$program" = 'audacious' ]; then
   findqueue() {
     \echo  ' * Launching audacious..'
     \setsid  \audacious  --show-main-window  > /dev/null 2> /dev/null  &
-    \echo  ' * Waiting for it to launch..'
     until
       \pidof  'audacious'
     do
@@ -133,7 +135,6 @@ elif [ "$program" = 'vlc' ]; then
   findqueue() {
     #\echo  ' * Launching vlc..'
     #\setsid  /mnt/c/Program\ Files/VideoLAN/VLC/vlc.exe  --no-loop  > /dev/null 2> /dev/null  &
-    #\echo  ' * Waiting for it to launch..'
     #until
       #_=$( \pgrep  'vlc.exe' )
     #do
@@ -242,9 +243,9 @@ DBPL
 
     {  #  Launch
     # Make sure it's running first.
+    \echo  ' * Launching DeaDBeeF..'
     # shellcheck disable=1012
-    \setsid  "$( \realpath  deadbeef )"  "$temporary_playlist"  > /dev/null 2> /dev/null  &
-    \echo  ' * Waiting for it to launch..'
+    \setsid  deadbeef  "$temporary_playlist"  > /dev/null 2> /dev/null  &
     until
       \pidof  'deadbeef'
     do
@@ -286,8 +287,8 @@ audacious-empty-playlist
     }
 
     {  #  Launch with the empty playlist
+    \echo  ' * Launching Audacious..'
     \audacious  --enqueue-to-temp  "$temporary_playlist"  > /dev/null 2> /dev/null  &
-    \echo  ' * Waiting for it to launch..'
     until
       \pidof  'audacious'
     do
