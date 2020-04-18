@@ -6,6 +6,6 @@ Openbox:
 
 ----
 
-On Debian, you can learn the version of `openbox` with:
+On Debian, you can learn your version of `openbox` with:
 
 `\apt-cache  policy  openbox`
