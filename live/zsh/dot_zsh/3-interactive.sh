@@ -224,11 +224,11 @@ df
 :<<'OLD'
 
 # 2017-10-26 - Testing with this disabled.
-# 
 # http://www.zsh.org/mla/workers/1996/msg00191.html
 if [[ "$( \whoami )" = *\) ]]; then
   # We are remote
   # Do nothing
+  \printf  ''
 else
   DISPLAY=${DISPLAY:-:0.0}
 fi
