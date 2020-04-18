@@ -1,4 +1,4 @@
-#!/usr/bin/env  zsh
+#!/usr/bin/env  sh
 
 : << IDEAS
   TODO - Check out http://dotfiles.org/~brendano/.zshrc

@@ -1,5 +1,5 @@
-#!/usr/bin/env  zsh
-# /etc/zlogin and ~/.zlogin
+#!/usr/bin/env  sh
+# /etc/zlogin and $HOME/.zlogin
 # Read after zshrc, if the shell is a login shell.
 # See also /etc/default/console-setup
 
@@ -32,27 +32,25 @@ if    [ "$TTY" = '/dev/tty1' ] ||
     \echo "Processing $interface"
     if [ "$interface" = 'lo' ]; then
       \echo  'skipping "lo" (localhost)'
-      \echo  '   It is always there so it doesn\'t necessarily count as an outside connection.'
+      \echo  '   It is always there so it does not necessarily count as an outside connection.'
       continue
     fi
-    _result=$( \cat "$interface"/carrier )
-    #\echo  "$_result"
-    __="/tmp/$( \whoami ).autostart-networking-applications"
-    if [ "$_result" = '1' ]; then
+    if ! _=$( \cat "$interface"/carrier ); then
+      \echo  ' * Network connection not detected.'
+    else
+      \echo  ' * Network connection detected.'
+      __="/tmp/$( $USER ).autostart-networking-applications"
+      \rm  --force  "$__"
       if
         # shellcheck disable=1117
         \dialog  --yesno  "Network connection detected.\n\nAutostart related applications?"  0  0
       then
-        :>            "$__"
-      else
-        \rm  --force  "$__"
+        # Make the file, the existence of which will prompt Openbox.
+        :>  "$__"
       fi
-      \unset  __
-    else
-      \echo  ' * Network connection not detected.'
-      \rm  --force  "$__"
     fi
   done
+  \unset  __
 }
 
 
