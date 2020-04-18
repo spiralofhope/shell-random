@@ -2,7 +2,7 @@
 # -- My additions to autostart.sh
 # --
 # Edit autostart.sh and append:
-# ~/.config/openbox/autostart.sh-system.sh
+# ~/.config/openbox/autostart.sh-2-system.sh
 
 
 # This lingering parent task isn't necessary.
@@ -124,7 +124,7 @@ keepassxc&
 
 
 # launch any user-specific stuff:
-~/.config/openbox/autostart.sh-applications.sh
+~/.config/openbox/autostart.sh-3-applications.sh
 
 
 
