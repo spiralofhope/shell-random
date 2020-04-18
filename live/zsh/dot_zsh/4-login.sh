@@ -28,10 +28,13 @@ if    [ "$TTY" = '/dev/tty1' ] ||
 #:<<'}'  #  Detect network connection
          #  FIXME? - This doesn't necessarily mean "internet connection"
 {
-  # 'lo' is localhost, which is always there so it doesn't count as an outside connection.
   for interface in /sys/class/net/*; do
-    if [ "$interface" = 'lo' ]; then continue; fi
     \echo "Processing $interface"
+    if [ "$interface" = 'lo' ]; then
+      \echo  'skipping "lo" (localhost)'
+      \echo  '   It is always there so it doesn\'t necessarily count as an outside connection.'
+      continue
+    fi
     _result=$( \cat "$interface"/carrier )
     #\echo  "$_result"
     __="/tmp/$( \whoami ).autostart-networking-applications"
