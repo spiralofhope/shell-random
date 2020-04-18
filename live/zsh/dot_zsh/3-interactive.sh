@@ -176,7 +176,7 @@ export  WORDCHARS
 {  #  Paths
 
   PATH=\
-"$( \realpath  "$zshdir/scripts" )"\
+"$(  \realpath  "$zshdir/scripts" )"\
 :"$( \realpath  "$zshdir/../bash/scripts" )"\
 :"$PATH"
 
