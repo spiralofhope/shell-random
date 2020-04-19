@@ -2,6 +2,7 @@
 # full of zshisms, obviously.
 # shellcheck disable=2039
 # NOTE: control-v and a key combination to learn that binding.
+# For reference:    
 
 
 
@@ -122,10 +123,18 @@ typeset  -g  -A  key
 # This seems to be the Right Way to handle edge cases
 case $TERM in
   xterm-256color)
-    #  2017-11-07 - Babun (though with a Cygwyn update)
-    \bindkey  '^_'       backward-kill-word                             # control-backspace
     \bindkey  '^[[H'     beginning-of-line                              # home
     \bindkey  '^[[F'     end-of-line                                    # end
+    case "${this_kernel_release:?}" in
+      'Cygwin')
+        #  2017-11-07 - Babun (though with a Cygwyn update)
+        \bindkey  '^_'       backward-kill-word                         # control-backspace
+      ;;
+      'Windows Subsystem for Linux')
+        #  2020-04-18
+        \bindkey  '^H'       backward-kill-word                         # control-backspace
+      ;;
+    esac
   ;;
 
   *xterm*)
@@ -183,4 +192,3 @@ case $TERM in
     \echo
   ;;
 esac
-# OC
