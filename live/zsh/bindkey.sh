@@ -2,24 +2,30 @@
 # full of zshisms, obviously.
 # shellcheck disable=2039
 # NOTE: control-v and a key combination to learn that binding.
-# For reference:    
+# Raw characters for reference:    
+# You can also insert raw characters with:
+# 1.  echo '
+# 2.  control-v
+# 3.  (press your key combination)
+# 4.  ' >> bindkeys.sh
 
 
 
 :<<IDEAS
+# TODO - Where is this fron?
 if [ -f ~/.zkbd/$TERM-$VENDOR-$OSTYPE ]; then
   source ~/.zkbd/$TERM-$VENDOR-$OSTYPE
   [[ -n ${key[Backspace]} ]] && bindkey  "${key[Backspace]}" backward-delete-char
-  [[ -n ${key[Home]} ]] && bindkey  "${key[Home]}" beginning-of-line
-  [[ -n ${key[Delete]} ]] && bindkey  "${key[Delete]}" delete-char
-  [[ -n ${key[End]} ]] && bindkey  "${key[End]}" end-of-line
-  [[ -n ${key[PageUp]} ]] && bindkey  "${key[PageUp]}" up-line-or-history
-  [[ -n ${key[PageDown]} ]] && bindkey  "${key[PageDown]}" down-line-or-history
-  [[ -n ${key[Up]} ]] && bindkey  "${key[Up]}" up-line-or-search
-  [[ -n ${key[Up]} ]] && bindkey  "${key[Up]}" up-line-or-search
-  [[ -n ${key[Left]} ]] && bindkey  "${key[Left]}" backward-char
-  [[ -n ${key[Down]} ]] && bindkey  "${key[Down]}" down-line-or-search
-  [[ -n ${key[Right]} ]] && bindkey  "${key[Right]}" forward-char
+  [[ -n ${key[Home]}      ]] && bindkey  "${key[Home]}"      beginning-of-line
+  [[ -n ${key[Delete]}    ]] && bindkey  "${key[Delete]}"    delete-char
+  [[ -n ${key[End]}       ]] && bindkey  "${key[End]}"       end-of-line
+  [[ -n ${key[PageUp]}    ]] && bindkey  "${key[PageUp]}"    up-line-or-history
+  [[ -n ${key[PageDown]}  ]] && bindkey  "${key[PageDown]}"  down-line-or-history
+  [[ -n ${key[Up]}        ]] && bindkey  "${key[Up]}"        up-line-or-search
+  [[ -n ${key[Up]}        ]] && bindkey  "${key[Up]}"        up-line-or-search
+  [[ -n ${key[Left]}      ]] && bindkey  "${key[Left]}"      backward-char
+  [[ -n ${key[Down]}      ]] && bindkey  "${key[Down]}"      down-line-or-search
+  [[ -n ${key[Right]}     ]] && bindkey  "${key[Right]}"     forward-char
 else
 IDEAS
 
@@ -121,10 +127,13 @@ typeset  -g  -A  key
 
 
 # This seems to be the Right Way to handle edge cases
-case $TERM in
+case "$TERM" in
+
   xterm-256color)
     \bindkey  '^[[H'     beginning-of-line                              # home
     \bindkey  '^[[F'     end-of-line                                    # end
+    \bindkey  '[3;5~'  delete-word                                   # control-delete
+    \bindkey  '[3;3~'  delete-word                                   # alt-delete
     case "${this_kernel_release:?}" in
       'Cygwin')
         #  2017-11-07 - Babun (though with a Cygwyn update)
@@ -135,17 +144,6 @@ case $TERM in
         \bindkey  '^H'       backward-kill-word                         # control-backspace
       ;;
     esac
-  ;;
-
-  *xterm*)
-    #\bindkey  '^?'       backward-kill-word                             # control-backspace
-    \bindkey  '^[[H'     beginning-of-line                              # home
-    \bindkey  '^[[F'     end-of-line                                    # end
-
-    # 2016-11-26 - Devuan
-    \bindkey  '^H'       backward-kill-word                             # control-backspace
-    \bindkey  'ÿ'        backward-kill-word                             # alt-backspace
-    \bindkey  '^?'       backward-delete-char                           # backspace
   ;;
 
   rxvt-unicode         |\
@@ -163,17 +161,27 @@ case $TERM in
     \bindkey  '^[OF'     end-of-line                                    # end
     \bindkey  '^H'       backward-kill-word                             # control-backspace
     \bindkey  '^[[3~'    kill-word                                      # control-delete
-
+    # `control-left` / `control-right` are somehow the same as `left` / `right`
+    \bindkey  '[D'     backward-char                                 # left
+    \bindkey  '[C'     forward-char                                  # right
     # 2016-11-26 - Devuan
-    \bindkey  '^[[D'     backward-word                                  # control-left
-    \bindkey  '^[[C'     forward-word                                   # control-right
+    #\bindkey  '^[[D'     backward-word                                  # control-left
+    #\bindkey  '^[[C'     forward-word                                   # control-right
   ;;
 
-  screen|screen-256color)   # The program 'screen'
-    \bindkey  '^?'       backward-delete-char                           # backspace
-    \bindkey  '^[[1~'    beginning-of-line                              # home
-    \bindkey  '^[[4~'    end-of-line                                    # end
-    \bindkey  '^H'       backward-kill-word                             # control-backspace
+  screen         |\
+  screen-256color)   # The program 'screen'
+    # At the raw console, `control-left` / `control-right` are somehow the same as `left` / `right`
+    \bindkey  '[D'     backward-char                                 # left
+    \bindkey  '[C'     forward-char                                  # right
+    #\bindkey  'OD'     backward-word                                 # control-left
+    #\bindkey  'OC'     forward-word                                  # control-right
+    \bindkey  '^?'         backward-delete-char                         # backspace
+    \bindkey  '[3;5~'  delete-word                                   # control-delete
+    \bindkey  '[3;3~'  delete-word                                   # alt-delete
+    \bindkey  '^[[1~'     beginning-of-line                             # home
+    \bindkey  '^[[4~'     end-of-line                                   # end
+    \bindkey  '^H'        backward-kill-word                            # control-backspace
   ;;
 
   screen.linux)   # The program 'screen', at the tty
@@ -181,6 +189,17 @@ case $TERM in
 #    \bindkey '^[OD'      backward-word                                  # control-left
 #    \bindkey '^[OC'      forward-word                                   # control-right
     \bindkey  '^H'       backward-kill-word                             # alt-backspace
+  ;;
+
+  *xterm*)  # Anything similar that's left..
+    #\bindkey  '^?'       backward-kill-word                             # control-backspace
+    \bindkey  '^[[H'     beginning-of-line                              # home
+    \bindkey  '^[[F'     end-of-line                                    # end
+
+    # 2016-11-26 - Devuan
+    \bindkey  '^H'       backward-kill-word                             # control-backspace
+    \bindkey  'ÿ'        backward-kill-word                             # alt-backspace
+    \bindkey  '^?'       backward-delete-char                           # backspace
   ;;
 
   *)
