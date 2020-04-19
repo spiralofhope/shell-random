@@ -315,27 +315,44 @@ audacious-empty-playlist
 elif [ "$program" = 'vlc' ]; then
   findplay() {
     # There doesn't seem to be any functionality to clear the playlist when VLC is running.  Pathetic.
-    findqueue  "$@"
-
-:<<'}'
-    # Supports .xspf, .asx, .b4s and .m3u
-    #  Make an empty playlist
-    temporary_playlist=$( \mktemp  --suffix="--vlc-empty-playlist.asx" )
-    \echo  "making temporary playlist:  $temporary_playlist"
+    # So instead, make an empty playlist:
+    # VLC supports .xspf, .asx, .b4s and .m3u
+    playlist_empty_vlc=$( \mktemp  --suffix="--empty-playlist--vlc.asx" )
+    \echo  "making temporary playlist:  $playlist_empty_vlc"
     ( \cat << 'ASXv3'
 <?xml version="1.0" encoding="UTF-8"?>
 <asx version="3.0">
   <title>Now Playing</title>
 </asx>
 ASXv3
-) >> "$temporary_playlist"
+) > "$empty_playlist"
 
-    # do stuff..
+    \echo  ' * Launching vlc..'
+    \setsid  /mnt/c/Program\ Files/VideoLAN/VLC/vlc.exe  --no-loop  "$playlist_empty_vlc"  > /dev/null 2> /dev/null  &
+    #\echo  /mnt/c/Program\ Files/VideoLAN/VLC/vlc.exe  --no-loop  "$playlist_empty_vlc"
+    until
+      _=$( \pgrep  'vlc.exe' )
+    do
+      \echo  ' * .. waiting'
+      \sleep  0.1
+    done
 
-     shellcheck disable=1012
-    \rm   --force  --verbose  "$temporary_playlist"
-}
+    findqueue  "$@"
 
+    # INT is ^C
+    trap control_c INT
+    control_c()
+    {
+      # shellcheck disable=1012
+      \rm   --force  --verbose  "$playlist_empty_vlc"
+    }
+    \echo  ' * Waiting for exit..'
+    until ! \
+      _=$( \pgrep  'vlc.exe' )
+    do
+      \sleep  0.1
+    done
+    control_c
   }
 else
   findplay() {
@@ -362,19 +379,19 @@ fq() {
 
 
 
-:<<'}'   #  Audacious empty playlists:
-{
-# Audacious has no functionality to just empty out its existing play list, but I can load an empty one.  Here are three examples:
-
+# Audacious has no functionality to just empty out its existing play list, but I can load an empty one.
+#  .aupl
 :<<'AUPL'
 title=Now%20Playing
 AUPL
+
 #  .pls
 :<<'PLS'
 [playlist]
 NumberOfEntries=0
 PLS
-#
+
+#  .xspf
 :<<'XSPF'
 <?xml version="1.0" encoding="UTF-8"?>
 <playlist version="1" xmlns="http://xspf.org/ns/0/">
@@ -382,6 +399,7 @@ PLS
   <trackList/>
 </playlist>
 XSPF
+
 #  .asx
 :<<'ASXv3'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -389,4 +407,3 @@ XSPF
   <title>Now Playing</title>
 </asx>
 ASXv3
-}
