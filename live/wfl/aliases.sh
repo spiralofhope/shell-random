@@ -40,6 +40,8 @@ alias  z:='nocorrect                   z: '
 # -X is to sort by extension.
 # alias  ls='\ls  -1  --all  --classify  --color=auto  --show-control-chars  -X'
 
+alias  vlc='/mnt/c/Program\ Files/VideoLAN/VLC/vlc.exe'
+
 # World of Warcraft
 alias  addons="nocorrect  \cd  /mnt/c/live/games/World_of_Warcraft/_dotfiles/Interface/AddOns/ || return"
 alias     wow="nocorrect  \cd  /mnt/c/live/games/World_of_Warcraft/ || return"
