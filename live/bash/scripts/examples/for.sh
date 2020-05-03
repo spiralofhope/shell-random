@@ -65,3 +65,20 @@
 
 # Nice doesn't actually help the horrid system lag.  I tested:
 0="$IFS" ; IFS="$( \echo  -en "\n\b" )" ; for f in $( \nice -n 16  \find  .  -type f  -regex '.*\.JPG$' ); do \nice  -n 16  \rename .JPG .jpg "$f" ; done ; IFS="$0"
+
+
+
+:<<'}'   #  Ancient notes
+{
+for i in `ls *.wav`; do lame "$i" "$i".mp3 ; done
+for i in `ls *.diff`; do patch -p1 < "$i" ; done
+
+# Dealing with spaces in filenames:
+
+find . -name '* *' | while read i; do echo "$i" ; done
+find . -name 'example*' | while read i; do echo "$i" ; done
+
+# unzipping a group of files into subdirectories (it's not very bright)
+
+for i in `ls *.zip`; do mkdir "$i".dir ; unzip "$i" -d "$i".dir ; done
+}
