@@ -34,7 +34,7 @@ esac
 if [ "$this_kernel_release" = 'Cygwin' ]; then  exit 0  ; fi
 
 
-if \command -v smartctl  \
+if \command  -v smartctl  \
    &&  [ "$USER" = 'root' ]  \
    &&  [ "$this_kernel_release" = 'Linux' ]
 then
