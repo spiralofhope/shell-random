@@ -35,7 +35,7 @@
 }
 
 
-#:<<'}'   #  Using  `mktemp`  to note a reasonably-unique temporary filename.
+#:<<'}'   #  Using  `mktemp`  to note a reasonably-unique temporary variable content.
          #  This cannot be guaranteed to be unique since something else could theoretically come along and happen to make a file with that exact name.
 {
   # Consider using "local" if this is in a function.
