@@ -7,19 +7,30 @@
 # See  `youtube-comment-scraper.sh`  for a web-GUI version.
 
 
-# TODO - make it smart and grab the latest copy of the comments of something I have in the current directory.
-
-
-if [ -n "$1" ]; then
-  source_video_id="$1"
-  \echo  " * Downloading comments..."
-  source_video_id="$( \echo  "$1"  |  \sed  's/.*v=//' )"
-  comment_filename="comments - $source_video_id - $( \date  --utc  +%Y-%m-%d\ %H։%M ).csv"
-  \youtube-comment-scraper  \
-    --format csv  \
-    --outputFile "$comment_filename"   \
-    --  \
-    "$source_video_id"
+if   [ -z "$1" ]; then
+  \echo  " * Determining a source from this directory."
+  # Example filename:
+  # 'comments - 12345678901 - 2020-05-24 12։34.csv'
+  for filename in comments*; do
+    source_video_id=$( \echo  "$filename" | \cut  --delimiter=' '  --fields=3 )
+    break
+  done
 else
-  \youtube-comment-scraper  "$@"
+  source_video_id="$( \echo  "$1"  |  \sed  's/.*v=//' )"
 fi
+
+
+if [ -z "$source_video_id" ]; then
+  \echo  " * No source determined/specified."
+  return  1
+fi
+
+
+comment_filename="comments - $source_video_id - $( \date  --utc  +%Y-%m-%d\ %H։%M ).csv"
+\echo  " * Downloading comments from id:  $source_video_id"
+\echo  "   $comment_filename"
+\youtube-comment-scraper  \
+  --format csv  \
+  --outputFile "$comment_filename"   \
+  --  \
+  "$source_video_id"
