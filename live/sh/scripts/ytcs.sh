@@ -14,7 +14,7 @@ if [ -n "$1" ]; then
   source_video_id="$1"
   \echo  " * Downloading comments..."
   source_video_id="$( \echo  "$1"  |  \sed  's/.*v=//' )"
-  comment_filename="comments - $( \date  --utc  +%Y-%m-%d\ %H։%M ).csv"
+  comment_filename="comments - $source_video_id - $( \date  --utc  +%Y-%m-%d\ %H։%M ).csv"
   \youtube-comment-scraper  \
     --format csv  \
     --outputFile "$comment_filename"   \
