@@ -7,14 +7,17 @@
 # See  `youtube-comment-scraper.sh`  for a web-GUI version.
 
 
+# TODO - make it smart and grab the latest copy of the comments of something I have in the current directory.
+
 
 if [ -n "$1" ]; then
   source_video_id="$1"
   \echo  " * Downloading comments..."
-#  \youtube-comment-scraper  --format csv  "$source_video_id"  >  comments-"$source_video_id".csv
+  source_video_id="$( \echo  "$1"  |  \sed  's/.*v=//' )"
+  comment_filename="comments - $( \date  --utc  +%Y-%m-%d\ %H։%M ).csv"
   \youtube-comment-scraper  \
     --format csv  \
-    --outputFile comments-"$source_video_id".csv   \
+    --outputFile "$comment_filename"   \
     --  \
     "$source_video_id"
 else
