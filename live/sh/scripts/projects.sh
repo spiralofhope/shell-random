@@ -15,9 +15,9 @@
           #  See usage in zsh/dot_zsh/3-interactive.sh
 {
   if [ -d '/mnt/c' ]; then
-    l='/mnt/d/live'
+    live='/mnt/d/live'
   else
-    l='/l'
+    live='/live'
   fi
 }
 
@@ -52,8 +52,8 @@ build_array_of_directories() {
     if ! [ -d "$i" ]; then
       #\echo  "skipping non-directory  $i"
       continue
-    elif [ "$i" = '/l/$RECYCLE.BIN' ] ||
-         [ "$i" = '/l/System Volume Information' ]
+    elif [ "$i" = "$live/$RECYCLE.BIN" ]  \
+      || [ "$i" = "$live/System Volume Information" ]
     then
       #\echo  "skipping $i"
       continue
@@ -112,22 +112,22 @@ open_array_of_files() {
   if [ -d '/mnt/c' ]; then
     # shellcheck disable=2086
     \geany  --new-instance  \
-      "$l/live/__/__.txt"  \
-      "$l/live/projects/projects.txt"  \
+      "$live/__/__.txt"  \
+      "$live/projects/projects.txt"  \
       $array_of_files  \
-      "$l/live/__/__.txt"  \
+      "$live/__/__.txt"  \
     &
   else
     #echo  \geany  $array_of_files
     #\geany  $array_of_files
     # shellcheck disable=2086
     \geany  --new-instance  \
-      "$l/live/__/__.txt"  \
-      "$l/live/projects/projects.txt"  \
+      "$live/__/__.txt"  \
+      "$live/projects/projects.txt"  \
       ` # A major project of mine which ought to be reviewed very regularly. `  \
-      "$l/live/projects/unplugging/unplugging.txt"  \
+      "$live/projects/unplugging/unplugging.txt"  \
       $array_of_files  \
-      "$l/live/__/__.txt"  \
+      "$live/__/__.txt"  \
     &
   fi
 }
@@ -152,11 +152,11 @@ setup
 {
 if [ -d '/mnt/c' ]; then
   # Windows Subsystem for Linux
-  build_array_of_directories  $l
+  build_array_of_directories  $live
 else
-  build_array_of_directories  $l
-  build_array_of_directories  $l/live/projects
-  build_array_of_directories  $l/live/outboxes
+  build_array_of_directories  $live
+  build_array_of_directories  $live/live/projects
+  build_array_of_directories  $live/live/outboxes
 fi
 }
 build_array_of_directories  '/live'
