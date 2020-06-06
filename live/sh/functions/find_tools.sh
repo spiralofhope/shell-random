@@ -27,8 +27,7 @@ findhelper() {
         \sed  's/$/"/'  |\
           \grep  \
             --colour="$_findhelper_color"  \
-            --ignore-case  "$1"  \
-  ` # `
+            --ignore-case  "$1"
 
   unset  _findhelper_type
   unset  _findhelper_color
