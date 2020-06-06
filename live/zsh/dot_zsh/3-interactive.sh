@@ -126,9 +126,7 @@ export  WORDCHARS
     # A vastly more complex example can be found at:
     #   http://scarff.id.au/blog/2011/window-titles-in-screen-and-rxvt-from-zsh/
     # There are other solutions for things like tmux.
-    # TODO? - remove the use of wc by iterating through every character in PWD, echoing them into a function, then counting with $#
-    # I also would need to provide this to sh's .profile
-    if [ "$( \echo  "$PWD"  |  \wc  --chars )" -lt $(( ( COLUMNS / 2 ) - 1 )) ]; then
+    if [ ${#PWD} -lt $(( ( COLUMNS / 2 ) - 1 )) ]; then
       # This is a little odd, to allow copy-paste from whole commandlines without fucking things up.
       # zshism?
       # shellcheck disable=1087

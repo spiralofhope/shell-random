@@ -51,7 +51,7 @@ export  shdir
 
   sourceallthat  "$shdir/"
   sourceallthat  "$shdir/functions/"
-  \cd  "$_pushd"
+  \cd  "$_pushd"  ||  return  $?
 
   \unset  -f  sourceallthat
   \unset      _pushd
@@ -98,7 +98,7 @@ export  shdir
   # TODO? - remove the use of wc by iterating through every character in PWD, echoing them into a function, then counting with $#
   # shellcheck disable=1117
   sh_prompt() {
-    if [ "$( \echo  "$PWD"  |  \wc  --chars )" -gt 20 ]; then
+    if [ ${#PWD} -gt 20 ]; then
       long_prompt='\n'
     fi
     \printf  '%b'  "${reset_color}${PWD}${long_prompt}${boldon}${1} > ${reset_color}"
