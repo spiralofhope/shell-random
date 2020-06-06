@@ -3,6 +3,7 @@
 
 # Compress a file and append the date and time to its filename.
 # Note that 7-zip does not store the owner/group of the file.
+# TODO - just leverage 7zip-compress-file.sh
 
 
 date_and_time=$( \date  --utc  +%Y-%m-%d\ %H։%M  )
