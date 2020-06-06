@@ -6,6 +6,7 @@
 # -- 7zip compression helper.
 # --   Because it's really this difficult to remember how in the fuck to use it.
 # --
+# summon with -m0 to simply store and not compress at all.
 
 
 source="$1"
