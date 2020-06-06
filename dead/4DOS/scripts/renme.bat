@@ -22,7 +22,7 @@ UNSET /Q $A
 : If no input.  I could stick help in here...
 IF ".%1" = "." QUIT
 
-: Broken?: This may not work on LFN sysytems if _cwd is not passed correctly
+: Broken?: This may not work on LFN systems if _cwd is not passed correctly
 : if there are spaces.  It will probably work though..
 SET $A=%_CWD
 ..\
