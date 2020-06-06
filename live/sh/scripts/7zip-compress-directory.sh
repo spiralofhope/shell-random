@@ -8,5 +8,9 @@
 # --
 
 
-\tar  cf  -  "$1" |\
-  \7za a -si "$1".tar.7z
+source="$1"
+target=$( \basename "$source" )
+target="./${target}.tar.7z"
+shift
+\tar  cf  -  "$source" |\
+  \7za a -si "$*"  "$target"
