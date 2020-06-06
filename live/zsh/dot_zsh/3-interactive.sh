@@ -8,15 +8,10 @@ IDEAS
 #:<<'}'  #  Variables
 {
   # It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
-  if [ "$( \whoami )" = 'root' ];
-    then  zshdir="$( \dirname "$( \dirname "$( \realpath  /home/user/.zshrc )" )" )"
-    else  zshdir="$( \dirname "$( \dirname "$( \realpath  ~/.zshrc          )" )" )"
-  fi
-  shdir="$( \realpath "$zshdir"/../sh/ )"
-  # I don't actually use this variable anyway
-  #shell_random="$( \realpath "$zshdir"/../../ )"
+  zshdir="$( \realpath "$( \dirname "$( \dirname "$( \realpath  /home/user/.zshrc )" )" )" )"
   export  zshdir
-  export   shdir
+  shdir="$( \realpath "$( \dirname "$( \realpath  /home/user/.zshrc )" )"/../../sh/ )"
+  export  shdir
 }
 
 
@@ -26,8 +21,8 @@ IDEAS
     #\echo  "sourcing $1"
     # zshism
     # shellcheck disable=2039
-    \pushd > /dev/null || return
-    \cd  "$1" || return
+    \pushd > /dev/null  ||  return
+    \cd  "$1"  ||  return
     # shellcheck disable=1091
     # zshism
     # shellcheck disable=2039
@@ -42,7 +37,7 @@ IDEAS
     # Note that it's intentional that this will generate an error if  suu()  is called by root, when root is currently sitting in an directory that denies permission to the user.
     # zshism
     # shellcheck disable=2039
-    \popd > /dev/null || return
+    \popd > /dev/null  ||  return
   }
 
 
@@ -105,23 +100,34 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 export  WORDCHARS
 
 
-{  #  Prompt
+# This is being done at the level of `sh` in `.profile`
+:<<'}'   #  Prompt
+{
   # A decent default prompt:
   # autoload -U promptinit && promptinit && prompt suse
 
+  # Original, simplified, method:
+  PS1="%~ %{$fg_bold[red]%}> %{$reset_color%}"
+  PS1=%~$'%{\e[31;1m%} > %{\e[0m%}'
+  PS1="%~ %{$fg_bold[blue]%}> %{$reset_color%}"
+  PS1=%~$'%{\e[34;1m%} > %{\e[0m%}'
+
   # This block lets me copy this .zshrc for the root user.
   # Test for permission.
-  if [ "$( \whoami )" = root ];
+  # shellcheck disable=2034
+  if [ "$USER" = 'root' ];
     then  prompt_end_color='red'
     else  prompt_end_color='blue'
   fi
 
   # precmd is a zsh function which runs before a prompt.
+  :<<'  }'  #  Obsoleted by an upgrade to Devuan
   precmd() {
     # A vastly more complex example can be found at:
     #   http://scarff.id.au/blog/2011/window-titles-in-screen-and-rxvt-from-zsh/
     # There are other solutions for things like tmux.
-
+    # TODO? - remove the use of wc by iterating through every character in PWD, echoing them into a function, then counting with $#
+    # I also would need to provide this to sh's .profile
     if [ "$( \echo  "$PWD"  |  \wc  --chars )" -lt $(( ( COLUMNS / 2 ) - 1 )) ]; then
       # This is a little odd, to allow copy-paste from whole commandlines without fucking things up.
       # zshism?
@@ -137,19 +143,13 @@ export  WORDCHARS
     fi
   }
 
-  # Original, simplified, method:
-  #PS1="%~ %{$fg_bold[red]%}> %{$reset_color%}"
-  #PS1=%~$'%{\e[31;1m%} > %{\e[0m%}'
-
-  #PS1="%~ %{$fg_bold[blue]%}> %{$reset_color%}"
-  #PS1=%~$'%{\e[34;1m%} > %{\e[0m%}'
 }
 
 
 
 {  #  Update the title of a terminal
   chpwd() {
-    [ -t 1 ] || return
+    [ -t 1 ]  ||  return
     # shellcheck disable=1117
     \print  -Pn  "\e]2;%~\a"
   }
@@ -190,7 +190,7 @@ export  WORDCHARS
 :<<'}'  #  Not used/tested in a while..
 {
   # FIXME/TODO - Babun:  Tentative testing suggests there are valid applications within, but Babun is running as user.
-  if [ "$( \whoami )" = 'root' ]; then
+  if [ "$USER" = 'root' ]; then
     PATH="$PATH":'/sbin'
     PATH="$PATH":'/usr/sbin'
   fi
@@ -207,7 +207,7 @@ export  WORDCHARS
 # zshism
 # shellcheck disable=1091
 # shellcheck disable=2039
-\source  '/mnt/a/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+\source  '/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
 
 
 
@@ -225,7 +225,7 @@ df
 
 # 2017-10-26 - Testing with this disabled.
 # http://www.zsh.org/mla/workers/1996/msg00191.html
-if [[ "$( \whoami )" = *\) ]]; then
+if [[ "$USER" = *\) ]]; then
   # We are remote
   # Do nothing
   \printf  ''
@@ -256,6 +256,3 @@ if [ -d '/a' ];     then  local  c_drive='/a';     fi   # Babun
 if [ -d '/c' ];     then  local  c_drive='/c';     fi   #
 if [ -d '/d' ];     then  local  d_drive='/d';     fi   #
 }
-
-
-

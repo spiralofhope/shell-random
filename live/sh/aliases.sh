@@ -41,7 +41,7 @@ alias  previous='\cd  "$( \realpath  "$HOME/l/path/previous/" )"'
 # 2016-03-26 - Lubuntu (version not recorded)
 # 2016-03-28 - Slackware 14.1
 #alias  su="\sudo  $( \basename  $( \readlink  /proc/$$/exe ) )"
-#alias  sul='\sudo  \su  --login'
+alias  sul='\sudo  \su  --login'
 
 
 # TODO - What was I trying to achieve with this?
