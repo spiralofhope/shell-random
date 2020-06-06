@@ -95,7 +95,6 @@ export  shdir
 
 
   #:<<'  }'   #  A complex prompt:
-  # TODO? - remove the use of wc by iterating through every character in PWD, echoing them into a function, then counting with $#
   # shellcheck disable=1117
   sh_prompt() {
     if [ ${#PWD} -gt 20 ]; then

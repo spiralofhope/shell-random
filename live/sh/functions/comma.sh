@@ -21,5 +21,5 @@ Although at the commandline, this works:
 This is the required way to use it when scripting:
   comma '1000'
 Or more complex:
-  count=$( comma $( \ls -1 . | \wc -l ) )
+  count=$( comma $( \ls -1 . | \wc  --lines ) )
 USAGE

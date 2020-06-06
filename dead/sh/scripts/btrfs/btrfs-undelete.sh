@@ -70,7 +70,7 @@ echo -ne "Searching roots..."
 	| sort -n > $roots || exit 1
 
 i=0
-max="$(wc -l $roots)"
+max="$(wc --lines $roots)"
 max="${max%% *}"
 echo " found $max roots."
 

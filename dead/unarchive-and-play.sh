@@ -60,20 +60,3 @@ fi
 # Oh so dangerous...
 # delme
 "delme" -f
-
-
-:<<ENDNOTES
-
-~/.sfm should have:
-
-# Creating an archive...
-# This works on lower and uppercase extensions.
-.amf-->rar a -df '%s'.rar '%s'
-.s3m-->rar a -df '%s'.rar '%s'
-.mod-->rar a -df '%s'.rar '%s'
-.far-->rar a -df '%s'.rar '%s'
-.mdl-->rar a -df '%s'.rar '%s'
-.xm-->rar a -df '%s'.rar '%s'
-
-# Unpacking and playing
-.rar-->/home/user/bin/unarchive-and-play.sh '%s'

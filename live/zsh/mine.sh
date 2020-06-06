@@ -78,7 +78,7 @@ rmln() {
 #:<<'}'
 #c() {
   #c_count() {
-    #count=$( \find  .  -maxdepth 1 | \wc -l )
+    #count=$( \find  .  -maxdepth 1 | \wc  --lines )
     #count=$( comma "$count" )
     #\echo  "$count"
   #}

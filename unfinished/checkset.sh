@@ -107,8 +107,8 @@ _teardown
 \zmodload zsh/mathfunc
 
 # FIXME - replace with shism
-#actual=$( ls -1 | wc -l )
-actual=$( \find  .  -maxdepth 1  |  \wc -l )
+#actual=$( ls -1 | wc  --lines )
+actual=$( \find  .  -maxdepth 1  |  \wc  --lines )
 # placeholder
 total=1
 actual=$(( total - 1 ))
