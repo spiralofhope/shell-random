@@ -77,7 +77,7 @@ _findhelper_file_contents() {
     -maxdepth "$maxdepth"  \
     -type f  \
     -print0  \
-    -iname  \'"$*"\' |\
+    -iname  \'"$@"\' |\
       \xargs  \
         --no-run-if-empty  \
         --null \
@@ -85,8 +85,7 @@ _findhelper_file_contents() {
           --colour=always  \
           --fixed-strings  \
           --ignore-case  \
-          --regexp="$*"  \
-    ` # `
+          --regexp="$*"
 
   unset  _findhelper_type
   unset  _findhelper_color
