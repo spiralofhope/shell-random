@@ -105,8 +105,9 @@ export  shdir
       then  color="${blue_bold}"  # user
       else  color="${red_bold}"   # root
     fi
+    # TODO? - remove the use of wc by iterating through every character in PWD, echoing them into a function, then counting with $#
     # shellcheck disable=1117
-    if [ "$( \pwd  |  \wc  --chars )" -gt 20 ];
+    if [ "$( \echo  $PWD  |  \wc  --chars )" -gt 20 ];
       then
             # shellcheck disable=1117
             # I want the \n
