@@ -35,7 +35,6 @@ _setup() {
   \echo  ''
   # Just in case.
   \mkdir  --parents  --verbose  ~/.config
-  \mkdir  --parents  --verbose  ~/.local/share
   \mkdir  --parents  --verbose  ~/.local/share/data
 }
 
