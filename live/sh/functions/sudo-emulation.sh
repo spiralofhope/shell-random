@@ -1,4 +1,4 @@
-#!/usr/bin/env  zsh
+#!/usr/bin/env  sh
 # shellcheck disable=1001
 
 
@@ -25,29 +25,22 @@
 }
 
 
-#:<<'}'   #  I have no idea..
-{
-  suul() {
-    suu  '--login  -u user'
-  }
-}
-
-
 #:<<'}'  #  If `sudo` does or does not exist.
 {
   if
-    _=$( \realpath  sudo )
+    _=$( \which  \sudo )
   then   # sudo exists
-    su() {
-      \sudo  "$1"  \screen  -q  -X setenv currentdir "$( \pwd )"
-      \sudo  "$1"  \screen  -q  -X eval 'chdir $currentdir' screen
-      # This logs out of any existing instance of root.
-      \sudo  "$1"  \screen -A  -D -q  -RR
-    }
+    #su() {
+      #\sudo  "$1"  \screen  -q  -X setenv currentdir "$( \pwd )"
+      #\sudo  "$1"  \screen  -q  -X eval 'chdir $currentdir' screen
+      ## This logs out of any existing instance of root.
+      #\sudo  "$1"  \screen -A  -D -q  -RR
+    #}
+    # Under 32bit Debian, somehow su() does not work.
     sul() {
       \sudo  --login  "$1"  \screen  -q  -X setenv currentdir "$( \pwd )"
       \sudo  --login  "$1"  \screen  -q  -X eval 'chdir $currentdir' screen
-      # This logs out of any existing instance of root.
+      # This logs out of any existing instance of root:
       \sudo  --login  "$1"  \screen -A  -D -q  -RR
     }
   else   # sudo does not exist

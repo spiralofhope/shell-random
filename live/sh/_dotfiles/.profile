@@ -43,6 +43,7 @@ export  shdir
       if [ "$i" = 'lib.sh' ]; then
         continue
       fi
+      #\echo  "running  ./$i"
       # shellcheck disable=1090
       .  "./$i"
     done
@@ -85,7 +86,7 @@ export  shdir
   blue="${esc}[34m"
 
 
-  :<<'  }'   #  A simple colored prompt:
+  #:<<'  }'   #  A simple colored prompt:
   {
   if [ $USER = root ];
     then  PS1='${reset_color}${PWD}${boldon}${red} > ${reset_color}'
@@ -103,15 +104,16 @@ export  shdir
     \printf  '%b'  "${reset_color}${PWD}${long_prompt}${boldon}${1} > ${reset_color}"
   }
 
-}
-
-
 # Apparently necessary for zsh to be right here, for some reason..
 precmd(){
   if [ "$( \whoami )" = root ];
     then  PS1="$( sh_prompt  "${red}"  )"
     else  PS1="$( sh_prompt  "${blue}" )"
   fi
+}
+
+
+
 }
 
 

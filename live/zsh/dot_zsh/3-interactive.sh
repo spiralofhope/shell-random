@@ -1,17 +1,29 @@
 #!/usr/bin/env  sh
+# shellcheck disable=1012
+# shellcheck disable=1001
+
 
 : << IDEAS
   TODO - Check out http://dotfiles.org/~brendano/.zshrc
 IDEAS
 
 
+# For 32bit Debian, I have to manually do this..
+# shellcheck disable=1090
+#   $HOME is set automatically somewhere; I don't know where.
+.  "$HOME/.profile"
+
+
 #:<<'}'  #  Variables
 {
   # It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
-  zshdir="$( \realpath "$( \dirname "$( \dirname "$( \realpath  /home/user/.zshrc )" )" )" )"
-  export  zshdir
-  shdir="$( \realpath "$( \dirname "$( \realpath  /home/user/.zshrc )" )"/../../sh/ )"
-  export  shdir
+  zshdir="$( \realpath  /home/user/.zshrc )"
+  zshdir="$( \dirname "$( \dirname "$zshdir" )" )"
+  zshdir="$( \realpath "$zshdir" )"
+  if ! [ -d "$zshdir" ]; then
+    \echo  "\$zshdir is not a directory:  $zshdir"
+    return  1
+  fi
 }
 
 
@@ -26,13 +38,13 @@ IDEAS
     # shellcheck disable=1091
     # zshism
     # shellcheck disable=2039
-    if [ -f 'lib.sh' ]; then \source  'lib.sh';  fi
+    if [ -f 'lib.sh' ]; then  .  ./'lib.sh';  fi
     for i in *.sh; do
       if [ "$i" = 'lib.sh' ]; then continue; fi
       # shellcheck disable=1090
       # zshism
       # shellcheck disable=2039
-      \source  "$i"
+      .  ./"$i"
     done
     # Note that it's intentional that this will generate an error if  suu()  is called by root, when root is currently sitting in an directory that denies permission to the user.
     # zshism
@@ -56,11 +68,11 @@ IDEAS
       # shellcheck disable=1090
       # zshism
       # shellcheck disable=2039
-      source  "$zshdir/../wfl/lib.sh"
+      .  "$zshdir/../wfl/lib.sh"
       # shellcheck disable=1090
       # zshism
       # shellcheck disable=2039
-      source  "$zshdir/../wfl/aliases.sh"
+      .  "$zshdir/../wfl/aliases.sh"
     ;;
   esac
 
@@ -72,17 +84,15 @@ IDEAS
 
 
 {  #  History
-  # Keeping it out of ~/.zsh/ allows that directory's contents to be shared.
-  HISTFILE="$HOME/.zsh_histfile"
-  export  HISTFILE
-  HISTSIZE=10000
-  export  HISTSIZE
-  SAVEHIST=10000
-  export  SAVEHIST
-  # prepend a command with a space and have it not commit a command to the histfile.
+  # Keeping it out of ~/.zsh/ allows that directory's contents to be shared online.
+  HISTFILE="$HOME/.zsh_histfile"  ;  export  HISTFILE
+  HISTSIZE=10000                  ;  export  HISTSIZE
+  SAVEHIST=10000                  ;  export  SAVEHIST
+  # prepend a command with a space and have it not commit a command to $HISTFILE ($HOME/.zsh_histfile)
+  setopt  histignorespace
   setopt  HIST_IGNORE_SPACE
   # Disable history expansion using "!" so that things like this work to clobber contents:
-  #  \echo  'text to clobber with'  >!  'filename.ext'
+  #   \echo  'text to clobber with'  >!  'filename.ext'
   set  +H
 }
 
@@ -91,26 +101,27 @@ IDEAS
 # zshism
 # shellcheck disable=2039
 # shellcheck disable=2191
-zle_highlight=(region:bg=red special:underline)
-export  zle_highlight
+zle_highlight=(region:bg=red special:underline)  ;  export  zle_highlight
 
 # The default:
 # WORDCHARS='*?_-.[]~=/&;!#$%^(){}<>'
-WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
-export  WORDCHARS
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'  ;  export  WORDCHARS
 
 
-# This is being done at the level of `sh` in `.profile`
+# For 64bit Devuan, this is being done at the level of `sh` in `.profile` 
+# I have no idea why this is so insane, but together they form Voltron.
+# shellcheck disable=1039
+#   allow the comment
 :<<'}'   #  Prompt
 {
   # A decent default prompt:
   # autoload -U promptinit && promptinit && prompt suse
 
   # Original, simplified, method:
-  PS1="%~ %{$fg_bold[red]%}> %{$reset_color%}"
-  PS1=%~$'%{\e[31;1m%} > %{\e[0m%}'
-  PS1="%~ %{$fg_bold[blue]%}> %{$reset_color%}"
-  PS1=%~$'%{\e[34;1m%} > %{\e[0m%}'
+  #PS1="%~ %{$fg_bold[red]%}> %{$reset_color%}"
+  #PS1=%~$'%{\e[31;1m%} > %{\e[0m%}'
+  #PS1="%~ %{$fg_bold[blue]%}> %{$reset_color%}"
+  #PS1=%~$'%{\e[34;1m%} > %{\e[0m%}'
 
   # This block lets me copy this .zshrc for the root user.
   # Test for permission.
@@ -121,7 +132,7 @@ export  WORDCHARS
   fi
 
   # precmd is a zsh function which runs before a prompt.
-  :<<'  }'  #  Obsoleted by an upgrade to Devuan
+  #:<<'  }'  #  Obsoleted by an upgrade to Devuan
   precmd() {
     # A vastly more complex example can be found at:
     #   http://scarff.id.au/blog/2011/window-titles-in-screen-and-rxvt-from-zsh/
@@ -136,8 +147,9 @@ export  WORDCHARS
       # I want to display the full path, but I'm sick of starting off right at the end of a long one.
       # zshism?
       # shellcheck disable=1087
-      PS1="%{$reset_color%}%{$fg[black]%}\`# %{$reset_color%}%~ %{$fg_bold[$prompt_end_color]%}>%{$fg_no_bold[black]%}\`;%{$reset_color%}
-    %{$fg_bold[$prompt_end_color]%}>%{$reset_color%} "
+      # zshism?
+      # shellcheck disable=1083
+      PS1="%{$reset_color%}%{$fg[black]%}\`# %{$reset_color%}%~ %{$fg_bold[$prompt_end_color]%}>%{$fg_no_bold[black]%}\`;%{$reset_color%}%{$fg_bold[$prompt_end_color]%}>%{$reset_color%} "
     fi
   }
 
@@ -152,19 +164,21 @@ export  WORDCHARS
     \print  -Pn  "\e]2;%~\a"
   }
 
-  #:<<'  }'   # I don't think I've ever needed this complexity
-  #{
-    #chpwd() {
-      #case $TERM in
-        #sun-cmd)
-          #print -Pn "\e]l%~\e\\"
-        #;;
-        #*xterm*|rxvt(-unicode)|(dt|k|E)term|screen)
-          #print -Pn "\e]2;%~\a"
-        #;;
-      #esac
-    #}
-  #}
+  # shellcheck disable=1039
+  #   allow the comment
+  :<<'  }'   # I don't think I've ever needed this complexity
+  {
+    chpwd() {
+      case $TERM in
+        sun-cmd)
+          print -Pn "\e]l%~\e\\"
+        ;;
+        *xterm*|rxvt(-unicode)|(dt|k|E)term|screen)
+          print -Pn "\e]2;%~\a"
+        ;;
+      esac
+    }
+  }
 
   chpwd
 }
@@ -219,20 +233,8 @@ df
 
 
 
-:<<'OLD'
-
-# 2017-10-26 - Testing with this disabled.
-# http://www.zsh.org/mla/workers/1996/msg00191.html
-if [[ "$USER" = *\) ]]; then
-  # We are remote
-  # Do nothing
-  \printf  ''
-else
-  DISPLAY=${DISPLAY:-:0.0}
-fi
-
-
-
+:<<'}'
+{
 # 2017-10-26 - Babun always claims it is the tty.  I don't know when this would have been tested under Linux.
 if [[ ${+WINDOWID} = 1 ]]; then
   # We're in X windows
@@ -241,7 +243,7 @@ else
   # We're at the tty / console
   echo tty
 fi
-OLD
+}
 
 
 
