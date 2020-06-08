@@ -30,7 +30,7 @@ ALIAS _r_e_=`(GOSUB _recover_^GOTO _end_)`
 ON BREAK (POPD^GOTO _end_)
 PUSHD
 
-: +--
+: --
 
 :  *  Custom Setup
 : ** Notes:
@@ -56,7 +56,7 @@ SET B=*5
 : ALIAS C=`ECHO Clearing cache...^C:\WINDOWS\smartdrv.exe/C^ECHO Done^rem C:\UTILS\TBAV\tbscan.exe AF`
 ALIAS C=ECHO.
 
-: +--
+: --
 
 GOTO _endnotes_
 uncompress (make it in modules! - separate files in a BATCHES\UNC\ control dir as with arj.dat which has the ARJ commands within..  It would make it very easy to maintain.. perhaps combine all the data files into one data file??
@@ -301,17 +301,17 @@ porting it to UNIX, which, yes, would be silly.
 2.1.0	Rewrite planned.. ugh.
 +	Added compatability with the 4dos UNIX-like slashes option, by putting
 	a space between the archive executable and it's first switch.
-Feb 01	Hmm, was I even keeping track of any changes in the last couple of
+2001-02	Hmm, was I even keeping track of any changes in the last couple of
 	years?  This batch is broken.. I have to redo a lot of it from scratch
 	to get it to do anything at all.. sigh.
-Aug 99	Heh, it seems I haven't been keeping revision updates up to date.  =)
+1999-08	Heh, it seems I haven't been keeping revision updates up to date.  =)
 	Actually I totally forgot that this existed.
 -	Pkware v2.50 is finally installed on my system.
 -	Long filename awareness finally added and 100% functional.
 
 2.0.0
  (to)	Version numbers between here and 1.4.9 have been ignored.  The version
-Aug 98	number has been incremented to 2.0.0 to reflect the extreme difference
+1998-08	number has been incremented to 2.0.0 to reflect the extreme difference
 	between this and the previous release (1.3.0 I believe).
 *	Major updates (see 1.4.9 change history)
 *	Finished the routine which deals with there not being enough free space
@@ -353,11 +353,7 @@ Aug 98	number has been incremented to 2.0.0 to reflect the extreme difference
 	complex and memory wasting, so this method will have to do.
 
 1.x-1.2
-95-96	Somewhere in here I had gotten help from many programmers after posting
-	this program in the Fido 4DOS Batch Programmers Area.  Special thanks
-	go towards Milo Van Der Leij and Phi Nguyen for their ideas.  There
-	were also many other people who gave me inspiration to continue the
-	project.
+1995-1996
 
 :_endnotes_
 
@@ -687,7 +683,7 @@ RETURN
 :	a drive which is on the unacceptable list.  So if the user picks C and
 :	says to go to D:\, it'll work.
 CDD %I
-: +--
+: --
 
 :_mm2_
 :  * Routine to Make the directory and then go there.
@@ -714,7 +710,7 @@ CD "%@NAME[%DIR_TEMP]"
 :	did this! -- urr.. but it works!  =)
 IF .%SPACE=. IF .%HANDLE=. SET ARCHIVE=%@PATH[%@FULL[%ARCHIVE]]%@FILENAME[%ARCHIVE]
 RETURN
-: +--
+: --
 
 :_recover_
 :  * Check for the errorlevel flag, and prompt the user to "undo" everything
@@ -745,7 +741,7 @@ GOTO _end_
 C
 DIR /HKLMZO:U %ARCHIVE
 RETURN
-: +--
+: --
 
 :_help_
 : CLS WHI ON BLA BOR BLA
