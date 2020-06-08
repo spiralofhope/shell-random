@@ -1,4 +1,11 @@
 #!/usr/bin/perl -w
+
+
+# Cached from https://web.archive.org/web/20070913012557/http://caravela.homelinux.net/~higuita/kmx2mbox/ (click on "here")
+# Mailwarrior:
+#   https://blog.spiralofhope.com/?p=41899
+
+
 #
 # kmx2mbox
 # version 1.5 12/09/2002
