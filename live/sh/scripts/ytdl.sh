@@ -17,7 +17,7 @@ control_c()
 
 
 if [ "x$2" = 'x-F' ]; then
-  \youtube-dl  "$1"  -F
+  \youtube-dl  $*
   exit
 fi
 
