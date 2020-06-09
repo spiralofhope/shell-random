@@ -82,12 +82,16 @@ _connected_true() {
   #
   # File manager
   #
-  \setsid  \spacefm \
-    --panel=1 \
-    --new-window \
-    --no-saved-tabs \
-    --reuse-tab \
-    /l/ &
+  \setsid  \
+    \spacefm  \
+      --panel=1  \
+      --new-window  \
+      --no-saved-tabs  \
+              --reuse-tab  \
+              --new-tab  /live/           &&  \
+    \spacefm  --new-tab  /live/projects/  &&  \
+    \spacefm  --new-tab  /live/__/        &
+
 }
 
 
