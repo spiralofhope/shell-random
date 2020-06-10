@@ -1,5 +1,7 @@
 #!/usr/bin/env  sh
-#
+
+# 2020-06-10 on Devuan beowulf_3.0.0_amd64
+#   Does not work.  Has not been troubleshooted.
 # 2019-08-09 on Debian 9.9.0-i386-xfce-CD-1
 
 
