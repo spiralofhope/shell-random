@@ -20,11 +20,12 @@ fi
 #\echo  "$*"
 
 
-## TODO - proper help text.
-#if [ $# -lt 3 ]; then
-  #\echo  'requires three parameters'
-  #exit  1
-#fi
+
+# TODO - proper help text.
+if [ $# -lt 3 ]; then
+  \echo  'requires three or more parameters'
+  exit  1
+fi
 
 
 
@@ -63,8 +64,8 @@ output_part_number(){
   shift
   while [ $# -ne 0 ]; do
     i="$(( i + 1 ))"
-    if [ "$i" -eq "$number_to_output" ]; then echo "$1"; return; fi
-    #if [ "$i" -eq "$number_to_output" ]; then echo "$i - $1"; return ; fi
+    if [ "$i" -eq "$number_to_output" ]; then echo "$1"; break; fi
+    #if [ "$i" -eq "$number_to_output" ]; then echo "$i - $1"; break; fi
     shift
   done
 }
