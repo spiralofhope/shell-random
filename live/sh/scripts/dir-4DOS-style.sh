@@ -41,8 +41,10 @@ _ddir() {
     while IFS='' \read -r line; do
       # TODO - support one or more tabs
       # Before three or more spaces
-      _line_file=$( _split_string  '   '  1  "$line" )
-      _line_text=$( _split_string  '   '  2  "$line" )
+
+
+
+
       #_line_file=$( \echo "$line" | \awk -F'\ \ \ +' '{print $1}' )
 #      _line_file=$( \echo "$line" | \awk -F'\ \ \ +' '{print $1}' )
       # After three or more spaces
