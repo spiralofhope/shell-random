@@ -35,13 +35,14 @@ esac
 
 
 # Note that DeaDBeeF probably isn't installed like a proper application (because of a joke license), and will need a manual symlink in a $PATH  (I use $HOME/l/path)  which points to its executable.
-if    _=$( \which  \deadbeef  )                                 ; then  program='deadbeef'
-elif  _=$( \which  \audacious )                                 ; then  program='audacious'
-elif  [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]; then
-  # TODO - Handle other installation locations.
-  if  _=$( \which  /mnt/c/Program\ Files/VideoLAN/VLC/vlc.exe ) ; then  program='vlc'
+if    command  -v  \deadbeef   > /dev/null                                  ; then  program='deadbeef'
+elif  command  -v  \audacious  > /dev/null                                  ; then  program='audacious'
+elif  [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]            ; then
+  # TODO - Handle other VLC installation locations.
+  if  command  -v  /mnt/c/Program\ Files/VideoLAN/VLC/vlc.exe  > /dev/null  ; then  program='vlc'
+  # TODO - Implement other media programs.
   fi
-else                                                                    program='unset'
+else                                                                                program='unset'
 fi
 #program='deadbeef'
 #program='audacious'
@@ -93,13 +94,13 @@ if   [ "$program" = 'deadbeef'  ]; then
     # TODO - As DeaDBeeF empties a playlist once it hits an invalid file, I'm going over its more common file types manually.
     # This might blank the playlist, but format is supported.  It's something being offered into the queue that's blanking it.  This was reproduced with a ։ in the filename (that is not a colon).
     #   Therefore I'll put this first, so it won't be so awful if it's triggered.
-    _queue  'm4a'  "$@"
-    _queue  'mp3'  "$@"
-    _queue  'ogg'  "$@"
-    _queue  'flac' "$@"
-    _queue  'opus' "$@"
+    _queue  '*.m4a'  "$@"
+    _queue  '*.mp3'  "$@"
+    _queue  '*.ogg'  "$@"
+    _queue  '*.flac' "$@"
+    _queue  '*.opus' "$@"
     ## Oldschool, via plugins
-    _queue  'sid'  "$@"
+    _queue  '*.sid'  "$@"
     # TODO - more extensions
   }
 elif [ "$program" = 'audacious' ]; then
@@ -325,7 +326,7 @@ elif [ "$program" = 'vlc' ]; then
   <title>Now Playing</title>
 </asx>
 ASXv3
-) > "$empty_playlist"
+) > "$playlist_empty_vlc"
 
     \echo  ' * Launching vlc..'
     \setsid  /mnt/c/Program\ Files/VideoLAN/VLC/vlc.exe  --no-loop  "$playlist_empty_vlc"  > /dev/null 2> /dev/null  &
