@@ -32,7 +32,7 @@ fi
   while [ $# -ne 0 ]; do
     # shellcheck disable=1001
     \echo  "$i - $1"
-    i="$((i+1))"
+    i="$(( i + 1 ))"
     # Removes the leftmost argument.
     shift
   done
