@@ -58,8 +58,14 @@ output_part_number(){
   shift
   while [ $# -ne 0 ]; do
     i="$(( i + 1 ))"
-    if [ "$i" -eq "$number_to_output" ]; then echo "$*"; break; fi
-    #if [ "$i" -eq "$number_to_output" ]; then echo "$i - $1*; break; fi
+    if [ "$i" -eq "$number_to_output" ]; then
+      # Restore the value of 'IFS'.
+      IFS=$old_ifs
+      # Re-enable globbing.
+      set  +f
+      \echo  "$*"
+      break
+    fi
     shift
   done
 }
@@ -68,11 +74,3 @@ output_part_number(){
 # I want word splitting:
 #   shellcheck disable=2086
 output_part_number  2  $text
-
-
-
-# Restore the value of 'IFS'.
-IFS=$old_ifs
-
-# Re-enable globbing.
-set +f

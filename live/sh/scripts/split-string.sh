@@ -40,7 +40,7 @@ text="$*"
 
 # Disable globbing.
 # This ensures that the word-splitting is safe.
-set -f
+set  -f
 
 # Store the current value of 'IFS' so we
 # can restore it later.
@@ -56,7 +56,7 @@ IFS=$character_to_split_on
 # This is safe to disable as it just warns against
 # word-splitting which is the behavior we expect.
 # shellcheck disable=2086
-set -- "$text"
+set  --  "$text"
 
 
 output_part_number(){
@@ -81,4 +81,4 @@ output_part_number  "$which_match_number_to_output"  $text
 IFS=$old_ifs
 
 # Re-enable globbing.
-set +f
+set  +f
