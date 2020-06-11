@@ -25,6 +25,12 @@ alias  reboot="/bin/su  -c  '/sbin/shutdown  -r  -t now  now  rebooting'"
 alias  rm='\rm  --interactive  --one-file-system'
 alias  sh='\sh  -l'
 
+alias  dir='   dir-DOS-style.sh'
+alias  dir/a=' dir-DOS-style.sh /a'
+alias  dir/ad='dir-DOS-style.sh /ad'
+alias  dir/d=' dir-DOS-style.sh /d'
+alias  ddir='  dir-4DOS-style.sh'
+
 
 # This won't work on cygwin, and I'm not even sure what it was for..
 #alias  cd='\cd  --no-dereference'

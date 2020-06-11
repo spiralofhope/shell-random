@@ -18,17 +18,35 @@ _ddir() {
 
   # FIXME - this is slow because it's re-reading the description for every single file.
   #   Read the descript.ion file into memory
-  
+
+
   _get_description() {
     if [ ! -f 'descript.ion' ]; then return; fi
     #\echo  processing $*
     file_to_match="$*"
+
+
+    _split_string() {
+      set -f
+      old_ifs=$IFS
+      IFS=$2
+      # shellcheck disable=2086
+      set -- $1
+      printf '%s\n' "$@"
+      IFS=$old_ifs
+      set +f
+    }
+
+
     while IFS='' \read -r line; do
       # TODO - support one or more tabs
       # Before three or more spaces
-      _line_file=$( \echo "$line" | awk -F'\ \ \ +' '{print $1}' )
+      _line_file=$( _split_string  '   '  1  "$line" )
+      _line_text=$( _split_string  '   '  2  "$line" )
+      #_line_file=$( \echo "$line" | \awk -F'\ \ \ +' '{print $1}' )
+#      _line_file=$( \echo "$line" | \awk -F'\ \ \ +' '{print $1}' )
       # After three or more spaces
-      _line_text=$( \echo "$line" | awk -F'\ \ \ +' '{print $2}' )
+#      _line_text=$( \echo "$line" | \awk -F'\ \ \ +' '{print $2}' )
       if [ "$_line_file"    = "$file_to_match" ]  ||\
          [ "$_line_file"'/' = "$file_to_match" ]       ` # directory ` ;\
       then
@@ -36,6 +54,7 @@ _ddir() {
       fi
     done < 'descript.ion'
   }
+
 
   _ddir_process(){
     _description=''
@@ -51,8 +70,9 @@ _ddir() {
     \echo     "$_description"
   }
 
+
   for i in *; do
-    if [ -d "$( \realpath "$i" )" ]; then
+    if [ -d "$i" ]; then
       \printf  '%b'  "$_boldon$_blue"
       _ddir_process "$i"
     fi
@@ -73,6 +93,7 @@ _ddir() {
     fi
   done
 
+
   unset  _esc
   unset  _boldon
   unset  _boldoff
@@ -83,9 +104,11 @@ _ddir() {
   unset  _line_file
   unset  _line_text
   unset  _description
+  unset  _split_string
 }
-ddir(){
-  _ddir "$*"  |\
-    \head --lines='-1'  |\
-    \less  --RAW-CONTROL-CHARS  --quit-if-one-screen  --QUIT-AT-EOF
-}
+
+
+
+_ddir "$*"  |\
+  \head --lines='-1'  |\
+  \less  --RAW-CONTROL-CHARS  --quit-if-one-screen  --QUIT-AT-EOF
