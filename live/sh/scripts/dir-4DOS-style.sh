@@ -8,58 +8,60 @@
 
 if [ $# -eq 0 ]; then
   # Pass example parameters to this very script:
-  "$0"  .
+  "$0"  ~
+  #"$0"  ~  |  \less  --no-init  --RAW-CONTROL-CHARS  --quit-if-one-screen
   return
 fi
 
 
 
+\cd  "$1"  ||  return  $?
+
 if [ ! -f 'descript.ion' ]; then
   # Just run my regular script
-  dir-DOS-style.sh
-  return  1
+  dir-DOS-style.sh  |  \head  --lines='-1'  |  \less  --no-init  --RAW-CONTROL-CHARS  --quit-if-one-screen
+  return
 fi
+
 description=$( \cat  descript.ion )
 
-
+# A tab:
+description_separator=$( \printf '\t' )
 
 # TODO/FIXME - setup-specific escape code.  See  `alarm.sh`
 _esc=''
 _boldon="${_esc}[1m"
-_boldoff="${_esc}[22m"
+#_boldoff="${_esc}[22m"
 _reset="${_esc}[0m"
 _blue="${_esc}[34m"
 _cyan="${_esc}[36m"
 # shellcheck disable=2034
-_grey="${_boldoff}${_esc}[37m"
+#_grey="${_boldoff}${_esc}[37m"
 
-# A tab:
-# TODO - generate a tab instead of relying on it being embedded here.
-description_separator='	'
 
-# TODO - integrate the mechanics of the two scripts so I'm not calling external files.
+
 process() {
   filename_color="$1"
   shift
-  item="$*"
-  # Iterate over the description
-  \printf  '%s'  "${_reset}${filename_color}$item${_reset}"
+  filesystem_entity="$*"
+  # The colorized name of the file/directory/whatever, with no terminating carrage return.
+  \printf  '%s'  "${_reset}${filename_color}$filesystem_entity${_reset}"
+  # Iterate over the description and troll for a match.
   while IFS= read -r description_line; do
-    left=$( split-string.sh  "$description_separator"  1  "$description_line" )
-    if [ "$left" = "$item" ]; then
-      description=$( split-string-output-all-after.sh  "$description_separator"  "$description_line" )
+    # (Attempt to) trim $filesystem_entity (with the separator) from the beginning of $description_line
+    description=${description_line##$filesystem_entity$description_separator}
+    if [ ! "$description" = "$description_line" ]; then
+      # I was able to trim $description_line, therefore I found an entry for $filesystem_entity
       \printf  '%s\n'  "  --  $description${_reset}"
+      # No need to continue processing descript.ion
       return
     fi
   done < 'descript.ion'
+  # After iterating through the whole descript.ion, no match was found.
+  # Terminate the line with a carrage return.
   \printf  '\n'
 }
 
-
-cd ~ || return
-#for i in  *; do
-  #process  "$i"
-#done
 
 # Directories
 for i in * .*; do
@@ -73,6 +75,7 @@ for i in * .*; do
   fi
 done
 
+
 # Not-directories
 for i in * .*; do
   # Skip directories
@@ -81,17 +84,3 @@ for i in * .*; do
   elif [   -L "$i" ]; then  process  "${_cyan}"  "$i"
   fi
 done
-
-
-
-unset  _esc
-unset  _boldon
-unset  _boldoff
-unset  _reset
-unset  _blue
-unset  _cyan
-unset  _grey
-unset  _line_file
-unset  _line_text
-unset  _description
-unset  _split_string

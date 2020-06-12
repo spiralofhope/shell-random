@@ -32,7 +32,15 @@ alias  dir='   dir-DOS-style.sh      |  \head  --lines='-1'  |  myless'
 alias  dir/a=' dir-DOS-style.sh /a   |  \head  --lines='-1'  |  myless'
 alias  dir/d=' dir-DOS-style.sh /d   |  \head  --lines='-1'  |  myless'
 alias  dir/ad='dir-DOS-style.sh /ad  |  \head  --lines='-1'  |  myless'
-alias  ddir='  dir-4DOS-style.sh  |  myless'
+
+#alias  ddir='  dir-4DOS-style.sh  |  myless'
+ddir() {
+  if [ $# -eq 0 ];
+  then  dir-4DOS-style.sh  .     |  myless
+  else  dir-4DOS-style.sh  "$@"  |  myless
+  fi
+}
+
 
 
 
