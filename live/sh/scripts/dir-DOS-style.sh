@@ -25,9 +25,9 @@ fi
 # shellcheck disable=2086
 # I need word splitting for multiple parameters.
 # shellcheck disable=1001
-\tree  --noreport  -C  -i  -L 1  --dirsfirst  $_my_parameters  |\
-  ` # --no-init is mandatory for Windows Subsystem for Linux. `  \
-  \less  --no-init  --RAW-CONTROL-CHARS  --quit-if-one-screen  --QUIT-AT-EOF
+\tree  --noreport  -C  -i  -L 1  --dirsfirst  $_my_parameters
+
+  #\less  --no-init  --RAW-CONTROL-CHARS  --quit-if-one-screen  --QUIT-AT-EOF
 
   #\tail  --lines='+2'  |\
 
