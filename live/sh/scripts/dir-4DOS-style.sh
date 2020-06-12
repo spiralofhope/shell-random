@@ -1,116 +1,97 @@
 #!/usr/bin/env  sh
+
 # 4DOS-style dir, using a descript.ion file
-# FIXME - this is godawfully slow.
-# TODO - Do everything according to $LS_COLORS
+# TODO - Color everything according to $LS_COLORS
+# TODO - Borrow from dir-DOS-style.sh and implement /a /d /ad
 
 
 
-_ddir() {
-  # TODO/FIXME - setup-specific escape code.  See  `alarm.sh`
-  _esc=''
-  _boldon="${_esc}[1m"
-  _boldoff="${_esc}[22m"
-  _reset="${_esc}[0m"
-  _blue="${_esc}[34m"
-  _cyan="${_esc}[36m"
-  # shellcheck disable=2034
-  _grey="${_boldoff}${_esc}[37m"
-
-  # FIXME - this is slow because it's re-reading the description for every single file.
-  #   Read the descript.ion file into memory
-
-
-  _get_description() {
-    if [ ! -f 'descript.ion' ]; then return; fi
-    #\echo  processing $*
-    file_to_match="$*"
-
-
-    _split_string() {
-      set -f
-      old_ifs=$IFS
-      IFS=$2
-      # shellcheck disable=2086
-      set -- $1
-      printf '%s\n' "$@"
-      IFS=$old_ifs
-      set +f
-    }
-
-
-    while IFS='' \read -r line; do
-      # TODO - support one or more tabs
-      # Before three or more spaces
+if [ $# -eq 0 ]; then
+  # Pass example parameters to this very script:
+  "$0"  .
+  return
+fi
 
 
 
-
-      #_line_file=$( \echo "$line" | \awk -F'\ \ \ +' '{print $1}' )
-#      _line_file=$( \echo "$line" | \awk -F'\ \ \ +' '{print $1}' )
-      # After three or more spaces
-#      _line_text=$( \echo "$line" | \awk -F'\ \ \ +' '{print $2}' )
-      if [ "$_line_file"    = "$file_to_match" ]  ||\
-         [ "$_line_file"'/' = "$file_to_match" ]       ` # directory ` ;\
-      then
-        _description="   $_line_text"
-      fi
-    done < 'descript.ion'
-  }
+if [ ! -f 'descript.ion' ]; then
+  # Just run my regular script
+  dir-DOS-style.sh
+  return  1
+fi
+description=$( \cat  descript.ion )
 
 
-  _ddir_process(){
-    _description=''
-    if [ -L "$*" ]; then
-      # overrides color
-      \printf  '%b'  "$_boldon$_cyan"
-      \printf  '%s'  "$*"
-    else
-      \printf  '%s'  "$*"
+
+# TODO/FIXME - setup-specific escape code.  See  `alarm.sh`
+_esc=''
+_boldon="${_esc}[1m"
+_boldoff="${_esc}[22m"
+_reset="${_esc}[0m"
+_blue="${_esc}[34m"
+_cyan="${_esc}[36m"
+# shellcheck disable=2034
+_grey="${_boldoff}${_esc}[37m"
+
+# A tab:
+# TODO - generate a tab instead of relying on it being embedded here.
+description_separator='	'
+
+# TODO - integrate the mechanics of the two scripts so I'm not calling external files.
+process() {
+  filename_color="$1"
+  shift
+  item="$*"
+  # Iterate over the description
+  \printf  '%s'  "${_reset}${filename_color}$item${_reset}"
+  while IFS= read -r description_line; do
+    left=$( split-string.sh  "$description_separator"  1  "$description_line" )
+    if [ "$left" = "$item" ]; then
+      description=$( split-string-output-all-after.sh  "$description_separator"  "$description_line" )
+      \printf  '%s\n'  "  --  $description${_reset}"
+      return
     fi
-    \printf  '%b'  "$_reset"
-    _get_description  "$*"
-    \echo     "$_description"
-  }
-
-
-  for i in *; do
-    if [ -d "$i" ]; then
-      \printf  '%b'  "$_boldon$_blue"
-      _ddir_process "$i"
-    fi
-  done
-  for i in .*; do
-    if [ -d "$i" ]; then
-      _ddir_process "$i"
-    fi
-  done
-  for i in *; do
-    if [ ! -d "$i" ]; then
-      _ddir_process "$i"
-    fi
-  done
-  for i in .*; do
-    if [ ! -d "$i" ]; then
-      _ddir_process "$i"
-    fi
-  done
-
-
-  unset  _esc
-  unset  _boldon
-  unset  _boldoff
-  unset  _reset
-  unset  _blue
-  unset  _cyan
-  unset  _grey
-  unset  _line_file
-  unset  _line_text
-  unset  _description
-  unset  _split_string
+  done < 'descript.ion'
+  \printf  '\n'
 }
 
 
+cd ~ || return
+#for i in  *; do
+  #process  "$i"
+#done
 
-_ddir "$*"  |\
-  \head --lines='-1'  |\
-  \less  --RAW-CONTROL-CHARS  --quit-if-one-screen  --QUIT-AT-EOF
+# Directories
+for i in * .*; do
+  if ! [ -d "$i" ]  \
+    || [ "$i" = '.'  ] \
+    || [ "$i" = '..' ]; then
+    continue
+  fi
+  if   [ ! -L "$i" ]; then  process  "${_boldon}${_blue}"   "$i"
+  elif [   -L "$i" ]; then  process  "${_boldon}${_cyan}"   "$i"
+  fi
+done
+
+# Not-directories
+for i in * .*; do
+  # Skip directories
+  [ ! -d "$i" ] || continue
+  if   [ ! -L "$i" ]; then  process  ''          "$i"
+  elif [   -L "$i" ]; then  process  "${_cyan}"  "$i"
+  fi
+done
+
+
+
+unset  _esc
+unset  _boldon
+unset  _boldoff
+unset  _reset
+unset  _blue
+unset  _cyan
+unset  _grey
+unset  _line_file
+unset  _line_text
+unset  _description
+unset  _split_string
