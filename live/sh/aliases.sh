@@ -25,11 +25,15 @@ alias  reboot="/bin/su  -c  '/sbin/shutdown  -r  -t now  now  rebooting'"
 alias  rm='\rm  --interactive  --one-file-system'
 alias  sh='\sh  -l'
 
-alias  dir='   dir-DOS-style.sh'
-alias  dir/a=' dir-DOS-style.sh /a'
-alias  dir/ad='dir-DOS-style.sh /ad'
-alias  dir/d=' dir-DOS-style.sh /d'
-alias  ddir='  dir-4DOS-style.sh'
+# --QUIT-AT-EOF
+# --no-init is mandatory for Windows Subsystem for Linux.
+alias  myless='\less  --no-init  --RAW-CONTROL-CHARS  --quit-if-one-screen'
+alias  dir='   dir-DOS-style.sh      |  \head  --lines='-1'  |  myless'
+alias  dir/a=' dir-DOS-style.sh /a   |  \head  --lines='-1'  |  myless'
+alias  dir/d=' dir-DOS-style.sh /d   |  \head  --lines='-1'  |  myless'
+alias  dir/ad='dir-DOS-style.sh /ad  |  \head  --lines='-1'  |  myless'
+alias  ddir='  dir-4DOS-style.sh  |  myless'
+
 
 
 # This won't work on cygwin, and I'm not even sure what it was for..
