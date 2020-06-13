@@ -55,6 +55,6 @@ esac
   "$one"  \
   "$two"  \
   --exec  '\
-    \mv  $f   /l/live/__    ;\
-    \geeqie /l/live/__/$f ;\
+    \mv  $f   /live/__    ;\
+    \geeqie /live/__/$f ;\
   '
