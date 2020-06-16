@@ -40,7 +40,7 @@ ddir() {
   else  dir-4DOS-style.sh  "$@"  |  myless
   fi
 }
-
+alias  dir='dir-4DOS-style.sh  .  |  myless'
 
 
 
