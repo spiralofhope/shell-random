@@ -67,8 +67,25 @@ comment_filename="comments - $source_video_id - $( \date  --utc  +%Y-%m-%d\ %H։
 \echo  "   into:  \"$comment_filename\""
 
 
+#:<<'}'
+{
+\youtube-comment-scraper  \
+  --format csv  \
+  --stream  \
+  --  \
+  "$source_video_id"  >  \
+  "$comment_filename"
+}
+
+# | tee output.json
+
+
+:<<'}'
+{
 \youtube-comment-scraper  \
   --format csv  \
   --outputFile "$comment_filename"   \
   --  \
   "$source_video_id"
+}
+
