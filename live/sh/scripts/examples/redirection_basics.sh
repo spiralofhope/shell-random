@@ -62,3 +62,20 @@
 # =>
 # 
 }
+
+
+
+# ----------------
+# additional notes
+# ----------------
+
+
+# redirect both stdout and stderr to the file.
+# >&/path/to/file
+
+# redirect stdout only and backgrounds the process. Quite a different effect, if one wants to log errors.
+# >/path/to/file &
+
+# >&/dev/null
+# is equivalent to
+# >/dev/null 2>&1
