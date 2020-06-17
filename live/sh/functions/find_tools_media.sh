@@ -98,6 +98,7 @@ if   [ "$program" = 'deadbeef'  ]; then
     _queue  '*.mp3'  "$@"
     _queue  '*.ogg'  "$@"
     _queue  '*.flac' "$@"
+    _queue  '*.wma'  "$@"
     _queue  '*.opus' "$@"
     ## Oldschool, via plugins
     _queue  '*.sid'  "$@"
