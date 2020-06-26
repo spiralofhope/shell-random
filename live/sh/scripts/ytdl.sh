@@ -105,12 +105,5 @@ fi
 
 
 # Also download comments using  `youtube-comment-scraper`
-# See  `ytcs.sh`
-\echo  ' * Downloading comments..'
-source_video_id="$( \echo  "$1"  |  \sed  's/.*v=//' )"
-comment_filename="comments - $( \date  --utc  +%Y-%m-%d\ %H։%M ).csv"
-\youtube-comment-scraper  \
-  --format csv  \
-  --outputFile "$comment_filename"   \
-  --  \
-  "$source_video_id"
+# This script will pick up the data from v.info.json
+ytcs.sh
