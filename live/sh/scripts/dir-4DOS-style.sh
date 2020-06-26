@@ -3,6 +3,7 @@
 # 4DOS-style dir, using a descript.ion file
 # TODO - Color everything according to $LS_COLORS
 # TODO - Borrow from dir-DOS-style.sh and implement /a /d /ad
+# TODO - Explore the `paste` command.  It is designed to build multi-column lists.
 
 
 
