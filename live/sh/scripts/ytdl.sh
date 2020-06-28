@@ -11,6 +11,8 @@
 # Optionally uses my `ytcs.sh` to scrape YouTube comments.
 #
 # TODO/FIXME - I want to also download subtitles, but `search-JSON.sh` does not support the complexity required.
+# YouTube's supported subtitle and closed caption files:
+#   https://support.google.com/youtube/answer/2734698
 
 
 
