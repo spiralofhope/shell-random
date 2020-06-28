@@ -4,6 +4,10 @@
 #   For example, if I had the following, I want to learn the value for "two" which is "bar"
 #   {"one": "foo", "two": "bar"}
 
+# TODO - allow a string to be passed
+# FIXME - this will not work on complex things, like finding subtitles within the ytdl.sh's v.info.json file.
+
+
 
 if [ -z "$*" ]; then
   # Some example content could be dumped into "example.json"
@@ -16,17 +20,24 @@ fi
 
 
 search_JSON() {
+  case $# in
+    0) return  1  ;;
+    1) input_filename='v.info.json'  ;;
+    *) input_filename="$2"  ;;
+  esac
+
   key_search="$1"
-  input_filename="$2"
+  
+  [ -e "$input_filename" ]  ||  return 1
 
   # I don't know if there is a better way to write this:
   # shellcheck disable=2002
   \cat  "$input_filename"  |\
-    \tr -d '{}"'  |\
-    \tr , \\n  |\
+    \tr  -d  '{}"'  |\
+    \tr  ,  \\n  |\
     while  \read  -r  line; do
       # Skip over lines starting with '//' (comments):
-      #   Note that comments are not officially supported by the JSON format, although individual libraries may support them.  As such, commented-JSON files ought to be run through a preparser like JSMin before actually being used.
+      #   Note that comments are not officially supported by the JSON format, although individual libraries may support them.  As such, commented-JSON files ought to be run through a preparser like JSMin (which removes comments) before actually being used.
       [ "${line##//*}" ]  ||  continue
       key=$(   \echo "$line" | \cut  -d':' -f1 )
       value=$( \echo "$line" | \cut  -d':' -f2 )
@@ -44,7 +55,14 @@ search_JSON() {
   ###
 }
 #
-search_JSON  "$1"  "$2"
+search_JSON  "$@"
+
+
+
+# ----------
+# Other ways
+# ----------
+
 
 
 :<<'}'   #  A decent one-liner

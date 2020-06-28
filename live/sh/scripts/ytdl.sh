@@ -1,8 +1,16 @@
 #!/usr/bin/env  sh
-# youtube-dl
-# A download helper for YouTube and other video hosts.
-# https://youtube-dl.org/
-# https://blog.spiralofhope.com/?p=41260
+
+# Download YouTube and other videos.
+#
+# Uses youtube-dl:
+#   https://youtube-dl.org/
+#   https://blog.spiralofhope.com/?p=41260
+#
+# TODO - Requires my `search-JSON.sh`.
+#
+# Optionally uses my `ytcs.sh` to scrape YouTube comments.
+#
+# TODO/FIXME - I want to also download subtitles, but `search-JSON.sh` does not support the complexity required.
 
 
 
@@ -102,6 +110,7 @@ if  !  \
 then
   exit $?
 fi
+
 
 
 # Also download comments using  `youtube-comment-scraper`
