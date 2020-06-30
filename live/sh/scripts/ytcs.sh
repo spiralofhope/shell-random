@@ -50,7 +50,11 @@ comment_filename="comments - $source_video_id - $( \date  --utc  +%Y-%m-%d\ %H։
   "$comment_filename"
 }
 
-# | tee output.json
+# |  \tee "$comment_filename"
+
+# I'm left with a zero-size file if the download fails; delete it.
+[ -s "$comment_filename" ]  ||  \rm  --force  "$comment_filename"
+
 
 
 :<<'}'
