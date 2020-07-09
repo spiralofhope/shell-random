@@ -60,6 +60,7 @@ debug() {
     debug  "$audio_codec"
   }
   extension="$( first_word  "$audio_codec" )"
+  if [ "$extension" = 'vorbis' ]; then extension='ogg'; fi
 
   target_file="${directory_without_file}/${filename_without_path_or_extension}.${extension}"
 
@@ -77,6 +78,8 @@ debug() {
   debug  ''
   \ffmpeg  \
     -i  "$source_file"  \
+    ` # no video output `  \
+    -vn  \
     -acodec  copy  \
     "$target_file"  \
   ` # `
