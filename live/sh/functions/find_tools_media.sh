@@ -62,7 +62,7 @@ if   [ "$program" = 'deadbeef'  ]; then
     until
       \pidof  'deadbeef'
     do
-      \echo  ' * .. waiting'
+      \echo  ' * Waiting for DeaDBeeF..'
       \sleep  0.1
     done
 
@@ -111,7 +111,7 @@ elif [ "$program" = 'audacious' ]; then
     until
       \pidof  'audacious'
     do
-      \echo  ' * .. waiting'
+      \echo  ' * Waiting for audacious..'
       \sleep  0.1
     done
     # sleep 1
@@ -140,7 +140,7 @@ elif [ "$program" = 'vlc' ]; then
     #until
       #_=$( \pgrep  'vlc.exe' )
     #do
-      #\echo  ' * .. waiting'
+      #\echo  ' * Waiting for vlc..'
       #\sleep  0.1
     #done
 
@@ -251,7 +251,7 @@ DBPL
     until
       \pidof  'deadbeef'
     do
-    \echo  ' * waiting..'
+    \echo  ' * Waiting for DeaDBeeF..'
       \sleep  0.1
     done
     }
@@ -294,7 +294,7 @@ audacious-empty-playlist
     until
       \pidof  'audacious'
     do
-      echo  ' * waiting..'
+      echo  ' * Waiting for audacious..'
       \sleep  0.1
     done
     #\sleep  1
@@ -335,7 +335,7 @@ ASXv3
     until
       _=$( \pgrep  'vlc.exe' )
     do
-      \echo  ' * .. waiting'
+      \echo  ' * Waiting for vlc..'
       \sleep  0.1
     done
 
