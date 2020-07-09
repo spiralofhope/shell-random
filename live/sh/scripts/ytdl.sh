@@ -86,8 +86,8 @@ target_subdirectory=$( \echo  "$target_subdirectory"  |  \sed  's/\(^[0-9]\{4\}\
 
 # Deal with long filenames.
 # FIXME - just truncate the existing variable's content.
-if [ ${#target_directory}    -gt 20 ]; then target_directory=$(    \basename $( \mktemp  --dry-run ) ); fi
-if [ ${#target_subdirectory} -gt 20 ]; then target_subdirectory=$( \basename $( \mktemp  --dry-run ) ); fi
+if [ ${#target_directory}    -gt 30 ]; then target_directory=$(    \basename $( \mktemp  --dry-run ) ); fi
+if [ ${#target_subdirectory} -gt 40 ]; then target_subdirectory=$( \basename $( \mktemp  --dry-run ) ); fi
 
 \mkdir  --parents  --verbose  "$target_directory/$target_subdirectory"  ||  exit  $?
 \cd                           "$target_directory/$target_subdirectory"  ||  exit  $?
