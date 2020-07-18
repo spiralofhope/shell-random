@@ -74,14 +74,26 @@ if   [ "$program" = 'deadbeef'  ]; then
       #\find  .  -type f  -iname "$iname"
       #
       # I don't like using  --verbose  so this will do:
-      \find  .  -type f  -iname "$iname"  -print0  |\
+      \find  \
+        .  \
+        -type f  \
+        -iname "$iname"  \
+        ! -name '*.txt'  \
+        -print0  \
+        |  \
         \xargs  \
         --no-run-if-empty  \
         --null  \
         -I file  \
         \echo  file
       #
-      \find  .  -type f  -iname "$iname"  -print0  |\
+      \find  \
+        .  \
+        -type f  \
+        -iname "$iname"  \
+        ! -name '*.txt'  \
+        -print0  \
+        |  \
         \xargs  \
           --no-run-if-empty  \
           --null  \
