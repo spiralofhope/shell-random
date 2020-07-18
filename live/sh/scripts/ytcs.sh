@@ -34,35 +34,46 @@ if [ -z "$source_video_id" ]; then
   return  1
 fi
 
-comment_filename="comments - $source_video_id - $( \date  --utc  +%Y-%m-%d\ %H։%M ).csv"
+comment_filename="comments - $source_video_id - $( \date  --utc  +%Y-%m-%d\ %H։%M )"
 \echo  " * Downloading comments from.."
 \echo  "   id:    \"$source_video_id\""
 \echo  "   into:  \"$comment_filename\""
 
 
-#:<<'}'
+:<<'}'   #  youtube-comment-scraper
+# https://github.com/philbot9/youtube-comment-scraper-cli/
+{
+  \youtube-comment-scraper  \
+    --format csv  \
+    --stream  \
+    --  \
+    "$source_video_id"  >  \
+    "$comment_filename".csv
+# |  \tee "$comment_filename".csv
+}
+:<<'}'   #  youtube-comment-scraper's other method
 {
 \youtube-comment-scraper  \
   --format csv  \
-  --stream  \
+  --outputFile "$comment_filename".csv   \
   --  \
-  "$source_video_id"  >  \
-  "$comment_filename"
+  "$source_video_id"
 }
 
-# |  \tee "$comment_filename"
+
+
+#:<<'}'   #  youtube-comment-downloader
+# https://github.com/egbertbouman/youtube-comment-downloader
+{
+  \youtube-comment-downloader  \
+    --youtubeid="$source_video_id"  \
+    --output="$comment_filename".ytcs2.json
+}
+
+
 
 # I'm left with a zero-size file if the download fails; delete it.
 [ -s "$comment_filename" ]  ||  \rm  --force  "$comment_filename"
 
 
-
-:<<'}'
-{
-\youtube-comment-scraper  \
-  --format csv  \
-  --outputFile "$comment_filename"   \
-  --  \
-  "$source_video_id"
-}
 
