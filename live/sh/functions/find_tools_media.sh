@@ -91,18 +91,28 @@ if   [ "$program" = 'deadbeef'  ]; then
           > /dev/null 2> /dev/null
     }
 
-    # TODO - As DeaDBeeF empties a playlist once it hits an invalid file, I'm going over its more common file types manually.
+
+:<<'# PER_EXTENSION'
+    # DeaDBeeF 0.7.2 empties a playlist once it hits an invalid file. (like a .txt or a song at 48 kHz)
+    # I'm going over its more common file types manually.
     # This might blank the playlist, but format is supported.  It's something being offered into the queue that's blanking it.  This was reproduced with a ։ in the filename (that is not a colon).
     #   Therefore I'll put this first, so it won't be so awful if it's triggered.
+    _queue  '*.aac'  "$@"
+    _queue  '*.flac' "$@"
     _queue  '*.m4a'  "$@"
     _queue  '*.mp3'  "$@"
+    _queue  '*.oga'  "$@"
     _queue  '*.ogg'  "$@"
-    _queue  '*.flac' "$@"
-    _queue  '*.wma'  "$@"
     _queue  '*.opus' "$@"
+    _queue  '*.wma'  "$@"
     ## Oldschool, via plugins
     _queue  '*.sid'  "$@"
     # TODO - more extensions
+# PER_EXTENSION
+
+    # The above is not necessary for 1.8.3 on Debian 10.1.0-amd64-xfce-CD-1
+    _queue  '*'  "$@"
+
   }
 elif [ "$program" = 'audacious' ]; then
   findqueue() {
