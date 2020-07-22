@@ -45,7 +45,7 @@ elif  [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]            ; th
 else                                                                                program='unset'
 fi
 #program='deadbeef'
-#program='audacious'
+program='audacious'
 #program='vlc'
 #program='unset'
 
