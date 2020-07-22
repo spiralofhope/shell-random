@@ -1,8 +1,20 @@
 #!/usr/bin/env  sh
+# shellcheck disable=1001
+#   I like using \ a lot.
+# shellcheck disable=1012
+#   I like using \ a lot.
 
 
 
 # TODO - De-reference symbolic links.  I think I have notes somewhere or other.
+
+# TODO - the path stuff are simple examples, but being able to deal with more complex examples would require some heavier scripting:
+#   - Count the number of subdirectories
+#   - etc.
+
+# TODO - the first  directory:  e.g.  /path/to/directory  finds "path"
+# TODO - the second directory:  e.g.  /path/to/directory  finds "to"
+
 
 
 :<<'HEREDOC'
@@ -20,119 +32,100 @@ HEREDOC
 
 
 
-\echo  ' * Working with a file:'
-
-
-\echo
-\echo  'This file:'
-# e.g.:  ./examples/filenames.sh
-\echo  "$0"
 # This very script:
-input="$0"
-
-
-\echo
-\echo  'Its expanded path:'
-\echo  '  Note - This "fills out" things like ./dir/file.ext'
-# e.g.:  /some/dir/filenames.sh
-expanded_filename="$( \realpath "$input" )"
-\echo  "$expanded_filename"
-
-
-\echo
-\echo  'Its directory without its file:'
-# e.g.:  ./examples
-directory_without_file="$( \dirname "$input" )"
-\echo  "$directory_without_file"
-
-
-\echo
-\echo  'Its expanded directory path without its file:'
-\echo  '  Note - This "fills out" things like ./dir'
-# e.g.:  /some/dir'
-\echo  '  Note - You might want to add a trailing slash yourself.'
-expanded_directory_without_file="$( \dirname "$( \realpath "$input" )" )"
-\echo  "$expanded_directory_without_file"
-
-
-\echo
-\echo  'Its filename without its path:'
-# e.g.:  filenames.sh
-filename="$( \basename "$input" )"
-\echo  "$filename"
-
-
-\echo
-\echo  'Its extension:'
-# e.g.:  sh
-extension="${input##*.}"
-\echo  "$extension"
-
-
-\echo
-\echo  'Its filename without its path or extension:'
-filename="$( \basename "$input" )"
-filename_without_path_or_extension="${filename%.*}"
-# e.g.:  filenames
-\echo  "$filename_without_path_or_extension"
+example_filename="$0"
+example_directory="$( \dirname  "$example_filename" )"
 
 
 
-# ----------------------------------------------------------------------
-\echo
-\echo  '--'
-\echo
-\echo  ' * Working with directories:'
-\echo  "   The following examples will use this very file's directory:"
-directory_without_file="$( \dirname "$input" )"
-example_directory="$directory_without_file"
-# e.g.  ./some/dir
-#       /path/to/some/dir
-\echo  "$example_directory"
-
-# These are simple examples, but being able to deal with more complex examples would require some heavier scripting:
-#   - Count the number of subdirectories
-#   - Show the second directory
-#   - etc.
+:<<'}'   #  The current script's path and filename
+{
+  \echo  "$0"
+}
 
 
-\echo
-\echo  "It's expanded path is:"
-\echo  '  Note - This "fills out" things like ./dir'
-expanded_directory="$( \realpath "$example_directory" )"
-# e.g. /path/to/some/dir
-\echo  "$expanded_directory"
+
+:<<'}'   #  A file's path and filename (expanded)
+        # Note - This "fills out" things like ./dir/file.ext'
+{
+  \realpath  "$example_filename"
+}
 
 
-\echo
-\echo  "It's last directory is:"
-# e.g.:  dir
-last_directory="$( \basename "$example_directory" )"
-\echo  "$last_directory"
+
+:<<'}'   #  A file's directory
+{
+  \dirname  "$example_filename"
+}
 
 
-\echo
-\echo  "It's second-last directory (not-expanded) is:"
-# e.g.:  ./examples
-second_last_directory="$( \dirname "$example_directory" )"
-\echo  "$second_last_directory"
+
+:<<'}'   #  A file's directory (expanded)
+        # Note - This "fills out" things like ./dir
+        # Note - You might want to add a trailing slash yourself.
+{
+  \realpath  "$( \dirname  "$example_filename" )"
+}
 
 
-\echo
-\echo  "It's second-last directory (expanded path) is:"
-# e.g.:  ./examples
-second_last_directory="$( \dirname "$example_directory" )"
-second_last_directory_expanded="$( \realpath "$second_last_directory" )"
-\echo  "$second_last_directory_expanded"
+
+:<<'}'   #  A file without its path
+{
+  \basename  "$example_filename"
+}
 
 
-\echo
-\echo  "It's second-last directory (name) is:"
-# e.g. /path/to/some
-second_last_directory="$( \dirname "$example_directory" )"
-second_last_directory_expanded="$( \realpath "$second_last_directory" )"
-second_last_directory_expanded_last="$( \basename "$second_last_directory_expanded" )"
-\echo  "$second_last_directory_expanded_last"
+
+:<<'}'   #  A file's extension
+{
+  \echo  "${example_filename##*.}"
+}
 
 
-\echo
+
+:<<'}'   #  A file's filename without its path or extension (1)
+{
+  filename="$( \basename  "$example_filename" )"
+  filename_without_path_or_extension="${filename%.*}"
+  \echo  "$filename_without_path_or_extension"
+}
+
+
+
+:<<'}'   #  A file's filename without its path or extension (2)
+        # If you specify the extension directly (.sh in this case):
+{
+  \basename "$example_filename"  '.sh'
+}
+
+
+
+:<<'}'   #  A file's path
+{
+  \dirname  "$example_filename"
+}
+
+
+
+:<<'}'   #  A file's path (expanded)
+        # Note - This "fills out" things like ./dir
+{
+  \realpath  "$( \dirname  "$example_directory" )"
+}
+
+
+
+:<<'}'   #  A file's directory
+{
+  \basename  "$( \realpath  "$example_directory" )"
+}
+
+
+
+:<<'}'   #  A file's second-to-last directory
+        # Keep using "dirname" to walk further up the directory structure
+{
+  \basename  "$( \realpath  "$( \dirname  "$example_directory" )" )"
+  # third-to-last
+  #\basename  "$( \realpath  "$( \dirname  "$( \dirname  "$example_directory" )" )" )"
+}
