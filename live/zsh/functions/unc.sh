@@ -139,6 +139,28 @@ DOCUMENTATION
         \rm  --force  --verbose  ../data.tar.gz
         \cd  ..
       ;;
+      'rpm')
+        mcd  "$BASENAME"
+
+        # The BSD tar command:
+        :<<'        # bsd'
+        \tar  -xvvf  ../"$FILE"
+        # bsd
+
+         #(untested) Using rpm2cpio and cpio
+        #:<<'        # cpio'
+        if  !  \
+          _=$( \which  \rpm2cpio )
+        then
+          \echo  'ERROR:  rpm2cpio not found'
+          \echo  'perhaps you need to:  apt-get install rpm2cpio'
+          return  1
+        fi
+        #\rpm2cpio  ../"$FILE"
+        #\rpm2cpio  -  <  ../"$FILE"
+        \rpm2cpio  ../"$FILE"  |  \cpio  -idmv
+        # cpio
+      ;;
       # This needs quite a rework, because this works something like bzip2.. double-extensions, decompresses in the same directory as the source, blah.
       #'xz')
         ## I could probably test with something like..
