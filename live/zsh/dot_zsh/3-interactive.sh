@@ -55,6 +55,8 @@ IDEAS
 
   sourceallthat  "$zshdir/../sh/"
   sourceallthat  "$zshdir/../sh/functions/"
+  # FIXME - This order is important for some reason (and shouldn't be):  Something in functions is overwriting something in zshdir.
+  sourceallthat  "$zshdir/functions/"
   sourceallthat  "$zshdir/"
 
 
