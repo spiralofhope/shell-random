@@ -5,15 +5,25 @@
 # For example, using VirtualBox's "save the machine state".
 
 
-
-\sudo  \sync
-
 # 1 to free pagecache
 # 2 to free dentries and inodes
 # 3 to free pagecache, dentries and inodes
-__=3
+cache_types_to_drop=3
 
-\sudo  \sh  -c "/bin/echo $__ > /proc/sys/vm/drop_caches"
-\sudo  /sbin/sysctl  --write vm.drop_caches=$__
+
+\sudo  \echo  ''
+
+free_before="$( \free  --human  --si )"
+\sudo  \sync
+
+\sudo  \sh  -c  "/bin/echo  $cache_types_to_drop  >  /proc/sys/vm/drop_caches"
+
+\sudo  /sbin/sysctl  --write  vm.drop_caches="$cache_types_to_drop"  >  /dev/null
+
+free_after="$( \free  --human  --si )"
 
 \sudo  \sync
+
+\echo  "$free_before"  |  \head  --lines=2
+\echo  "$free_after"   |  \head  --lines=2  |  \tail  --lines=1
+\echo  ''
