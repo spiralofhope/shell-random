@@ -20,7 +20,7 @@ while [ -n "$__" ]; do
   # All but the first character of the string
   rest="${__#?}"
   #  Remove $rest, and you're left with the first character
-  first="${__%"$rest"}"
-  echo "$first"
+  first_character="${__%"$rest"}"
+  echo "$first_character"
   __="$rest"
 done
