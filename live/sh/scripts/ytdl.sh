@@ -1,4 +1,6 @@
 #!/usr/bin/env  sh
+# shellcheck disable=1083
+#   I like using backslashes.
 
 # Download YouTube and other videos.
 #
@@ -13,6 +15,9 @@
 # TODO/FIXME - I want to also download subtitles, but `search-JSON.sh` does not support the complexity required.
 # YouTube's supported subtitle and closed caption files:
 #   https://support.google.com/youtube/answer/2734698
+
+
+#DEBUG='true'
 
 
 
@@ -30,6 +35,14 @@ if [ "x$2" = 'x-F' ]; then
   \youtube-dl  "$@"
   exit
 fi
+
+
+DEBUG=${DEBUG='false'}
+_debug() {
+  if [ "$DEBUG" = 'true' ]; then
+    \echo  "$*"  >&2
+  fi
+}
 
 
 #target='some creator name/20170515 - the video title./the filename.mp4'
@@ -84,10 +97,45 @@ target_subdirectory=$( \echo  "$target_subdirectory"  |  \sed  's/\(^[0-9]\{4\}\
 }
 
 
-# Deal with long filenames.
-# FIXME - just truncate the existing variable's content.
-if [ ${#target_directory}    -gt 30 ]; then target_directory=$(    \basename $( \mktemp  --dry-run ) ); fi
-if [ ${#target_subdirectory} -gt 40 ]; then target_subdirectory=$( \basename $( \mktemp  --dry-run ) ); fi
+# Taken from  `string-truncate.sh`
+string_truncate() {
+  string_length_maximum="$1"
+  shift
+  string="$*"
+  string_length=${#string}
+  #
+  _debug  "String:                   $string"
+  _debug  "  String length:          $string_length"
+  _debug  "  String length maximum:  $string_length_maximum"
+  #
+  if [ "$string_length" -le "$string_length_maximum" ]; then
+    _debug  "  (not truncating)"
+    \echo  "$string"
+  else
+    # See  `iterate-over-characters-in-a-string.sh`
+    __="$string"
+    #
+    while [ -n "$__" ]; do
+      rest="${__#?}"
+      first_character="${__%"$rest"}"
+      result="$result$first_character"
+      __="$rest"
+      #
+      if [ ${#result} -eq "$string_length_maximum" ]; then
+        \echo  "$result"
+        break
+      fi
+    done
+    _debug  "  Length is greater than:   $string_length_maximum"
+    _debug  "  Truncating string to:     $result"
+  fi
+}
+#
+target_directory="$(    string_truncate  20  "$( \basename  "$target_directory" )" )"
+target_subdirectory="$( string_truncate  60  "$( \basename  "$target_subdirectory" )" )"
+
+_debug  "$target_directory"
+_debug  "$target_subdirectory"
 
 \mkdir  --parents  --verbose  "$target_directory/$target_subdirectory"  ||  exit  $?
 \cd                           "$target_directory/$target_subdirectory"  ||  exit  $?
