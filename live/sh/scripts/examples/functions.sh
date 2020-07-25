@@ -56,3 +56,16 @@
   __="$( _fun )"
   echo  "My variable's content is:  $__"
 }
+
+
+
+#:<<'}'   #  Returning information from code into a variable, and also using echo freely within it
+{
+  _fun() {
+    \echo  'example text'  >&2
+    \echo  'some text'
+  }
+  #
+  __="$( _fun )"
+  echo  "My variable's content is:  $__"
+}
