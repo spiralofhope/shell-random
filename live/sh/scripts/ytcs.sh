@@ -43,21 +43,25 @@ comment_filename="comments - $source_video_id - $( \date  --utc  +%Y-%m-%d\ %H։
 :<<'}'   #  youtube-comment-scraper
 # https://github.com/philbot9/youtube-comment-scraper-cli/
 {
+  comment_filename="$comment_filename".ytcs1.csv
+
   \youtube-comment-scraper  \
     --format csv  \
     --stream  \
     --  \
     "$source_video_id"  >  \
-    "$comment_filename".csv
-# |  \tee "$comment_filename".csv
+    "$comment_filename"
+# |  \tee "$comment_filename"
 }
 :<<'}'   #  youtube-comment-scraper's other method
 {
-\youtube-comment-scraper  \
-  --format csv  \
-  --outputFile "$comment_filename".csv   \
-  --  \
-  "$source_video_id"
+  comment_filename="$comment_filename".ytcs1.csv
+
+  \youtube-comment-scraper  \
+    --format csv  \
+    --outputFile "$comment_filename"   \
+    --  \
+    "$source_video_id"
 }
 
 
@@ -65,9 +69,11 @@ comment_filename="comments - $source_video_id - $( \date  --utc  +%Y-%m-%d\ %H։
 #:<<'}'   #  youtube-comment-downloader
 # https://github.com/egbertbouman/youtube-comment-downloader
 {
+  comment_filename="$comment_filename".ytcs2.json
+
   \youtube-comment-downloader  \
     --youtubeid="$source_video_id"  \
-    --output="$comment_filename".ytcs2.json
+    --output="$comment_filename"
 }
 
 
