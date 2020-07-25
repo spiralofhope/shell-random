@@ -44,3 +44,15 @@
   _fun
   _fun
 }
+
+
+
+#:<<'}'   #  Returning information from code into a variable
+{
+  _fun() {
+    \echo  'some text'
+  }
+  #
+  __="$( _fun )"
+  echo  "My variable's content is:  $__"
+}
