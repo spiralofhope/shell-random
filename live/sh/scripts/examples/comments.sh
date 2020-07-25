@@ -25,9 +25,16 @@ HERE_DOCUMENT
 # A whole HEREDOC block which can be trivially commented in or out to enable/disable the block.
 # Also code foldable.
 # My own design!
+# Some editors (like Geany) will notice this and will color the whole block.
 :<<'}'
 {
-  \echo  'stuff'
+  \echo  'This would not be run.'
+}
+#
+# Notice the commenting of the following line.
+#:<<'}'
+{
+  \echo  'This WOULD be run.'
 }
 
 
