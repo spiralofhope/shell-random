@@ -9,38 +9,38 @@
 
 
 
-#:<<'}'
-{  #  Re-using code
+#:<<'}'   #  Re-using code
+{
   _fun() {
     \echo  'some text'
   }
-
+  #
   _fun
   _fun
 }
 
 
 
-#:<<'}'
-{  #  Sending information to code
+#:<<'}'   #  Sending information to code
+{
   _fun() {
     \echo  'some text'  "$1"
   }
-
+  #
   _fun  one
   _fun  two
 }
 
 
 
-#:<<'}'
-{  #  Sending information to code
+#:<<'}'   #  Sending information to code
+{
   _fun() {
     \echo  'some text'
     return
     \echo  'this is not displayed'
   }
-
+  #
   _fun
   _fun
 }
