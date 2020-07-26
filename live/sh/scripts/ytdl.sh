@@ -122,7 +122,8 @@ string_truncate() {
       __="$rest"
       #
       if [ ${#result} -eq "$string_length_maximum" ]; then
-        \echo  "$result"
+        # NOTE - adding an ellipsis
+        \echo  "$result"…
         break
       fi
     done
@@ -131,8 +132,8 @@ string_truncate() {
   fi
 }
 #
-target_directory="$(    string_truncate  20  "$( \basename  "$target_directory" )" )"
-target_subdirectory="$( string_truncate  60  "$( \basename  "$target_subdirectory" )" )"
+target_directory="$(    string_truncate  29  "$( \basename  "$target_directory" )" )"
+target_subdirectory="$( string_truncate  59  "$( \basename  "$target_subdirectory" )" )"
 
 _debug  "$target_directory"
 _debug  "$target_subdirectory"
@@ -148,7 +149,9 @@ _debug  "$target_subdirectory"
 #` # I suspect this is important for an NTFS filesystem. `  \
 #--restrict-filenames  \
 #
-if  !  \
+# AtomicParsley began throwing an error.
+#if  !  \
+  #
   \youtube-dl  \
     --console-title  \
     --audio-format  best  \
@@ -162,9 +165,9 @@ if  !  \
     --output 'v.%(ext)s'  \
     -f best  \
     "$@"
-then
-  exit $?
-fi
+#then
+  #exit  $?
+#fi
 
 
 
