@@ -1,7 +1,7 @@
 #!/usr/bin/env  sh
 
 # Return a specific character range from a string.
-# If the two number are the same, it outputs just the one character
+# If the two number are the same, it outputs just the one character.
 
 # TODO - If the range is "negative" then reverse the order of the output.
 
