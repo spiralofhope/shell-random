@@ -13,6 +13,7 @@ fi
 # TODO - ensure this is a number
 character_number_desired="$1"
 shift
+# $2*
 string="$*"
 
 
