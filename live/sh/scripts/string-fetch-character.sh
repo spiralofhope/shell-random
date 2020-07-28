@@ -17,6 +17,7 @@ character_number_desired="$1"
 shift
 # $2*
 string="$*"
+string_original="$*"
 
 
 
@@ -34,7 +35,7 @@ string_get_character_number() {
       string="${string#?}"
       i=$(( i + 1 ))
     done
-    \echo  $string
+    printf  '%s'  "$string"
   }
   #
   string_get_first_character() {
@@ -44,15 +45,16 @@ string_get_character_number() {
     while [ -n "$__" ]; do
       rest="${__#?}"
       first_character="${__%"$rest"}"
-      \echo  "$first_character"
+      printf  '%s'  "$first_character"
       return
     done
   }
   #
   string=$( string_trim_characters_before  "$character_number_desired"  "$string" )
   character=$( string_get_first_character  "$string" )
-  \echo  "$character"
+  printf  '%s'  "$character"
 }
 
 
-\echo  $( string_get_character_number  "$character_number_desired"  "$string" )
+string_get_character_number  "$character_number_desired"  "$string_original"
+\echo  ''
