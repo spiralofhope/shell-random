@@ -1,6 +1,6 @@
 #!/usr/bin/env  sh
 
-# Fetch a specific character from a string.
+# Return a specific character from a string.
 
 
 if [ -z "$*" ]; then
