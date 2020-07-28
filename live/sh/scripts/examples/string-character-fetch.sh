@@ -23,7 +23,9 @@ string_get_character_number() {
   string_trim_characters_before() {
     character_number_desired="$1"
     shift
+    # $2*
     string="$*"
+    #
     # Cut off all preceeding characters.
     i=1
     until [ $i -eq "$character_number_desired" ]; do
@@ -35,6 +37,7 @@ string_get_character_number() {
   #
   string_get_first_character() {
     string="$*"
+    #
     __="$string"
     while [ -n "$__" ]; do
       rest="${__#?}"

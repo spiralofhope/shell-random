@@ -20,6 +20,11 @@ string="$*"
 
 
 string_line_desired() {
+  line_number_desired="$1"
+  shift
+  # $2*
+  string="$*"
+  #
   i=1
   for line in $string; do
     #\echo  "Processing line number $i"
