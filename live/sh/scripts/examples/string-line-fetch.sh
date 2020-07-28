@@ -15,15 +15,21 @@ fi
 # TODO - ensure this is a number
 line_number_desired="$1"
 shift
+# $2*
 string="$*"
 
 
-i=1
-for line in $string; do
-  #\echo  "Processing line number $i"
-  if [ "$i" -eq "$line_number_desired" ]; then
-    \echo  "$line"
-    return
-  fi
-  i=$(( i + 1 ))
-done
+string_line_desired() {
+  i=1
+  for line in $string; do
+    #\echo  "Processing line number $i"
+    if [ "$i" -eq "$line_number_desired" ]; then
+      \echo  "$line"
+      return
+    fi
+    i=$(( i + 1 ))
+  done
+}
+
+
+string_line_desired  "$line_number_desired"  "$string"
