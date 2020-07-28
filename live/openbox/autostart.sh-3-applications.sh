@@ -165,7 +165,7 @@ _connected=
 
 # Notes
 # TODO: wmctrl and minimize it.  Heck, toss it on another desktop.
-\setsid  $HOME/l/shell-random/live/sh/scripts/projects.sh &
+\setsid  $HOME/l/shell-random/live/sh/scripts/projects-open.sh &
 
 # Maybe if I put this here it will work..
 $HOME/l/shell-random/live/sh/scripts/screensaver-control.sh  disable
