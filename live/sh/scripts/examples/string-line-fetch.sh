@@ -8,6 +8,8 @@ if [ -z "$*" ]; then
   "$0"  2  'one
 two
 three'
+  # =>
+  # two
   return
 fi
 

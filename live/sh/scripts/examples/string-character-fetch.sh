@@ -6,6 +6,8 @@
 if [ -z "$*" ]; then
   # Pass example parameters to this very script:
   "$0"  3  'example'
+  # =>
+  # a
   return
 fi
 
