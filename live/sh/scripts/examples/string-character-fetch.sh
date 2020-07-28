@@ -11,7 +11,7 @@ fi
 
 
 # TODO - ensure this is a number
-character_position_desired="$1"
+character_number_desired="$1"
 shift
 string="$*"
 
@@ -20,12 +20,12 @@ string="$*"
 string_get_character_number() {
   #
   string_trim_characters_before() {
-    character_position_desired="$1"
+    character_number_desired="$1"
     shift
     string="$*"
     # Cut off all preceeding characters.
     i=1
-    until [ $i -eq "$character_position_desired" ]; do
+    until [ $i -eq "$character_number_desired" ]; do
       string="${string#?}"
       i=$(( i + 1 ))
     done
@@ -43,10 +43,10 @@ string_get_character_number() {
     done
   }
   #
-  string=$( string_trim_characters_before  "$character_position_desired"  "$string" )
+  string=$( string_trim_characters_before  "$character_number_desired"  "$string" )
   character=$( string_get_first_character  "$string" )
   \echo  "$character"
 }
 
 
-\echo  $( string_get_character_number  "$character_position_desired"  "$string" )
+\echo  $( string_get_character_number  "$character_number_desired"  "$string" )
