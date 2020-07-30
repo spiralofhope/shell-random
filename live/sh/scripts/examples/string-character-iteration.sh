@@ -12,7 +12,7 @@ if [ -z "$*" ]; then
 fi
 
 
-string="$1"
+string="$*"
 
 
 __="$string"
