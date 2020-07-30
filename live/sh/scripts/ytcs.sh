@@ -11,10 +11,13 @@
 # TODO - I want to detect signals and abort the download without killing autotest.sh, but Python's KeyboardInterrupt is too aggressive or something..
 
 
+#DEBUG='true'
 
+
+:<<'# For autotest.sh'
 if [ -z "$*" ]; then
   # Pass example parameters to this very script:
-  # This is the oldest YouTube video.
+  # This is the oldest YouTube video:
   #"$0"  'jNQXAC9IVRw'
   #"$0"  'https://youtu.be/jNQXAC9IVRw'
   #"$0"  'https://www.youtube.com/watch?v=jNQXAC9IVRw'
@@ -27,6 +30,16 @@ fi
 
 # TODO - instructions
 if   [ "$#" -ne 1 ]; then return  1; fi
+# For autotest.sh
+
+
+
+DEBUG=${DEBUG='false'}
+_debug() {
+  if [ "$DEBUG" = 'true' ]; then
+    \echo  "$*"  >&2
+  fi
+}
 
 
 if   [ "$#" -eq 1 ]; then
@@ -35,16 +48,13 @@ if   [ "$#" -eq 1 ]; then
   source_video_id=$( printf  '%s\n'  "${source_video_id##watch?v=}" )
   source_video_id=$( printf  '%s\n'  "${source_video_id%%#*}" )
 elif  \stat  --printf=''  'v.info.json'  2> /dev/null; then
-  \echo  " * Found a JSON file"
-  source_video_id="$( search-JSON.sh  'id'  'v.info.json' )"
+  _debug  " * Found a JSON file"
+  source_video_id="$( \search-json.sh  'id'  'v.info.json' )"
 elif  \stat  --printf=''  comments\ -\ *.csv  2> /dev/null; then
-  \echo  " * Found a CSV file"
-  # Example filename:
-  #   'comments - 12345678901 - 2020-05-24 12։34.csv'
-  # Example id:
-  #   12345678901
+  # I prefer a CSV when using youtube-comment-scraper.
+  _debug  " * Found a CSV file"
   for filename in comments\ -\ *.csv; do
-    source_video_id=$( \echo  "$filename" | \cut  --delimiter=' '  --fields=3 )
+    source_video_id=$( \replace-cut.sh  ' '  3  "$filename" )
     # Only process the first file found:
     break
   done
@@ -57,12 +67,9 @@ if [ -z "$source_video_id" ]; then
 fi
 
 comment_filename="comments - $source_video_id - $( \date  --utc  +%Y-%m-%d\ %H։%M )"
-\echo  " * Downloading comments from.."
-\echo  "   id:    \"$source_video_id\""
-\echo  "   into:  \"$comment_filename\""
-
-
-return
+_debug  ' * Downloading comments from..'
+_debug  "   id:    \"$source_video_id\""
+_debug  "   into:  \"$comment_filename\""
 
 
 :<<'}'   #  youtube-comment-scraper
