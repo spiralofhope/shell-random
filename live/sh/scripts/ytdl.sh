@@ -179,6 +179,12 @@ if [ -f 'v_4.webp' ]; then
   _debug  ' * Deleting extraneous thumbnails.'
   \rm  --force  v_*.jpg
 fi
+if [ -f 'v_3.jpg' ]; then
+  _debug  ' * Deleting extraneous thumbnails.'
+  \rm  --force  v_0.jpg
+  \rm  --force  v_1.jpg
+  \rm  --force  v_2.jpg
+fi
 
 
 
@@ -189,3 +195,9 @@ fi
 # Also download comments using  `youtube-comment-scraper`
 # This script will pick up the data from v.info.json
 ytcs.sh
+
+
+\echo  ''
+\echo  " * Finished with:"
+\echo  "   $target_directory"
+\echo  "   $target_subdirectory"
