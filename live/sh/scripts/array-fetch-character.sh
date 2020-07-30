@@ -6,10 +6,21 @@
 
 if [ -z "$*" ]; then
   # Pass example parameters to this very script:
+  "$0"  2  1 'one
+two
+three'
+  # => t
+  #
   "$0"  2  2 'one
 two
 three'
   # => w
+  #
+  "$0"  1  3 'one
+two
+three'
+  # => e
+  #
   return
 fi
 
@@ -24,60 +35,5 @@ shift
 string="$*"
 
 
-string_line_desired() {
-  line_number_desired="$1"
-  shift
-  # $2*
-  string="$*"
-  #
-  i=1
-  for line in $string; do
-    #\echo  "Processing line number $i"
-    if [ "$i" -eq "$line_number_desired" ]; then
-      \echo  "$line"
-      return
-    fi
-    i=$(( i + 1 ))
-  done
-}
-
-
-string=$( string_line_desired  "$line_number_desired"  "$string" )
-
-
-string_get_character_number() {
-  #
-  string_trim_characters_before() {
-    character_number_desired="$1"
-    shift
-    # $2*
-    string="$*"
-    #
-    # Cut off all preceeding characters.
-    i=1
-    until [ $i -eq "$character_number_desired" ]; do
-      string="${string#?}"
-      i=$(( i + 1 ))
-    done
-    \echo  $string
-  }
-  #
-  string_get_first_character() {
-    string="$*"
-    #
-    __="$string"
-    while [ -n "$__" ]; do
-      rest="${__#?}"
-      first_character="${__%"$rest"}"
-      \echo  "$first_character"
-      return
-    done
-  }
-  #
-  string=$( string_trim_characters_before  "$character_number_desired"  "$string" )
-  character=$( string_get_first_character  "$string" )
-  \echo  "$character"
-}
-
-
-\echo  $( string_get_character_number  "$character_number_desired"  "$string" )
+line=$( list-fetch-line.sh  "$line_number_desired"  "$string" )
+\echo  $( string-fetch-character.sh  "$character_number_desired"  "$line" )
