@@ -91,6 +91,9 @@ _debug  "$*"
       --output '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
     " $@"  \
   )
+  # Sometimes youtube-dl will give an error, e.g.:
+  #   "ERROR: jNQXAC9IVRw: YouTube said: Unable to extract video data"
+  if [ $? -ne 0 ]; then exit $?; fi
 }
 _debug  "$target"
 target_directory="$(    \dirname  "$( \dirname  "$target" )" )"
