@@ -175,10 +175,16 @@ _debug  "$target_subdirectory"
   " $@"
 
 
+if [ -f 'v_4.webp' ]; then
+  _debug  ' * Deleting extraneous thumbnails.'
+  \rm  --force  v_*.jpg
+fi
+
+
 
 if  [ "$DEBUG" = 'true' ] || \
     [ $# -eq 2 ] && [ "$2" = '-F' ]; then
-  exit $?
+  exit
 fi
 # Also download comments using  `youtube-comment-scraper`
 # This script will pick up the data from v.info.json
