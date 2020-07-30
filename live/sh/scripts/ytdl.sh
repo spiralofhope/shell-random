@@ -17,7 +17,7 @@
 #   https://support.google.com/youtube/answer/2734698
 
 
-#DEBUG='true'
+DEBUG='true'
 
 
 :<<'# For autotest.sh'
@@ -27,7 +27,7 @@ if [ -z "$*" ]; then
   #"$0"  'jNQXAC9IVRw'                                                --skip-download
   #"$0"  'https://youtu.be/jNQXAC9IVRw'                               --skip-download
   #"$0"  'https://www.youtube.com/watch?v=jNQXAC9IVRw'                --skip-download
-  #"$0"  'https://www.youtube.com/watch?v=jNQXAC9IVRw#me-at-the-zoo'  --skip-download
+  "$0"  'https://www.youtube.com/watch?v=jNQXAC9IVRw#me-at-the-zoo'  --skip-download
   # =>
   # amp
   return
@@ -80,17 +80,19 @@ target_subdirectory="$( \basename "$( \dirname  "$target" )" )"
 #target_files="$(                      \basename "$target" )"
 #
 # TODO - remove any other invalid characters
-# Remove trailing periods
+# Remove 1-3 trailing periods
 #   (They are invalid on NTFS)
-target_subdirectory=$( \echo  "$target_subdirectory"  |  \sed  's/\.$//' )
+target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
+target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
+target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
 # I have no idea how to use youtube-dl's --output to fix the date format, so I define the directory manually.
 # 20170515  =>  2017-05-15
 target_subdirectory=$( \echo  "$target_subdirectory"  |  \sed  's/\(^[0-9]\{4\}\)\([0-9]\{2\}\)/\1-\2-/' )
 #
-#\echo  "$target"
-#\echo  "$target_directory"
-#\echo  "$target_subdirectory"
-#\echo  "$target_files"
+_debug  "$target"
+_debug  "$target_directory"
+_debug  "$target_subdirectory"
+_debug  "$target_files"
 #exit
 #
 :<<'}'   #  Get everything separately
