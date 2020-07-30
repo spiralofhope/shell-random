@@ -17,7 +17,7 @@
 #   https://support.google.com/youtube/answer/2734698
 
 
-DEBUG='true'
+#DEBUG='true'
 
 
 :<<'# For autotest.sh'
