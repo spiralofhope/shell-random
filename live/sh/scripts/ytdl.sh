@@ -65,29 +65,19 @@ case  "$#"  in
     \youtube-dl
     exit  0
   ;;
-  1)
-    _debug  "1 parameter"
-    url="$1"
-    shift
-  ;;
   2)
     _debug  "2 parameters"
-    url="$1"
-    shift
     if [ "$*" = '-F' ]; then
-      \youtube-dl  "$url"  "$*"
+      \youtube-dl  -F
       exit  0
     fi
     # Else continue onward, using use $2 as the parameter.
   ;;
   *)
-    _debug  "$# parameters"
-    url="$1"
-    shift
+    _debug  "$# parameter(s)"
   ;;
 esac
 
-_debug  "$url"
 _debug  "$*"
 
 
@@ -99,7 +89,7 @@ _debug  "$*"
     \youtube-dl  \
       --get-filename  \
       --output '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
-    "$url"  \
+    " $@"  \
   )
 }
 _debug  "$target"
@@ -182,11 +172,12 @@ _debug  "$target_subdirectory"
   --add-metadata  \
   --no-call-home  \
   --output 'v.%(ext)s'  \
-  "$url"  \
   " $@"
 
 
 
 # Also download comments using  `youtube-comment-scraper`
 # This script will pick up the data from v.info.json
-ytcs.sh
+if [ "$DEBUG" = 'false' ]; then
+  ytcs.sh
+fi
