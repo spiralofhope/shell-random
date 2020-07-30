@@ -21,7 +21,7 @@ shift
 string="$*"
 
 
-string_line_desired() {
+string_fetch_line() {
   line_number_desired="$1"
   shift
   # $2*
@@ -39,4 +39,4 @@ string_line_desired() {
 }
 
 
-string_line_desired  "$line_number_desired"  "$string"
+string_fetch_line  "$line_number_desired"  "$string"
