@@ -1,46 +1,20 @@
 #!/usr/bin/env  sh
 # Replace `seq`
 
+# Note:  For simpler functionality, there is example copy-paste code at the bottom of this script.
 
 
-#:<<'}'   #  Simple:  Increment from 1 to $1 in steps of 1
-seq_replacement_increment() {
-  start='1'
-  end="$1"
-  while [ "$start" -le "$end" ]; do
-    \echo  "$start"
-    start=$(( start + 1 ))
-  done
-}
-#for i in $( seq_replacement_increment 3 ); do \echo  "ok $i"; done
-#=>  ok 1
-#=>  ok 2
-#=>  ok 3
-
-
-
-#:<<'}'   #  Simple:  Decrement from $1 to 1 in steps of 1
-seq_replacement_decrement() {
-  start="$1"
-  end="1"
-  while [ "$start" -ge "$end" ]; do
-    \echo  "$start"
-    start=$(( start - 1 ))
-  done
-}
-#for i in $( seq_replacement_decrement 3 ); do \echo  "ok $i"; done
-#=>  ok 3
-#=>  ok 2
-#=>  ok 1
+# TODO - Tidy this up
+# TODO - Autotest functionality
 
 
 
 #:<<'}'   #  A drop-in replacement for the common uses `seq`.
-seq_replacement() {
+replace_seq() {
   # usage:
-  # seq_replacement LAST
-  # seq_replacement FIRST LAST
-  # seq_replacement FIRST INCREMENT LAST
+  # replace_seq LAST
+  # replace_seq FIRST LAST
+  # replace_seq FIRST INCREMENT LAST
   case "$#" in
     1)   #  Incrementing from 1 to $1
       start='1'
@@ -85,38 +59,79 @@ seq_replacement() {
     *)  return  1  ;;
   esac
 }
-#for i in $( seq_replacement 3       ); do \echo "ok $i"; done
+#for i in $( replace_seq 3       ); do \echo "ok $i"; done
 #=>  ok 1
 #=>  ok 2
 #=>  ok 3
 
-#for i in $( seq_replacement 2  4    ); do \echo "ok $i"; done
+#for i in $( replace_seq 2  4    ); do \echo "ok $i"; done
 #=>  ok 2
 #=>  ok 3
 #=>  ok 4
 
-#for i in $( seq_replacement 2  1  4 ); do \echo "ok $i"; done
+#for i in $( replace_seq 2  1  4 ); do \echo "ok $i"; done
 #=>  ok 2
 #=>  ok 3
 #=>  ok 4
 
-#for i in $( seq_replacement 4 -1  2 ); do \echo "ok $i"; done
+#for i in $( replace_seq 4 -1  2 ); do \echo "ok $i"; done
 #=>  ok 4
 #=>  ok 3
 #=>  ok 2
 
-#for i in $( seq_replacement 2  2  6 ); do \echo "ok $i"; done
+#for i in $( replace_seq 2  2  6 ); do \echo "ok $i"; done
 #=>  ok 2
 #=>  ok 4
 #=>  ok 6
 
-#for i in $( seq_replacement 6 -2  2 ); do \echo "ok $i"; done
+#for i in $( replace_seq 6 -2  2 ); do \echo "ok $i"; done
 #=>  ok 6
 #=>  ok 4
 #=>  ok 2
 
-#for i in $( seq_replacement 2 -2 -4 ); do \echo "ok $i"; done
+#for i in $( replace_seq 2 -2 -4 ); do \echo "ok $i"; done
 #=>  ok 2
 #=>  ok 0
 #=>  ok -2
 #=>  ok -4
+
+
+replace_seq  "$@"
+
+
+
+
+
+
+
+:<<'# example_copy-paste_code'
+#:<<'}'   #  Simple:  Increment from 1 to $1 in steps of 1
+replace_seq_increment() {
+  start='1'
+  end="$1"
+  while [ "$start" -le "$end" ]; do
+    \echo  "$start"
+    start=$(( start + 1 ))
+  done
+}
+#for i in $( replace_seq_increment 3 ); do \echo  "ok $i"; done
+#=>  ok 1
+#=>  ok 2
+#=>  ok 3
+
+
+
+#:<<'}'   #  Simple:  Decrement from $1 to 1 in steps of 1
+replace_seq_decrement() {
+  start="$1"
+  end="1"
+  while [ "$start" -ge "$end" ]; do
+    \echo  "$start"
+    start=$(( start - 1 ))
+  done
+}
+#for i in $( replace_seq_decrement 3 ); do \echo  "ok $i"; done
+#=>  ok 3
+#=>  ok 2
+#=>  ok 1
+# example_copy-paste_code
