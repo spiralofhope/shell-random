@@ -1,6 +1,8 @@
 #!/usr/bin/env  sh
 # shellcheck disable=1083
 #   I like using backslashes.
+# shellcheck disable=1001
+#   I like using backslashes.
 
 # Download YouTube and other videos.
 #
@@ -40,6 +42,14 @@ if   [ "$#" -ne 1 ]; then return  1; fi
 
 
 
+DEBUG=${DEBUG='false'}
+_debug() {
+  if [ "$DEBUG" = 'true' ]; then
+    \echo  "$*"  >&2
+  fi
+}
+
+
 # INT is ^C
 trap control_c INT
 control_c()
@@ -49,19 +59,37 @@ control_c()
 }
 
 
+case  "$#"  in
+  0)
+    _debug  "no parameters"
+    \youtube-dl
+    exit  0
+  ;;
+  1)
+    _debug  "1 parameter"
+    url="$1"
+    shift
+  ;;
+  2)
+    _debug  "2 parameters"
+    url="$1"
+    shift
+    if [ "$*" = '-F' ]; then
+      \youtube-dl  "$url"  "$*"
+      exit  0
+    fi
+    # Else continue onward, using use $2 as the parameter.
+  ;;
+  *)
+    _debug  "$# parameters"
+    url="$1"
+    shift
+  ;;
+esac
 
-if [ "x$2" = 'x-F' ]; then
-  \youtube-dl  "$@"
-  exit
-fi
+_debug  "$url"
+_debug  "$*"
 
-
-DEBUG=${DEBUG='false'}
-_debug() {
-  if [ "$DEBUG" = 'true' ]; then
-    \echo  "$*"  >&2
-  fi
-}
 
 
 #target='some creator name/20170515 - the video title./the filename.mp4'
@@ -71,13 +99,15 @@ _debug() {
     \youtube-dl  \
       --get-filename  \
       --output '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
-    "$@"  \
+    "$url"  \
   )
 }
+_debug  "$target"
 target_directory="$(    \dirname  "$( \dirname  "$target" )" )"
 target_subdirectory="$( \basename "$( \dirname  "$target" )" )"
 # Unused:
 #target_files="$(                      \basename "$target" )"
+#_debug  "$target_files"
 #
 # TODO - remove any other invalid characters
 # Remove 1-3 trailing periods
@@ -87,12 +117,8 @@ target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
 target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
 # I have no idea how to use youtube-dl's --output to fix the date format, so I define the directory manually.
 # 20170515  =>  2017-05-15
+# TODO - replace \sed
 target_subdirectory=$( \echo  "$target_subdirectory"  |  \sed  's/\(^[0-9]\{4\}\)\([0-9]\{2\}\)/\1-\2-/' )
-#
-_debug  "$target"
-_debug  "$target_directory"
-_debug  "$target_subdirectory"
-_debug  "$target_files"
 #exit
 #
 :<<'}'   #  Get everything separately
@@ -101,61 +127,36 @@ _debug  "$target_files"
     \youtube-dl  \
       --get-filename  \
       --output '%(uploader)s'  \
-    "$@"  \
+    "$*"  \
   )
   target_subdirectory=$(  \
     \youtube-dl  \
       --get-filename  \
       --output '%(upload_date)s - %(title)s'  \
-    "$@"  \
+    "$*"  \
   )
   #target_files=$(  \
     #\youtube-dl  \
       #--get-filename  \
       #--output '%(title)s.%(ext)s'  \
-    #"$@"  \
+    #"$*"  \
   #)
 }
 
-
-# Taken from  `string-truncate.sh`
-string_truncate() {
+if_long_then_truncate_and_append() {
   string_length_maximum="$1"
   shift
+  # $2*
   string="$*"
   string_length=${#string}
-  #
-  _debug  "String:                   $string"
-  _debug  "  String length:          $string_length"
-  _debug  "  String length maximum:  $string_length_maximum"
-  #
-  if [ "$string_length" -le "$string_length_maximum" ]; then
-    _debug  "  (not truncating)"
-    \echo  "$string"
-  else
-    # See  `iterate-over-characters-in-a-string.sh`
-    __="$string"
-    #
-    while [ -n "$__" ]; do
-      rest="${__#?}"
-      first_character="${__%"$rest"}"
-      result="$result$first_character"
-      __="$rest"
-      #
-      if [ ${#result} -eq "$string_length_maximum" ]; then
-        # NOTE - adding an ellipsis
-        \echo  "$result"…
-        break
-      fi
-    done
-    _debug  "  Length is greater than:   $string_length_maximum"
-    _debug  "  Truncating string to:     $result"
+  if [ "$string_length" -gt "$string_length_maximum" ]; then
+    append='…'
   fi
+  __=$( string-truncate.sh  "$string_length_maximum"  "$string" )
+  \echo  "$__$append"
 }
-#
-target_directory="$(    string_truncate  29  "$( \basename  "$target_directory" )" )"
-target_subdirectory="$( string_truncate  59  "$( \basename  "$target_subdirectory" )" )"
-
+target_directory="$(     if_long_then_truncate_and_append  29  "$target_directory"    )"
+target_subdirectory="$(  if_long_then_truncate_and_append  59  "$target_subdirectory" )"
 _debug  "$target_directory"
 _debug  "$target_subdirectory"
 
@@ -170,25 +171,19 @@ _debug  "$target_subdirectory"
 #` # I suspect this is important for an NTFS filesystem. `  \
 #--restrict-filenames  \
 #
-# AtomicParsley began throwing an error.
-#if  !  \
-  #
-  \youtube-dl  \
-    --console-title  \
-    --audio-format  best  \
-    --write-description  \
-    --write-info-json  \
-    --write-annotations  \
-    --write-all-thumbnails  --embed-thumbnail  \
-    --all-subs  --embed-subs  \
-    --add-metadata  \
-    --no-call-home  \
-    --output 'v.%(ext)s'  \
-    -f best  \
-    "$@"
-#then
-  #exit  $?
-#fi
+\youtube-dl  \
+  --console-title  \
+  --audio-format  best  \
+  --write-description  \
+  --write-info-json  \
+  --write-annotations  \
+  --write-all-thumbnails  --embed-thumbnail  \
+  --all-subs  --embed-subs  \
+  --add-metadata  \
+  --no-call-home  \
+  --output 'v.%(ext)s'  \
+  "$url"  \
+  " $@"
 
 
 
