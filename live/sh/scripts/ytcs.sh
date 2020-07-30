@@ -8,14 +8,36 @@
 #
 # Requires my `search-JSON.sh`.
 
+# TODO - I want to detect signals and abort the download without killing autotest.sh, but Python's KeyboardInterrupt is too aggressive or something..
 
 
-if   [ "$#" -ne 0 ]; then
-  source_video_id="$( \echo  "$1"  |  \sed  's/.*v=//' )"
-elif  \stat  --printf=''  'v.info.json'  2>/dev/null; then
+
+if [ -z "$*" ]; then
+  # Pass example parameters to this very script:
+  # This is the oldest YouTube video.
+  #"$0"  'jNQXAC9IVRw'
+  #"$0"  'https://youtu.be/jNQXAC9IVRw'
+  #"$0"  'https://www.youtube.com/watch?v=jNQXAC9IVRw'
+  #"$0"  'https://www.youtube.com/watch?v=jNQXAC9IVRw#me-at-the-zoo'
+  # =>
+  # amp
+  return
+fi
+
+
+# TODO - instructions
+if   [ "$#" -ne 1 ]; then return  1; fi
+
+
+if   [ "$#" -eq 1 ]; then
+  source_video_id="$1"
+  source_video_id=$( printf  '%s\n'  "${source_video_id##*/}" )
+  source_video_id=$( printf  '%s\n'  "${source_video_id##watch?v=}" )
+  source_video_id=$( printf  '%s\n'  "${source_video_id%%#*}" )
+elif  \stat  --printf=''  'v.info.json'  2> /dev/null; then
   \echo  " * Found a JSON file"
   source_video_id="$( search-JSON.sh  'id'  'v.info.json' )"
-elif  \stat  --printf=''  comments\ -\ *.csv  2>/dev/null; then
+elif  \stat  --printf=''  comments\ -\ *.csv  2> /dev/null; then
   \echo  " * Found a CSV file"
   # Example filename:
   #   'comments - 12345678901 - 2020-05-24 12։34.csv'
@@ -38,6 +60,9 @@ comment_filename="comments - $source_video_id - $( \date  --utc  +%Y-%m-%d\ %H։
 \echo  " * Downloading comments from.."
 \echo  "   id:    \"$source_video_id\""
 \echo  "   into:  \"$comment_filename\""
+
+
+return
 
 
 :<<'}'   #  youtube-comment-scraper
@@ -80,6 +105,3 @@ comment_filename="comments - $source_video_id - $( \date  --utc  +%Y-%m-%d\ %H։
 
 # I'm left with a zero-size file if the download fails; delete it.
 [ -s "$comment_filename" ]  ||  \rm  --force  "$comment_filename"
-
-
-
