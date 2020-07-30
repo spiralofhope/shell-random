@@ -24,6 +24,7 @@ alias  poweroff='\sudo  /sbin/poweroff'
 alias  reboot="/bin/su  -c  '/sbin/shutdown  -r  -t now  now  rebooting'"
 alias  rm='\rm  --interactive  --one-file-system'
 alias  sh='\sh  -l'
+ytdls() { ytdl.sh  "$@"  --skip-download ;}
 
 # --QUIT-AT-EOF
 # --no-init is mandatory for Windows Subsystem for Linux.
