@@ -176,8 +176,10 @@ _debug  "$target_subdirectory"
 
 
 
+if  [ "$DEBUG" = 'true' ] || \
+    [ $# -eq 2 ] && [ "$2" = '-F' ]; then
+  exit $?
+fi
 # Also download comments using  `youtube-comment-scraper`
 # This script will pick up the data from v.info.json
-if [ "$DEBUG" = 'false' ]; then
-  ytcs.sh
-fi
+ytcs.sh
