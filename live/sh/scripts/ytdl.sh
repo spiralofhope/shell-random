@@ -34,7 +34,7 @@ if [ -z "$*" ]; then
 fi
 
 
- TODO - instructions
+# TODO - instructions
 if   [ "$#" -ne 1 ]; then return  1; fi
 # For autotest.sh
 
