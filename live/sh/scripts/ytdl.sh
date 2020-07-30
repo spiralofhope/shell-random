@@ -20,6 +20,25 @@
 #DEBUG='true'
 
 
+:<<'# For autotest.sh'
+if [ -z "$*" ]; then
+  # Pass example parameters to this very script:
+  # This is the oldest YouTube video:
+  #"$0"  'jNQXAC9IVRw'                                                --skip-download
+  #"$0"  'https://youtu.be/jNQXAC9IVRw'                               --skip-download
+  #"$0"  'https://www.youtube.com/watch?v=jNQXAC9IVRw'                --skip-download
+  #"$0"  'https://www.youtube.com/watch?v=jNQXAC9IVRw#me-at-the-zoo'  --skip-download
+  # =>
+  # amp
+  return
+fi
+
+
+ TODO - instructions
+if   [ "$#" -ne 1 ]; then return  1; fi
+# For autotest.sh
+
+
 
 # INT is ^C
 trap control_c INT
