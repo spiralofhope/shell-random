@@ -6,14 +6,28 @@
 # TODO - If the range is "negative" then reverse the order of the output.
 
 
+#DEBUG='true'
+
 
 if [ -z "$*" ]; then
   # Pass example parameters to this very script:
   "$0"  3  5  'example'
   # =>
   # amp
+  #
+  "$0"  2  3  'example'
+  # =>
+  # xa
   return
 fi
+
+
+DEBUG=${DEBUG='false'}
+_debug() {
+  if [ "$DEBUG" = 'true' ]; then
+    \echo  "$*"  >&2
+  fi
+}
 
 
 # TODO - ensure this is a number
@@ -74,73 +88,10 @@ string_fetch_character() {
 }
 
 
-
-seq_replacement_increment() {
-  start="$character_range_desired_begin"
-  end="$character_range_desired_end"
-  while [ "$start" -le "$end" ]; do
-    \echo  "$start"
-    start=$(( start + 1 ))
-  done
-}
-
-
-
-#:<<'}'   #  A drop-in replacement for the common uses `seq`.
-seq_replacement() {
-  # usage:
-  # seq_replacement LAST
-  # seq_replacement FIRST LAST
-  # seq_replacement FIRST INCREMENT LAST
-  case "$#" in
-    1)   #  Incrementing from 1 to $1
-      start='1'
-      end="$1"
-      while [ "$start" -le "$end" ]; do
-        \echo  "$start"
-        start=$(( start + 1 ))
-      done
-    ;;
-    2)   #  Incrementing from $1 to $2 in steps of 1
-      if [ "$2" -lt "$1" ]; then  return  1; fi
-      start="$1"
-      end="$2"
-      while [ "$start" -le "$end" ]; do
-        \echo  "$start"
-        start=$(( start + 1 ))
-      done
-    ;;
-    3)
-      if    [ "$2" -gt 0 ] && [ "$1" -lt "$3" ]; then
-        #  Incrementing from $1 to $3 in steps of $2
-        start="$1"
-        change="$2"
-        end="$3"
-        while [ "$start" -le "$end" ]; do
-          \echo  "$start"
-          start=$(( start + change ))
-        done
-      elif  [ "$2" -lt 0 ] && [ "$1" -gt "$3" ]; then
-        #  Decrementing from $3 to $1 in steps of $2
-        start="$1"
-        change="$2"
-        end="$3"
-        while [ "$start" -ge "$end" ]; do
-          \echo  "$start"
-          start=$(( start + change ))                                   #  It's "+" because $change is a negative number.
-        done
-      else
-        return  1
-      fi
-    ;;
-    *)  return  1  ;;
-  esac
-}
-
-
-#\echo  "$string"
-#\echo  "=>"
-for i in $( seq_replacement  "$character_range_desired_begin"  "$character_range_desired_end" ); do
+_debug  ''
+_debug  "$string"
+_debug  "=>"
+for i in $( replace-seq.sh  "$character_range_desired_begin"  "$character_range_desired_end" ); do
   string_fetch_character  "$i"  "$string_original"
 done
 \echo  ''
