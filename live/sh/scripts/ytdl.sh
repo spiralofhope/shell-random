@@ -201,3 +201,4 @@ ytcs.sh
 \echo  " * Finished with:"
 \echo  "   $target_directory"
 \echo  "   $target_subdirectory"
+\echo  ''
