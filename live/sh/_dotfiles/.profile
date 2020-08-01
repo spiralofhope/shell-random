@@ -34,7 +34,7 @@ export  shdir
   _pushd="$PWD"
   sourceallthat() {
     #\echo  "sourcing $1"
-    \cd  "$1"  ||  exit
+    \cd  "$1"  ||  return  $?
     if [ -f 'lib.sh' ]; then
       # shellcheck disable=1091
       .  './lib.sh'
@@ -67,7 +67,7 @@ export  shdir
 
   :<<'  }'   #  A simple prompt:
   {
-  if [ $USER = root ];
+  if [ "$USER" = root ];
     then  PS1='${PWD} # '
     else  PS1='${PWD} $ '
   fi
@@ -88,7 +88,7 @@ export  shdir
 
   #:<<'  }'   #  A simple colored prompt:
   {
-  if [ $USER = root ];
+  if [ "$USER" = root ];
     then  PS1='${reset_color}${PWD}${boldon}${red} > ${reset_color}'
     else  PS1='${reset_color}${PWD}${boldon}${blue} > ${reset_color}'
   fi
