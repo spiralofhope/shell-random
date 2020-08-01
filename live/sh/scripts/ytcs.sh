@@ -50,10 +50,16 @@ if   [ "$#" -eq 1 ]; then
 elif  \stat  --printf=''  'v.info.json'  2> /dev/null; then
   _debug  " * Found a JSON file"
   source_video_id="$( \search-json.sh  'id'  'v.info.json' )"
-elif  \stat  --printf=''  comments\ -\ *.csv  2> /dev/null; then
-  # I prefer a CSV when using youtube-comment-scraper.
-  _debug  " * Found a CSV file"
-  for filename in comments\ -\ *.csv; do
+elif  \stat  --printf=''  comments\ -\ *.ytcs1.csv  2> /dev/null; then
+  _debug  " * Found a youtube-comment-scraper CSV file"
+  for filename in comments\ -\ *.ytcs1.csv; do
+    source_video_id=$( \replace-cut.sh  ' '  3  "$filename" )
+    # Only process the first file found:
+    break
+  done
+elif  \stat  --printf=''  comments\ -\ *.ytcs2.json  2> /dev/null; then
+  _debug  " * Found a youtube-comment-downloader JSON file"
+  for filename in comments\ -\ *.ytcs2.json; do
     source_video_id=$( \replace-cut.sh  ' '  3  "$filename" )
     # Only process the first file found:
     break
