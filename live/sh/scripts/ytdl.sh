@@ -178,10 +178,11 @@ _debug  "$target_subdirectory"
   " $@"
 
 # For some stupid reason the description file won't be properly downloaded if placed in the above statement.
+# I may as well leverage that by appending .txt
 \youtube-dl  \
   --skip-download  \
   --write-description  \
-  --output 'v.%(ext)s'  \
+  --output 'v.%(ext)s.txt'  \
   " $@"
 
 
