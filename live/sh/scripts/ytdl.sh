@@ -22,7 +22,7 @@
 
 
 :<<'# For autotest.sh'
-if [ -z "$*" ]; then
+if [ -z "$@" ]; then
   # Pass example parameters to this very script:
   # This is the oldest YouTube video:
   #"$0"  'jNQXAC9IVRw'                                                --skip-download
@@ -44,7 +44,7 @@ if   [ "$#" -ne 1 ]; then return  1; fi
 DEBUG=${DEBUG='false'}
 _debug() {
   if [ "$DEBUG" = 'true' ]; then
-    \echo  "$*"  >&2
+    \echo  "$@"  >&2
   fi
 }
 
@@ -83,7 +83,7 @@ _debug  "$@"
     \youtube-dl  \
       --get-filename  \
       --output '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
-    " $*"  \
+    "$@"  \
   )  || exit  $?
   # Sometimes youtube-dl will give an error, e.g.:
   #   "ERROR: jNQXAC9IVRw: YouTube said: Unable to extract video data"
@@ -91,12 +91,11 @@ _debug  "$@"
   #   "WARNING: Unable to look up account info: HTTP Error 404: Not Found"
   #if [ $? -ne 0 ]; then exit $?; fi
 }
-_debug  "$target"
 target_directory="$(    \dirname  "$( \dirname  "$target" )" )"
 target_subdirectory="$( \basename "$( \dirname  "$target" )" )"
-# Unused:
-#target_files="$(                      \basename "$target" )"
-#_debug  "$target_files"
+_debug  "target:               $target"
+_debug  "target_directory:     $target_directory"
+_debug  "target_subdirectory:  $target_subdirectory"
 #
 # TODO - remove any other invalid characters
 # Remove 1-3 trailing periods
@@ -108,27 +107,27 @@ target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
 # 20170515  =>  2017-05-15
 # TODO - replace \sed
 target_subdirectory=$( \echo  "$target_subdirectory"  |  \sed  's/\(^[0-9]\{4\}\)\([0-9]\{2\}\)/\1-\2-/' )
-#exit
-#
+_debug  "target_subdirectory:  $target_subdirectory"
+
 :<<'}'   #  Get everything separately
         # This might be more reliable (maybe videos have a slash in their name?), but it's slower and multiple scrapes might piss YouTube off.
   target_directory=$(  \
     \youtube-dl  \
       --get-filename  \
       --output '%(uploader)s'  \
-    "$*"  \
+    "$@"  \
   )
   target_subdirectory=$(  \
     \youtube-dl  \
       --get-filename  \
       --output '%(upload_date)s - %(title)s'  \
-    "$*"  \
+    "$@"  \
   )
   #target_files=$(  \
     #\youtube-dl  \
       #--get-filename  \
       #--output '%(title)s.%(ext)s'  \
-    #"$*"  \
+    #"$@"  \
   #)
 }
 
@@ -169,16 +168,16 @@ _debug  "$target_subdirectory"
   --all-subs  --embed-subs  \
   --add-metadata  \
   --no-call-home  \
-  --output 'v.%(ext)s'  \
-  " $*"
+  --output  'v.%(ext)s'  \
+  "$@"
 
 # For some stupid reason the description file won't be properly downloaded if placed in the above statement.
-# I may as well leverage that by appending .txt
 \youtube-dl  \
   --skip-download  \
   --write-description  \
-  --output 'v.%(ext)s.txt'  \
-  " $*"
+  --output  'v.%(ext)s'  \
+  "$@"
+\mv  'v.description'  'v.description.txt'
 
 
 if [ -f 'v_4.webp' ]; then
