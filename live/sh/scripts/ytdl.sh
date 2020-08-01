@@ -14,7 +14,6 @@
 #
 # Optionally uses my `ytcs.sh` to scrape YouTube comments.
 #
-# TODO/FIXME - I want to also download subtitles, but `search-JSON.sh` does not support the complexity required.
 # YouTube's supported subtitle and closed caption files:
 #   https://support.google.com/youtube/answer/2734698
 
@@ -169,13 +168,19 @@ _debug  "$target_subdirectory"
 \youtube-dl  \
   --console-title  \
   --audio-format  best  \
-  --write-description  \
   --write-info-json  \
   --write-annotations  \
   --write-all-thumbnails  --embed-thumbnail  \
   --all-subs  --embed-subs  \
   --add-metadata  \
   --no-call-home  \
+  --output 'v.%(ext)s'  \
+  " $@"
+
+# For some stupid reason the description file won't be properly downloaded if placed in the above statement.
+\youtube-dl  \
+  --skip-download  \
+  --write-description  \
   --output 'v.%(ext)s'  \
   " $@"
 
