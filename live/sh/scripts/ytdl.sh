@@ -60,24 +60,19 @@ control_c()
 
 case  "$#"  in
   0)
-    _debug  "no parameters"
     \youtube-dl
     exit  0
   ;;
   2)
-    _debug  "2 parameters"
-    if [ "$*" = '-F' ]; then
-      \youtube-dl  -F
+    if [ "$2" = '-F' ]; then
+      \youtube-dl  "$@"
       exit  0
     fi
     # Else continue onward, using use $2 as the parameter.
   ;;
-  *)
-    _debug  "$# parameter(s)"
-  ;;
 esac
-
-_debug  "$*"
+_debug  "$# parameter(s):"
+_debug  "$@"
 
 
 
@@ -88,13 +83,13 @@ _debug  "$*"
     \youtube-dl  \
       --get-filename  \
       --output '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
-    " $@"  \
-  )
+    " $*"  \
+  )  || exit  $?
   # Sometimes youtube-dl will give an error, e.g.:
   #   "ERROR: jNQXAC9IVRw: YouTube said: Unable to extract video data"
   # 2020-08-01  --  An age restricted video will give an error.  I am unable to log in with either --username or ~/.netrc (and --netrc), and I get:
   #   "WARNING: Unable to look up account info: HTTP Error 404: Not Found"
-  if [ $? -ne 0 ]; then exit $?; fi
+  #if [ $? -ne 0 ]; then exit $?; fi
 }
 _debug  "$target"
 target_directory="$(    \dirname  "$( \dirname  "$target" )" )"
@@ -175,7 +170,7 @@ _debug  "$target_subdirectory"
   --add-metadata  \
   --no-call-home  \
   --output 'v.%(ext)s'  \
-  " $@"
+  " $*"
 
 # For some stupid reason the description file won't be properly downloaded if placed in the above statement.
 # I may as well leverage that by appending .txt
@@ -183,7 +178,7 @@ _debug  "$target_subdirectory"
   --skip-download  \
   --write-description  \
   --output 'v.%(ext)s.txt'  \
-  " $@"
+  " $*"
 
 
 if [ -f 'v_4.webp' ]; then
