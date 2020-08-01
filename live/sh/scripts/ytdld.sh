@@ -23,3 +23,5 @@ fi
   --write-description  \
   --output 'v.%(ext)s'  \
   " $source_video_id"
+
+\mv  'v.description'  'v.description.txt'
