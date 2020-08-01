@@ -42,14 +42,14 @@ _setup() {
 
 #:<<'}'   #  Go
 _go() {
-  source="$( \realpath "$1" )"  ;  if [ $? -ne 0 ]; then return; fi
-  target="$( \realpath "$2" )"  ;  if [ $? -ne 0 ]; then return; fi
+  source="$( \realpath "$1" )"  ||  return  $?
+  target="$( \realpath "$2" )"  ||  return  $?
   \echo  ''
   \echo  ''
   \echo  " * Processing source:  $source"
   \echo  " *            target:  $target"
   \echo  ''
-  \cd  "$source"                ;  if [ $? -ne 0 ]; then return; fi
+  \cd  "$source"  ||  return  $?
   for i in  *   \
             .*  ; do
     # It's not ideal to skip directories in this manner, but making assumptions makes the code cleaner.
@@ -70,7 +70,7 @@ _go() {
     \ln  --force  --no-target-directory  --symbolic  --verbose  "$PWD"/"$i"          "$target/$i"
   done
     \ln  --force  --no-target-directory  --symbolic  --verbose  "$PWD"/              "$target/00--dotfiles"
-  \cd  -
+  \cd  -  ||  return  $?
 }
 
 
