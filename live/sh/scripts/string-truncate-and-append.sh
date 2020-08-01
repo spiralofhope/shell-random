@@ -3,7 +3,8 @@
 
 if [ -z "$*" ]; then
   # Pass example parameters to this very script:
-  "$0"  3  '…'  'string'
+  "$0"  20  '…'  'this string is too long'
+  "$0"  20  '…'  'this string is short'
   return
 fi
 
@@ -17,8 +18,11 @@ string="$*"
 
 
 string_truncate_and_append() {
-  __=$( string-truncate.sh  "$string_length_maximum"  "$string" )
-  \echo  "$__$string_to_append"
+  string_result=$( string-truncate.sh  "$string_length_maximum"  "$string" )
+  if [ ${#string_result} -lt ${#string} ]; then
+    string_result="$string_result$string_to_append"
+  fi
+  \echo  "$string_result"
 }
 
 

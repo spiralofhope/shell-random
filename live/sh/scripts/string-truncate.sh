@@ -8,9 +8,16 @@
 
 if [ -z "$*" ]; then
   # Pass example parameters to this very script:
-  "$0"  3  'string'
+  "$0"  20  'this string is too long'
+  "$0"  20  'this string is short'
   return
 fi
+
+
+string_length_maximum="$1"
+shift
+# $2*
+string="$*"
 
 
 DEBUG=${DEBUG='false'}
@@ -24,6 +31,7 @@ _debug() {
 string_truncate() {
   string_length_maximum="$1"
   shift
+  # $2*
   string="$*"
   string_length=${#string}
   #
@@ -56,5 +64,4 @@ string_truncate() {
 
 
 
-string=$( string_truncate  "$1"  "$2" )
-\echo  "$string"
+string_truncate  "$string_length_maximum"  "$string"
