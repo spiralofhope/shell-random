@@ -93,6 +93,8 @@ _debug  "$*"
   )
   # Sometimes youtube-dl will give an error, e.g.:
   #   "ERROR: jNQXAC9IVRw: YouTube said: Unable to extract video data"
+  # 2020-08-01  --  An age restricted video will give an error.  I am unable to log in with --username and I get:
+  #   "WARNING: Unable to look up account info: HTTP Error 404: Not Found"
   if [ $? -ne 0 ]; then exit $?; fi
 }
 _debug  "$target"
