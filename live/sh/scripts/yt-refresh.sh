@@ -6,7 +6,7 @@
 
 
 # Note that, although rare, you might get an error when downloading comments; check your scrollback buffer and re-try as needed.
-# for i in *; do if [ -d "$i" ]; then cd "$i"; echo "$PWD" ; yt-refresh.sh; cd - > /dev/null; printf '\n\n' ; fi; done
+# for i in *; do if [ -d "$i" ]; then cd "$i"; echo "$PWD" ; printf "\033]0;...\007" ; yt-refresh.sh; cd - > /dev/null; printf '\n\n' ; fi; done ; cd .
 
 
 #DEBUG='true'
