@@ -34,6 +34,17 @@ fix_directory() {
 
 
 
+fix_files() {
+  \mv  *.annotations.xml  'v.annotations.xml'  2>  /dev/null
+  \mv  *.description      'v.description'      2>  /dev/null
+  \mv  *.info.json        'v.info.json'        2>  /dev/null
+  \mv  *.jpg              'v.jpg'              2>  /dev/null
+  \mv  *.mkv              'v.mkv'              2>  /dev/null
+  \mv  *.mp4              'v.mp4'              2>  /dev/null
+}
+
+
+
 fix_description() {
   # Backup an old one if it's there.
   # .. but don't force it.
@@ -52,5 +63,6 @@ update_comments() {
 
 
 fix_directory
+fix_files
 fix_description
 update_comments
