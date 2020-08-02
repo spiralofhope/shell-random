@@ -1,8 +1,7 @@
 #!/usr/bin/env  sh
 
 # Read a JSON and get the contents of a specified key.
-#   For example, if I had the following, I want to learn the value for "two" which is "bar"
-#   {"one": "foo", "two": "bar"}
+
 
 # TODO - allow a string to be passed
 # FIXME - this will not work on complex things, like finding subtitles within the ytdl.sh's v.info.json file.
@@ -14,27 +13,30 @@ if [ -z "$*" ]; then
   #//ignore me
   #//{"one": "foo", "two": "bar"}
   #{"one": "content", "two": "12345678901"}
-  "$0"  'two'  'example.json'
+  #{"one": "content", "two": "12345678901", "three": "a string, with a comma"}
+  "$0"  'fulltitle'  'v.info.json'
   return
 fi
 
 
 search_JSON() {
-  case $# in
-    0) return  1  ;;
-    1) input_filename='v.info.json'  ;;
-    *) input_filename="$2"  ;;
-  esac
-
-  key_search="$1"
-  
+  [ $# -eq 2 ]  ||  return  1
+  #
+  key_to_search_for="$1"
+  input_filename="$2"
+  #
   [ -e "$input_filename" ]  ||  return 1
+  #
+
+  #result=$( \grep  --only-matching  --perl-regexp  '"fulltitle":.*?[^\\]",'  "$input_filename" )
+  #length=$(( ${#result} - 2 ))
+  #string-fetch-character-range.sh  15  $length  "$result"
 
   # I don't know if there is a better way to write this:
   # shellcheck disable=2002
   \cat  "$input_filename"  |\
     \tr  -d  '{}"'  |\
-    \tr  ,  \\n  |\
+    \tr  ','  \\n  |\
     while  \read  -r  line; do
       # Skip over lines starting with '//' (comments):
       #   Note that comments are not officially supported by the JSON format, although individual libraries may support them.  As such, commented-JSON files ought to be run through a preparser like JSMin (which removes comments) before actually being used.
@@ -44,10 +46,10 @@ search_JSON() {
       #\echo  "$line"
       #\echo  "$key"
       #\echo  "$value"
-      if [ "$key" = "$key_search" ]; then
+      if [ "$key" = "$key_to_search_for" ]; then
         # Strip leading whitespace:
         value=${value#${value%%[![:space:]]*}}
-        printf  '%s\n'  "$value"
+        \echo  "$value"
         # Stop at the first match:
         return
       fi
@@ -56,7 +58,6 @@ search_JSON() {
 }
 #
 search_JSON  "$@"
-
 
 
 # ----------

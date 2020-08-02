@@ -11,7 +11,7 @@
 # TODO - I want to detect signals and abort the download without killing autotest.sh, but Python's KeyboardInterrupt is too aggressive or something..
 
 
-DEBUG='true'
+#DEBUG='true'
 
 
 :<<'# For autotest.sh'

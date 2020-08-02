@@ -5,9 +5,8 @@
 
 if [ -z "$*" ]; then
   # Pass example parameters to this very script:
-  "$0"  3  'example'
-  # =>
-  # a
+  #"$0"  2  'example'   # =>  x
+  #"$0"  3  'example'   # =>  a
   return
 fi
 
@@ -38,20 +37,8 @@ string_get_character_number() {
     printf  '%s'  "$string"
   }
   #
-  string_get_first_character() {
-    string="$*"
-    #
-    __="$string"
-    while [ -n "$__" ]; do
-      rest="${__#?}"
-      first_character="${__%"$rest"}"
-      printf  '%s'  "$first_character"
-      return
-    done
-  }
-  #
   string=$( string_trim_characters_before  "$character_number_desired"  "$string" )
-  character=$( string_get_first_character  "$string" )
+  character=$( string-fetch-first-character.sh  "$string" )
   printf  '%s'  "$character"
 }
 
