@@ -41,6 +41,21 @@ fix_files() {
   \mv  *.jpg              'v.jpg'              2>  /dev/null
   \mv  *.mkv              'v.mkv'              2>  /dev/null
   \mv  *.mp4              'v.mp4'              2>  /dev/null
+
+  if [ -f 'v_4.webp' ]; then
+    _debug  ' * Deleting extraneous thumbnails.'
+    \rm  --force  v_*.jpg
+  fi
+  if [ -f 'v_3.jpg' ]; then
+    _debug  ' * Deleting extraneous thumbnails.'
+    \rm  --force  v_0.jpg
+    \rm  --force  v_1.jpg
+    \rm  --force  v_2.jpg
+  fi
+  if [ -f 'v_4.jpg' ]; then
+    _debug  ' * Deleting extraneous thumbnails.'
+    \rm  --force  v_3.jpg
+  fi
 }
 
 
