@@ -14,26 +14,30 @@
 fix_directory() {
   # Backup the name of the cache's directory, in case there's no proper info file cached.
   # Note that if the file already exists, there is no way to silence the warning:
-  :>                  'original_directory.txt'
-  \basename "$PWD" >> 'original_directory.txt'
+  :>                     'original_directory.txt'
+  \basename  "$PWD"  >>  'original_directory.txt'
   #
   directory_previous="$( \basename  "$PWD" )"
   #\echo  "$directory_previous"
-  string_length_maximum=2
+  string_length_maximum=59
   string_to_append='…'
   string="$directory_previous"
   target_subdirectory=$( string-truncate-and-append.sh  "$string_length_maximum"  "$string_to_append"  "$string" )
   \cd  ../  ||  return  $?
   if [ ! "$directory_previous" = "$target_subdirectory" ]; then
     \mv  --verbose  "$directory_previous"  "$target_subdirectory"  ||  return  $?
+    \cd  "$target_subdirectory"  ||  return  $?
+  else
+    \cd  "$directory_previous"  ||  return  $?
   fi
 }
 
 
 
 fix_description() {
-  # Backup
-  \mv  ./*.description  'v.description-old.txt'  2>  /dev/null
+  # Backup an old one if it's there.
+  # .. but don't force it.
+  \mv  --verbose  'v.description'  'v.description.old.txt'  2>  /dev/null
   #
   # Re-get v.description
   ytdld.sh

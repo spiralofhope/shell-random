@@ -17,6 +17,7 @@ else
   source_video_id=" $@"
 fi
 
+
 # For some stupid reason the description file won't be properly downloaded if placed in the above statement.
 \youtube-dl  \
   --skip-download  \
