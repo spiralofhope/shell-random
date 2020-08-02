@@ -11,7 +11,7 @@
 # TODO - I want to detect signals and abort the download without killing autotest.sh, but Python's KeyboardInterrupt is too aggressive or something..
 
 
-#DEBUG='true'
+DEBUG='true'
 
 
 :<<'# For autotest.sh'
@@ -47,9 +47,9 @@ if   [ "$#" -eq 1 ]; then
   source_video_id=$( printf  '%s\n'  "${source_video_id##*/}" )
   source_video_id=$( printf  '%s\n'  "${source_video_id##watch?v=}" )
   source_video_id=$( printf  '%s\n'  "${source_video_id%%#*}" )
-elif  \stat  --printf=''  'v.info.json'  2> /dev/null; then
+elif  \stat  --printf=''  *.info.json  2> /dev/null; then
   _debug  " * Found a JSON file"
-  source_video_id="$( \search-json.sh  'id'  'v.info.json' )"
+  source_video_id="$( \search-json.sh  'id'  *.info.json )"
 elif  \stat  --printf=''  comments\ -\ *.ytcs1.csv  2> /dev/null; then
   _debug  " * Found a youtube-comment-scraper CSV file"
   for filename in comments\ -\ *.ytcs1.csv; do
@@ -66,6 +66,7 @@ elif  \stat  --printf=''  comments\ -\ *.ytcs2.json  2> /dev/null; then
   done
 fi
 
+_debug  "$source_video_id"
 
 if [ -z "$source_video_id" ]; then
   \echo  " * No source determined/specified."
