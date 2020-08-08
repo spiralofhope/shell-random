@@ -9,7 +9,7 @@
 # for i in *; do if [ -d "$i" ]; then cd "$i"; echo "$PWD" ; printf "\033]0;...\007" ; yt-refresh.sh; cd - > /dev/null; printf '\n\n' ; fi; done ; cd .
 
 # Only process the last 5 directories:
-# \ls -1 --escape | tail --lines=5 | while read i; do if [ -d "$i" ]; then cd "${i}"; echo "$PWD"; printf "\033]0;...\007" ; echo yt-refresh.sh; cd - > /dev/null ; fi; done; cd .
+# \ls -1 --escape | tail --lines=5 | while read i; do if [ -d "$i" ]; then cd "${i}"; echo "$PWD"; printf "\033]0;...\007" ; yt-refresh.sh; cd - > /dev/null ; fi; done; cd .
 
 
 #DEBUG='true'
