@@ -1,4 +1,6 @@
 #!/usr/bin/env  sh
+# shellcheck  disable=1001  disable=1012
+  # I like backslashes.
 
 # Read a JSON and get the contents of a specified key.
 
@@ -8,15 +10,22 @@
 
 
 
-if [ -z "$*" ]; then
-  # Some example content could be dumped into "example.json"
-  #//ignore me
-  #//{"one": "foo", "two": "bar"}
-  #{"one": "content", "two": "12345678901"}
-  #{"one": "content", "two": "12345678901", "three": "a string, with a comma"}
-  "$0"  'fulltitle'  'v.info.json'
+# For `autotest.sh`:
+if [ $# -eq 0 ]; then
+  unique_file="$( \mktemp )"
+  #\echo  //ignore me  >  "$unique_file"
+  #\echo  //{"one": "foo", "two": "bar"}  >  "$unique_file"
+  #\echo  {"one": "content", "two": "12345678901"}  >  "$unique_file"
+  #\echo  '{"one": "content", "two": "12345678901", "three": "a string, with a comma"}'  >  "$unique_file"
+  \echo  '{"one": "content", "two": "12345678901", "three": "a string, with a comma", "four": "http://example.com"}'  >  "$unique_file"
+  "$0"  'one'              "$unique_file"
+  "$0"  'two'              "$unique_file"
+  "$0"  'three'            "$unique_file"
+  "$0"  'four'             "$unique_file"
+  \rm  --force  --verbose  "$unique_file"
   return
 fi
+
 
 
 search_JSON() {
@@ -42,7 +51,9 @@ search_JSON() {
       #   Note that comments are not officially supported by the JSON format, although individual libraries may support them.  As such, commented-JSON files ought to be run through a preparser like JSMin (which removes comments) before actually being used.
       [ "${line##//*}" ]  ||  continue
       key=$(   \echo "$line" | \cut  -d':' -f1 )
-      value=$( \echo "$line" | \cut  -d':' -f2 )
+      # This was causing a bug for a value of 'http://example.com'
+      #value=$( \echo "$line" | \cut  -d':' -f2 )
+      value=$( \echo "$line" )
       #\echo  "$line"
       #\echo  "$key"
       #\echo  "$value"
