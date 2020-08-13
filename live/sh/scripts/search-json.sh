@@ -51,9 +51,7 @@ search_JSON() {
       #   Note that comments are not officially supported by the JSON format, although individual libraries may support them.  As such, commented-JSON files ought to be run through a preparser like JSMin (which removes comments) before actually being used.
       [ "${line##//*}" ]  ||  continue
       key=$(   \echo "$line" | \cut  -d':' -f1 )
-      # This was causing a bug for a value of 'http://example.com'
-      #value=$( \echo "$line" | \cut  -d':' -f2 )
-      value=$( \echo "$line" )
+      value=$( \echo "$line" | \cut  -d':' -f2- )
       #\echo  "$line"
       #\echo  "$key"
       #\echo  "$value"
