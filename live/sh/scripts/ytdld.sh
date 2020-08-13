@@ -25,4 +25,7 @@ fi
   --output 'v.%(ext)s'  \
   " $source_video_id"
 
-\mv  'v.description'  'v.description.txt'
+
+date_hours_minutes=$( \date.sh  'minutes' )
+filename="v.description--${date_hours_minutes}".txt
+\mv  'v.description'  "$filename"
