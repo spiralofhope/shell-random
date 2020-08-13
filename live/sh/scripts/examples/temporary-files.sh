@@ -1,4 +1,7 @@
 #!/usr/bin/env  sh
+# shellcheck  disable=1001  disable=1012
+  # I like backslashes.
+
 # The program `tempfile` usually also exists, but it is deprecated.  Note, however, that only `tempfile` has  --prefix
 
 
@@ -18,7 +21,7 @@
 {
   # GNU mktemp will create a file which is guaranteed to be unique.
   # By default it will use `/tmp` but you can specify another directory with the --tmpdir switch.
-  unique_file=$( \mktemp )
+  unique_file="$( \mktemp )"
   \rm  --force  --verbose  "$unique_file"
 }
 
@@ -29,7 +32,7 @@
   # $$  is the process ID of the current process.
   # $PPID is the parent's process ID.
   # You can create a unique string to help identify/organize your tempfiles.
-  unique_file=$( \mktemp  --suffix=".my_temporary_file.$$" )
+  unique_file="$( \mktemp  --suffix=".my_temporary_file.$$" )"
   # example file:  /tmp/tmp.CjgG1vqFFC.my_temporary_file.17065
   \rm  --force  --verbose  "$unique_file"
 }
