@@ -1,10 +1,14 @@
 #!/usr/bin/env  sh
+# shellcheck  disable=1001
+  # I like using backslashes.
 
 # Re-download the v.description file
 # This is to recover from an issue with the description file not being properly downloaded when --write-description was being used in the main block of commands.
-
+#
 # Note that, although rare, you might get an error when downloading comments; check your scrollback buffer and re-try as needed.
+
 # for i in *; do \cd "$i"; \echo "$PWD" ; ytdld.sh; cd - > /dev/null; done
+
 
 
 if [ $# -eq 0 ]; then
@@ -14,18 +18,15 @@ if [ $# -eq 0 ]; then
     exit  1
   fi
 else
+  # shellcheck  disable=2124
   source_video_id=" $@"
 fi
 
 
-# For some stupid reason the description file won't be properly downloaded if placed in the above statement.
-\youtube-dl  \
-  --skip-download  \
-  --write-description  \
-  --output 'v.%(ext)s'  \
-  " $source_video_id"
-
 
 date_hours_minutes=$( \date.sh  'minutes' )
 filename="v.description--${date_hours_minutes}".txt
-\mv  'v.description'  "$filename"
+
+
+
+\youtube-dl  --get-description  " $source_video_id" > "$filename"

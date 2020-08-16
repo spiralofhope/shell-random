@@ -179,7 +179,7 @@ _debug  "$target_subdirectory"
   --output  'v.%(ext)s'  \
   "$@"
 date_hours_minutes=$( \date.sh  'minutes'  )
-\mv  'v.description'  'v.description__${date_hours_minutes}.txt'
+\mv  'v.description'  "v.description__${date_hours_minutes}.txt"
 
 
 if [ -f 'v_4.webp' ]; then
