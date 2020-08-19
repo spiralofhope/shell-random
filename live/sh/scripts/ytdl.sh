@@ -8,10 +8,10 @@
 #   https://youtube-dl.org/
 #   https://blog.spiralofhope.com/?p=41260
 #
-# TODO - Requires my `search-JSON.sh`.
-#
-# Optionally uses my `ytcs.sh` to scrape YouTube comments.
-#
+# Requires my `search-json`.
+# Optionally uses my `ytcs.sh` to scrape the comments.
+# Optionally uses my `ytdld.sh` to fetch the description.
+
 # YouTube's supported subtitle and closed caption files:
 #   https://support.google.com/youtube/answer/2734698
 
@@ -110,27 +110,7 @@ target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
 target_subdirectory=$( \echo  "$target_subdirectory"  |  \sed  's/\(^[0-9]\{4\}\)\([0-9]\{2\}\)/\1-\2-/' )
 _debug  "target_subdirectory:  $target_subdirectory"
 
-:<<'}'   #  Get everything separately
-        # This might be more reliable (maybe videos have a slash in their name?), but it's slower and multiple scrapes might piss YouTube off.
-  target_directory=$(  \
-    \youtube-dl  \
-      --get-filename  \
-      --output '%(uploader)s'  \
-    "$@"  \
-  )
-  target_subdirectory=$(  \
-    \youtube-dl  \
-      --get-filename  \
-      --output '%(upload_date)s - %(title)s'  \
-    "$@"  \
-  )
-  #target_files=$(  \
-    #\youtube-dl  \
-      #--get-filename  \
-      #--output '%(title)s.%(ext)s'  \
-    #"$@"  \
-  #)
-}
+
 
 if_long_then_truncate_and_append() {
   string_length_maximum="$1"
@@ -172,14 +152,6 @@ _debug  "$target_subdirectory"
   --output  'v.%(ext)s'  \
   "$@"
 
-# For some stupid reason the description file won't be properly downloaded if placed in the above statement.
-\youtube-dl  \
-  --skip-download  \
-  --write-description  \
-  --output  'v.%(ext)s'  \
-  "$@"
-date_hours_minutes=$( \date.sh  'minutes'  )
-\mv  'v.description'  "v.description__${date_hours_minutes}.txt"
 
 
 if [ -f 'v_4.webp' ]; then
@@ -193,7 +165,7 @@ if [ -f 'v_3.jpg' ]; then
   \rm  --force  v_2.jpg
 fi
 if [ -f 'v_4.jpg' ]; then
-  _debug  ' * Deleting extraneous thumbnails.'
+  _debug  ' * Deleting extraneous thumbnails...'
   \rm  --force  v_3.jpg
 fi
 
@@ -203,9 +175,25 @@ if  [ "$DEBUG" = 'true' ] || \
     [ $# -eq 2 ] && [ "$2" = '-F' ]; then
   exit
 fi
-# Also download comments using  `youtube-comment-scraper`
-# This script will pick up the data from v.info.json
-ytcs.sh
+
+
+
+#:<<'}'   #  Description
+  # For some stupid reason the description file won't be properly downloaded if placed in the youtube-dl command.
+  # But I ended up pushing it into its own script anyway..
+  _debug  ' * Downloading the description...'
+  ytdld.sh
+}
+
+
+
+#:<<'}'   #  Comments
+{
+  _debug  ' * Downloading the comments...'
+  source_video_id="$( \search-json.sh  'id'  v.info.json )"
+  ytcs.sh  "$source_video_id"
+}
+
 
 
 \echo  ''
@@ -213,3 +201,29 @@ ytcs.sh
 \echo  "   $target_directory"
 \echo  "   $target_subdirectory"
 \echo  ''
+
+
+
+
+
+:<<'}'   #  Get everything separately
+        # This might be more reliable (maybe videos have a slash in their name?), but it's slower and multiple scrapes might piss YouTube off.
+  target_directory=$(  \
+    \youtube-dl  \
+      --get-filename  \
+      --output '%(uploader)s'  \
+    "$@"  \
+  )
+  target_subdirectory=$(  \
+    \youtube-dl  \
+      --get-filename  \
+      --output '%(upload_date)s - %(title)s'  \
+    "$@"  \
+  )
+  #target_files=$(  \
+    #\youtube-dl  \
+      #--get-filename  \
+      #--output '%(title)s.%(ext)s'  \
+    #"$@"  \
+  #)
+}

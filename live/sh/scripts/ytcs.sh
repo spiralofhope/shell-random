@@ -73,7 +73,7 @@ if [ -z "$source_video_id" ]; then
   return  1
 fi
 
-comment_filename="comments - $source_video_id - $( \date  --utc  +%Y-%m-%d\ %H։%M )"
+comment_filename="comments - $( \date  --utc  +%Y-%m-%d\ %H։%M )"
 _debug  ' * Downloading comments from..'
 _debug  "   id:    \"$source_video_id\""
 _debug  "   into:  \"$comment_filename\""
