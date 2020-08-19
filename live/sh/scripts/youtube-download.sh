@@ -9,8 +9,8 @@
 #   https://blog.spiralofhope.com/?p=41260
 #
 # Requires my `search-json`.
-# Optionally uses my `ytcs.sh` to scrape the comments.
-# Optionally uses my `ytdld.sh` to fetch the description.
+# Optionally uses my `youtube-download-comments.sh` to scrape the comments.
+# Optionally uses my `youtube-download-description.sh` to fetch the description.
 
 # YouTube's supported subtitle and closed caption files:
 #   https://support.google.com/youtube/answer/2734698
@@ -179,10 +179,11 @@ fi
 
 
 #:<<'}'   #  Description
+{
   # For some stupid reason the description file won't be properly downloaded if placed in the youtube-dl command.
   # But I ended up pushing it into its own script anyway..
   _debug  ' * Downloading the description...'
-  ytdld.sh
+  youtube-download-description.sh
 }
 
 
@@ -191,7 +192,7 @@ fi
 {
   _debug  ' * Downloading the comments...'
   source_video_id="$( \search-json.sh  'id'  v.info.json )"
-  ytcs.sh  "$source_video_id"
+  youtube-download-comments.sh  "$source_video_id"
 }
 
 

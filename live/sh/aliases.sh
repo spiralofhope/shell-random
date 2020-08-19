@@ -25,14 +25,6 @@ alias  reboot="/bin/su  -c  '/sbin/shutdown  -r  -t now  now  rebooting'"
 alias  rm='\rm  --interactive  --one-file-system'
 alias  sh='\sh  -l'
 
-ytdls() {
-  # Set the terminal title
-  \printf  "\033]0;...\007"
-  \ytdl.sh  "$@"  --skip-download
-  # Restore the terminal title
-  \cd  .
-}
-
 # --QUIT-AT-EOF
 # --no-init is mandatory for Windows Subsystem for Linux.
 alias  myless='\less  --no-init  --RAW-CONTROL-CHARS  --quit-if-one-screen'

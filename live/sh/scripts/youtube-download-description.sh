@@ -7,7 +7,7 @@
 #
 # Note that, although rare, you might get an error when downloading comments; check your scrollback buffer and re-try as needed.
 
-# for i in *; do \cd "$i"; \echo "$PWD" ; ytdld.sh; cd - > /dev/null; done
+# for i in *; do \cd "$i"; \echo "$PWD" ; youtube-download-description.sh; cd - > /dev/null; done
 
 
 
