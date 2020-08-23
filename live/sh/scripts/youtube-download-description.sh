@@ -30,3 +30,9 @@ filename="v.description--${date_hours_minutes}".txt
 
 
 \youtube-dl  --get-description  " $source_video_id" > "$filename"
+
+
+# Delete empty/failed downloads.
+if ! [ -s "$filename" ]; then
+  \rm  --force  "$filename"
+fi
