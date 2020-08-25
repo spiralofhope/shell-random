@@ -12,7 +12,7 @@
 
 
 
-DEBUG='true'
+#DEBUG='true'
 
 
 # FIXME
@@ -90,6 +90,7 @@ if [ $# -eq 0 ]; then
       if ! [ -d "$i" ]            ; then continue; fi
       if ! [ -e "$i"/v.info.json ]; then continue; fi
       filename_referenced="${i}/v.info.json"
+      break
     done
   fi
   if [ "$filename_referenced" = '' ]; then
