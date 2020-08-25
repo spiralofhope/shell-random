@@ -29,7 +29,11 @@ filename="v.description--${date_hours_minutes}".txt
 
 
 
-\youtube-dl  --get-description  " $source_video_id" > "$filename"
+\youtube-dl  \
+  --get-description  \
+  --no-call-home  \
+  " $source_video_id" > "$filename"
+
 
 
 # Delete empty/failed downloads.
