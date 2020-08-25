@@ -67,8 +67,8 @@ fix_files() {
   # The old date format which did not have the date of download.
   if [ -f comments-*.csv ]; then
     for i in comments-*.csv; do
-      end=$(( ${#i} - 4 ))
-      youtube_id=$( string-fetch-character-range.sh  10  "$end"  "$i" )
+      #end=$(( ${#i} - 4 ))
+      #youtube_id=$( string-fetch-character-range.sh  10  "$end"  "$i" )
       #date='2020-08-02 06։04'
       # e.g. 
       #   2020-08-01 23:12:43.050756813 -0700
@@ -79,7 +79,7 @@ fix_files() {
       date_after="$(  string-fetch-character-range.sh  15  16 "$date" )"
       # ։ is not a colon
       date="${date_before}։${date_after}"
-      filename_new="comments - $youtube_id - $date.ytcs0.csv"
+      filename_new="comments - $date.ytcs0.csv"
       _debug  "$filename_new"
       \mv  "$i"  "$filename_new"
     done
@@ -87,17 +87,21 @@ fix_files() {
   # Mostly-copypasta from above, because I'm lazy.
   if [ -f comments-*.json ]; then
     for i in comments-*.json; do
-      end=$(( ${#i} - 5 ))
-      youtube_id=$( string-fetch-character-range.sh  10  "$end"  "$i" )
       date=$( \stat  --format='%y'  "$i" )
       date_before="$( string-fetch-character-range.sh   1  13 "$date" )"
       date_after="$(  string-fetch-character-range.sh  15  16 "$date" )"
       date="${date_before}։${date_after}"
-      filename_new="comments - $youtube_id - $date.ytcs0.json"
+      filename_new="comments - $date.ytcs0.json"
       _debug  "$filename_new"
       \mv  "$i"  "$filename_new"
     done
   fi
+  # Remove the youtube_id from the filename, to keep it short.
+  for i in comments\ \-\ *\ \-\ *.ytcs*.json; do
+    end="$( string-fetch-character-range.sh  26  53 "$i" )"
+    filename_new="comments - $end"
+    \mv  "$i"  "$filename_new"
+  done
 }
 
 
