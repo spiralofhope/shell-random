@@ -1,7 +1,5 @@
 #!/usr/bin/env  sh
-# shellcheck disable=1001
-#   I like using \ a lot.
-# shellcheck disable=1012
+# shellcheck  disable=1001  disable=1012
 #   I like using \ a lot.
 
 
@@ -22,10 +20,12 @@ GNU coreutils
   http://www.gnu.org/software/coreutils/manual/coreutils.html
   'basename'
     http://www.gnu.org/software/coreutils/manual/coreutils.html#basename-invocation
-    Alternate: 'cut' or with shell functionality.
+    Alternate:  see `replace-basename.sh`
+    Alternate:  `cut`
   'dirname'
     https://www.gnu.org/software/coreutils/manual/coreutils.html#dirname-invocation
-    Alternate: 'cut' or with shell functionality.
+    Alternate:  see `replace-dirname.sh`
+    Alternate:  `cut`
   'realpath'
     https://www.gnu.org/software/coreutils/manual/coreutils.html#realpath-invocation
 HEREDOC
