@@ -5,14 +5,17 @@
 # Download the latest comments.
 
 
-# Note that, although rare, you might get an error when downloading comments; check your scrollback buffer and re-try as needed.
-# for i in *; do if [ -d "$i" ]; then cd "$i"; echo "$PWD" ; printf "\033]0;...\007" ; youtube-refresh.sh; cd - > /dev/null; printf '\n\n' ; fi; done ; cd .
-
 # Only process the last 5 directories:
 # \ls -1 --escape | tail --lines=5 | while read i; do if [ -d "$i" ]; then cd "${i}"; echo "$PWD"; printf "\033]0;...\007" ; youtube-refresh.sh; cd - > /dev/null ; fi; done; cd .
 
 
 #DEBUG='true'
+
+
+# Note that, although rare, you might get an error when downloading comments; check your scrollback buffer and re-try as needed.
+if [ "$1" = 'all' ]; then
+  for i in *; do if [ -d "$i" ]; then cd "$i"; echo "$PWD" ; printf "\033]0;...\007" ; youtube-refresh.sh; cd - > /dev/null; printf '\n\n' ; fi; done ; cd .
+fi
 
 
 
