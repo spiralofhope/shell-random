@@ -4,7 +4,7 @@
 
 
 
-if [ -z "$*" ]; then
+if [ $# -eq 0 ]; then
   #"$0"  '1'    # =>  0
   #"$0"  '123'  # =>  0
   #"$0"  'a'    # =>  1
@@ -13,12 +13,14 @@ if [ -z "$*" ]; then
   #"$0"  '1a'   # =>  1
   #"$0"  '2020-08-01 - string'  # =>  1
   #\echo  $?
-  return
+  return  2
 fi
+
 
 
 string="$*"
 #\echo  "$string"
+
 
 
 character_range_desired_begin=1
@@ -34,5 +36,7 @@ for i in $( replace-seq.sh  "$character_range_desired_begin"  "$character_range_
     return  1
   fi
 done
+
+
 
 return  0
