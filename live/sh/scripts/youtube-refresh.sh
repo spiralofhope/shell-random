@@ -5,17 +5,7 @@
 # Download the latest comments.
 
 
-# Only process the last 5 directories:
-# \ls -1 --escape | tail --lines=5 | while read i; do if [ -d "$i" ]; then cd "${i}"; echo "$PWD"; printf "\033]0;...\007" ; youtube-refresh.sh; cd - > /dev/null ; fi; done; cd .
-
-
 #DEBUG='true'
-
-
-# Note that, although rare, you might get an error when downloading comments; check your scrollback buffer and re-try as needed.
-if [ "$1" = 'all' ]; then
-  for i in *; do if [ -d "$i" ]; then cd "$i"; echo "$PWD" ; printf "\033]0;...\007" ; youtube-refresh.sh; cd - > /dev/null; printf '\n\n' ; fi; done ; cd .
-fi
 
 
 
@@ -27,19 +17,66 @@ _debug() {
 }
 
 
+# Refresh subdirectories:
+# for i in *; do if [ -d "$i" ]; then cd "$i"; echo "$PWD" ; printf "\033]0;...\007" ; youtube-refresh.sh; cd - > /dev/null; printf '\n\n' ; fi; done ; cd .
+# Note that, although rare, you might get an error when downloading comments; check your scrollback buffer and re-try as needed.
+if [ "$1" = 'all' ]; then
+  for i in *; do
+    if ! [ -d "$i" ]; then continue; fi
+    \cd  "$i"  ||  return  $?
+    \echo  "$PWD"
+    # shellcheck  disable=1117
+    #   This formatting is intentional, to manipulate the terminal's title.
+    printf  "\033]0;...\007"
+    youtube-refresh.sh
+    \cd  -  > /dev/null  ||  return  $?
+  done
+  \cd  .  ||  return  $?
+  return
+fi
+
+
+# Only process the last n directories:
+# \ls -1 --escape | tail --lines=5 | while read i; do if [ -d "$i" ]; then cd "$i"; echo "$PWD"; printf "\033]0;...\007" ; youtube-refresh.sh; cd - > /dev/null ; fi; done; cd .
+if   [ $# -eq 1 ]; then
+  if ! is-string-a-number？.sh  "$1"; then return  1; fi
+  lines="$1"
+  #echo _${lines}_
+  #
+  # shellcheck  disable=2162
+  #  `read` doesn't work with -r
+  #    I don't know why.
+  \find  .  -maxdepth  1  -type d  \
+  |  \tail  --lines="$lines"  \
+  |  \
+  while read  i; do
+    \cd  "$i"  ||  return  $?
+    \echo  "$PWD"
+    # shellcheck  disable=1117
+    #   This formatting is intentional, to manipulate the terminal's title.
+    printf  "\033]0;...\007"
+    youtube-refresh.sh
+    \cd  -  > /dev/null  ||  return  $?
+  done
+  \cd  .  ||  return  $?
+  return
+fi
+
+
+
 fix_files() {
   if [ ! -f 'v.info.json' ]; then
     # Probably nothing is named correctly..
-    \mv  *.annotations.xml  'v.annotations.xml'  2>  /dev/null
-    \mv  *.info.json        'v.info.json'        2>  /dev/null
-    \mv  *.xml              'v.xml'              2>  /dev/null
-    \mv  *.jpg              'v.jpg'              2>  /dev/null
-    \mv  *.mkv              'v.mkv'              2>  /dev/null
-    \mv  *.mp4              'v.mp4'              2>  /dev/null
-    \mv  *.webm             'v.webm'             2>  /dev/null
-    \mv  *.aac              'v.aac'              2>  /dev/null
-    \mv  *.opus             'v.opus'             2>  /dev/null
-    \mv  *.m4a              'v.m4a'              2>  /dev/null
+    \mv  ./*.annotations.xml  'v.annotations.xml'  2>  /dev/null
+    \mv  ./*.info.json        'v.info.json'        2>  /dev/null
+    \mv  ./*.xml              'v.xml'              2>  /dev/null
+    \mv  ./*.jpg              'v.jpg'              2>  /dev/null
+    \mv  ./*.mkv              'v.mkv'              2>  /dev/null
+    \mv  ./*.mp4              'v.mp4'              2>  /dev/null
+    \mv  ./*.webm             'v.webm'             2>  /dev/null
+    \mv  ./*.aac              'v.aac'              2>  /dev/null
+    \mv  ./*.opus             'v.opus'             2>  /dev/null
+    \mv  ./*.m4a              'v.m4a'              2>  /dev/null
   fi
   #
   if [ -f 'v_4.webp' ]; then
@@ -68,7 +105,9 @@ fix_files() {
   fi
   #
   # The old date format which did not have the date of download.
-  if [ -f comments-*.csv ]; then
+
+  for f in ./comments-*.csv; do
+    [ -e "$f" ] || break
     for i in comments-*.csv; do
       #end=$(( ${#i} - 4 ))
       #youtube_id=$( string-fetch-character-range.sh  10  "$end"  "$i" )
@@ -86,10 +125,12 @@ fix_files() {
       _debug  "$filename_new"
       \mv  "$i"  "$filename_new"
     done
-  fi
+  done
+  #
   # Mostly-copypasta from above, because I'm lazy.
-  if [ -f comments-*.json ]; then
-    for i in comments-*.json; do
+  for f in ./comments-*.json; do
+    [ -e "$f" ] || break
+    for i in ./comments-*.json; do
       date=$( \stat  --format='%y'  "$i" )
       date_before="$( string-fetch-character-range.sh   1  13 "$date" )"
       date_after="$(  string-fetch-character-range.sh  15  16 "$date" )"
@@ -98,12 +139,18 @@ fix_files() {
       _debug  "$filename_new"
       \mv  "$i"  "$filename_new"
     done
-  fi
-  # Remove the youtube_id from the filename, to keep it short.
-  for i in comments\ \-\ *\ \-\ *.ytcs*.json; do
-    end="$( string-fetch-character-range.sh  26  53 "$i" )"
-    filename_new="comments - $end"
-    \mv  "$i"  "$filename_new"
+  done
+  #
+  # Remove the youtube_id from the filename, to keep it short:
+  # shellcheck  disable=1001
+  for f in ./comments\ \-\ *\ \-\ *.ytcs?.json; do
+    [ -e "$f" ] || break
+    # shellcheck  disable=1001
+    for i in comments\ \-\ *\ \-\ *.ytcs?.json; do
+      end="$( string-fetch-character-range.sh  26  53 "$i" )"
+      filename_new="comments - $end"
+      \mv  "$i"  "$filename_new"
+    done
   done
 }
 
@@ -186,7 +233,7 @@ fix_directory() {
     string="$*"
     #
     if ! \
-      is-string-a-date？.sh  $( string-fetch-character-range.sh   1   10  "$string" )
+      is-string-a-date？.sh  "$( string-fetch-character-range.sh   1   10  "$string" )"
     then
       convert_numbers_into_date() {
         string="$*"
@@ -229,13 +276,14 @@ fix_directory() {
 fix_description() {
   # Backup an old one if it's there.
   # .. but don't force it.
-  \mv  *.description  'v.description.old.txt'  2>  /dev/null
+  \mv  ./*.description  'v.description.old.txt'  2>  /dev/null
   #
   # Re-get v.description
   # For reasons unknown I must pause a moment for the program to work properly..
   sleep  1
-  youtube-download-description.sh
-  if [ $? -ne 0 ]; then
+  if  !  \
+    youtube-download-description.sh
+  then
     \echo  '----------------------------------------------------------'
     \echo  "ABORTING on directory:"
     \echo  "$PWD"
