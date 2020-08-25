@@ -12,10 +12,72 @@
 
 
 
+DEBUG='true'
+
+
 # FIXME
 :<<'}'   #  For `autotest.sh`:
 {
   # TODO
+  #https://www.youtube.com/c/jawed/videos
+}
+
+
+
+DEBUG=${DEBUG='false'}
+_debug() {
+  if [ "$DEBUG" = 'true' ]; then
+    \echo  "$@"  >&2
+  fi
+}
+
+
+
+_usage() {
+  error_number="$1"
+  \echo  ''
+  \echo  " * ERROR - Give one of:"
+  \echo  '   - no parameters, and an existing ./v.info.json'
+  \echo  '   - no parameters, and a subdirectory with a ./v.info.json'
+  \echo  '   - a json filename'
+  \echo  '   - a channel URL'
+  \echo  '     e.g.  https://www.youtube.com/c/jawed/videos'
+  \echo  ''
+  \echo  "   error code:  _usage  '$error_number'"
+  \echo  ''
+}
+
+
+
+check_URL() {
+  URL="$1"
+  _debug  "checking  $URL"
+  # Check that the URL is valid:
+  HTTP_status_code="$( 
+    string-split-and-output-all-after.sh  ' '  "$(
+      \curl  --head  --silent  "$URL"  \
+      |  \head  --lines=1  \
+    )"
+  )"
+  _debug  "HTTP status code:  $HTTP_status_code"
+  HTTP_status_code="$( string-remove-whitespace-trailing.sh "$HTTP_status_code" )"
+  # shellcheck  disable=2091
+    # I intend to execute is-string-a-number？.sh
+  if    !  $( is-string-a-number？.sh  "$HTTP_status_code" ) ; then _usage  '3'  ; return 1
+  elif     [ "$HTTP_status_code" -ne 200 ]                   ; then _usage  '4'  ; return 1
+  fi
+}
+
+
+_download_URL() {
+  URL="$1"
+  #
+  \youtube-dl  \
+    --flat-playlist  \
+    --get-id  \
+    --no-call-home  \
+    "$URL"  \
+    |  \tee  "$filename"
 }
 
 
@@ -24,39 +86,53 @@ if [ $# -eq 0 ]; then
   if  [ -f 'v.info.json' ]; then
     filename_referenced='v.info.json'
   else
-    \echo  "ERROR - Give one of:"
-    \echo  ' - a json filename'
-    \echo  ' - a channel URL'
-    \echo  1
+    for i in *; do
+      if ! [ -d "$i" ]            ; then continue; fi
+      if ! [ -e "$i"/v.info.json ]; then continue; fi
+      filename_referenced="${i}/v.info.json"
+    done
   fi
+  if [ "$filename_referenced" = '' ]; then
+    _usage  '1'
+    return  1
+  fi
+elif [ $# -gt 1 ]; then
+  _usage  '2'
+  return  1
 elif [ -f "$1" ]; then
   filename_referenced="$1"
 else
-  \echo  'not implemented yet..'
-  return  1
-  # Assume I've been passed a URL.
-  # TODO - Check that the URL is valid.
-  #        Maybe ping it?
-  #channel_url="$1"
-  # FIXME - get $channel_id
-  # FIXME - get $channel_name
+  # A non-file; assuming it's a URL.
+  URL="$1"
+  if  !  \
+    check_URL  "$URL"
+  then
+    return  1
+  fi
+  # remove /videos
+  channel_name="$( string-remove-n-characters-trailing.sh  7   "$URL" )"
+  #_debug  "channel_name:  $channel_name"
+  channel_name="$( string-split-and-output-all-after.sh  '/'  "$channel_name" )"
+  #_debug  "channel_name:  $channel_name"
+  channel_name="$( string-fetch-last-word.sh  "$channel_name")"
+  _debug  "channel_name:  $channel_name"
+  date_hours_minutes=$( \date.sh  'minutes' )
+  filename="videos-list--${channel_name}--${date_hours_minutes}".txt
+  _debug  "filename:  $filename"
+  \echo  ' * Downloading the list..'
+  _download_URL  "$URL"
+  return  $?
 fi
 
 
-# This isn't right..
-#if [ ${#filename_referenced} -eq 0 ]; then
-  # I've been passed a URL
 
-
-
-channel_id="$(   \search-json.sh  'channel_id'   "$filename_referenced" )"
+# If the variable is set
 channel_name="$( \search-json.sh  'uploader'     "$filename_referenced" )"
-
-
-
+channel_id="$(   \search-json.sh  'channel_id'   "$filename_referenced" )"
 \echo  ' * Downloading video IDs for:'
-\echo  "   uploader:     ${channel_name}"
-\echo  "   channel_id:   ${channel_id}"
+\echo  "   channel_name:  ${channel_name}"
+\echo  "   channel_id:    ${channel_id}"
+#
 string_length_maximum=29
 string_to_append='…'
 string="$channel_name"
@@ -64,69 +140,25 @@ channel_name=$( string-truncate-and-append.sh  "$string_length_maximum"  "$strin
 #date_hours_minutes_seconds=$( \date.sh  'seconds' )
 #filename="${channel_name}__${channel_id}__${date_hours_minutes_seconds}".txt
 date_hours_minutes=$( \date.sh  'minutes' )
-filename="videos-list--${date_hours_minutes}".txt
-
-
-
-_go() {
-  channel_url="$1"
-  #
-  \echo  ' * Attempting the URL:'
-  \echo  "   $channel_url"
-  #
-  # --user-agent might bypass some instances of the error "Unable to extract video data"
-  # I use `tee` because it is nice to have feedback.
-  \youtube-dl  "$channel_url"  \
-    --get-id  \
-    --ignore-errors  \
-    2>&1  |\
-    \tee  "$filename"
-}
-
-
-
-_go  "http://youtube.com/channel/$channel_id"
-if [ -z "$filename" ]; then
-  _go  "http://youtube.com/c/$channel_id"
-fi
-if [ -z "$filename" ]; then
+filename="videos-list--${channel_name}--${date_hours_minutes}".txt
+_debug  "filename:  $filename"
+# e.g.:  jawed
+#   or:  UC4QobU6STFB0P71PMvOGN5A
+if    check_URL      "https://www.youtube.com/channel/$channel_id/videos"
+then  _download_URL  "https://www.youtube.com/channel/$channel_id/videos";  return  $?
+elif  check_URL      "https://www.youtube.com/c/$channel_id/videos"
+then  _download_URL  "https://www.youtube.com/c/$channel_id/videos"      ;  return  $?
+elif  check_URL      "https://www.youtube.com/c/$channel_name/videos"
+then  _download_URL  "https://www.youtube.com/c/$channel_name/videos"    ;  return  $?
+else
   \echo  ' * Fetching channel_url, this may take a while...'
   channel_url="$(  \search-json.sh  'channel_url'  "$filename_referenced" )"
-  \echo  ' * TODO - implement this style of URL'
-  _go  "$channel_url"
+  if    check_URL  "$channel_url/videos"
+  then  _download_URL  "$channel_url/videos" ; return  $?
+  fi
 fi
 
 
 
-if [ -z "$filename" ]; then
-  \echo  ' * All efforts have completely failed.  Is that URL valid?'
-  \rm  --force  "$filename"
-  return  1
-fi
-
-
-
-# youtube-dl will occasionally give an error:
-# ERROR: jNQXAC9IVRw: YouTube said: Unable to extract video data
-# Maybe such videos require a login or have some other issue, but such details are responsibility of whomever uses the list.
-# TODO - There may be a way to output errors into their own file..
-
-# Cleaned-up:
-\cut       --delimiter=':' --fields=2  \
-  |  \cut  --delimiter=' ' --fields=2  \
-  "$filename"  \
-  >  "$filename".errors-removed.txt
-
-
-# Only errors:
-\fgrep  --invert-match  \
-  --file="$filename"  \
-  "$filename".errors-removed.txt  \
-  >  "$filename".errors-only.txt
-
-
-# If file is zero size, then no errors were found; delete associated files.
-if [ ! -s "$filename".errors-only.txt ]; then
-  \rm  --force  "$filename".errors-removed.txt
-  \rm  --force  "$filename".errors-only.txt
-fi
+\echo  ' * ERROR:  Something is amok; nothing could be downloaded'
+return  1
