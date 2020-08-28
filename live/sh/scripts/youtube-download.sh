@@ -29,15 +29,15 @@ The description might have, at its bottom:
   Age-restricted video (based on Community Guidelines)
 
 
-1)  I am unable to log in with either --username or ~/.netrc (and --netrc)
+(1) I am unable to log in with either --username or ~/.netrc (and --netrc)
 
-2)  The username/password are currently bugged.
+(2) The username/password are currently bugged.
     See https://github.com/ytdl-org/youtube-dl/issues/26400
 
-4)  One guy said to use an app password, but I don't think that's right.
+(3) One guy said to use an app password, but I don't think that's right.
       https://support.google.com/accounts/answer/185833
 
-3)  SOLUTION - Using Cookies:
+(4) SOLUTION - Using Cookies:
     For chrome, try:
      https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg/related
      -  No reboot required
@@ -49,11 +49,16 @@ The description might have, at its bottom:
 _ENDNOTES_
 
 
+
 DEBUG='true'
-# TODO - implement
-# Force a login
-# This will be auto-detected if an age-restricted video is attempted.
-LOGIN='true'
+#
+# Uncomment if you have provided this file and want youtube-dl to present those credentials, e.g. for age-restricted videos:
+# See (4) above
+cookies="$HOME/cookies.txt"
+#
+# Not implemented:
+#username='username@example.com'
+#password='password'
 
 
 
@@ -90,12 +95,17 @@ _debug() {
 
 
 
-LOGIN=${LOGIN='false'}
-_login() {
-  #username='username@example.com'
-  #password='password'
-  cookies='--cookies=~/cookies.txt'
-}
+cookies=${cookies=' '}
+if [ ! "$cookies" = ' ' ]; then
+  if [ ! -e "$cookies" ]; then
+    \echo  'ERROR:  Cookies file does not exist:'
+    \echo  "$cookies"
+    exit  1
+  else
+    cookies="--cookies=$cookies"
+  fi
+fi
+_debug  "cookies:  $cookies"
 
 
 
@@ -117,7 +127,9 @@ case  "$#"  in
   ;;
   2)
     if [ "$2" = '-F' ]; then
-      \youtube-dl  "$@"
+      \youtube-dl  \
+        "$@"  \
+        "$cookies"
       exit  0
     fi
     # Else continue onward, using use $2 as the parameter.
@@ -136,34 +148,32 @@ _debug  "$@"
 #}
 
 {
-  # TODO - forced login
-  #if [ "$LOGIN" = 'true' ]; then
-  #fi
-
   target=$(  \
     \youtube-dl  \
       --get-filename  \
       --output  '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
-    "$@"  \
-  )
-  youtube_dl_error_code=$?
-  if [ "$youtube_dl_error_code" -ne 0 ]; then
-    _debug  "Exit code:  $youtube_dl_error_code"
-    _login
-    #--username="$username"
-    #--password="$password"
-    target=$(  \
-      \youtube-dl  \
-        "$cookies"  \
-        --get-filename  \
-        --output '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
       "$@"  \
-    )
-    _debug  "$target"
-  fi
+      "$cookies"  \
+  )
 }
-target_directory="$(    \dirname  "$( \dirname  "$target" )" )"
-target_subdirectory="$( \basename "$( \dirname  "$target" )" )"
+# taken from  `replace-basename.sh`
+_basename() {
+  dir=${1%${1##*[!/]}}
+  dir=${dir##*/}
+  dir=${dir%"$2"}
+  printf '%s\n' "${dir:-/}"
+}
+# taken from  `replace-dirname.sh`
+_dirname() {
+  dir=${1:-.}
+  dir=${dir%%"${dir##*[!/]}"}
+  [ "${dir##*/*}" ] && dir=.
+  dir=${dir%/*}
+  dir=${dir%%"${dir##*[!/]}"}
+  printf '%s\n' "${dir:-/}"
+}
+target_directory="$(    _dirname  "$( _dirname  "$target" )" )"
+target_subdirectory="$( _basename "$( _dirname  "$target" )" )"
 _debug  "target:               $target"
 _debug  "target_directory:     $target_directory"
 _debug  "target_subdirectory:  $target_subdirectory"
@@ -203,6 +213,7 @@ _debug  "$target_subdirectory"
 \cd                           "$target_directory/$target_subdirectory"  ||  exit  $?
 
 
+
 # Previously..
 #    ` # Note that a base directory  ./  does not work (for subtitles) `  \
 #    --output '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
@@ -212,8 +223,8 @@ _debug  "$target_subdirectory"
 #
 #:<<'}'   #  Download most things
 {
+# TODO - I don't understand why I can't have this empty variable in here... FIXME -- cookies interferes with other things..
 \youtube-dl  \
-  "$cookies"  \
   --console-title  \
   --audio-format  best  \
   --write-info-json  \
@@ -223,8 +234,10 @@ _debug  "$target_subdirectory"
   --add-metadata  \
   --no-call-home  \
   --output  'v.%(ext)s'  \
-  "$@"
+  "$@"  \
+  "$cookies"
 }
+
 
 
 if [ -f 'v_4.webp' ]; then

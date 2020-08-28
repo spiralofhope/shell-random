@@ -13,7 +13,21 @@
 
 
 
-cookies='--cookies=~/cookies.txt'
+# Uncomment if you have provided this file and want youtube-dl to present those credentials, e.g. for age-restricted videos:
+cookies="$HOME/cookies.txt"
+
+
+
+cookies=${cookies=' '}
+if [ ! "$cookies" = ' ' ]; then
+  if [ ! -e "$cookies" ]; then
+    \echo  'ERROR:  Cookies file does not exist:'
+    \echo  "$cookies"
+    exit  1
+  else
+    cookies="--cookies=$cookies"
+  fi
+fi
 
 
 
@@ -38,16 +52,8 @@ filename="v.description--${date_hours_minutes}".txt
 \youtube-dl  \
   --get-description  \
   --no-call-home  \
-  " $source_video_id" > "$filename"
-
-youtube_dl_error_code=$?
-if [ "$youtube_dl_error_code" -ne 0 ]; then
-  \youtube-dl  \
-    "$cookies"  \
-    --get-description  \
-    --no-call-home  \
-    " $source_video_id" > "$filename"
-fi
+  " $source_video_id" > "$filename"  \
+  "$cookies"
 
 
 
