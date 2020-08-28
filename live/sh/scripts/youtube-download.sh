@@ -19,10 +19,45 @@
 
 
 
-#DEBUG='true'
+:<<'_ENDNOTES_'  #  On age restriction etc.
+youtube-dl will give an error like:
+  ERROR: jNQXAC9IVRw: YouTube said: Unable to extract video data
+  WARNING: Unable to look up account info: HTTP Error 404: Not Found
+
+The description might have, at its bottom:
+  Notice
+  Age-restricted video (based on Community Guidelines)
 
 
-:<<'}'   #  For `autotest.sh`
+1)  I am unable to log in with either --username or ~/.netrc (and --netrc)
+
+2)  The username/password are currently bugged.
+    See https://github.com/ytdl-org/youtube-dl/issues/26400
+
+4)  One guy said to use an app password, but I don't think that's right.
+      https://support.google.com/accounts/answer/185833
+
+3)  SOLUTION - Using Cookies:
+    For chrome, try:
+     https://chrome.google.com/webstore/detail/cookiestxt/njabckikapfpffapmjgojcnbfjonfjfg/related
+     -  No reboot required
+     -  Switch to a YouTube tab
+     -  Click that extension's icon
+     -  Notice the text "To download cookies for this tab click here, or download all cookies."
+     -  Click "click here" and save that  `cookies.txt`  file to a known location.  This is currently hard-coded to  `~/cookies.txt`
+
+_ENDNOTES_
+
+
+DEBUG='true'
+# TODO - implement
+# Force a login
+# This will be auto-detected if an age-restricted video is attempted.
+LOGIN='true'
+
+
+
+#:<<'}'   #  For `autotest.sh`
 {
   if [ $# -eq 0 ]; then
     # Pass example parameters to this very script:
@@ -30,16 +65,20 @@
     #"$0"  'jNQXAC9IVRw'                                                --skip-download
     #"$0"  'https://youtu.be/jNQXAC9IVRw'                               --skip-download
     #"$0"  'https://www.youtube.com/watch?v=jNQXAC9IVRw'                --skip-download
-    "$0"  'https://www.youtube.com/watch?v=jNQXAC9IVRw#me-at-the-zoo'  --skip-download
+    #"$0"  'https://www.youtube.com/watch?v=jNQXAC9IVRw#me-at-the-zoo'  --skip-download
+
+    # Testing with a login required...
+    # TODO - Upload my own test, so I can rely on its existence.
+    #"$0"  'ufH4DaUxBbA'                                                --skip-download
+
     # =>
     # amp
     return
   fi
 
   # TODO - instructions
-  if   [ "$#" -ne 1 ]; then return  1; fi
+  #if   [ "$#" -ne 1 ]; then return  1; fi
 }
-
 
 
 DEBUG=${DEBUG='false'}
@@ -48,6 +87,16 @@ _debug() {
     \echo  "$@"  >&2
   fi
 }
+
+
+
+LOGIN=${LOGIN='false'}
+_login() {
+  #username='username@example.com'
+  #password='password'
+  cookies='--cookies=~/cookies.txt'
+}
+
 
 
 # INT is ^C
@@ -59,8 +108,10 @@ control_c()
 }
 
 
+
 case  "$#"  in
   0)
+    # I'm just going to use 0 for autotest anyway..
     \youtube-dl
     exit  0
   ;;
@@ -79,18 +130,37 @@ _debug  "$@"
 
 #target='some creator name/20170515 - the video title./the filename.mp4'
 #:<<'}'   #  Get the directory, subdirectory and filename
+
+# TODO - optimize
+#_get_directory_subdirectory_filename() {
+#}
+
 {
+  # TODO - forced login
+  #if [ "$LOGIN" = 'true' ]; then
+  #fi
+
   target=$(  \
     \youtube-dl  \
       --get-filename  \
-      --output '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
+      --output  '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
     "$@"  \
-  )  || exit  $?
-  # Sometimes youtube-dl will give an error, e.g.:
-  #   "ERROR: jNQXAC9IVRw: YouTube said: Unable to extract video data"
-  # 2020-08-01  --  An age restricted video will give an error.  I am unable to log in with either --username or ~/.netrc (and --netrc), and I get:
-  #   "WARNING: Unable to look up account info: HTTP Error 404: Not Found"
-  #if [ $? -ne 0 ]; then exit $?; fi
+  )
+  youtube_dl_error_code=$?
+  if [ "$youtube_dl_error_code" -ne 0 ]; then
+    _debug  "Exit code:  $youtube_dl_error_code"
+    _login
+    #--username="$username"
+    #--password="$password"
+    target=$(  \
+      \youtube-dl  \
+        "$cookies"  \
+        --get-filename  \
+        --output '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
+      "$@"  \
+    )
+    _debug  "$target"
+  fi
 }
 target_directory="$(    \dirname  "$( \dirname  "$target" )" )"
 target_subdirectory="$( \basename "$( \dirname  "$target" )" )"
@@ -140,7 +210,10 @@ _debug  "$target_subdirectory"
 #` # I suspect this is important for an NTFS filesystem. `  \
 #--restrict-filenames  \
 #
+#:<<'}'   #  Download most things
+{
 \youtube-dl  \
+  "$cookies"  \
   --console-title  \
   --audio-format  best  \
   --write-info-json  \
@@ -151,7 +224,7 @@ _debug  "$target_subdirectory"
   --no-call-home  \
   --output  'v.%(ext)s'  \
   "$@"
-
+}
 
 
 if [ -f 'v_4.webp' ]; then

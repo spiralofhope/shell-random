@@ -2,12 +2,18 @@
 # shellcheck  disable=1001
   # I like using backslashes.
 
-# Re-download the v.description file
-# This is to recover from an issue with the description file not being properly downloaded when --write-description was being used in the main block of commands.
+# Download the v.description file
+#   This is to recover from an issue with the description file not being properly downloaded when --write-description was being used in the main block of commands.
 #
-# Note that, although rare, you might get an error when downloading comments; check your scrollback buffer and re-try as needed.
+# You will get an error downloading the description of videos which require a login, like age restriction.  For more information on that, see  `youtube-download.sh`  .  You will need to generate a  `cookies.txt`  file to bypass this restriction.
+
+
 
 # for i in *; do \cd "$i"; \echo "$PWD" ; youtube-download-description.sh; cd - > /dev/null; done
+
+
+
+cookies='--cookies=~/cookies.txt'
 
 
 
@@ -33,6 +39,15 @@ filename="v.description--${date_hours_minutes}".txt
   --get-description  \
   --no-call-home  \
   " $source_video_id" > "$filename"
+
+youtube_dl_error_code=$?
+if [ "$youtube_dl_error_code" -ne 0 ]; then
+  \youtube-dl  \
+    "$cookies"  \
+    --get-description  \
+    --no-call-home  \
+    " $source_video_id" > "$filename"
+fi
 
 
 
