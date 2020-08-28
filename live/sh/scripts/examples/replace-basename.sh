@@ -21,7 +21,7 @@
 
 
 
-basename() {
+_basename() {
   # Usage: basename "path" ["suffix"]
 
   # Strip all trailing forward-slashes '/' from the end of the string.
@@ -42,4 +42,15 @@ basename() {
 
 
 
-basename  "$*"
+:<<'}'   # For easy cut-and-paste
+# taken from  `replace-basename.sh`
+_basename() {
+  dir=${1%${1##*[!/]}}
+  dir=${dir##*/}
+  dir=${dir%"$2"}
+  printf '%s\n' "${dir:-/}"
+}
+
+
+
+_basename  "$*"

@@ -19,7 +19,7 @@
 
 
 
-dirname() {
+_dirname() {
   # Usage: dirname "path"
 
   # If '$1' is empty set 'dir' to '.', else '$1'.
@@ -46,4 +46,16 @@ dirname() {
 
 
 
-dirname  "$*"
+:<<'}'   # For easy cut-and-paste
+# taken from  `replace-dirname.sh`
+_dirname() {
+  dir=${1:-.}
+  dir=${dir%%"${dir##*[!/]}"}
+  [ "${dir##*/*}" ] && dir=.
+  dir=${dir%/*}
+  dir=${dir%%"${dir##*[!/]}"}
+  printf '%s\n' "${dir:-/}"
+}
+
+
+_dirname  "$*"
