@@ -43,6 +43,8 @@ ddir() {
 alias  dir='dir-4DOS-style.sh  .  |  myless'
 
 
+alias  ytdl='youtube-download.sh'
+
 
 # This won't work on cygwin, and I'm not even sure what it was for..
 #alias  cd='\cd  --no-dereference'
