@@ -7,6 +7,9 @@
 #   https://youtube-dl.org/
 #   https://blog.spiralofhope.com/?p=41260
 #
+# Note that you might want to switch to youtube-dlc (and symlink to it) if there are any problems with youtube-dl:
+#   https://github.com/blackjack4494/youtube-dlc
+#
 # Requires my `search-json`.
 # Optionally uses several other of my scripts.
 #
