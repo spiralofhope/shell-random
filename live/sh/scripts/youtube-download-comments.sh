@@ -10,6 +10,10 @@
 
 # TODO - I want to detect signals and abort the download without killing autotest.sh, but Python's KeyboardInterrupt is too aggressive or something..
 
+# TODO - don't try to download comments for non-YouTube.  Obviously.
+# Abort without http://
+# also edit download-description since that won't work everywhere?
+
 
 #DEBUG='true'
 
