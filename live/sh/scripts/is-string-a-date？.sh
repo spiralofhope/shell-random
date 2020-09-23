@@ -40,7 +40,7 @@ is_string_a_date() {
     $( string-fetch-character.sh        5      "$string" )  \
     $( string-fetch-character.sh        8      "$string" )  \
   ; do
-    if [ ! "$i" = "-" ]; then
+    if [ ! "$i" = '-' ]; then
       return  1
       break
     fi
