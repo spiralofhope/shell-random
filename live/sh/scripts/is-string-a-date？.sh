@@ -1,6 +1,6 @@
 #!/usr/bin/env  sh
 
-# Determine if a given character is a number (0-9)
+# Determine if a string is in the yyyy-mm-dd date format.
 
 
 
