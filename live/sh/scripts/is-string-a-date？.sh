@@ -45,7 +45,7 @@ is_string_a_date() {
       break
     fi
   done
-  return 0
+  return  0
 }
 
 
