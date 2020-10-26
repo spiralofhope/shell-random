@@ -130,12 +130,19 @@ _debug  "target:               $target"
 _debug  "target_directory:     $target_directory"
 _debug  "target_subdirectory:  $target_subdirectory"
 #
-# TODO - remove any other invalid characters
 # Remove 1-3 trailing periods
 #   (They are invalid on NTFS)
 target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
 target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
 target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
+# TODO - remove any other invalid characters
+#   See `youtube-refresh.sh`
+# I don't think this is working..
+#replace_characters() {
+  #target_subdirectory=$( string-replace-character.sh  "$1"  "$2"    "$target_subdirectory" )
+#}
+#replace_characters  'Ø'  'O'
+
 # I have no idea how to use youtube-dl's --output to fix the date format, so I define the directory manually.
 # 20170515  =>  2017-05-15
 # TODO - replace \sed

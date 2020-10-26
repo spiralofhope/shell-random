@@ -169,8 +169,8 @@ fix_directory() {
   replace_characters  ':'  '։'
   replace_characters  '"'  '‟'
   replace_characters  '/'  '∕'
+  replace_characters  'Ø'  'O'
   replace_characters  '*'  '★'
-
 
   # These don't solve my problem..
   replace_characters  '💝'  '_'
