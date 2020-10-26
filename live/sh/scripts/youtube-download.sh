@@ -1,4 +1,6 @@
 #!/usr/bin/env  sh
+
+
 # shellcheck  disable=1001  disable=1012
 #   I like using backslashes.
 # Download YouTube and other videos.
@@ -45,6 +47,7 @@ DEBUG='true'
     # Testing with a login required...
     # TODO - Upload my own test, so I can rely on its existence.
     #"$0"  'ufH4DaUxBbA'                                                --skip-download
+
     return
   fi
 
@@ -62,7 +65,6 @@ _debug() {
 }
 
 
-
 # INT is ^C
 trap control_c INT
 control_c()
@@ -72,8 +74,19 @@ control_c()
 }
 
 
+# I don't understand why I have to do this in order to count the number of parameters.
+parameters=$*
+parameter_count() {
+  echo  "$#"
+}
+parameter_number=$( parameter_count  $parameters )
+# Why is this always 1? :
+#\echo  $#
+_debug  "${parameter_number} parameter(s)"
 
-case  "$#"  in
+
+
+case  "$parameter_number"  in
   0)
     # I'm just going to use 0 for autotest anyway..
     \youtube-dl
@@ -88,26 +101,9 @@ case  "$#"  in
     # Else continue onward, using use $2 as the parameter.
   ;;
 esac
-_debug  "$# parameter(s):"
-_debug  "$@"
 
 
 
-#target='some creator name/20170515 - the video title./the filename.mp4'
-#:<<'}'   #  Get the directory, subdirectory and filename
-
-# TODO - optimize
-#_get_directory_subdirectory_filename() {
-#}
-
-{
-  target=$(  \
-    \youtube-dl  \
-      --get-filename  \
-      --output  '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
-      "$@"
-  )
-}
 # taken from  `replace-basename.sh`
 _basename() {
   dir=${1%${1##*[!/]}}
@@ -115,6 +111,8 @@ _basename() {
   dir=${dir%"$2"}
   printf '%s\n' "${dir:-/}"
 }
+
+
 # taken from  `replace-dirname.sh`
 _dirname() {
   dir=${1:-.}
@@ -124,11 +122,29 @@ _dirname() {
   dir=${dir%%"${dir##*[!/]}"}
   printf '%s\n' "${dir:-/}"
 }
+
+
+
+#target='some creator name/20170515 - the video title./the filename.mp4'
+#:<<'}'   #  Get the directory, subdirectory and filename
+
+# TODO - optimize
+#_get_directory_subdirectory_filename() {
+#}
+#--restrict-filenames  \
+{
+  target=$(  \
+    \youtube-dl  \
+      --get-filename  \
+      --output  '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
+      $parameters
+  )
+  _debug  "target:               $target"
+}
 target_directory="$(    _dirname  "$( _dirname  "$target" )" )"
 target_subdirectory="$( _basename "$( _dirname  "$target" )" )"
-_debug  "target:               $target"
-_debug  "target_directory:     $target_directory"
-_debug  "target_subdirectory:  $target_subdirectory"
+
+
 #
 # Remove 1-3 trailing periods
 #   (They are invalid on NTFS)
@@ -137,11 +153,18 @@ target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
 target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
 # TODO - remove any other invalid characters
 #   See `youtube-refresh.sh`
-# I don't think this is working..
-#replace_characters() {
-  #target_subdirectory=$( string-replace-character.sh  "$1"  "$2"    "$target_subdirectory" )
-#}
+replace_characters() {
+  target_subdirectory=$( string-replace-character.sh  "$1"  "$2"    "$target_subdirectory" )
+  target_directory=$(    string-replace-character.sh  "$1"  "$2"    "$target_directory" )
+}
+# Not working..
 #replace_characters  'Ø'  'O'
+#replace_characters  '/'  '∕'
+
+
+_debug  "target_directory:     $target_directory"
+_debug  "target_subdirectory:  $target_subdirectory"
+
 
 # I have no idea how to use youtube-dl's --output to fix the date format, so I define the directory manually.
 # 20170515  =>  2017-05-15
