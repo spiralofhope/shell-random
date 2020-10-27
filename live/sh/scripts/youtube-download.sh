@@ -30,7 +30,7 @@
         #cessful downloads are recorded in the file.
 
 
-DEBUG='true'
+#DEBUG='true'
 
 
 
@@ -74,19 +74,8 @@ control_c()
 }
 
 
-# I don't understand why I have to do this in order to count the number of parameters.
-parameters=$*
-parameter_count() {
-  echo  "$#"
-}
-parameter_number=$( parameter_count  $parameters )
-# Why is this always 1? :
-#\echo  $#
-_debug  "${parameter_number} parameter(s)"
 
-
-
-case  "$parameter_number"  in
+case  "$#"  in
   0)
     # I'm just going to use 0 for autotest anyway..
     \youtube-dl
@@ -98,10 +87,8 @@ case  "$parameter_number"  in
         "$@"
       exit  0
     fi
-    # Else continue onward, using use $2 as the parameter.
   ;;
 esac
-
 
 
 # taken from  `replace-basename.sh`
@@ -132,12 +119,13 @@ _dirname() {
 #_get_directory_subdirectory_filename() {
 #}
 #--restrict-filenames  \
+
 {
   target=$(  \
     \youtube-dl  \
       --get-filename  \
       --output  '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
-      $parameters
+      "$@"
   )
   _debug  "target:               $target"
 }
@@ -178,7 +166,7 @@ if_long_then_truncate_and_append() {
   string_length_maximum="$1"
   shift
   # $2*
-  string="$*"
+  string="$@"
   string_length=${#string}
   if [ "$string_length" -gt "$string_length_maximum" ]; then
     append='…'
@@ -190,6 +178,8 @@ target_directory="$(     if_long_then_truncate_and_append  29  "$target_director
 target_subdirectory="$(  if_long_then_truncate_and_append  59  "$target_subdirectory" )"
 _debug  "$target_directory"
 _debug  "$target_subdirectory"
+
+
 
 \mkdir  --parents  --verbose  "$target_directory/$target_subdirectory"  ||  exit  $?
 \cd                           "$target_directory/$target_subdirectory"  ||  exit  $?
