@@ -43,11 +43,9 @@ ddir() {
 alias  dir='dir-4DOS-style.sh  .  |  myless'
 
 
-# shellcheck disable=1117
-#   The backslashes are literal.
 ytdl(){
   printf  '\033]0;...\007'
-  youtube-download.sh  "$*"
+  youtube-download.sh  "$@"
   printf  '\n\n'
 }
 
