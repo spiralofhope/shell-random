@@ -1,8 +1,7 @@
 #!/usr/bin/env  sh
-
-
 # shellcheck  disable=1001  disable=1012
-#   I like using backslashes.
+#   (I like using backslashes)
+
 # Download YouTube and other videos.
 #
 # Uses youtube-dl:
@@ -30,7 +29,7 @@
         #cessful downloads are recorded in the file.
 
 
-#DEBUG='true'
+DEBUG='true'
 
 
 
@@ -166,6 +165,8 @@ if_long_then_truncate_and_append() {
   string_length_maximum="$1"
   shift
   # $2*
+  # shellcheck  disable=2124
+  #   (yes, I mean to do this)
   string="$@"
   string_length=${#string}
   if [ "$string_length" -gt "$string_length_maximum" ]; then
@@ -235,21 +236,29 @@ fi
 
 
 
+extractor="$( \search-json.sh  'extractor'  v.info.json )"
+
+
+
 #:<<'}'   #  Description
 {
-  # For some stupid reason the description file won't be properly downloaded if placed in the youtube-dl command.
-  # But I ended up pushing it into its own script anyway..
-  _debug  ' * Downloading the description...'
-  youtube-download-description.sh
+  if [ "$extractor" = 'youtube' ]; then
+    # For some stupid reason the description file won't be properly downloaded if placed in the youtube-dl command.
+    # But I ended up pushing it into its own script anyway..
+    _debug  ' * Downloading the description...'
+    youtube-download-description.sh
+  fi
 }
 
 
 
 #:<<'}'   #  Comments
 {
-  _debug  ' * Downloading the comments...'
-  source_video_id="$( \search-json.sh  'id'  v.info.json )"
-  youtube-download-comments.sh  "$source_video_id"
+  if [ "$extractor" = 'youtube' ]; then
+    _debug  ' * Downloading the YouTube comments...'
+    source_video_id="$( \search-json.sh  'id'  v.info.json )"
+    youtube-download-comments.sh  "$source_video_id"
+  fi
 }
 
 
