@@ -117,6 +117,10 @@ _debug  "   into:  \"$comment_filename\""
   \youtube-comment-downloader  \
     --youtubeid="$source_video_id"  \
     --output="$comment_filename"
+
+  # compress
+  \7z  a  -mx=9  "$comment_filename".7z  "$comment_filename"
+  \rm  --force  --verbose  "$comment_filename"
 }
 
 
