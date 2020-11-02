@@ -51,9 +51,9 @@ if   [ "$#" -eq 1 ]; then
   source_video_id=$( printf  '%s\n'  "${source_video_id##*/}" )
   source_video_id=$( printf  '%s\n'  "${source_video_id##watch?v=}" )
   source_video_id=$( printf  '%s\n'  "${source_video_id%%#*}" )
-elif  \stat  --printf=''  *.info.json  2> /dev/null; then
+elif  \stat  --printf=''  ./*.info.json  2> /dev/null; then
   _debug  " * Found a JSON file"
-  source_video_id="$( \search-json.sh  'id'  *.info.json )"
+  source_video_id="$( \search-json.sh  'id'  ./*.info.json )"
 elif  \stat  --printf=''  comments\ -\ *.ytcs1.csv  2> /dev/null; then
   _debug  " * Found a youtube-comment-scraper CSV file"
   for filename in comments\ -\ *.ytcs1.csv; do
