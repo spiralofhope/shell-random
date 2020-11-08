@@ -46,3 +46,21 @@
   # example:  /tmp/tmp.oN1dvub6FE
   \echo  "$fairly_unique_variable_content"
 }
+
+
+
+# Automatically clean up the temporary file on exit, error, control-c, etc.
+{
+  # See  `trapping-signals.sh`
+  _teardown()  {
+    \rm  --force  --verbose  "$unique_file"
+    for  signal  in  INT QUIT HUP TERM EXIT; do
+      trap  -  "$signal"
+    done
+  }
+  trap  _teardown  INT QUIT HUP TERM EXIT
+
+
+  unique_file="$( \mktemp  --suffix=".my_temporary_file.$$" )"
+  \echo  "$unique_file"
+}
