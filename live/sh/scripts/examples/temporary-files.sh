@@ -27,7 +27,7 @@
     dir=${dir%"$2"}
     printf '%s\n' "${dir:-/}"
   }
-  temporary_file="/tmp/$( _basename  "$0" ).$$"
+  temporary_file="/tmp/$( _basename  "$0" ).$$.tmp"
   # Make the file:
   :>                       "$temporary_file"
   \rm  --force  --verbose  "$temporary_file"
