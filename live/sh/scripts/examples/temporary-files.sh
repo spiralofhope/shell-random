@@ -17,6 +17,28 @@
 }
 
 
+
+#:<<'}'   #  Referencing the current script's name and current process' PID ($$).
+{
+  _basename() {
+    # See  `replace-basename.sh`
+    dir=${1%${1##*[!/]}}
+    dir=${dir##*/}
+    dir=${dir%"$2"}
+    printf '%s\n' "${dir:-/}"
+  }
+  temporary_file="/tmp/$( _basename  "$0" ).$$"
+  # Make the file:
+  :>                       "$temporary_file"
+  \rm  --force  --verbose  "$temporary_file"
+}
+
+
+#
+# No longer pure shell
+#
+
+
 #:<<'}'   #  Using  `mktemp`
 {
   # GNU mktemp will create a file which is guaranteed to be unique.
