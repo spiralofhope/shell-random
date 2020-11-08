@@ -70,9 +70,6 @@
   _teardown() {
     # Instead of using a temporary file, and detecting if the teardown is already in progress, I could just un-set the traps:
     unset_traps() {
-      __() {
-        \echo
-      }
       for  signal  in  INT QUIT HUP TERM USR1 EXIT; do
         trap  -  "$signal"
       done
