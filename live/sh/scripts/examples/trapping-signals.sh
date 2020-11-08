@@ -74,7 +74,7 @@
         \echo
       }
       for  signal  in  INT QUIT HUP TERM USR1 EXIT; do
-        trap  __  "$signal"
+        trap  -  "$signal"
       done
     }
     #unset_traps
