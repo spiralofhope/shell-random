@@ -10,11 +10,12 @@
 {
   # While $$ is easy to remember, this is not 100% guaranteed to be a unique filename.
   # It's also not appropriate when your script needs to refer to use several unique tempfiles.
-  unique_file="/tmp/my_temporary_file.$$"
+  temporary_file="/tmp/my_temporary_file.$$"
   # Make the file
-  :>                       "$unique_file"
-  \rm  --force  --verbose  "$unique_file"
+  :>                       "$temporary_file"
+  \rm  --force  --verbose  "$temporary_file"
 }
+
 
 
 #:<<'}'   #  Using  `mktemp`
