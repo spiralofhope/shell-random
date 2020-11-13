@@ -6,6 +6,8 @@
 
 # TODO - Various things can be done with parameters.
 # TODO - $*  $@  shift  and quoting
+# $@ has entries called "positional parameters" (and also "special parameters").
+#   https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_05_02
 
 
 
