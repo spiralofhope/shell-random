@@ -158,11 +158,11 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'  ;  export  WORDCHARS
 
 {  #  Update the title of a terminal
   preexec() { \print  -Pn  "\e]0;%~ - $1\a" }
-  preexec
+  chpwd() {   \print  -Pn  "\e]0;%~ - $1\a" }
+  chpwd
 
   #chpwd() {
     #[ -t 1 ]  ||  return
-    ## shellcheck disable=1117
     #\print  -Pn  "\e]2;%~\a"
   #}
   :<<'  }'   # I don't think I've ever needed this complexity
