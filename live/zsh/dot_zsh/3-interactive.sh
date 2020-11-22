@@ -157,29 +157,29 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'  ;  export  WORDCHARS
 
 
 {  #  Update the title of a terminal
-  chpwd() {
-    [ -t 1 ]  ||  return
-    # shellcheck disable=1117
-    \print  -Pn  "\e]2;%~\a"
-  }
+  preexec() { \print  -Pn  "\e]0;%~ - $1\a" }
+  preexec
 
-  # shellcheck disable=1039
-  #   allow the comment
+  #chpwd() {
+    #[ -t 1 ]  ||  return
+    ## shellcheck disable=1117
+    #\print  -Pn  "\e]2;%~\a"
+  #}
   :<<'  }'   # I don't think I've ever needed this complexity
   {
     chpwd() {
-      case $TERM in
+      [ -t 1 ]  ||  return
+      case  "$TERM"  in
         sun-cmd)
-          print -Pn "\e]l%~\e\\"
+          print  -Pn  "\e]l%~\e\\"
         ;;
         *xterm*|rxvt(-unicode)|(dt|k|E)term|screen)
-          print -Pn "\e]2;%~\a"
+          print  -Pn  "\e]2;%~\a"
         ;;
       esac
     }
   }
-
-  chpwd
+  #chpwd
 }
 
 
