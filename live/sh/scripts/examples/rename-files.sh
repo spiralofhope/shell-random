@@ -1,6 +1,7 @@
 #!/usr/bin/env  sh
 
 # Recursive, regular expression rename that respects spaces
+# To only use builtins I'd have to be able to recurse using `for` loops.. (the "global" routine in 4DOS).
 
 
 
