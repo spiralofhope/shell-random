@@ -12,7 +12,7 @@
 
 
 
-#DEBUG='true'
+DEBUG='true'
 
 
 # FIXME
@@ -111,10 +111,11 @@ else
     return  1
   fi
   # remove /videos
+  # FIXME - determine if /videos is even there..
   channel_name="$( string-remove-n-characters-trailing.sh  7   "$URL" )"
-  #_debug  "channel_name:  $channel_name"
+  _debug  "channel_name:  $channel_name"
   channel_name="$( string-split-and-output-all-after.sh  '/'  "$channel_name" )"
-  #_debug  "channel_name:  $channel_name"
+  _debug  "channel_name:  $channel_name"
   channel_name="$( string-fetch-last-word.sh  "$channel_name")"
   _debug  "channel_name:  $channel_name"
   date_hours_minutes=$( \date.sh  'minutes' )
