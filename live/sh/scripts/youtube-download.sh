@@ -86,7 +86,6 @@ case  "$#"  in
   2)
     if [ "$2" = '-F' ]; then
       \youtube-dl  \
-        --  \
         "$@"
       exit  0
     fi
@@ -123,20 +122,23 @@ _dirname() {
 #}
 #--restrict-filenames  \
 
+
+video_id="$1"
+shift
+
 {
   target=$(  \
     \youtube-dl  \
       --get-filename  \
       --output  '%(uploader)s/%(upload_date)s - %(title)s/%(title)s.%(ext)s'  \
+      "$@"  \
       --  \
-      "$@"
+      "$video_id"
   )
   _debug  "target:               $target"
 }
 target_directory="$(    _dirname  "$( _dirname  "$target" )" )"
 target_subdirectory="$( _basename "$( _dirname  "$target" )" )"
-
-
 #
 # Remove 1-3 trailing periods
 #   (They are invalid on NTFS)
@@ -212,8 +214,9 @@ _debug  "$target_subdirectory"
   --add-metadata  \
   --no-call-home  \
   --output  'v.%(ext)s'  \
+  "$@"  \
   --  \
-  "$@"
+  "$video_id"
 }
 
 
@@ -291,21 +294,24 @@ extractor="$( \search-json.sh  'extractor'  v.info.json )"
     \youtube-dl  \
       --get-filename  \
       --output '%(uploader)s'  \
+      "$@"  \
       --  \
-    "$@"  \
+      "$video_id"
   )
   target_subdirectory=$(  \
     \youtube-dl  \
       --get-filename  \
       --output '%(upload_date)s - %(title)s'  \
+      "$@"  \
       --  \
-    "$@"  \
+      "$video_id"
   )
   #target_files=$(  \
     #\youtube-dl  \
       #--get-filename  \
       #--output '%(title)s.%(ext)s'  \
+      #"$@"  \
       #--  \
-    #"$@"  \
+      #"$video_id"
   #)
 }
