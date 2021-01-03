@@ -2,6 +2,8 @@
 # shellcheck  disable=1001  disable=1012
 #   (I like using backslashes)
 
+
+
 # Download YouTube and other videos.
 #
 # Uses youtube-dl:
@@ -31,7 +33,9 @@
         #the  same  --download-archive will download only new videos and skip all videos that have been downloaded before.  Note that only suc‐
         #cessful downloads are recorded in the file.
 
+# FIXME -- cookies interferes with other things? (reported by past self)
 
+#cookie_file="$HOME/netscape-cookies.txt"
 #DEBUG='true'
 
 
@@ -126,7 +130,20 @@ _dirname() {
 video_id="$1"
 shift
 
-{
+
+
+cookie_file=${cookie_file=''}
+if [ ! "$cookie_file" = '' ]  \
+&& [ ! -e "$cookie_file" ]
+then
+  \echo  'cookie file not found'
+  exit  1
+fi
+
+
+
+determine_directories(){
+  # Learn the directory structure we'll be working within:
   target=$(  \
     \youtube-dl  \
       --get-filename  \
@@ -136,61 +153,90 @@ shift
       "$video_id"
   )
   _debug  "target:               $target"
+  target_directory="$(    _dirname  "$( _dirname  "$target" )" )"
+  target_subdirectory="$( _basename "$( _dirname  "$target" )" )"
+  #
+  # Remove 1-3 trailing periods
+  #   (They are invalid on NTFS)
+  target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
+  target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
+  target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
+  # TODO - remove any other invalid characters
+  #   See `youtube-refresh.sh`
+  replace_characters() {
+    target_subdirectory=$( string-replace-character.sh  "$1"  "$2"    "$target_subdirectory" )
+    target_directory=$(    string-replace-character.sh  "$1"  "$2"    "$target_directory" )
+  }
+  # Not working.. so I'll just intelligently use --restrict-filenames
+  #replace_characters  'Ø'  'O'
+  #replace_characters  '/'  '∕'
+
+
+  _debug  "target_directory:     $target_directory"
+  _debug  "target_subdirectory:  $target_subdirectory"
+
+
+  # I have no idea how to use youtube-dl's --output to fix the date format, so I define the directory manually.
+  # 20170515  =>  2017-05-15
+  # TODO - replace \sed
+  target_subdirectory=$( \echo  "$target_subdirectory"  |  \sed  's/\(^[0-9]\{4\}\)\([0-9]\{2\}\)/\1-\2-/' )
+  _debug  "target_subdirectory:  $target_subdirectory"
+
+
+
+  if_long_then_truncate_and_append() {
+    string_length_maximum="$1"
+    shift
+    # $2*
+    # shellcheck  disable=2124
+    #   (yes, I mean to do this)
+    string="$@"
+    string_length=${#string}
+    if [ "$string_length" -gt "$string_length_maximum" ]; then
+      append='…'
+    fi
+    __=$( string-truncate.sh  "$string_length_maximum"  "$string" )
+    \echo  "$__$append"
+  }
+  target_directory="$(     if_long_then_truncate_and_append  29  "$target_directory"    )"
+  target_subdirectory="$(  if_long_then_truncate_and_append  59  "$target_subdirectory" )"
+  _debug  "$target_directory"
+  _debug  "$target_subdirectory"
 }
-target_directory="$(    _dirname  "$( _dirname  "$target" )" )"
-target_subdirectory="$( _basename "$( _dirname  "$target" )" )"
-#
-# Remove 1-3 trailing periods
-#   (They are invalid on NTFS)
-target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
-target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
-target_subdirectory=$( printf  '%s\n'  "${target_subdirectory%%.}" )
-# TODO - remove any other invalid characters
-#   See `youtube-refresh.sh`
-replace_characters() {
-  target_subdirectory=$( string-replace-character.sh  "$1"  "$2"    "$target_subdirectory" )
-  target_directory=$(    string-replace-character.sh  "$1"  "$2"    "$target_directory" )
-}
-# Not working..
-#replace_characters  'Ø'  'O'
-#replace_characters  '/'  '∕'
 
 
-_debug  "target_directory:     $target_directory"
-_debug  "target_subdirectory:  $target_subdirectory"
-
-
-# I have no idea how to use youtube-dl's --output to fix the date format, so I define the directory manually.
-# 20170515  =>  2017-05-15
-# TODO - replace \sed
-target_subdirectory=$( \echo  "$target_subdirectory"  |  \sed  's/\(^[0-9]\{4\}\)\([0-9]\{2\}\)/\1-\2-/' )
-_debug  "target_subdirectory:  $target_subdirectory"
-
-
-
-if_long_then_truncate_and_append() {
-  string_length_maximum="$1"
-  shift
-  # $2*
-  # shellcheck  disable=2124
-  #   (yes, I mean to do this)
-  string="$@"
-  string_length=${#string}
-  if [ "$string_length" -gt "$string_length_maximum" ]; then
-    append='…'
+determine_directories  "$@"
+if [ ! -d "$target_directory" ]; then
+  if  !  \
+    \mkdir  --parents  --verbose  "$target_directory"
+  then
+    \echo  "directory failed to exist, restricting filenames.."
+    determine_directories  "$@"  --restrict-filenames
+    if [ ! -d "$target_directory" ]; then
+      \mkdir  --parents  --verbose  "$target_directory"  || exit  $?
+    fi
   fi
-  __=$( string-truncate.sh  "$string_length_maximum"  "$string" )
-  \echo  "$__$append"
-}
-target_directory="$(     if_long_then_truncate_and_append  29  "$target_directory"    )"
-target_subdirectory="$(  if_long_then_truncate_and_append  59  "$target_subdirectory" )"
-_debug  "$target_directory"
-_debug  "$target_subdirectory"
+fi
+target_directory_proved_good="$target_directory"
 
 
+if [ ! -d "$target_directory/$target_subdirectory" ]; then
+  if  !  \
+    \mkdir  --verbose  "$target_directory/$target_subdirectory"
+  then
+    \echo  "subdirectory failed to exist, restricting filenames.."
+    determine_directories  "$@"  --restrict-filenames
+    target_directory="$target_directory_proved_good"
+    if [ ! -d "$target_directory/$target_subdirectory" ]; then
+      \mkdir  --verbose  "$target_directory/$target_subdirectory"  || exit  $?
+    fi
+  fi
+fi
 
-\mkdir  --parents  --verbose  "$target_directory/$target_subdirectory"  ||  exit  $?
-\cd                           "$target_directory/$target_subdirectory"  ||  exit  $?
+
+\cd  "$target_directory/$target_subdirectory"  ||  exit  $?
+
+echo "$target_directory/$target_subdirectory"
 
 
 
@@ -203,26 +249,36 @@ _debug  "$target_subdirectory"
 #
 #:<<'}'   #  Download most things
 {
-# TODO - I don't understand why I can't have this empty variable in here... FIXME -- cookies interferes with other things..
-\youtube-dl  \
-  --console-title  \
-  --audio-format  best  \
-  --write-info-json  \
-  --write-annotations  \
-  --write-all-thumbnails  --embed-thumbnail  \
-  --all-subs  --embed-subs  \
-  --add-metadata  \
-  --no-call-home  \
-  --output  'v.%(ext)s'  \
-  "$@"  \
-  --  \
-  "$video_id"
-}
-
-
-#:<<'}'   #  Create a Windows-compatible .lnk (web page link) to the source
-{
-  youtube-dl_create-url.sh
+  if [ "$cookie_file" = '' ]; then
+    \youtube-dl  \
+      --console-title  \
+      --audio-format  best  \
+      --write-info-json  \
+      --write-annotations  \
+      --write-all-thumbnails  --embed-thumbnail  \
+      --all-subs  --embed-subs  \
+      --add-metadata  \
+      --no-call-home  \
+      --output  'v.%(ext)s'  \
+      "$@"  \
+      --  \
+      "$video_id"
+  else
+    \youtube-dl  \
+      --cookies="$cookie_file"  \
+      --console-title  \
+      --audio-format  best  \
+      --write-info-json  \
+      --write-annotations  \
+      --write-all-thumbnails  --embed-thumbnail  \
+      --all-subs  --embed-subs  \
+      --add-metadata  \
+      --no-call-home  \
+      --output  'v.%(ext)s'  \
+      "$@"  \
+      --  \
+      "$video_id"
+  fi
 }
 
 
@@ -244,10 +300,23 @@ fi
 
 
 
-if  [ "$DEBUG" = 'true' ] || \
-    [ $# -eq 2 ] && [ "$2" = '-F' ]; then
-  exit
+if [ ! "$cookie_file" = '' ]; then
+  \rm  --force  "$cookie_file"
 fi
+
+
+
+#if  [ "$DEBUG" = 'true' ] || \
+    #[ $# -eq 2 ] && [ "$2" = '-F' ]; then
+  #exit
+#fi
+
+
+
+#:<<'}'   #  Create a Windows-compatible .lnk (web page link) to the source
+{
+  youtube-dl_create-url.sh
+}
 
 
 
@@ -280,8 +349,7 @@ extractor="$( \search-json.sh  'extractor'  v.info.json )"
 
 \echo  ''
 \echo  ' * Finished with:'
-\echo  "   $target_directory"
-\echo  "   $target_subdirectory"
+\echo  "  \"$target_directory/$target_subdirectory\""
 \echo  ''
 
 
