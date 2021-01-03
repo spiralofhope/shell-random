@@ -14,7 +14,7 @@
 
 
 # Uncomment if you have provided this file and want youtube-dl to present those credentials, e.g. for age-restricted videos:
-cookies="$HOME/cookies.txt"
+#cookies="$HOME/cookies.txt"
 
 
 
