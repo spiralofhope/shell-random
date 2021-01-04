@@ -25,3 +25,8 @@ findin_file() {
 
 
 findin_file  "$@"
+
+
+
+#findin()           { findin_file.sh  'always'  "$@" ;}
+#findin_color_off() { findin_file.sh  'never'   "$@" ;}
