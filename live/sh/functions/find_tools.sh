@@ -1,5 +1,7 @@
 #!/usr/bin/env  sh
 # Helpers for `find`
+# shellcheck  disable=1001
+#   (I like backslashes)
 
 
 
@@ -68,9 +70,9 @@ finddir_color_off() {
    I don\'t know
 }
 _findhelper_file_contents() {
-  maxdepth=$1
-  shift
-  # shellcheck disable=1001
+  maxdepth="$1"
+  color="$2"
+  shift; shift  #  $3*
   \find  \
     .  \
     -maxdepth "$maxdepth"  \
@@ -81,7 +83,7 @@ _findhelper_file_contents() {
         --no-run-if-empty  \
         --null \
         \grep  \
-          --colour=always  \
+          --colour="$color"  \
           --fixed-strings  \
           --ignore-case  \
           --regexp="$*"
@@ -90,19 +92,33 @@ _findhelper_file_contents() {
   unset  _findhelper_color
   unset  maxdepth
 }
+findinall()           { _findhelper_file_contents  999   always  "$*" ;}
+findinall_color_off() { _findhelper_file_contents  999   never   "$*" ;}
+findhere()            { _findhelper_file_contents    1   always  "$*" ;}
+findhere_color_off()  { _findhelper_file_contents    1   never   "$*" ;}
 
-# TODO - Technically I could make a `findin` that applies to only one file, but I won't bother.
-findinall() {
-  _findhelper_file_contents  999   "$*"
+
+
+findin_helper() {
+  color="$1"
+  file="$2"
+  shift; shift  #  $3*
+  \grep  \
+    --colour="$color"  \
+    --fixed-strings  \
+    --ignore-case  \
+    --line-number  \
+    "$*"  \
+    --  \
+    "$file"
 }
+# TODO?  Make others which don't use --line-number
+findin()           { findin_helper  'always'  "$@" ;}
+# I'm not sure why I'd ever want this:
+#findin_color_off() { findin_helper  'never'   "$@" ;}
 
 
-# TODO - Technically I could make a `findin` that applies to only one file, but I won't bother.
-findhere() {
-  _findhelper_file_contents  1   "$*"
-}
-
-} }
+} }   #  end
 
 
 
