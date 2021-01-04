@@ -99,23 +99,10 @@ findhere_color_off()  { _findhelper_file_contents    1   never   "$*" ;}
 
 
 
-findin_helper() {
-  color="$1"
-  file="$2"
-  shift; shift  #  $3*
-  \grep  \
-    --colour="$color"  \
-    --fixed-strings  \
-    --ignore-case  \
-    --line-number  \
-    "$*"  \
-    --  \
-    "$file"
-}
 # TODO?  Make others which don't use --line-number
-findin()           { findin_helper  'always'  "$@" ;}
+findin()           { findin_file.sh  'always'  "$@" ;}
 # I'm not sure why I'd ever want this:
-#findin_color_off() { findin_helper  'never'   "$@" ;}
+#findin_color_off() { findin_file.sh  'never'   "$@" ;}
 
 
 } }   #  end
