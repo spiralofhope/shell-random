@@ -4,61 +4,10 @@
 
 
 
-#:<<'} }'
-{
-{
-findhelper() {
-  case  $_findhelper_type  in
-    'file')
-      _findhelper_type='f'
-    ;;
-    'directory')
-      _findhelper_type='d'
-    ;;
-    *)
-      \echo  'invalid usage'
-    ;;
-  esac
-
-  \find  \
-    ./  \
-    -type $_findhelper_type  \
-    -iname  \*"$1"\*  |\
-      \sed  's/^/"/'  |\
-        \sed  's/$/"/'  |\
-          \grep  \
-            --colour="$_findhelper_color"  \
-            --ignore-case  "$1"
-
-  unset  _findhelper_type
-  unset  _findhelper_color
-}
-
-
-findfile() {
-  _findhelper_type='file'
-  _findhelper_color='always'
-  findhelper  "$*"
-}
-findfile_color_off() {
-  _findhelper_type='file'
-  _findhelper_color='never'
-  findhelper  "$*"
-}
-
-
-
-finddir() {
-  _findhelper_type='directory'
-  _findhelper_color='always'
-  findhelper  "$*"
-}
-finddir_color_off() {
-  _findhelper_type='directory'
-  _findhelper_color='never'
-  findhelper  "$*"
-}
-
+findfile()           { find_helper.sh  'f'  'always'  "$*" ;}
+findfile_color_off() { find_helper.sh  'f'  'never'   "$*" ;}
+finddir()            { find_helper.sh  'd'  'always'  "$*" ;}
+finddir_color_off()  { find_helper.sh  'd'  'never'   "$*" ;}
 
 
 :<<'}'   #  Usage
@@ -68,10 +17,10 @@ finddir_color_off() {
  Can backslash to escape.
    I don\'t know
 }
-findinall()           { findin_files.sh  999   always  "$*" ;}
-findinall_color_off() { findin_files.sh  999   never   "$*" ;}
-findhere()            { findin_files.sh    1   always  "$*" ;}
-findhere_color_off()  { findin_files.sh    1   never   "$*" ;}
+findinall()           { findin_files.sh  999   'always'  "$*" ;}
+findinall_color_off() { findin_files.sh  999   'never'   "$*" ;}
+findhere()            { findin_files.sh    1   'always'  "$*" ;}
+findhere_color_off()  { findin_files.sh    1   'never'   "$*" ;}
 
 
 
@@ -79,9 +28,6 @@ findhere_color_off()  { findin_files.sh    1   never   "$*" ;}
 findin()           { findin_file.sh  'always'  "$@" ;}
 # I'm not sure why I'd ever want this:
 #findin_color_off() { findin_file.sh  'never'   "$@" ;}
-
-
-} }   #  end
 
 
 
