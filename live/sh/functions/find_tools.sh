@@ -1,5 +1,4 @@
 #!/usr/bin/env  sh
-# Helpers for `find`
 # shellcheck  disable=1001
 #   (I like backslashes)
 
@@ -69,33 +68,10 @@ finddir_color_off() {
  Can backslash to escape.
    I don\'t know
 }
-_findhelper_file_contents() {
-  maxdepth="$1"
-  color="$2"
-  shift; shift  #  $3*
-  \find  \
-    .  \
-    -maxdepth "$maxdepth"  \
-    -type f  \
-    -print0  \
-    -iname  \'"$*"\' |\
-      \xargs  \
-        --no-run-if-empty  \
-        --null \
-        \grep  \
-          --colour="$color"  \
-          --fixed-strings  \
-          --ignore-case  \
-          --regexp="$*"
-
-  unset  _findhelper_type
-  unset  _findhelper_color
-  unset  maxdepth
-}
-findinall()           { _findhelper_file_contents  999   always  "$*" ;}
-findinall_color_off() { _findhelper_file_contents  999   never   "$*" ;}
-findhere()            { _findhelper_file_contents    1   always  "$*" ;}
-findhere_color_off()  { _findhelper_file_contents    1   never   "$*" ;}
+findinall()           { findin_files.sh  999   always  "$*" ;}
+findinall_color_off() { findin_files.sh  999   never   "$*" ;}
+findhere()            { findin_files.sh    1   always  "$*" ;}
+findhere_color_off()  { findin_files.sh    1   never   "$*" ;}
 
 
 
