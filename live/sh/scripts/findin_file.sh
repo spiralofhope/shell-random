@@ -11,7 +11,7 @@
 findin_file() {
   color="$1"
   file="$2"
-  shift; shift  #  $3*
+  shift; shift   #  $3*
   \grep  \
     --colour="$color"  \
     --fixed-strings  \
