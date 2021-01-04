@@ -41,3 +41,10 @@ findin_files() {
 
 
 findin_files  "$@"
+
+
+
+#findinall()           { findin_files.sh  999   always  "$*" ;}
+#findinall_color_off() { findin_files.sh  999   never   "$*" ;}
+#findhere()            { findin_files.sh    1   always  "$*" ;}
+#findhere_color_off()  { findin_files.sh    1   never   "$*" ;}
