@@ -1,7 +1,7 @@
 #!/usr/bin/env  sh
 
 # Fetch a specific line and character position from a string-list.
-# This is really just a combination of `string-line-fetch.sh` and `string-character-fetch`
+# This is really just a combination of `string-fetch-line.sh` and `string-fetch-character`
 
 
 if [ -z "$*" ]; then
