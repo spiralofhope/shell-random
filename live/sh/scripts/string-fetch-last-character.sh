@@ -1,8 +1,22 @@
 #!/usr/bin/env  sh
 
 # Return the last character from a string.
+#
 # This is a POSIXism for things like:
-#   printf  $string | \tail  -c 1
+#   string='123'
+#   printf  "$string"  |  \tail  --bytes=1
+#     (I don't know why  \echo  or  \awk  don't work under zsh 5.7.1):
+#     (I don't know why  printf  doesn't work):
+#   echo  "$string"  |  awk  '{print substr($0,length,1)}'
+#
+# For Zsh, do:
+#    string='123'
+#     (I don't know why  \echo  or  printf  don't work under zsh 5.7.1):
+#    echo  ${string: -1}
+#
+# For Bash, see:
+#   https://stackoverflow.com/questions/17542892/
+
 
 
 if [ -z "$*" ]; then
@@ -12,19 +26,19 @@ if [ -z "$*" ]; then
   return
 fi
 
-string="$@"
+string="$*"
 
 
 string_fetch_last_character() {
-  length_of_string=${#string}
-  last_character="$string"
+  string_length=${#string}
+  string_last_character="$string"
   i=1
-  until [ $i -eq "$length_of_string" ]; do
+  until [ $i -eq "$string_length" ]; do
     #echo $i
-    last_character="${last_character#?}"
+    string_last_character="${string_last_character#?}"
     i=$(( i + 1 ))
   done
 
-  printf  '%s'  "$last_character"
+  printf  '%s'  "$string_last_character"
 }
 string_fetch_last_character  "$string"
