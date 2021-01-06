@@ -251,13 +251,11 @@ if [ ! -d "$target_directory/$target_subdirectory" ]; then
       \mkdir  --verbose  "$target_directory/$target_subdirectory"  || exit  $?
     elif  does_underscore_directory_exist  "$target_subdirectory"; then
       echo  'TODO - append an incrementing number'
-      # mkdir
       return
+      \mkdir  --verbose  "$target_directory/$target_subdirectory"  || exit  $?
     fi
   fi
 fi
-
-return
 
 \cd  "$target_directory/$target_subdirectory"  ||  exit  $?
 
