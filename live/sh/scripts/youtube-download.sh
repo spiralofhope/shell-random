@@ -118,15 +118,6 @@ _dirname() {
 
 
 
-#target='some creator name/20170515 - the video title./the filename.mp4'
-#:<<'}'   #  Get the directory, subdirectory and filename
-
-# TODO - optimize
-#_get_directory_subdirectory_filename() {
-#}
-#--restrict-filenames  \
-
-
 video_id="$1"
 shift
 
@@ -220,6 +211,35 @@ fi
 target_directory_proved_good="$target_directory"
 
 
+does_underscore_directory_exist() {
+  # I want to avoid a duplicate $target_subdirectory that is:
+  #   yyyy-mm-dd - _
+  # Under unusual circumstances like having a Chinese video name,  --restrict-filenames  will only suggest an underscore ( _ ).
+  # This may create a duplicate directory for a unique video
+  # This is because YouTube does not provide the upload date *and time*, which would always be unique.
+  string="$*"
+  #
+  # From  `string_fetch_last_character.sh`  :
+  string_fetch_last_character() {
+    string_length=${#string}
+    string_last_character="$*"
+    i=1
+    until [ $i -eq "$string_length" ]; do
+      string_last_character="${string_last_character#?}"
+      i=$(( i + 1 ))
+    done
+    printf  '%s'  "$string_last_character"
+  }
+  #
+  if [ ${#string} -eq 14 ]  \
+  && [ "$( string_fetch_last_character  "$target_subdirectory" )" = '_' ]; then
+    return  0
+  else
+    return  1
+  fi
+}
+
+
 if [ ! -d "$target_directory/$target_subdirectory" ]; then
   if  !  \
     \mkdir  --verbose  "$target_directory/$target_subdirectory"
@@ -227,12 +247,17 @@ if [ ! -d "$target_directory/$target_subdirectory" ]; then
     \echo  "subdirectory failed to exist, restricting filenames.."
     determine_directories  "$@"  --restrict-filenames
     target_directory="$target_directory_proved_good"
-    if [ ! -d "$target_directory/$target_subdirectory" ]; then
+    if   [ ! -d "$target_directory/$target_subdirectory" ]; then
       \mkdir  --verbose  "$target_directory/$target_subdirectory"  || exit  $?
+    elif  does_underscore_directory_exist  "$target_subdirectory"; then
+      echo  'TODO - append an incrementing number'
+      # mkdir
+      return
     fi
   fi
 fi
 
+return
 
 \cd  "$target_directory/$target_subdirectory"  ||  exit  $?
 
@@ -263,7 +288,7 @@ echo "$target_directory/$target_subdirectory"
       "$@"  \
       --  \
       "$video_id"
-  else
+  else   #  use cookies
     \youtube-dl  \
       --cookies="$cookie_file"  \
       --console-title  \
