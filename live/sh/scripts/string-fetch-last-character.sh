@@ -31,7 +31,8 @@ string="$*"
 
 string_fetch_last_character() {
   string_length=${#string}
-  string_last_character="$string"
+  # Will be consumed during processing:
+  string_last_character="$*"
   i=1
   until [ $i -eq "$string_length" ]; do
     #echo $i
