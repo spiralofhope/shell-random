@@ -9,6 +9,8 @@
 # TODO - Implement a switch for fetching the last x of videos, with --dateafter DATE
 #        Allow switches to be passed, and test the above.
 # TODO - Test on playlists.
+# TODO - Just print the list
+# TODO - If no parameter is given, then do a |tee
 
 
 
