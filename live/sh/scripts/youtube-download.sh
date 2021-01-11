@@ -201,7 +201,7 @@ if [ ! -d "$target_directory" ]; then
   if  !  \
     \mkdir  --parents  --verbose  "$target_directory"
   then
-    \echo  "directory failed to exist, restricting filenames.."
+    \echo  "Directory creation failed.  Restricting filenames.."
     determine_directories  "$@"  --restrict-filenames
     if [ ! -d "$target_directory" ]; then
       \mkdir  --parents  --verbose  "$target_directory"  || exit  $?
@@ -209,6 +209,30 @@ if [ ! -d "$target_directory" ]; then
   fi
 fi
 target_directory_proved_good="$target_directory"
+
+
+# From  `string_fetch_last_character.sh`  :
+string_fetch_last_character() {
+  string_length=${#string}
+  string_last_character="$*"
+  i=1
+  until [ $i -eq "$string_length" ]; do
+    string_last_character="${string_last_character#?}"
+    i=$(( i + 1 ))
+  done
+  printf  '%s'  "$string_last_character"
+}
+
+
+# From  `is-character-a-number？.sh`  :
+is_character_a_number() {
+  character=$*
+  case $character in
+    [0-9])  return  0  ;;
+    *)      return  1  ;;
+  esac
+}
+
 
 
 does_underscore_directory_exist() {
@@ -219,18 +243,6 @@ does_underscore_directory_exist() {
   # This is because YouTube does not provide the upload date *and time*, which would always be unique.
   string="$*"
   #
-  # From  `string_fetch_last_character.sh`  :
-  string_fetch_last_character() {
-    string_length=${#string}
-    string_last_character="$*"
-    i=1
-    until [ $i -eq "$string_length" ]; do
-      string_last_character="${string_last_character#?}"
-      i=$(( i + 1 ))
-    done
-    printf  '%s'  "$string_last_character"
-  }
-  #
   if [ ${#string} -eq 14 ]  \
   && [ "$( string_fetch_last_character  "$target_subdirectory" )" = '_' ]; then
     return  0
@@ -240,27 +252,32 @@ does_underscore_directory_exist() {
 }
 
 
+
 if [ ! -d "$target_directory/$target_subdirectory" ]; then
   if  !  \
     \mkdir  --verbose  "$target_directory/$target_subdirectory"
   then
-    \echo  "subdirectory failed to exist, restricting filenames.."
+    \echo  "Subdirectory creation failed.  Restricting filenames.."
     determine_directories  "$@"  --restrict-filenames
     target_directory="$target_directory_proved_good"
     if   [ ! -d "$target_directory/$target_subdirectory" ]; then
       \mkdir  --verbose  "$target_directory/$target_subdirectory"  || exit  $?
     elif  does_underscore_directory_exist  "$target_subdirectory"; then
-      echo  'TODO - append an incrementing number'
-      return
-      \mkdir  --verbose  "$target_directory/$target_subdirectory"  || exit  $?
+      # yyyy-mm-dd - _
+      # Continue onward to make a unique directory..
+      counter=1
+      until [ ! -d "$target_directory/$target_subdirectory$counter" ]; do
+        counter=$(( counter + 1 ))
+      done
+      target_subdirectory="$target_subdirectory$counter"
     fi
+    \mkdir  --verbose  "$target_directory/$target_subdirectory"  || exit  $?
   fi
 fi
 
 \cd  "$target_directory/$target_subdirectory"  ||  exit  $?
 
 echo "$target_directory/$target_subdirectory"
-
 
 
 # Previously..
