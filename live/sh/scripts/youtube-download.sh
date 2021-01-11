@@ -245,8 +245,10 @@ does_underscore_directory_exist() {
   #
   if [ ${#string} -eq 14 ]  \
   && [ "$( string_fetch_last_character  "$target_subdirectory" )" = '_' ]; then
+    _debug  "underscore directory DOES exist"
     return  0
   else
+    _debug  "underscore directory does NOT exist"
     return  1
   fi
 }
@@ -260,24 +262,22 @@ if [ ! -d "$target_directory/$target_subdirectory" ]; then
     \echo  "Subdirectory creation failed.  Restricting filenames.."
     determine_directories  "$@"  --restrict-filenames
     target_directory="$target_directory_proved_good"
-    if   [ ! -d "$target_directory/$target_subdirectory" ]; then
-      \mkdir  --verbose  "$target_directory/$target_subdirectory"  || exit  $?
-    elif  does_underscore_directory_exist  "$target_subdirectory"; then
+    if  does_underscore_directory_exist  "$target_subdirectory"; then
       # yyyy-mm-dd - _
       # Continue onward to make a unique directory..
       counter=1
-      until [ ! -d "$target_directory/$target_subdirectory$counter" ]; do
+      while [ -d "$target_directory/$target_subdirectory$counter" ]; do
         counter=$(( counter + 1 ))
       done
       target_subdirectory="$target_subdirectory$counter"
     fi
-    \mkdir  --verbose  "$target_directory/$target_subdirectory"  || exit  $?
+    \mkdir  --verbose  "$target_directory/$target_subdirectory"
   fi
 fi
 
 \cd  "$target_directory/$target_subdirectory"  ||  exit  $?
 
-echo "$target_directory/$target_subdirectory"
+\echo  "$target_directory/$target_subdirectory"
 
 
 # Previously..
@@ -323,28 +323,36 @@ echo "$target_directory/$target_subdirectory"
 
 
 
-if [ -f 'v_4.webp' ]; then
-  _debug  ' * Deleting extraneous thumbnails.'
-  \rm  --force  v_*.jpg
-fi
-if [ -f 'v_3.jpg' ]; then
-  _debug  ' * Deleting extraneous thumbnails.'
-  \rm  --force  v_0.jpg
-  \rm  --force  v_1.jpg
-  \rm  --force  v_2.jpg
-fi
-if [ -f 'v_4.jpg' ]; then
-  _debug  ' * Deleting extraneous thumbnails...'
-  \rm  --force  v_3.jpg
-fi
-if [ -f 'v.webm_4.jpg' ]; then
-  _debug  ' * Deleting extraneous thumbnails...'
-  \rm  --force  v.webm_0.jpg
-  \rm  --force  v.webm_1.jpg
-  \rm  --force  v.webm_2.jpg
-  \rm  --force  v.webm_3.jpg
-fi
-
+#:<<'}'   #  Delete extraneous thumbnails, if any.
+{
+  if [ -f 'v_4.webp' ]; then
+    _debug  ' * Deleting extraneous thumbnails.'
+    \rm  --force  v_*.jpg
+  fi
+  if [ -f 'v_3.jpg' ]; then
+    _debug  ' * Deleting extraneous thumbnails.'
+    \rm  --force  'v_0.jpg'
+    \rm  --force  'v_1.jpg'
+    \rm  --force  'v_2.jpg'
+  fi
+  if [ -f 'v_4.jpg' ]; then
+    _debug  ' * Deleting extraneous thumbnails...'
+    \rm  --force  'v_3.jpg'
+  fi
+  if [ -f 'v.webm_4.jpg' ]; then
+    _debug  ' * Deleting extraneous thumbnails...'
+    \rm  --force  'v.webm_0.jpg'
+    \rm  --force  'v.webm_1.jpg'
+    \rm  --force  'v.webm_2.jpg'
+    \rm  --force  'v.webm_3.jpg'
+  fi
+  if [ -f 'v.mp4_3.jpg' ]; then
+    _debug  ' * Deleting extraneous thumbnails...'
+    \rm  --force  'v.mp4_0.jpg'
+    \rm  --force  'v.mp4_1.jpg'
+    \rm  --force  'v.mp4_2.jpg'
+  fi
+}
 
 
 
