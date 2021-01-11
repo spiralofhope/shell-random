@@ -337,6 +337,14 @@ if [ -f 'v_4.jpg' ]; then
   _debug  ' * Deleting extraneous thumbnails...'
   \rm  --force  v_3.jpg
 fi
+if [ -f 'v.webm_4.jpg' ]; then
+  _debug  ' * Deleting extraneous thumbnails...'
+  \rm  --force  v.webm_0.jpg
+  \rm  --force  v.webm_1.jpg
+  \rm  --force  v.webm_2.jpg
+  \rm  --force  v.webm_3.jpg
+fi
+
 
 
 
