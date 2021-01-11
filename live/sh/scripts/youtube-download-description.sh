@@ -14,19 +14,16 @@
 
 
 # Uncomment if you have provided this file and want youtube-dl to present those credentials, e.g. for age-restricted videos:
-#cookies="$HOME/cookies.txt"
+#cookie_file="$HOME/netscape-cookies.txt"
 
 
 
-cookies=${cookies=' '}
-if [ ! "$cookies" = ' ' ]; then
-  if [ ! -e "$cookies" ]; then
-    \echo  'ERROR:  Cookies file does not exist:'
-    \echo  "$cookies"
-    exit  1
-  else
-    cookies="--cookies=$cookies"
-  fi
+cookie_file=${cookie_file=''}
+if [ ! "$cookie_file" = '' ]  \
+&& [ ! -e "$cookie_file" ]
+then
+  \echo  'cookie file not found'
+  exit  1
 fi
 
 
@@ -39,7 +36,7 @@ if [ $# -eq 0 ]; then
   fi
 else
   # shellcheck  disable=2124
-  source_video_id=" $@"
+  source_video_id="$@"
 fi
 
 
@@ -49,11 +46,23 @@ filename="v.description--${date_hours_minutes}".txt
 
 
 
-\youtube-dl  \
-  --get-description  \
-  --no-call-home  \
-  " $source_video_id" > "$filename"  \
-  "$cookies"
+if [ "$cookie_file" = '' ]; then
+  \youtube-dl  \
+    --get-description  \
+    --no-call-home  \
+    --  \
+    "$source_video_id"  \
+    > "$filename"
+else   #  use cookies
+  \youtube-dl  \
+    --cookies="$cookie_file"  \
+    --get-description  \
+    --no-call-home  \
+    --  \
+    "$source_video_id"  \
+    > "$filename"
+fi
+
 
 
 
