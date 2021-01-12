@@ -120,6 +120,7 @@ _debug  "   into:  \"$comment_filename\""
     --youtubeid="$source_video_id"  \
     --output="$comment_filename"
   # compress
+  # TODO - Is it possible to just stream the text file into an archive and not have this separate step?
   if [ "$DEBUG" = 'true' ]; then
     \7z  a  -mx=9  "$comment_filename".7z  "$comment_filename"
   else
