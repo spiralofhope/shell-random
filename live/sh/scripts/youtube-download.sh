@@ -20,6 +20,8 @@
 #   https://support.google.com/youtube/answer/2734698
 
 
+# FIXME - Check that the dates are UTC and flag them as such. (not that it matters much)
+
 # TODO - Try this:
 #   https://stackoverflow.com/questions/31631535
 #   -f ("bestvideo[width>=1920]"/bestvideo)+bestaudio/best
@@ -255,6 +257,21 @@ does_underscore_directory_exist() {
 
 
 
+fetch_id() {
+  \youtube-dl  \
+    --write-info-json  \
+    --no-call-home  \
+    --output  'temporary'  \
+    --skip-download  \
+    --  \
+    "$video_id"
+
+  id=$( search-json.sh  'id'  'temporary.info.json' )
+  \rm  --force                'temporary.info.json'
+}
+
+
+
 if [ ! -d "$target_directory/$target_subdirectory" ]; then
   if  !  \
     \mkdir  --verbose  "$target_directory/$target_subdirectory"
@@ -265,6 +282,7 @@ if [ ! -d "$target_directory/$target_subdirectory" ]; then
     if  does_underscore_directory_exist  "$target_subdirectory"; then
       # yyyy-mm-dd - _
       # Continue onward to make a unique directory..
+      # FIXME - don't make a unique directory, append the  `id`  as a unique code!
       counter=1
       while [ -d "$target_directory/$target_subdirectory$counter" ]; do
         counter=$(( counter + 1 ))
@@ -325,33 +343,8 @@ fi
 
 #:<<'}'   #  Delete extraneous thumbnails, if any.
 {
-  if [ -f 'v_4.webp' ]; then
-    _debug  ' * Deleting extraneous thumbnails.'
-    \rm  --force  v_*.jpg
-  fi
-  if [ -f 'v_3.jpg' ]; then
-    _debug  ' * Deleting extraneous thumbnails.'
-    \rm  --force  'v_0.jpg'
-    \rm  --force  'v_1.jpg'
-    \rm  --force  'v_2.jpg'
-  fi
-  if [ -f 'v_4.jpg' ]; then
-    _debug  ' * Deleting extraneous thumbnails...'
-    \rm  --force  'v_3.jpg'
-  fi
-  if [ -f 'v.webm_4.jpg' ]; then
-    _debug  ' * Deleting extraneous thumbnails...'
-    \rm  --force  'v.webm_0.jpg'
-    \rm  --force  'v.webm_1.jpg'
-    \rm  --force  'v.webm_2.jpg'
-    \rm  --force  'v.webm_3.jpg'
-  fi
-  if [ -f 'v.mp4_3.jpg' ]; then
-    _debug  ' * Deleting extraneous thumbnails...'
-    \rm  --force  'v.mp4_0.jpg'
-    \rm  --force  'v.mp4_1.jpg'
-    \rm  --force  'v.mp4_2.jpg'
-  fi
+  _debug  ' * Deleting extraneous thumbnails.'
+  youtube-dl_delete-extraneous-thumbnails.sh
 }
 
 
