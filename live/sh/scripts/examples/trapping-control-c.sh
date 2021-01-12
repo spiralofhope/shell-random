@@ -14,6 +14,10 @@ control_c()
   \echo  'control-c detected, exiting immediately.'
   # You can also exit this entire script with:
   #exit  0
+
+  # There is also this. (untested)
+  # A negative PID kills the process group.
+  #\kill  -TERM  -$$
 }
 
 \echo  'Unless you INT, this script will exit in 5 seconds.'
