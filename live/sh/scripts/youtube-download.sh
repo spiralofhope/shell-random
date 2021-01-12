@@ -281,13 +281,10 @@ if [ ! -d "$target_directory/$target_subdirectory" ]; then
     target_directory="$target_directory_proved_good"
     if  does_underscore_directory_exist  "$target_subdirectory"; then
       # yyyy-mm-dd - _
-      # Continue onward to make a unique directory..
-      # FIXME - don't make a unique directory, append the  `id`  as a unique code!
-      counter=1
-      while [ -d "$target_directory/$target_subdirectory$counter" ]; do
-        counter=$(( counter + 1 ))
-      done
-      target_subdirectory="$target_subdirectory$counter"
+      # Append the video's id.
+      # This allows the same video to be downloaded a second time without creating a new _ directory.
+      fetch_id
+      target_subdirectory="${target_subdirectory}_${id}"
     fi
     \mkdir  --verbose  "$target_directory/$target_subdirectory"
   fi
