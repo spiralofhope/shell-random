@@ -38,6 +38,6 @@ find_helper() {
 
 
 
-find_helper  "$*"
+find_helper  "$@"
 # e.g.
 # find_helper  'f'  'always'  'quotes_on'  "$*"
