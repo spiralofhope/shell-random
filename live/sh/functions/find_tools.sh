@@ -1,13 +1,13 @@
 #!/usr/bin/env  sh
 # shellcheck  disable=1001
-#   (I like backslashes)
+#   I like backslashes
 
 
 
-findfile()           { find_helper.sh  'f'  'always'  "$*" ;}
-findfile_color_off() { find_helper.sh  'f'  'never'   "$*" ;}
-finddir()            { find_helper.sh  'd'  'always'  "$*" ;}
-finddir_color_off()  { find_helper.sh  'd'  'never'   "$*" ;}
+findfile()     { find_helper.sh  'f'  'always'  'quotes_on'   "$@" ;}
+findfile_raw() { find_helper.sh  'f'  'never'   'quotes_off'  "$@" ;}
+finddir()      { find_helper.sh  'd'  'always'  'quotes_on'   "$@" ;}
+finddir_raw()  { find_helper.sh  'd'  'never'   'quotes_off'  "$@" ;}
 
 
 :<<'}'   #  Usage
@@ -17,17 +17,17 @@ finddir_color_off()  { find_helper.sh  'd'  'never'   "$*" ;}
  Can backslash to escape.
    I don\'t know
 }
-findinall()           { findin_files.sh  999   'always'  "$*" ;}
-findinall_color_off() { findin_files.sh  999   'never'   "$*" ;}
-findhere()            { findin_files.sh    1   'always'  "$*" ;}
-findhere_color_off()  { findin_files.sh    1   'never'   "$*" ;}
+findinall()     { findin_files.sh  999   'always'  "$@" ;}
+findinall_raw() { findin_files.sh  999   'never'   "$@" ;}
+findhere()      { findin_files.sh    1   'always'  "$@" ;}
+findhere_raw()  { findin_files.sh    1   'never'   "$@" ;}
 
 
 
 # TODO?  Make others which don't use --line-number
-findin()           { findin_file.sh  'always'  "$@" ;}
+findin()        { findin_file.sh  'always'  "$@" ;}
 # I'm not sure why I'd ever want this:
-#findin_color_off() { findin_file.sh  'never'   "$@" ;}
+#findin_raw()    { findin_file.sh  'never'   "$@" ;}
 
 
 
