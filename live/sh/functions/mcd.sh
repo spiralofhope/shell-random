@@ -1,5 +1,8 @@
 #!/usr/bin/env  sh
-# Make and change into a directory:
+# Make and change into a directory.
+
+# See also "bash mcd misadventure":
+#   https://blog.spiralofhope.com/?p=47930
 
 
 
