@@ -2,17 +2,13 @@
 
 # Scrape comments from YouTube videos.
 #
-# Uses youtube-comment-scraper:
-#   https://github.com/philbot9/youtube-comment-scraper/
-#   https://blog.spiralofhope.com/?p=45279
-#
 # Requires my `search-JSON.sh`.
 
-# TODO - I want to detect signals and abort the download without killing autotest.sh, but Python's KeyboardInterrupt is too aggressive or something..
 
+# TODO - I want to detect signals and abort the download without killing autotest.sh, but Python's KeyboardInterrupt is too aggressive or something..
 # TODO - don't try to download comments for non-YouTube.  Obviously.
-# Abort without http://
-# also edit download-description since that won't work everywhere?
+# TODO - Abort without http://
+# TODO - also edit download-description since that won't work everywhere?
 
 
 #DEBUG='true'
@@ -83,8 +79,10 @@ _debug  "   id:    \"$source_video_id\""
 _debug  "   into:  \"$comment_filename\""
 
 
+
 :<<'}'   #  youtube-comment-scraper
 # https://github.com/philbot9/youtube-comment-scraper-cli/
+# https://blog.spiralofhope.com/?p=45279
 {
   comment_filename="$comment_filename".ytcs1.csv
 
