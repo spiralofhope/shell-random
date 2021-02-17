@@ -3,6 +3,7 @@
 #   (I like backslashes)
 # Change directory into a directory-symbolic-link's real location, or a file's directory.
 # Requires `realpath`
+# Usage:  cd "`food`"
 
 
 
