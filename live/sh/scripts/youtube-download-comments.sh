@@ -114,7 +114,8 @@ _debug  "   into:  \"$comment_filename\""
   #\youtube-comment-downloader  \
 #
   # \sudo  \apt  install  python3-lxml  python3-cssselect
-  python3 /live/OS/Linux/bin/youtube-comment-downloader/downloader.py  \
+  # You may have to `dos2unix downloader.py`
+  \python3  /live/OS/Linux/bin/youtube-comment-downloader/youtube_comment_downloader/downloader.py  \
     --youtubeid="$source_video_id"  \
     --output="$comment_filename"
   # compress
