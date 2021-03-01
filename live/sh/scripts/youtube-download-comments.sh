@@ -111,11 +111,13 @@ _debug  "   into:  \"$comment_filename\""
 # https://github.com/egbertbouman/youtube-comment-downloader
 {
   comment_filename="$comment_filename".ytcs2.json
-  #\youtube-comment-downloader  \
-#
+  # Requires Python 2.7+
+  # python 3.x :
   # \sudo  \apt  install  python3-lxml  python3-cssselect
-  # You may have to `dos2unix downloader.py`
-  \python3  /live/OS/Linux/bin/youtube-comment-downloader/youtube_comment_downloader/downloader.py  \
+  # python 2.x :
+  # \sudo  \apt  -y  install  python-cssselect  python-lxml  python-requests
+  # Note:  You may have to `dos2unix downloader.py`
+  \python2  /live/OS/Linux/bin/youtube-comment-downloader/youtube_comment_downloader/downloader.py  \
     --youtubeid="$source_video_id"  \
     --output="$comment_filename"
   # compress
