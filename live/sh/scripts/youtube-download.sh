@@ -315,6 +315,8 @@ fi
       --add-metadata  \
       --no-call-home  \
       --output  'v.%(ext)s'  \
+      --format  'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio'  \
+      --merge-output-format mp4  \
       "$@"  \
       --  \
       "$video_id"
@@ -330,6 +332,8 @@ fi
       --add-metadata  \
       --no-call-home  \
       --output  'v.%(ext)s'  \
+      --format  'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio'  \
+      --merge-output-format mp4  \
       "$@"  \
       --  \
       "$video_id"
