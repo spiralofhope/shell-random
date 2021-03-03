@@ -18,10 +18,13 @@ DEBUG='true'
 
 
 # FIXME
-:<<'}'   #  For `autotest.sh`:
+#:<<'}'   #  For `autotest.sh`:
 {
-  # TODO
-  #https://www.youtube.com/c/jawed/videos
+  if [ $# -eq 0 ]; then
+    "$0"  'https://www.youtube.com/c/jawed/videos'
+
+    return
+  fi
 }
 
 
