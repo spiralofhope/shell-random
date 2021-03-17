@@ -17,7 +17,10 @@ else
 fi
 \echo  "   Using the URL:  $url"
 \echo  '[{000214A0-0000-0000-C000-000000000046}]
-Prop3=19,11
+Prop3=19,2
 [InternetShortcut]
+IconIndex=0
+HotKey=0
+IconFile=%SystemRoot%\System32\SHELL32.dll
 IDList='               >   "$filename"
 \echo    "URL=${url}"  >>  "$filename"
