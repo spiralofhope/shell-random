@@ -1,0 +1,1 @@
+These settings are only available if the Mixed Reality Portal app is installed.
