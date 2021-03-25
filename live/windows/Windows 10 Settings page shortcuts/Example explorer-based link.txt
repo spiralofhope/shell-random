@@ -1,0 +1,11 @@
+Target type:  Application
+Target location:  %SystemRoot%
+Target:  %SystemRoot%\explorer.exe ms-settings:about
+Start in:  
+Shortkut key:  None
+Run:  [Normal window]
+Comment:  
+
+For what it's worth, the icon is from %SystemRoot%\ImmersiveControlPanel\SystemSettings.exe
+
+Any other details are boring/default.
