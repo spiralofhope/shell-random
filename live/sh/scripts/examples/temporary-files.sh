@@ -13,6 +13,10 @@
   temporary_file="/tmp/my_temporary_file.$$"
   # Make the file:
   :>                       "$temporary_file"
+  #
+  # (do things here)
+  #
+  # Cleanup:
   \rm  --force  --verbose  "$temporary_file"
 }
 
@@ -30,6 +34,10 @@
   temporary_file="/tmp/$( _basename  "$0" ).$$.tmp"
   # Make the file:
   :>                       "$temporary_file"
+  #
+  # (do things here)
+  #
+  # Cleanup:
   \rm  --force  --verbose  "$temporary_file"
 }
 
@@ -56,6 +64,10 @@
   # You can create a unique string to help identify/organize your tempfiles.
   unique_file="$( \mktemp  --suffix=".my_temporary_file.$$" )"
   # example file:  /tmp/tmp.CjgG1vqFFC.my_temporary_file.17065
+  #
+  # (do things here)
+  #
+  # Cleanup:
   \rm  --force  --verbose  "$unique_file"
 }
 
