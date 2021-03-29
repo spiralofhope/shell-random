@@ -139,6 +139,26 @@ fi
 
 determine_directories(){
   # Learn the directory structure we'll be working within:
+:<<'}'   #  Write the json and get the data directly.
+{
+  # `search-json.sh` can be very slow; consider using another program to do this.
+  # With this, you wouldn't need to initiate another youtube-dl request with fetch_id(), but that is rarely used.
+  # You can get additional data from the json file early on, if that's useful to you.
+  temporary_file="/tmp/my_temporary_file.$$"
+  \youtube-dl  \
+    --write-info-json  \
+    --no-call-home  \
+    --output  "$temporary_file"  \
+    --skip-download  \
+    --  \
+    "$video_id"
+  __="$temporary_file".info.json
+  uploader=$(  search-json.sh  'uploader'   "$__" )  ;  _debug  "uploader:   $uploader"
+  fulltitle=$( search-json.sh  'fulltitle'  "$__" )  ;  _debug  "fulltitle:  $fulltitle"
+  # (You can extract additional information here)
+  #id=$( search-json.sh  'id'         "$__" )  ;  _debug  "fulltitle:  $fulltitle"
+  \rm  --force  --verbose  "$temporary_file"
+}
   target=$(  \
     \youtube-dl  \
       --get-filename  \
