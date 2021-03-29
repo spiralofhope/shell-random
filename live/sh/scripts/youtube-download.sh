@@ -30,10 +30,12 @@
 
 # TODO - investigate
     #How do I download only new videos from a playlist?
-        #Use  download-archive  feature.   With  this  feature  you  should  initially  download  the  complete  playlist  with  --download-ar‐
-        #chive /path/to/download/archive/file.txt that will record identifiers of all the videos in a special file.  Each subsequent  run  with
-        #the  same  --download-archive will download only new videos and skip all videos that have been downloaded before.  Note that only suc‐
-        #cessful downloads are recorded in the file.
+      #  >  Use download-archive feature. With this feature you should initially download the complete playlist with --download-archive /path/to/download/archive/file.txt that will record identifiers of all the videos in a special file. Each subsequent run with the same --download-archive will download only new videos and skip all videos that have been downloaded before. Note that only successful downloads are recorded in the file.
+
+# TODO - If downloading from a list (when implemented), do:
+#  --sleep-interval      min
+#  --max-sleep-interval  max
+
 
 # FIXME -- cookies interferes with other things? (reported by past self)
 
