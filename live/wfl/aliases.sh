@@ -49,6 +49,9 @@ alias  vlc='/mnt/c/Program\ Files/VideoLAN/VLC/vlc.exe'
 # World of Warcraft
 alias  addons="nocorrect  \cd  /mnt/c/live/games/World_of_Warcraft/_dotfiles/Interface/AddOns/ || return"
 alias     wow="nocorrect  \cd  /mnt/c/live/games/World_of_Warcraft/ || return"
+# TODO - Turn this into a procedure, which will know if I use a path, and will convert that path into something Windows-compatible
+#        e.g.  /mnt/c means C:\
+alias  e='nocorrect  /mnt/c/Windows/explorer.exe  .'
 
 
 screen() {
