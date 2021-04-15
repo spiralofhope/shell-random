@@ -145,8 +145,3 @@ _debug  "   into:  \"$comment_filename\""
     fi
   fi
 }
-
-
-
-# I'm left with a zero-size file if the download fails; delete it.
-[ -s "$comment_filename" ]  ||  \rm  --force  "$comment_filename"
