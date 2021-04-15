@@ -1,4 +1,6 @@
 #!/usr/bin/env  sh
+# shellcheck  disable=1001  disable=1012
+#   (I like backslashes)
 
 # Scrape comments from YouTube videos.
 #
@@ -12,6 +14,7 @@
 
 
 #DEBUG='true'
+
 
 
 :<<'# For autotest.sh'
@@ -120,14 +123,27 @@ _debug  "   into:  \"$comment_filename\""
   \python2  /live/OS/Linux/bin/youtube-comment-downloader/youtube_comment_downloader/downloader.py  \
     --youtubeid="$source_video_id"  \
     --output="$comment_filename"
-  # compress
-  # TODO - Is it possible to just stream the text file into an archive and not have this separate step?
-  if [ "$DEBUG" = 'true' ]; then
-    \7z  a  -mx=9  "$comment_filename".7z  "$comment_filename"
+  if [ ! -s "$comment_filename" ]; then
+    #  The comments file is empty
+    if [ "$DEBUG" = 'true' ]; then
+      \echo  'No comments fetched.'
+    fi
+    \rm  --force  --verbose  "$comment_filename"
   else
-    \7z  a  -mx=9  "$comment_filename".7z  "$comment_filename"   > /dev/null  2> /dev/null
+    #
+    # Requires 7zip
+    # TODO - Is it possible to just stream the text file into an archive and not have this separate step?
+    if  \
+      _=$( \which 7z )
+    then
+      #  The comments file has content
+      if [ "$DEBUG" = 'true' ];
+      then  \7z  a  -mx=9  "$comment_filename".7z  "$comment_filename"
+      else  \7z  a  -mx=9  "$comment_filename".7z  "$comment_filename"   > /dev/null  2> /dev/null
+      fi
+      if $! ; then \rm  --force  --verbose  "$comment_filename" ; fi
+    fi
   fi
-  \rm  --force  --verbose  "$comment_filename"
 }
 
 
