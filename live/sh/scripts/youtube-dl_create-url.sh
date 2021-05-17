@@ -9,9 +9,14 @@ filename='v.url'
 
 \echo  'Creating a a Windows-compatible .lnk (web page link)...'
 if [ $# -eq 0 ]; then
-  \echo  ' * Searching for the URL using:  v.info.json'
+  json_filename='v.info.json'
+  if [ ! -f "$filename" ]; then
+    \echo  "ERROR:  $json_filename  not found"
+    exit 1
+  fi
+  \echo  " * Searching for the URL using:  $json_filename"
   \echo  '   (this will take a moment)'
-  url=$( search-json.sh  'webpage_url'  v.info.json )
+  url=$( search-json.sh  'webpage_url'  "$json_filename" )
 else
   url="$1"
 fi
