@@ -78,31 +78,34 @@ fix_files() {
     \mv  ./*.opus             'v.opus'             2>  /dev/null
     \mv  ./*.m4a              'v.m4a'              2>  /dev/null
   fi
+
+  youtube-dl_delete-extraneous-thumbnails.sh
+
   #
-  if [ -f 'v_4.webp' ]; then
-    _debug  ' * Deleting extraneous thumbnails.'
-    \rm  --force  v_*.jpg
-  fi
-  #
-  if [ -f 'v_3.jpg' ]; then
-    _debug  ' * Deleting extraneous thumbnails.'
-    \rm  --force  v_0.jpg
-    \rm  --force  v_1.jpg
-    \rm  --force  v_2.jpg
-  fi
-  #
-  if [ -f 'v_4.jpg' ]; then
-    _debug  ' * Deleting extraneous thumbnails.'
-    \rm  --force  v_3.jpg
-  fi
-  #
-  if [ -f 'v_orig.jpg' ]; then
-    \rm  --force  'v_large.jpg'
-    \rm  --force  'v_medium.jpg'
-    \rm  --force  'v_small.jpg'
-    \rm  --force  'v_thumb.jpg'
-    \mv  'v_orig.jpg'  'v_4.jpg'
-  fi
+  #if [ -f 'v_4.webp' ]; then
+    #_debug  ' * Deleting extraneous thumbnails.'
+    #\rm  --force  v_*.jpg
+  #fi
+  ##
+  #if [ -f 'v_3.jpg' ]; then
+    #_debug  ' * Deleting extraneous thumbnails.'
+    #\rm  --force  v_0.jpg
+    #\rm  --force  v_1.jpg
+    #\rm  --force  v_2.jpg
+  #fi
+  ##
+  #if [ -f 'v_4.jpg' ]; then
+    #_debug  ' * Deleting extraneous thumbnails.'
+    #\rm  --force  v_3.jpg
+  #fi
+  ##
+  #if [ -f 'v_orig.jpg' ]; then
+    #\rm  --force  'v_large.jpg'
+    #\rm  --force  'v_medium.jpg'
+    #\rm  --force  'v_small.jpg'
+    #\rm  --force  'v_thumb.jpg'
+    #\mv  'v_orig.jpg'  'v_4.jpg'
+  #fi
   #
   # The old date format which did not have the date of download.
 
