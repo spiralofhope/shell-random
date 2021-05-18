@@ -342,7 +342,8 @@ fi
       "$@"  \
       --  \
       "$video_id"
-  else   #  use cookies
+  else
+    _debug  'using cookies'
     \youtube-dl  \
       --cookies="$cookie_file"  \
       --console-title  \
