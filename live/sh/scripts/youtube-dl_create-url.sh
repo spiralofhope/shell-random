@@ -10,7 +10,7 @@ filename='v.url'
 \echo  'Creating a a Windows-compatible .lnk (web page link)...'
 if [ $# -eq 0 ]; then
   json_filename='v.info.json'
-  if [ ! -f "$filename" ]; then
+  if [ ! -f "$json_filename" ]; then
     \echo  "ERROR:  $json_filename  not found"
     exit 1
   fi
