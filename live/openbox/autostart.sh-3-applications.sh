@@ -56,7 +56,8 @@ _connected_true() {
   '/l/OS/bin/Pale Moon/delete_parentlock.sh'       "$profile_name"
   \setsid  '/l/OS/bin/Pale Moon/_installation/palemoon'  -P "$profile_name"  -new-tab "about:blank" &
 }
-\setsid  palemoon&
+\setsid  palemoon &
+\setsid  brave-browser &
 
 
   #
