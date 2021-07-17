@@ -17,6 +17,8 @@ cdd() {
   done
   #
   __="$( \realpath  "$__" )"
+  # Alternate:
+  #__="$( \readlink  --canonicalize "$__" )"
   #
   # taken from  `replace-dirname.sh`
   _dirname() {
