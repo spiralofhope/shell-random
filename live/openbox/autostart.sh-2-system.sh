@@ -101,25 +101,15 @@ done
   # https://keepassxc.org/
   # https://github.com/magkopian/keepassxc-debian/releases
 
+  # I have to manually mount this partition right now.
+  if [ -d '/media/user/data_primary' ]; then
+    keepassxc&
+  fi
 
-keepassxc&
-
-
-  #\rm  --force  \
-    #'/l/.KeePassXC--passwords.kdbx.lock'  \
-    #'/mnt/1/windows-data/live/.KeePassXC--passwords.kdbx.lock'
+  #\rm  --force  passwords.kdbx.lock
 
   ## It can be set to load previous databases on startup, but I prefer this..
-  #\setsid  /usr/bin/keepassxc  \
-    #'/l/KeePassXC--passwords.kdbx'  \
-    #'/mnt/1/data-windows/live/KeePassXC--passwords.kdbx' &
-
-#  \rm  --force  \
-#    '/l/.KeePassXC--passwords.kdbx.lock'
-
-  # It can be set to load previous databases on startup, but I prefer this..
-#  \setsid  /usr/bin/keepassxc  \
-#    '/l/KeePassXC--passwords.kdbx'  &
+  #\setsid  /usr/bin/keepassxc  passwords.kdbx
 }
 
 
