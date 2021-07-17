@@ -17,7 +17,7 @@ cdd() {
   done
   #
   __="$( \realpath  "$__" )"
-  # Alternate:
+  # Alternate to realpath:
   #__="$( \readlink  --canonicalize "$__" )"
   #
   # taken from  `replace-dirname.sh`
@@ -30,9 +30,9 @@ cdd() {
     printf '%s\n' "${dir:-/}"
   }
   #
-  if   [ -L "$__" ] && [ -d "$__" ] ; then  \cd  "$__"                   ||  return  $?
-  elif                 [ -f "$__" ] ; then  \cd  "$( _dirname  "$__" )"  ||  return  $?
-  else                                      \cd  "$@"                    ||  return  $?
+  if   [ -d "$__" ] ; then  \cd  "$__"                   ||  return  $?
+  elif [ -f "$__" ] ; then  \cd  "$( _dirname  "$__" )"  ||  return  $?
+  else \echo 'regular cd' ; \cd  "$@"                    ||  return  $?
   fi
   unset  __
 }
