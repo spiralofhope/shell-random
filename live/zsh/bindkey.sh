@@ -129,7 +129,8 @@ typeset  -g  -A  key
 # This seems to be the Right Way to handle edge cases
 case "$TERM" in
 
-  xterm-256color)
+  xterm-256color       |\
+  screen.xterm-256color)
     \bindkey  '^[[H'     beginning-of-line                              # home
     \bindkey  '^[[F'     end-of-line                                    # end
     \bindkey  '[3;5~'  delete-word                                   # control-delete
