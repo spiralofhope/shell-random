@@ -12,7 +12,7 @@ alias  du='\du  --human-readable'
 alias  eject='\eject  -i 0 ; \eject'                                    # Force-eject
 alias  free='\free  --human  --si'
 alias  grep='\grep  --color'                                            # Note that bash-windows does not support --color
-alias  hibernate='\sudo  \systemctl  hibernate'
+alias  hibernate='drop-caches.sh  &&  \sudo  \systemctl  hibernate'
 #alias  less='\less  --force  --RAW-CONTROL-CHARS  --quit-if-one-screen  $@'
 alias  less='\less  --RAW-CONTROL-CHARS'
 alias  ls='\ls  -1  --all  --classify  --color=always  --group-directories-first  --show-control-chars'
@@ -20,10 +20,11 @@ alias  md='\mkdir'
 alias  more='\less  --quit-at-eof  --quit-if-one-screen'
 alias  mv='\mv  --interactive'
 alias  nano='\nano  --mouse'
-alias  pm-suspend='\sudo  /usr/sbin/pm-suspend'
+alias  pm-suspend='drop-caches.sh  &&  \sudo  /usr/sbin/pm-suspend'
 alias  poweroff='\sudo  /sbin/poweroff'
-alias  reboot="/bin/su  -c  '/sbin/shutdown  -r  -t now  now  rebooting'"
-alias  suspend='\sudo  \systemctl  suspend'
+alias  reboot='\sudo  /sbin/shutdown  -r  -t now  now  rebooting'
+#alias  reboot="/bin/su  -c  '/sbin/shutdown  -r  -t now  now  rebooting'"
+alias  suspend='drop-caches.sh  &&  \sudo  \systemctl  suspend'
 alias  rm='\rm  --interactive  --one-file-system'
 alias  sh='\sh  -l'
 
