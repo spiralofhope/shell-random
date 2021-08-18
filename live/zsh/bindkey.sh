@@ -177,12 +177,14 @@ case "$TERM" in
     \bindkey  '[C'     forward-char                                  # right
     #\bindkey  'OD'     backward-word                                 # control-left
     #\bindkey  'OC'     forward-word                                  # control-right
-    \bindkey  '^?'         backward-delete-char                         # backspace
+#    \bindkey  '^?'         backward-delete-char                         # backspace
+    \bindkey  '^H'         backward-delete-char                         # backspace
     \bindkey  '[3;5~'  delete-word                                   # control-delete
     \bindkey  '[3;3~'  delete-word                                   # alt-delete
     \bindkey  '^[[1~'     beginning-of-line                             # home
     \bindkey  '^[[4~'     end-of-line                                   # end
-    \bindkey  '^H'        backward-kill-word                            # control-backspace
+#    \bindkey  '^H'        backward-kill-word                            # control-backspace
+    \bindkey  '^?'        backward-kill-word                            # control-backspace
   ;;
 
   screen.linux)   # The program 'screen', at the tty
