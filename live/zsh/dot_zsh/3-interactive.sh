@@ -2,10 +2,12 @@
 # shellcheck disable=1012
 # shellcheck disable=1001
 
+:<<'}'   #  Notes
+{
+  man zshoptions
 
-: << IDEAS
   TODO - Check out http://dotfiles.org/~brendano/.zshrc
-IDEAS
+}
 
 
 # For 32bit Debian, I have to manually do this..
@@ -88,7 +90,6 @@ IDEAS
   HISTSIZE=10000                  ;  export  HISTSIZE
   SAVEHIST=10000                  ;  export  SAVEHIST
   # prepend a command with a space and have it not commit a command to $HISTFILE ($HOME/.zsh_histfile)
-  setopt  histignorespace
   setopt  HIST_IGNORE_SPACE
   # Disable history expansion using "!" so that things like this work to clobber contents:
   #   \echo  'text to clobber with'  >!  'filename.ext'
@@ -209,6 +210,16 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'  ;  export  WORDCHARS
   export  PATH
 }
 
+
+:<<'}'   #  Various zshoptions:  `setopt`
+{
+  # Documentation:
+  #   man zshoptions
+  # Experiment by removing everything first.
+  # (Do this at the commandline, not through this script)
+  # I'm not sure why I can't use the ${} style:
+  #   for i in `setopt`; do unsetopt "$i"; done
+}
 
 
 # Syntax highlighting magic

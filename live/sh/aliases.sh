@@ -27,6 +27,7 @@ alias  reboot='\sudo  /sbin/shutdown  -r  -t now  now  rebooting'
 alias  suspend='drop-caches.sh  &&  \sudo  \systemctl  suspend'
 alias  rm='\rm  --interactive  --one-file-system'
 alias  sh='\sh  -l'
+alias  xclip='xclip -selection c'
 
 # --QUIT-AT-EOF
 # --no-init is mandatory for Windows Subsystem for Linux.
