@@ -79,3 +79,14 @@ alias  previous='\cd  "$( \realpath  "$HOME/l/path/previous/" )"'
 
 # TODO? - What does this do?
 # alias  screen='TERM=screen screen'  # http://ubuntuforums.org/showthread.php?t=90910
+
+
+# Debian-like:
+alias  update='                              \
+  \sudo                                      \
+  \sh -c "                                   \
+    /usr/bin/apt-get  --yes update        && \
+    /usr/bin/apt-get  --yes upgrade       && \
+    /usr/bin/apt-get  --yes dist-upgrade     \
+  "                                          \
+'
