@@ -18,13 +18,31 @@
   LESS=' --force  --ignore-case  --long-prompt  --no-init  --silent  --status-column  --tilde  --window=-2'
   export  LESS
 
+  prepend_path() {
+    __="$1"
+    if [ ! -d "$__" ]; then return 1; fi
+    __=$( \realpath "$1" )
+    PATH="$__":"$PATH"
+    export  PATH
+  }
+
+  prepend_path  "$HOME/l/path"
+  prepend_path  '/mnt/a/live/OS/bin'
   # $shdir is set elsewhere, kinda.  FIXME - figure it out.
+  prepend_path  "${shdir:?}/scripts"
+  #echo $PATH
+
+
+
+:<<'}'
+{
   PATH=\
-"$(  \realpath  "$HOME/l/path" )"\
+-"$(  \realpath  "$HOME/l/path" )"\
 :"$( \realpath  /mnt/a/live/OS/bin )"\
 :"$( \realpath  "${shdir:?}/scripts" )"\
 :"$PATH"
   export  PATH
+}
 
 
   #:<<'  }'   #  Distinguish between platforms
