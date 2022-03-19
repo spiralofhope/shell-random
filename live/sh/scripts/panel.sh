@@ -1,12 +1,7 @@
 #!/usr/bin/env  sh
 # Launch any available panel (the bottom bar)
-# 2018-07-07
-#   Devuan-1.0.0-jessie-i386-DVD
-#   dash 0.5.7-4+b1
-
 
 # TODO - given an array of strings, run the first program found.
-
 
 
 
@@ -27,6 +22,9 @@ trytry() {
 }
 
 
+
+# Lubuntu 20.04 uses lxqt:
+trytry  lxqt-panel
 trytry  fbpanel
 trytry  lxpanel
 trytry  xfce4-panel
