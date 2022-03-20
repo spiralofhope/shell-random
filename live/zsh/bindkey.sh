@@ -158,40 +158,36 @@ case "$TERM" in
   ;;
 
   linux)   # The raw tty console
-    \bindkey  '^[OH'     beginning-of-line                              # home
-    \bindkey  '^[OF'     end-of-line                                    # end
-    \bindkey  '^H'       backward-kill-word                             # control-backspace
-    \bindkey  '^[[3~'    kill-word                                      # control-delete
-    # `control-left` / `control-right` are somehow the same as `left` / `right`
-    \bindkey  '[D'     backward-char                                 # left
-    \bindkey  '[C'     forward-char                                  # right
-    # 2016-11-26 - Devuan
-    #\bindkey  '^[[D'     backward-word                                  # control-left
-    #\bindkey  '^[[C'     forward-word                                   # control-right
+    # At the raw console, `control-left` / `control-right` are somehow the same as `left` / `right`
+    #   I won't use alt-left / alt-right since that changes raw tty consoles quickly, which is nice sometimes.
+#    \bindkey  '^[OH'     beginning-of-line                              # home
+#    \bindkey  '^[OF'     end-of-line                                    # end
+#    \bindkey  '[D'     backward-char                                  # left
+#    \bindkey  '[C'     forward-char                                   # right
+    # `delete` and `alt-delete` are somehow the same.
+#    \bindkey  '^[[3~'    delete-char                                    # delete
   ;;
 
   screen         |\
   screen-256color)   # The program 'screen'
-    # At the raw console, `control-left` / `control-right` are somehow the same as `left` / `right`
-    \bindkey  '[D'     backward-char                                 # left
-    \bindkey  '[C'     forward-char                                  # right
-    #\bindkey  'OD'     backward-word                                 # control-left
-    #\bindkey  'OC'     forward-word                                  # control-right
-#    \bindkey  '^?'         backward-delete-char                         # backspace
-    \bindkey  '^H'         backward-delete-char                         # backspace
-    \bindkey  '[3;5~'  delete-word                                   # control-delete
-    \bindkey  '[3;3~'  delete-word                                   # alt-delete
-    \bindkey  '^[[1~'     beginning-of-line                             # home
-    \bindkey  '^[[4~'     end-of-line                                   # end
-#    \bindkey  '^H'        backward-kill-word                            # control-backspace
-    \bindkey  '^?'        backward-kill-word                            # control-backspace
+    # Even in screen, at the raw console, `control-left` / `control-right` are somehow the same as `left` / `right`
+#    \bindkey  '[D'      backward-char                                 # left
+#    \bindkey  '[C'      forward-char                                  # right
+#    \bindkey  'OD'      backward-word                                 # control-left
+#    \bindkey  'OC'      forward-word                                  # control-right
+#    \bindkey  '^?'        backward-delete-char                          # backspace
+#    \bindkey  '^[[3~'     delete-char                                   # delete
+#    \bindkey  '[3;5~'   delete-word                                   # control-delete
+#    \bindkey  '[3;3~'   delete-word                                   # alt-delete
+#    \bindkey  '^[[1~'     beginning-of-line                             # home
+#    \bindkey  '^[[4~'     end-of-line                                   # end
   ;;
 
   screen.linux)   # The program 'screen', at the tty
 # These won't work, because left/right are the same as control-left/right !
 #    \bindkey '^[OD'      backward-word                                  # control-left
 #    \bindkey '^[OC'      forward-word                                   # control-right
-    \bindkey  '^H'       backward-kill-word                             # alt-backspace
+#    \bindkey  '^H'       backward-kill-word                             # alt-backspace
   ;;
 
   *xterm*)  # Anything similar that's left..
