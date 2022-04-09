@@ -19,3 +19,8 @@ fi
 PATH="$PATH":\
 "$( \realpath  "$bashdir/scripts" )"\
 ` # `
+
+
+
+# Have the `history` command use a better date format:
+\export  HISTTIMEFORMAT="%Y-%m-%d_%T "
