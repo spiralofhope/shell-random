@@ -121,6 +121,9 @@
   # Use the same history file for all sessions
   # To retrieve the history file everytime history is called upon.
   \setopt  share_history
+
+  # Remove the history (fc -l) command from the history list when invoked.
+  \setopt  HIST_NO_STORE
 }
 
 
