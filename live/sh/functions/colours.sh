@@ -46,6 +46,11 @@ on Windows 10:
 
 initializeANSI() {
 
+  # Various ways to reference byte 27:
+  #ANSI_escape_code=''
+  #ANSI_escape_code='\x1b'
+  #ANSI_escape_code='\e'
+  #ANSI_escape_code='\033'
   {   #  Determine what sort of machine we're on
     unameOut="$( \uname  --kernel-name )"
     case "${unameOut}" in
@@ -60,63 +65,67 @@ initializeANSI() {
     case "${unameOut}" in
       # Babun
       CYGWIN*)
-        esc=''
+        ANSI_escape_code=''
       ;;
       # This might be okay for git-bash
       MINGW*|'Linux')
-        esc='\033'
+        # 2022-04-09 - This isn't working for dash any more, if it ever did.
+        #ANSI_escape_code='\033'
+        ANSI_escape_code=''
       ;;
       *)
-        esc=''
+        ANSI_escape_code=''
       ;;
     esac
   }
+Disable the autowrap feature.
+#ANSI_escape_code='[?7l'
 
   # Foreground colour
-  black="${esc}[30m"
-  red="${esc}[31m"
-  green="${esc}[32m"
-  yellow="${esc}[33m"
-  blue="${esc}[34m"
-  purple="${esc}[35m"
-  cyan="${esc}[36m"
-  white="${esc}[37m"
-  gray="${boldoff}${esc}[37m"
-  grey="${boldoff}${esc}[37m"
+  black="${ANSI_escape_code}[30m"
+  red="${ANSI_escape_code}[31m"
+  green="${ANSI_escape_code}[32m"
+  yellow="${ANSI_escape_code}[33m"
+  blue="${ANSI_escape_code}[34m"
+  purple="${ANSI_escape_code}[35m"
+  cyan="${ANSI_escape_code}[36m"
+  white="${ANSI_escape_code}[37m"
+  gray="${boldoff}${ANSI_escape_code}[37m"
+  grey="${boldoff}${ANSI_escape_code}[37m"
 
   # Background colour
-  blackb="${esc}[40m"
-  redb="${esc}[41m"
-  greenb="${esc}[42m"
-  yellowb="${esc}[43m"
-  blueb="${esc}[44m"
-  purpleb="${esc}[45m"
-  cyanb="${esc}[46m"
-  whiteb="${esc}[47m"
+  blackb="${ANSI_escape_code}[40m"
+  redb="${ANSI_escape_code}[41m"
+  greenb="${ANSI_escape_code}[42m"
+  yellowb="${ANSI_escape_code}[43m"
+  blueb="${ANSI_escape_code}[44m"
+  purpleb="${ANSI_escape_code}[45m"
+  cyanb="${ANSI_escape_code}[46m"
+  whiteb="${ANSI_escape_code}[47m"
 
-  boldon="${esc}[1m"
-  boldoff="${esc}[22m"
-  italicson="${esc}[3m"
-  italicsoff="${esc}[23m"
-  ulon="${esc}[4m"
-  uloff="${esc}[24m"
-  invon="${esc}[7m"
-  invoff="${esc}[27m"
+  boldon="${ANSI_escape_code}[1m"
+  boldoff="${ANSI_escape_code}[22m"
+  italicson="${ANSI_escape_code}[3m"
+  italicsoff="${ANSI_escape_code}[23m"
+  ulon="${ANSI_escape_code}[4m"
+  uloff="${ANSI_escape_code}[24m"
+  invon="${ANSI_escape_code}[7m"
+  invoff="${ANSI_escape_code}[27m"
 
   # Foreground colour, bolded
-  black_bold="${boldon}${esc}${black}"
-  red_bold="${boldon}${esc}${red}"
-  green_bold="${boldon}${esc}${green}"
-  yellow_bold="${boldon}${esc}${yellow}"
-  blue_bold="${boldon}${esc}${blue}"
-  purple_bold="${boldon}${esc}${purple}"
-  cyan_bold="${boldon}${esc}${cyan}"
-  white_bold="${boldon}${esc}${white}"
+  black_bold="${boldon}${ANSI_escape_code}${black}"
+  red_bold="${boldon}${ANSI_escape_code}${red}"
+  green_bold="${boldon}${ANSI_escape_code}${green}"
+  yellow_bold="${boldon}${ANSI_escape_code}${yellow}"
+  blue_bold="${boldon}${ANSI_escape_code}${blue}"
+  purple_bold="${boldon}${ANSI_escape_code}${purple}"
+  cyan_bold="${boldon}${ANSI_escape_code}${cyan}"
+  white_bold="${boldon}${ANSI_escape_code}${white}"
 
-  reset_color="${esc}[0m"
+  reset_color="${ANSI_escape_code}[0m"
 
-  cursor_position_save='\033[s'
-  cursor_position_restore='\033[u'
+  cursor_position_save='${ANSI_escape_code}[s'
+  cursor_position_restore='${ANSI_escape_code}[u'
 }
 initializeANSI
 

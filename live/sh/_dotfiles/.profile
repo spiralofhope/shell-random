@@ -76,15 +76,10 @@ export  shdir
 
   # ANSI colors
   #
-  # See sh/functions/colors.sh for more info.
+  # This is from sh/functions/colors.sh , which has more info.
+  initializeANSI
+  #
   # Alternately it's possible to embed backticks and use ``echo -n <stuff>`  but that would keep executing echo which sounds slow.
-  # I don't understand why these variables aren't available from the above..
-  esc=''
-  reset_color="${esc}[0m"
-  boldon="${esc}[1m"
-  red="${esc}[31m"
-  blue="${esc}[34m"
-
 
   #:<<'  }'   #  A simple colored prompt:
   {

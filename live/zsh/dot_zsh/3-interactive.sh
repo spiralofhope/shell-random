@@ -108,6 +108,10 @@ zle_highlight=(region:bg=red special:underline)  ;  export  zle_highlight
 WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'  ;  export  WORDCHARS
 
 
+# Report the time used for any command that takes longer than n seconds.
+REPORTTIME=10
+
+
 # For 64bit Devuan, this is being done at the level of `sh` in `.profile` 
 # I have no idea why this is so insane, but together they form Voltron.
 # shellcheck disable=1039
