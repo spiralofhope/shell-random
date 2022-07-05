@@ -246,7 +246,6 @@ df
 # ---------------------------------------------------------------------
 
 
-
 :<<'}'
 {
 # 2017-10-26 - Babun always claims it is the tty.  I don't know when this would have been tested under Linux.

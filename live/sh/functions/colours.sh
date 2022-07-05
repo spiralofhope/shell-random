@@ -43,9 +43,7 @@ on Windows 10:
 }
 
 
-
 initializeANSI() {
-
   # Various ways to reference byte 27:
   #ANSI_escape_code=''
   #ANSI_escape_code='\x1b'
@@ -78,8 +76,8 @@ initializeANSI() {
       ;;
     esac
   }
-Disable the autowrap feature.
-#ANSI_escape_code='[?7l'
+  # Disable the autowrap feature:
+  #ANSI_escape_code='[?7l'
 
   # Foreground colour
   black="${ANSI_escape_code}[30m"

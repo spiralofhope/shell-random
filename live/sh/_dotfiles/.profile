@@ -76,7 +76,7 @@ export  shdir
 
   # ANSI colors
   #
-  # This is from sh/functions/colors.sh , which has more info.
+  # This is from sh/functions/colours.sh , which has more info.
   initializeANSI
   #
   # Alternately it's possible to embed backticks and use ``echo -n <stuff>`  but that would keep executing echo which sounds slow.
