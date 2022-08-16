@@ -14,7 +14,7 @@ alias  free='\free  --human  --si'
 alias  grep='\grep  --color'                                            # Note that bash-windows does not support --color
 alias  hibernate='drop-caches.sh  &&  \sudo  \systemctl  hibernate'
 #alias  less='\less  --force  --RAW-CONTROL-CHARS  --quit-if-one-screen  $@'
-alias  less='\less  --RAW-CONTROL-CHARS'
+alias  less='\less  --chop-long-lines  --RAW-CONTROL-CHARS'
 alias  ls='\ls  -1  --all  --classify  --color=always  --group-directories-first  --show-control-chars'
 alias  md='\mkdir'
 alias  more='\less  --quit-at-eof  --quit-if-one-screen'
