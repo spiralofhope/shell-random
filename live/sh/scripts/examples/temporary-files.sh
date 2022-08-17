@@ -76,7 +76,7 @@
          #  This cannot be guaranteed to be unique since something else could theoretically come along and happen to make a file with that exact name.
 {
   # Consider using "local" if this is in a function.
-  fairly_unique_variable_content=$( \mktemp  --dry-run )
+  fairly_unique_variable_content="$( \mktemp  --dry-run )"
   # example:  /tmp/tmp.oN1dvub6FE
   \echo  "$fairly_unique_variable_content"
 }
