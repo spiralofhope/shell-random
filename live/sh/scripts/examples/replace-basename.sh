@@ -42,8 +42,8 @@ _basename() {
 
 
 
-:<<'}'   # For easy cut-and-paste
-# taken from  `replace-basename.sh`
+# For easy copy-paste:
+:<<'}'   #  Taken from  `replace-basename.sh`
 _basename() {
   dir=${1%${1##*[!/]}}
   dir=${dir##*/}

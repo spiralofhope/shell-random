@@ -46,8 +46,8 @@ _dirname() {
 
 
 
-:<<'}'   # For easy cut-and-paste
-# taken from  `replace-dirname.sh`
+# For easy copy-paste:
+:<<'}'   #  Taken from  `replace-dirname.sh`
 _dirname() {
   dir=${1:-.}
   dir=${dir%%"${dir##*[!/]}"}
