@@ -88,5 +88,6 @@ alias  update='                              \
     /usr/bin/apt-get  --yes update        && \
     /usr/bin/apt-get  --yes upgrade       && \
     /usr/bin/apt-get  --yes dist-upgrade     \
+    /usr/bin/apt-get  --yes autoremove       \
   "                                          \
 '
