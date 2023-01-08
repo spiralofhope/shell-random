@@ -87,7 +87,11 @@ alias  update='                              \
   \sh -c "                                   \
     /usr/bin/apt-get  --yes update        && \
     /usr/bin/apt-get  --yes upgrade       && \
-    /usr/bin/apt-get  --yes dist-upgrade     \
+    /usr/bin/apt-get  --yes dist-upgrade  && \
     /usr/bin/apt-get  --yes autoremove       \
   "                                          \
 '
+
+
+# Help cache things, for a slow / occupied drive
+alias cnull='cat * > /dev/null&'
