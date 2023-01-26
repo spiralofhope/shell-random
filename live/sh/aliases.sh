@@ -93,5 +93,5 @@ alias  update='                              \
 '
 
 
-# Help cache things, for a slow / occupied drive
+# Help cache files, for a slow/occupied drive:
 alias cnull='cat * > /dev/null&'
