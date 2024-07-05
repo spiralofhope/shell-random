@@ -1,5 +1,7 @@
 #!/usr/bin/env  zsh
 
+# FIXME - Ansi doesn't work with the spinner.
+
 
 
 :<<'}'   #  TODO
@@ -53,7 +55,7 @@ on Windows 10:
 
 user_preferences() {
   # Uncomment if you do not have an ANSI-capable terminal.
-  # ANSI='no'
+  ANSI='no'
 
   # Uncomment this if you don't want to have the timing of your script execution.
   # DATE='no'
@@ -178,6 +180,7 @@ HEREDOC
 setup() {
   MYSHELL="$( \basename  "$( \readlink  /proc/$$/exe )"s )"
   ORIGINAL_PWD="$PWD"
+  spinner_counter='1'
 
   #:<<'  }'   #  Distinguish between platforms
             #  - Cygwin
@@ -205,36 +208,9 @@ setup() {
   # zshism
   # shellcheck disable=2039
   \source  "$HOME/l/shell-random/live/sh/functions/colours.sh"
+  \source  "$HOME/l/shell-random/live/sh/functions/spinner.sh"
 }
 setup
-
-
-
-spinner() {   #  Traditional bar-spinner with these characters:  -\|/
-  if [ -z "$SPINNER" ]; then return 0 ; fi
-  # TODO: Implement sanity-checking then export this elsewhere so that this code can be used elsewhere.
-  \printf  '   '
-  case $SPINNER in
-    1)
-      \printf  '-'
-      SPINNER=2
-    ;;
-    2)
-      # shellcheck disable=1003
-      \printf  '\'
-      SPINNER=3
-    ;;
-    3)
-      \printf  '|'
-      SPINNER=4
-    ;;
-    *)
-      \printf  '/'
-      SPINNER=1
-    ;;
-  esac
-  \printf  '  '
-}
 
 
 
@@ -736,11 +712,15 @@ main_foreground() {
 
       # Status
       if [ "$ANSI" = 'no' ]; then
-        \echo  '.'
+        printf '.'
+        #"$HOME/l/shell-random/live/sh/scripts/spinner.sh"  "$spinner_counter"
+        spinner_counter="$?"
         \sleep  "$SLEEP"
       else
         \printf  '%b'  "${cursor_position_save}"
-        spinner
+        printf '.'
+        #"$HOME/l/shell-random/live/sh/scripts/spinner.sh"  "$spinner_counter"
+        spinner_counter="$?"
         \sleep  "$SLEEP"
         \printf  '%b'  "${cursor_position_restore}"
       fi
