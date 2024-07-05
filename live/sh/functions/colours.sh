@@ -51,7 +51,7 @@ initializeANSI() {
   #ANSI_escape_code='\033'
   {   #  Determine what sort of machine we're on
     uname="$( \uname  --kernel-name )"
-    echo "uname is:  $uname"
+    #echo "uname is:  $uname"
     case "$uname" in
       CYGWIN*)
         # Babun
