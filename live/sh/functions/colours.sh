@@ -50,28 +50,21 @@ initializeANSI() {
   #ANSI_escape_code='\e'
   #ANSI_escape_code='\033'
   {   #  Determine what sort of machine we're on
-    unameOut="$( \uname  --kernel-name )"
-    case "${unameOut}" in
-      CYGWIN*)    machine=Cygwin;;
-      Darwin*)    machine=Mac;;
-      Linux*)     machine=Linux;;
-      MINGW*)     machine=MinGw;;
-      *)          machine="UNKNOWN:${unameOut}"
-    esac
-    #echo ${machine}
-
-    case "${unameOut}" in
-      # Babun
+    uname="$( \uname  --kernel-name )"
+    echo "uname is:  $uname"
+    case "$uname" in
       CYGWIN*)
+        # Babun
         ANSI_escape_code=''
       ;;
       # This might be okay for git-bash
       MINGW*|'Linux')
-        # 2022-04-09 - This isn't working for dash any more, if it ever did.
+        # 2022-04-09 - This isn't working for dash any more, if it ever did:
         #ANSI_escape_code='\033'
         ANSI_escape_code=''
       ;;
-      *)
+      Darwin*|*)
+        # Darwin is Mac
         ANSI_escape_code=''
       ;;
     esac
