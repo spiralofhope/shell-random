@@ -28,7 +28,7 @@ then
   #\echo  "$? was returned"
   \echo  'Cancel was pressed'
   \rm  --force  "$tempfile"
-  return $?
+  return  $?
 fi
 
 result=$( \cat "$tempfile" )

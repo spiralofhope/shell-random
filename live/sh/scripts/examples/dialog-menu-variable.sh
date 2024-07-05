@@ -26,7 +26,7 @@ then
   __=$?
   #\echo  "$__ was returned"
   \echo  'Cancel was pressed'
-  return $__
+  return  $__
 fi
 
 case "$result" in
