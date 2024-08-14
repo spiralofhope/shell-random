@@ -10,75 +10,63 @@ else
 
 
 
+source_encrypted_file="$1"
+target_directory="$2"
+
+
+
+# INT is ^C
+trap _teardown INT
 _teardown() {
-  \veracrypt  --text  --dismount  "$encrypted_source_file"
-  \rmdir   "$decrypted_target_mountpoint"  
-  \umount  "$unencrypted_target_mountpoint"
-  \rmdir   "$unencrypted_target_mountpoint"
+  \veracrypt  --text  --dismount  "$source_encrypted_file"
 }
 
 
 _setup() {
-  source_partition="$1"
-  unencrypted_target_mountpoint="$2"
-  encrypted_source_file="$3"
-
-
-  if [ -z "$3" ]; then
-    \echo  '* ERROR:  3 parameters expected:'
+  if   [ -z "$1" ]  \
+  ||   [ -z "$2" ]; then
+    \echo  '* ERROR:  2 parameters expected, got:'
     \echo  "  $*"
     exit  1
-  elif [ -z "$2" ]; then
-    \echo  '* ERROR:  3 parameters expected:'
-    \echo  "  $*"
+  elif [ ! -f "$source_encrypted_file" ]; then
+    \echo  '* ERROR:  The source encrypted file does not exist:'
+    \echo  "  $source_encrypted_file"
     exit  1
-  elif [ -z "$1" ]; then
-    \echo  '* ERROR:  No parameters have been given:'
-    \echo  "  $*"
+  elif [ ! -d "$target_directory" ]; then
+    \echo  '* ERROR:  The target directory does not exist:'
+    \echo  "  $target_directory"
     exit  1
-  elif [ -z "$source_partition" ]; then
-    \echo  '* ERROR:  Source partition does not exist:'
-    \echo  "  $source_partition"
+  elif [ "$( \ls -A  $target_directory )" ]; then
+    \echo  '* ERROR:  The target directory is not empty:'
+    \echo  "  $target_directory"
     exit  1
   fi
 
-
-  source_partition="$( \realpath  --quiet  "$source_partition" )"
-  decrypted_target_mountpoint="${unencrypted_target_mountpoint}_decrypted"
-  encrypted_source_file="${unencrypted_target_mountpoint}${encrypted_source_file}"
-
-
+  # TODO - test if I can integrate it into the above as an elif
+  if ( \mount | \grep  "$target_directory" ); then
+    \echo  '* ERROR:  The target directory is already mounted:'
+    \echo  "  $target_directory"
+    exit  1
+  fi
+  
+  
   \echo
-  \echo  "Mounting the partition:"
-  \echo  "  $source_partition"
-  \echo  "With the encrypted file:"
-  \echo  "  $encrypted_source_file"
+  \echo  "Mounting the encrypted file:"
+  \echo  "  $source_encrypted_file"
   \echo  "To the target directory:"
-  \echo  "  $decrypted_target_mountpoint"
+  \echo  "  $target_directory"
   \echo
-  \mkdir  --parents            "$unencrypted_target_mountpoint"  ||  exit  $?
-  \mount  "$source_partition"  "$unencrypted_target_mountpoint"  ;  _=$?
-  case $_ in
-    32)
-      \echo  "* WARNING:  Already mounted there, trying to continue.."
-      continue
-    ;;
-    *)
-      exit  $_
-    ;;
-  esac
 }
 
 
 _go() {
-  \mkdir  --parents  "$decrypted_target_mountpoint"  ||  exit  $?
   # veracrypt  --text  --keyfiles=''  --pim=0  --protect-hidden=no  --mount source.hc  /mnt/mnt
   \veracrypt  \
     --text  \
     --keyfiles=''  \
     --pim=0  \
     --protect-hidden=no  \
-    --mount  "$encrypted_source_file"  "$decrypted_target_mountpoint"
+    --mount  "$source_encrypted_file"  "$target_directory"
 
 
   \echo
