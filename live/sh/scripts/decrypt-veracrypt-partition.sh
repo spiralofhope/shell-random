@@ -65,12 +65,13 @@ _go() {
     --pim=0  \
     --protect-hidden=no  \
     --mount-options=system  \
-    --mount  "$encrypted_source_partition"  "$decrypted_target_mountpoint"
+    --mount  "$encrypted_source_partition"  "$decrypted_target_mountpoint"  \
+  ||  _teardown
 
 
   \echo
   \echo  'Press <enter> to teardown..'
-  read  -r  __
+  read  -r  __  || _teardown
 }
 
 

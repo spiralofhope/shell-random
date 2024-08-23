@@ -66,12 +66,13 @@ _go() {
     --keyfiles=''  \
     --pim=0  \
     --protect-hidden=no  \
-    --mount  "$source_encrypted_file"  "$target_directory"
+    --mount  "$source_encrypted_file"  "$target_directory"  \
+  ||  _teardown
 
 
   \echo
   \echo  'Press <enter> to teardown..'
-  read  -r  __
+  read  -r  __  || _teardown
 }
 
 
