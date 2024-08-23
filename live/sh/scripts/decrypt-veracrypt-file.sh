@@ -19,6 +19,7 @@ target_directory="$2"
 trap _teardown INT
 _teardown() {
   \veracrypt  --text  --dismount  "$source_encrypted_file"
+  exit
 }
 
 
@@ -39,7 +40,9 @@ _setup() {
   elif [ "$( \ls -A  $target_directory )" ]; then
     \echo  '* ERROR:  The target directory is not empty:'
     \echo  "  $target_directory"
-    exit  1
+    \echo  "*         Attempting to dismount."
+    _teardown
+#    exit  1
   fi
 
   # TODO - test if I can integrate it into the above as an elif

@@ -20,6 +20,7 @@ else
 _teardown() {
   \veracrypt  --text  --dismount  "$encrypted_source_partition"  ||  exit  $?
   \rmdir  "$decrypted_target_mountpoint"
+  exit
 }
 
 
