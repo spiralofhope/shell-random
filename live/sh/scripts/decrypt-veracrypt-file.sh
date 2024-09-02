@@ -19,7 +19,6 @@ target_directory="$2"
 trap _teardown INT
 _teardown() {
   \veracrypt  --text  --dismount  "$source_encrypted_file"
-  exit
 }
 
 
