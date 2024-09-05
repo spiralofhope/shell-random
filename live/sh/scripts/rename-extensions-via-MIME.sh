@@ -1,5 +1,6 @@
 #!/bin/sh
-# 
+# Rename files based on their MIME type as described by the "file" command.
+# uses:  awk, cat, file
 
 
 
