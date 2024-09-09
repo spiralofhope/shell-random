@@ -1,6 +1,7 @@
-#!/usr/bin/env  sh
+#!/usr/bin/env  zsh
 # shellcheck disable=1012
 # shellcheck disable=1001
+# ~/.zshrc
 
 :<<'}'   #  Notes
 {
@@ -63,7 +64,7 @@
     'Cygwin')
       sourceallthat  "$zshdir/../babun/"
     ;;
-    'Windows Subsystem for Linux')
+    'Windows Subsystem for Linux'|'Windows Subsystem for Linux 2')
       # I don't understand why doing this will change the directory I'm dropped into:
       #sourceallthat  "$zshdir/../wfl/"
       # shellcheck disable=1090
@@ -191,13 +192,16 @@ REPORTTIME=10
 
 {  #  Paths
 
+  # Note that these backslashes must not have a space preceeding them, as would normally be my scripting style.
   PATH=\
 "$(  \realpath  "$zshdir/scripts" )"\
 :"$( \realpath  "$zshdir/../bash/scripts" )"\
 :"$PATH"
 
-  if [ "$this_kernel_release" = 'Cygwin'                      ] \
-  || [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]; then
+  if [ "$this_kernel_release" = 'Cygwin' ]  \
+  || [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]  \
+  || [ "$this_kernel_release" = 'Windows Subsystem for Linux 2' ]  \
+  ; then
     PATH=\
 "$( \realpath  "$zshdir/../wfl/scripts" )"\
 :"$PATH"
@@ -228,17 +232,23 @@ REPORTTIME=10
 
 # Syntax highlighting magic
 #   https://github.com/zsh-users/zsh-syntax-highlighting
-#\source  ${a_drive}/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 #FIXME - a smarter path
-# zshism
+# zshism:
 # shellcheck disable=1091
 # shellcheck disable=2039
-\source  '/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+_='/live/OS/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+if [ -f "$_" ]; then
+  \source  "$_"
+fi
+_='/mnt/c/vaulted_c/Sync/OS/WSL2/bin/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+if [ -f "$_" ]; then
+  \source  "$_"
+fi
 
 
 
 # I so frequently check for disk space that I ought to do it automatically.
-# Note this is not  \dd  because I prefer my customized  dd()
+# Note this is not  \dd  because I prefer my customized `_df()` from `live/sh/functions/df.sh`
 df
 
 

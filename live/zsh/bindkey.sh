@@ -1,4 +1,6 @@
 #!/usr/bin/env  zsh
+# If you have line ending problems with this file (references to ^M) then do:
+# \sed  --in-place 's/\r//' bindkey.sh
 # full of zshisms, obviously.
 # shellcheck disable=2039
 # NOTE: control-v and a key combination to learn that binding.
@@ -142,6 +144,10 @@ case "$TERM" in
       ;;
       'Windows Subsystem for Linux')
         #  2020-04-18
+        \bindkey  '^H'       backward-kill-word                         # control-backspace
+      ;;
+      'Windows Subsystem for Linux 2')
+        #  TODO - test
         \bindkey  '^H'       backward-kill-word                         # control-backspace
       ;;
     esac

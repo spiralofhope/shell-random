@@ -1,4 +1,4 @@
-#!/usr/bin/env  sh
+#!/usr/bin/env  zsh
 # /etc/zlogin and $HOME/.zlogin
 # Read after zshrc, if the shell is a login shell.
 # See also /etc/default/console-setup
@@ -9,9 +9,14 @@
 ########
 
 
-# No need if booting is otherwise set up correctly:
-# This is technically only usable by root, even though this works..
-\setfont  Uni2-VGA16.psf.gz
+if  \
+  _=$( \which  setfont )
+then
+  # No need if booting is otherwise set up correctly:
+  # This is technically only usable by root, even though this works..
+  \setfont  Uni2-VGA16.psf.gz
+fi
+
 
 
 # This mess lets me use the console login screen as a GUI login manager.

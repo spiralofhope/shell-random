@@ -1,4 +1,4 @@
-#!/usr/bin/env  sh
+#!/usr/bin/env  zsh
 # /etc/zshenv is the 1st file zsh reads; it's read for every shell, even if started with -f (setopt NO_RCS)
 # ~/.zshenv is the same, except that it's _not_ read if zsh is started with -f
 
@@ -7,7 +7,7 @@
 #  Distinguish between:
 #    Cygwin
 #    Linux
-#    Windows Subsystem for Linux
+#    Windows Subsystem for Linux (version 1 or 2)
 case "$( \uname  --kernel-name )" in
   # Cygwin / Babun
   CYGWIN*)
@@ -18,6 +18,9 @@ case "$( \uname  --kernel-name )" in
     case "$( \uname  --kernel-release )" in
       *-Microsoft)
         this_kernel_release='Windows Subsystem for Linux'
+      ;;
+      *-microsoft-standard-WSL2)
+        this_kernel_release='Windows Subsystem for Linux 2'
       ;;
       *)
         this_kernel_release='Linux'

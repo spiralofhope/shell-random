@@ -1,5 +1,7 @@
 #!/usr/bin/env  sh
 # shellcheck disable=2034
+# If you have line ending problems with this file (references to ^M) then do:
+# \sed  --in-place 's/\r//' colours.sh
 
 
 
