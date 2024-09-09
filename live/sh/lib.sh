@@ -19,10 +19,10 @@
   export  LESS
 
   prepend_path() {
-    __="$1"
-    if [ ! -d "$__" ]; then return 1; fi
-    __=$( \realpath "$1" )
-    PATH="$__":"$PATH"
+    _="$1"
+    if [ ! -d "$_" ]; then return 1; fi
+    _=$( \realpath "$1" )
+    PATH="$_":"$PATH"
     export  PATH
   }
 
@@ -83,37 +83,41 @@
   # Load default dircolors:
   \eval  "$( \dircolors  --bourne-shell )"
   # Load manually-specified dircolors:
-  __="$HOME/.dircolors"   ;  if [ -e "$__" ]; then  \eval  "$( \dircolors  --bourne-shell  "$__" )"  ;  fi
-  __="$HOME/.dir_colors"  ;  if [ -e "$__" ]; then  \eval  "$( \dircolors  --bourne-shell  "$__" )"  ;  fi
+  _="$HOME/.dircolors"   ;  if [ -e "$_" ]; then  \eval  "$( \dircolors  --bourne-shell  "$_" )"  ;  fi
+  _="$HOME/.dir_colors"  ;  if [ -e "$_" ]; then  \eval  "$( \dircolors  --bourne-shell  "$_" )"  ;  fi
 
   # Note that in order to have light blue in Windows Subsystem for Linux, you need Color Tool to enable 24-bit colors:  https://github.com/Microsoft/console/releases
   #
   # Note that *.sh isn't explicitly colored because the executable flag is preferred.
 
-  LS_COLORS="${LS_COLORS}"\
-:'di=0;94;40'`       # Directories `\
-` # Additional archives `\
-:'*.7z=01;31'\
-` # Executables from other operating systems `\
-:'*.bat=01;32'\
-:'*.btm=01;32'`      # 4DOS/4NT `\
-:'*.cmd=01;32'`      # Windows `\
-:'*.com=01;32'\
-:'*.exe=01;32'\
-:'*.lnk=0;37'`       # Windows links.  It is not useful, so it is just being flagged like a text file. `\
-` # Text files `\
-:'*.doc=1;37'\
-:'*.markdown=1;37'`  # markup language:  Markdown `\
-:'*.md=1;37'`        # markup language:  Markdown `\
-:'*.ods=1;37'`       # spreadsheet:  LibreOffice `\
-:'*.pdf=1;37'\
-:'*README=1;37'`     # text:  This is not  "^README$"   but this works well enough.`\
-:'*.rtf=1;37'\
-:'*.torrent=1;37'\
-:'*.txt=1;37'\
-:'*.xls=1;37'`       # spreadsheet:  Microsoft Excel `\
-` #  ` > /dev/null 2>&1
-export  LS_COLORS
+
+  _(){
+    LS_COLORS="${LS_COLORS}:${1}"
+  }
+
+  _ "di=0;94;40"   # Directories
+  # Additional archives
+  _ "*.7z=01;31"  # 7zip
+  # Executables from other operating systems
+  _ "*.bat=01;32"
+  _ "*.btm=01;32"   # 4DOS/4NT
+  _ "*.cmd=01;32"   # Windows
+  _ "*.com=01;32"
+  _ "*.exe=01;32"
+  # Text files
+  _ "*.doc=1;37"
+  _ "*.lnk=0;37"
+  _ "*.markdown=1;37"  # Markdown markup language
+  _ "*.md=1;37"        # Markdown markup language
+  _ "*README=1;37"  # I'd prefer  "^README$"  but this works well enough.
+  _ "*.torrent=1;37"
+  _ "*.txt=1;37"
+  # Binary documents
+  _ "*.ods=1;37"  # LibreOffice Calc
+  _ "*.pdf=1;37"
+  _ "*.rtf=1;37"
+  _ "*.xls=1;37"  # Microsoft Excel
+  export  LS_COLORS
 
 # 2019-11-23
 # The above redirection is to avoid errors with "#" actually trying to be executed.
