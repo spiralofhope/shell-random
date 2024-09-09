@@ -41,12 +41,12 @@ if _=$( \which smartctl >> /dev/null )  \
    &&  [ "$USER" = 'root' ]  \
    &&  [ "$this_kernel_release" = 'Linux' ]
 then
-  __() {
+  _() {
     \smartctl  --quietmode=errorsonly  --smart=on  "$1"
 #    \smartctl  --smart=on  "$1"
   }
-  __  '/dev/sda'
-  __  '/dev/sdb'
+  _  '/dev/sda'
+  _  '/dev/sdb'
 
-  unset __
+  unset _
 fi

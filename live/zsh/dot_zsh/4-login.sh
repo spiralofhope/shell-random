@@ -14,7 +14,7 @@ if  \
 then
   # No need if booting is otherwise set up correctly:
   # This is technically only usable by root, even though this works..
-  \setfont  Uni2-VGA16.psf.gz
+  \setfont  'Uni2-VGA16.psf.gz'
 fi
 
 
@@ -44,20 +44,20 @@ if    [ "$TTY" = '/dev/tty1' ] ||
       \echo  ' * Network connection not detected.'
     else
       \echo  ' * Network connection detected.'
-      __="/tmp/$( $USER ).autostart-networking-applications"
-      \rm  --force  "$__"
+      # FIXME - What the heck is this all about?  I could make a better temp file, but why does this even exist?
+      _="/tmp/$( $USER ).autostart-networking-applications"
+      \rm  --force  "$_"
       if
         # shellcheck disable=1117
         \dialog  --yesno  "Network connection detected.\n\nAutostart related applications?"  0  0
       then
         # Make the file, the existence of which will prompt Openbox.
-        :>  "$__"
+        :>  "$_"
       fi
     fi
   done
-  \unset  __
+  \unset  _
 }
-
 
 
 

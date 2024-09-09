@@ -23,14 +23,14 @@ mesg n || true
 # It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
 shdir="$( \realpath "$( \dirname "$( \realpath  /home/user/.zshrc )" )"/../../sh/ )"
 export  shdir
-
-# I don't actually use this variable anyway
-#shell_random="$( \realpath "$shdir"/../../ )"
+PATH=\
+"$(  \realpath  "$shdir/scripts" )"\
+:"$PATH"
+export  PATH
 
 
 
 {  # 'source' additional scripting and settings.
-
   _pushd="$PWD"
   sourceallthat() {
     #\echo  "sourcing $1"
@@ -43,8 +43,8 @@ export  shdir
       if [ "$i" = 'lib.sh' ]; then
         continue
       fi
-      #\echo  "running  ./$i"
       # shellcheck disable=1090
+      #\echo  "$i"
       .  "./$i"
     done
     \unset  i
