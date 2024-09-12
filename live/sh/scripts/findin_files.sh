@@ -18,24 +18,23 @@ findin_files() {
   maxdepth="$1"
   color="$2"
   shift; shift  #  $3*
-  \find  \
-    .  \
+  find . \
     -maxdepth "$maxdepth"  \
-    -type f  \
-    -print0  \
-    -iname  \'"$*"\' |\
-      \xargs  \
-        --no-run-if-empty  \
-        --null \
+    \(  \
+      -path '.git' -prune  \
+      -o  \
+      -type f  \
+      -print0  \
+      -iname "$*"  \
+    \) |  \
+      xargs  \
+      --no-run-if-empty  \
+      --null \
         \grep  \
           --colour="$color"  \
           --fixed-strings  \
           --ignore-case  \
           --regexp="$*"
-
-  unset  _findhelper_type
-  unset  _findhelper_color
-  unset  maxdepth
 }
 
 
