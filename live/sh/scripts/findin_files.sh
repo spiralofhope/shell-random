@@ -6,38 +6,35 @@
 
 :<<'}'   #  Usage
 {
- Can double-quote to quote a single-quote.
-   "I don't know"
- Can backslash to escape.
-   I don\'t know
+ Can double-quote to quote a single-quote:
+   "example ' text"
+ Can backslash to escape:
+   example \' text
 }
+
 
 
 findin_files() {
   maxdepth="$1"
+#maxdepth=999
   color="$2"
+#color=always
   shift; shift  #  $3*
   
-  \find .  \
+  \find  .  \
     -maxdepth "$maxdepth"  \
-    \(  \
-      -path '.git' -prune  \
-      -o  \(  \
-        -type f  \
-        -iname "$*"  \
-        -print0  \
-      \)  \
-    \) |  \
-    \xargs  \
+    -name '.git' -prune  -o  \
+    -type f  \
+    -print0  |  \
+      \xargs  \
       --no-run-if-empty  \
       --null  \
-      \grep  \
-        --colour="$color"  \
-        --fixed-strings  \
-        --ignore-case  \
-        --regexp="$*"
+        \grep  \
+          --colour="$color"  \
+          --fixed-strings  \
+          --ignore-case  \
+          --regexp="$*"
 }
-
 
 
 
