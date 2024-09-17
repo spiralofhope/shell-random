@@ -13,29 +13,31 @@
 }
 
 
-
 findin_files() {
   maxdepth="$1"
   color="$2"
   shift; shift  #  $3*
-  find . \
+  
+  \find .  \
     -maxdepth "$maxdepth"  \
     \(  \
       -path '.git' -prune  \
-      -o  \
-      -type f  \
-      -print0  \
-      -iname "$*"  \
+      -o  \(  \
+        -type f  \
+        -iname "$*"  \
+        -print0  \
+      \)  \
     \) |  \
-      xargs  \
+    \xargs  \
       --no-run-if-empty  \
-      --null \
-        \grep  \
-          --colour="$color"  \
-          --fixed-strings  \
-          --ignore-case  \
-          --regexp="$*"
+      --null  \
+      \grep  \
+        --colour="$color"  \
+        --fixed-strings  \
+        --ignore-case  \
+        --regexp="$*"
 }
+
 
 
 
