@@ -28,7 +28,7 @@ _setup() {
     \echo  '* ERROR:  2 parameters expected, got:'
     \echo  "  $*"
     exit  1
-  elif [ ! -f "$source_encrypted_file" ]; then
+  elif [ ! -e "$source_encrypted_file" ]; then
     \echo  '* ERROR:  The source encrypted file does not exist:'
     \echo  "  $source_encrypted_file"
     exit  1
