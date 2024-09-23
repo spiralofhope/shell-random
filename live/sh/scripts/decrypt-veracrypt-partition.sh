@@ -12,7 +12,7 @@
 # As root:
 if ! [ "$USER" = 'root' ]; then
   #\echo  'enter root password'
-  \sudo  "$0"  $*
+  \sudo  "$0"  "$@"
 else
 
 
