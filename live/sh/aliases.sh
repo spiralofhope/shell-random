@@ -92,6 +92,8 @@ alias  update='                              \
     /usr/bin/apt-get  --yes autoremove       \
   "                                          \
 '
+# Lubuntu also has:
+# sudo /usr/bin/lubuntu-upgrader --cache-update --full-upgrade
 
 
 # Help cache files, for a slow/occupied drive:
