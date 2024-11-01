@@ -25,8 +25,10 @@ fi
 
 if    [ "$TTY" = '/dev/tty1' ] ||
       [ "$TTY" = '/dev/tty2' ] ||
+      [ "$TTY" = '/dev/tty3' ] ||
       [ "$TTY" = '/dev/pts1' ] ||
-      [ "$TTY" = '/dev/pts2' ]; then
+      [ "$TTY" = '/dev/pts2' ] ||
+      [ "$TTY" = '/dev/pts3' ]; then
 
 
 
