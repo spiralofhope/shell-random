@@ -24,6 +24,7 @@ mesg n || true
 shdir="$( \realpath "$( \dirname "$( \realpath  /home/user/.zshrc )" )"/../../sh/ )"
 export  shdir
 PATH=\
+"$HOME/l/path":\
 "$(  \realpath  "$shdir/scripts" )"\
 :"$PATH"
 export  PATH

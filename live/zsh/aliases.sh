@@ -8,7 +8,10 @@
 
 alias  apt='nocorrect      \apt'
 alias  cp='nocorrect       \cp  --interactive  --preserve=all'
-alias  git='nocorrect      \git'
+# On WSL2, I am using a path for git.exe being
+# /mnt/c/Program Files/Git/cmd/git.exe
+# And so I don't want to nocorrect it
+#alias  git='nocorrect      \git'
 alias  killall='nocorrect  \killall'
 alias  ls='nocorrect       \ls  -1  --all  --classify  --color=always  --group-directories-first  --show-control-chars'
 alias  man='nocorrect      \man'
