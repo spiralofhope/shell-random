@@ -11,10 +11,11 @@
 }
 
 
-# For 32bit Debian, I have to manually do this..
-# shellcheck disable=1090
 #   $HOME is set automatically somewhere; I don't know where.
-.  "$HOME/.profile"
+# For 32bit Debian, I have to manually do this..
+# Commented-out, because this is already run by 2-login.sh
+# shellcheck disable=1090
+#.  "$HOME/.profile"
 
 
 #:<<'}'  #  Variables
