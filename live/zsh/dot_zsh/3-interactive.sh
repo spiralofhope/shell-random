@@ -114,11 +114,9 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'  ;  export  WORDCHARS
 REPORTTIME=10
 
 
-# For 64bit Devuan, this is being done at the level of `sh` in `.profile` 
-# I have no idea why this is so insane, but together they form Voltron.
 # shellcheck disable=1039
 #   allow the comment
-:<<'}'   #  Prompt
+#:<<'}'   #  Prompt
 {
   # A decent default prompt:
   # autoload -U promptinit && promptinit && prompt suse
