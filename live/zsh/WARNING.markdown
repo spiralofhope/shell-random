@@ -1,6 +1,4 @@
--------
-WARNING
--------
+# WARNING
 
 Do not run any of these scripts directly!
 
