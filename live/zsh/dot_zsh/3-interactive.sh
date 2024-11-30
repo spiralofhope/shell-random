@@ -135,9 +135,10 @@ REPORTTIME=10
     else  prompt_end_color='blue'
   fi
 
-  # precmd is a zsh function which runs before a prompt.
-  #:<<'  }'  #  Obsoleted by an upgrade to Devuan
+  :<<'  }'  #  Obsoleted
+  # Devuan and Windows Subsystem for Linux 2 both work with the sh prompt and long prompt code
   precmd() {
+    # precmd() is a zsh function which runs before a prompt.
     # A vastly more complex example can be found at:
     #   http://scarff.id.au/blog/2011/window-titles-in-screen-and-rxvt-from-zsh/
     # There are other solutions for things like tmux.
