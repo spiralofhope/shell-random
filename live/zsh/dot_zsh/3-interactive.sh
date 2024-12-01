@@ -40,11 +40,9 @@ fi
 
 {  # 'source' additional scripting and settings.
 
+  _pushd="$PWD"
   sourceallthat() {
     #\echo  "sourcing $1"
-    # zshism
-    # shellcheck disable=2039
-    \pushd > /dev/null  ||  return
     \cd  "$1"  ||  return
     # shellcheck disable=1091
     # zshism
@@ -57,15 +55,15 @@ fi
       # shellcheck disable=2039
       .  ./"$i"
     done
-    # Note that it's intentional that this will generate an error if  suu()  is called by root, when root is currently sitting in an directory that denies permission to the user.
-    # zshism
-    # shellcheck disable=2039
-    \popd > /dev/null  ||  return
   }
 
 
   sourceallthat  "$zshdir/functions/"
   sourceallthat  "$zshdir/"
+
+
+  \cd  "$_pushd"  ||  return  $?
+  \unset      _pushd
 
 
   case "${this_kernel_release:?}" in
