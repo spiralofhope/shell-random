@@ -12,6 +12,9 @@ alias  cp='nocorrect       \cp  --interactive  --preserve=all'
 # /mnt/c/Program Files/Git/cmd/git.exe
 # And so I don't want to nocorrect it
 #alias  git='nocorrect      \git'
+alias  dir/a=' dir-DOS-style.sh /a   |  \head  --lines='-1'  |  myless'
+alias  dir/d=' dir-DOS-style.sh /d   |  \head  --lines='-1'  |  myless'
+alias  dir/ad='dir-DOS-style.sh /ad  |  \head  --lines='-1'  |  myless'
 alias  killall='nocorrect  \killall'
 alias  ls='nocorrect       \ls  -1  --all  --classify  --color=always  --group-directories-first  --show-control-chars'
 alias  man='nocorrect      \man'

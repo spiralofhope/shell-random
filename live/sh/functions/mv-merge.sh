@@ -55,7 +55,7 @@ mv_merge() {
 
 
 
-:<<'}'#  Untested
+:<<'}'  #  Untested
 # https://www.linuxquestions.org/questions/linux-software-2/using-mv-to-move-the-contents-of-one-directory-into-another-444738/
 # You run the code from within the directory which contains the subfolders you wish to move. If you are moving the subfolders up into the directory you are working from (say, '/home/user/photos/holidays' to '/home/user/photos'), you can replace 'DESTINATION DIRECTORY' with the variable $directory_current.
 #
