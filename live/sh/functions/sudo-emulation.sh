@@ -38,10 +38,11 @@
     #}
     # Under 32bit Debian, somehow su() does not work.
     sul() {
+      # This is going to be running all the startup scripts and configuration multiple times.  That's probably stupid, and maybe there needs to be a check in those configuration files so they don't let themselves get reloaded.
       \sudo  --login  "$1"  \screen  -q  -X setenv currentdir "$( \pwd )"
       \sudo  --login  "$1"  \screen  -q  -X eval 'chdir $currentdir' screen
       # This logs out of any existing instance of root:
-      \sudo  --login  "$1"  \screen -A  -D -q  -RR
+      \sudo  --login  "$1"  \screen  -A  -D  -q  -RR
     }
   else   # sudo does not exist
     su() {
