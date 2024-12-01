@@ -60,10 +60,9 @@ export  shdir
 
 #:<<'}'   #  A simple colored prompt
 {
-  # Make sure you have single-quotes ( ' ) around PS1 otherwise $PWD will never update within $PS1 again.
-
   :<<'  }'   #  A simple prompt:
   {
+  # Single quotes ( ' ) are necessary to keep $PS1 updated.
   if [ "$USER" = root ];
     then  PS1='${PWD} # '
     else  PS1='${PWD} $ '
@@ -80,6 +79,7 @@ export  shdir
 
   #:<<'  }'   #  A simple colored prompt:
   {
+  # Single quotes ( ' ) are necessary to keep $PS1 updated.
   if [ "$USER" = root ];
     then  PS1='${reset_color}${PWD}${boldon}${red} > ${reset_color}'
     else  PS1='${reset_color}${PWD}${boldon}${blue} > ${reset_color}'
@@ -96,7 +96,8 @@ export  shdir
     \printf  '%b'  "${reset_color}${PWD}${long_prompt}${boldon}${1} > ${reset_color}"
   }
 
-# Apparently necessary for zsh to be right here, for some reason..
+
+# It's apparently necessary for this to be right here, but I don't know why:
 precmd(){
   if [ "$( \whoami )" = root ];
     then  PS1="$( sh_prompt  "${red}"  )"
