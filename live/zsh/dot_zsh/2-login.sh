@@ -3,5 +3,5 @@
 # Read after zshenv, if the shell is a login shell.
 
 
-# Read the profile from dash/sh
+# Read the profile from dash/sh:
 source  ~/.profile

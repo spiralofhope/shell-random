@@ -7,13 +7,6 @@
 
 #:<<'}'  #  Variables
 {
-  shdir="$( \realpath "$( \dirname "$( \realpath  /home/user/.zshrc )" )"/../../sh/ )"
-  if ! [ -d "$shdir" ]; then
-    \echo  "\$shdir is not a directory:  $shdir"
-    return  1
-  fi
-  export  shdir
-
   # --follow-name would allow the file to be edited and less will automatically display changes.
   LESS=' --force  --ignore-case  --long-prompt  --no-init  --silent  --status-column  --tilde  --window=-2'
   export  LESS
@@ -27,8 +20,8 @@
   }
 
   prepend_path  "$HOME/l/path"
-  prepend_path  '/mnt/a/live/OS/bin'
-  # $shdir is set elsewhere, kinda.  FIXME - figure it out.
+  #prepend_path  '/mnt/a/live/OS/bin'
+  # $shdir is set in ~/.profile
   prepend_path  "${shdir:?}/scripts"
   #echo $PATH
 

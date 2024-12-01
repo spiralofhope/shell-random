@@ -1,8 +1,10 @@
 #!/usr/bin/env  sh
 # Used by dash (sh)
+# Manually run by zsh
 
 
-:<<'}'   #  A common default ~/.profile
+
+:<<'}'   #  A common default ~/.profile :
 {
 # ~/.profile: executed by Bourne-compatible login shells.
 
@@ -16,18 +18,14 @@ mesg n || true
 }
 
 
-#SHELL=/usr/bin/sh
-
-
 
 # It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
 shdir="$( \realpath "$( \dirname "$( \realpath  /home/user/.zshrc )" )"/../../sh/ )"
+if ! [ -d "$shdir" ]; then
+  \echo  "\$shdir is not a directory:  $shdir"
+  return  1
+fi
 export  shdir
-PATH=\
-"$HOME/l/path":\
-"$(  \realpath  "$shdir/scripts" )"\
-:"$PATH"
-export  PATH
 
 
 
@@ -48,16 +46,14 @@ export  PATH
       #\echo  "$i"
       .  "./$i"
     done
-    \unset  i
   }
 
   sourceallthat  "$shdir/"
   sourceallthat  "$shdir/functions/"
   \cd  "$_pushd"  ||  return  $?
-
-  \unset  -f  sourceallthat
   \unset      _pushd
 
+  \unset  -f  sourceallthat
 }
 
 
