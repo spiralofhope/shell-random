@@ -11,19 +11,31 @@
   LESS=' --force  --ignore-case  --long-prompt  --no-init  --silent  --status-column  --tilde  --window=-2'
   export  LESS
 
+
   prepend_path() {
-    _="$1"
-    if [ ! -d "$_" ]; then return 1; fi
-    _=$( \realpath "$1" )
-    PATH="$_":"$PATH"
-    export  PATH
+    #PATH="$( \realpath "$1" ):$PATH"
+    PATH="${1}:$PATH"
   }
+
 
   prepend_path  "$HOME/l/path"
   #prepend_path  '/mnt/a/live/OS/bin'
   # $shdir is set in ~/.profile
   prepend_path  "${shdir:?}/scripts"
-  #echo $PATH
+
+
+  deduplicate_path() {
+    unique_path=''
+    for dir in $( \echo "$PATH" | \tr ':' '\n' ); do
+      # Check if dir is already in unique_path:
+      case ":$unique_path:" in
+        *":$dir:"*) ;;  #  Do nothing if already included
+        *) unique_path="${unique_path:+$unique_path:}$dir" ;;
+      esac
+    done
+    PATH="$unique_path"
+  }
+  deduplicate_path
 
 
 
