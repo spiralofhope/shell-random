@@ -18,6 +18,7 @@ else
 
 
 _teardown() {
+  \echo  _teardown code "$1"
   \veracrypt  --text  --dismount  "$encrypted_source_partition"  ||  exit  $?
   \rmdir  "$decrypted_target_mountpoint"
   exit
@@ -67,19 +68,19 @@ _go() {
     --protect-hidden=no  \
     --mount-options=system  \
     --mount  "$encrypted_source_partition"  "$decrypted_target_mountpoint"  \
-  ||  _teardown
+  ||  _teardown  1
 
 
   \echo
   \echo  'Press <enter> to teardown..'
-  read  -r  __  || _teardown
+  read  -r  __  || _teardown  0
 }
 
 
 _teardown  2>  /dev/null
 _setup  $*
 _go
-_teardown
+_teardown  0
 
 
 fi   # The above is run as root

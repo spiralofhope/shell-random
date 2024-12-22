@@ -18,6 +18,7 @@ target_directory="$2"
 # INT is ^C
 trap _teardown INT
 _teardown() {
+  \echo  _teardown code "$1"
   \veracrypt  --text  --dismount  "$source_encrypted_file"
 }
 
@@ -40,15 +41,14 @@ _setup() {
     \echo  '* ERROR:  The target directory is not empty:'
     \echo  "  $target_directory"
     \echo  "*         Attempting to dismount."
-    _teardown
-#    exit  1
+    _teardown  1
   fi
 
   # TODO - test if I can integrate it into the above as an elif
   if ( \mount | \grep  "$target_directory" ); then
     \echo  '* ERROR:  The target directory is already mounted:'
     \echo  "  $target_directory"
-    exit  1
+    _teardown  1
   fi
   
   
@@ -81,7 +81,7 @@ _go() {
 _teardown  2>  /dev/null
 _setup  $*
 _go
-_teardown
+_teardown  0
 
 
 fi   # The above is run as root
