@@ -39,7 +39,8 @@ _setup() {
     \echo  '* ERROR:  No parameters have been given:'
     \echo  "  $*"
     exit  1
-  elif [ -z "$encrypted_source_partition" ]; then
+  elif [ -z "$encrypted_source_partition" ]  \
+  || ! [ -e "$encrypted_source_partition" ]; then
     \echo  '* ERROR:  Encrypted source partition does not exist:'
     \echo  "  $encrypted_source_partition"
     exit  1
@@ -77,7 +78,7 @@ _go() {
 }
 
 
-_teardown  2>  /dev/null
+#_teardown  2>  /dev/null
 _setup  $*
 _go
 _teardown  0
