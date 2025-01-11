@@ -86,9 +86,14 @@ alias  update='                              \
     /usr/bin/apt-get  --yes update        && \
     /usr/bin/apt-get  --yes upgrade       && \
     /usr/bin/apt-get  --yes dist-upgrade  && \
-    /usr/bin/apt-get  --yes autoremove       \
+    /usr/bin/apt-get  --yes autoremove    && \
   "                                          \
 '
+# 2025-01-11 - Ubuntu 24.04.1 LTS
+# "Deferred due to phasing" is a system of holding back packages to test them on some installations before broadly deploying.
+# This message is safe to ignore, but if you want to force-install, do:
+#   sudo aptitude safe-upgrade
+#
 # Lubuntu also has:
 # sudo /usr/bin/lubuntu-upgrader --cache-update --full-upgrade
 
