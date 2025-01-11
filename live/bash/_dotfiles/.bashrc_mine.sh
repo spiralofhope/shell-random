@@ -24,3 +24,8 @@ PATH="$PATH":\
 
 # Have the `history` command use a better date format:
 \export  HISTTIMEFORMAT="%Y-%m-%d_%T "
+
+
+# Have tab cycle through choices
+bind  'TAB:menu-complete'
+
