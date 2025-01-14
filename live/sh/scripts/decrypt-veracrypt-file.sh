@@ -10,7 +10,7 @@ else
 
 
 
-source_encrypted_file="$1"
+source_file_encrypted="$1"
 target_directory="$2"
 
 
@@ -18,8 +18,13 @@ target_directory="$2"
 # INT is ^C
 trap _teardown INT
 _teardown() {
-  \echo  _teardown code "$1"
-  \veracrypt  --text  --dismount  "$source_encrypted_file"
+  if [ ! -z "$1" ]; then  \echo  "\n_teardown code '$1' for the script:\n  $0\n"; fi
+  # Check if the file is decrypted
+  \veracrypt  --list "$source_file_encrypted"  > /dev/null  2> /dev/null  \
+  && (
+    \veracrypt  --text  --dismount  "$source_file_encrypted"
+  )
+  return  2> /dev/null || { exit; }
 }
 
 
@@ -28,33 +33,35 @@ _setup() {
   ||   [ -z "$2" ]; then
     \echo  '* ERROR:  2 parameters expected, got:'
     \echo  "  $*"
-    exit  1
-  elif [ ! -e "$source_encrypted_file" ]; then
+    return 1  2> /dev/null || { exit 1; }
+  elif [ ! -e "$source_file_encrypted" ]; then
     \echo  '* ERROR:  The source encrypted file does not exist:'
-    \echo  "  $source_encrypted_file"
-    exit  1
+    \echo  "  $source_file_encrypted"
+    return 1  2> /dev/null || { exit 1; }
   elif [ ! -d "$target_directory" ]; then
     \echo  '* ERROR:  The target directory does not exist:'
     \echo  "  $target_directory"
-    exit  1
+    return 1  2> /dev/null || { exit 1; }
   elif [ "$( \ls -A  $target_directory )" ]; then
     \echo  '* ERROR:  The target directory is not empty:'
     \echo  "  $target_directory"
-    \echo  "*         Attempting to dismount."
-    _teardown  1
-  fi
-
-  # TODO - test if I can integrate it into the above as an elif
-  if ( \mount | \grep  "$target_directory" ); then
-    \echo  '* ERROR:  The target directory is already mounted:'
-    \echo  "  $target_directory"
-    _teardown  1
+    # TODO - check if it's actually mounted:
+      #source='/dev/sda1'
+      #\mount | \cut  -d' '  -f1 | \grep  "^$source\$"
+      #target='/'
+      #\mount | \cut  -d' '  -f3 | \grep  "^$target\$"
+    #\echo  "*         Attempting to dismount it."
+    #\veracrypt  --text  --dismount  "$target_directory"
+    #\umount  "$target_directory"
+    return 1  2> /dev/null || { exit 1; }
+  elif ( \mount | \grep  "$target_directory" ); then
+    _teardown  "\n* ERROR:  The target directory is already mounted:\n$target_directory"
   fi
   
   
   \echo
   \echo  "Mounting the encrypted file:"
-  \echo  "  $source_encrypted_file"
+  \echo  "  $source_file_encrypted"
   \echo  "To the target directory:"
   \echo  "  $target_directory"
   \echo
@@ -68,20 +75,35 @@ _go() {
     --keyfiles=''  \
     --pim=0  \
     --protect-hidden=no  \
-    --mount  "$source_encrypted_file"  "$target_directory"  \
-  ||  _teardown
-
-
+    --mount  "$source_file_encrypted"  "$target_directory"  \
+  ||  _teardown  "_go() - veracrypt mount:  $?"
   \echo
-  \echo  'Press <enter> to teardown..'
-  read  -r  __  || _teardown
+  \echo  'Press <enter> to teardown.'
+  read  _  || _teardown
 }
 
 
-_teardown  2>  /dev/null
+
+# Check if the file is already decrypted
+\veracrypt  --list "$source_file_encrypted"  > /dev/null  2> /dev/null  \
+&& (
+  \echo  ' * That file is already decrypted:'
+  \veracrypt  --list "$source_file_encrypted"
+  \echo  'Do you want to dismount it from there to mount it to:'
+  \echo  "$target_directory"
+  \echo  'y to continue'
+  \read _
+  if [ "$_" = 'y' ]; then 
+    \veracrypt  --text  --dismount  "$source_file_encrypted"
+  else
+    \echo  'You can manually encrypt / dismount it with:'
+    \echo  "\\\veracrypt  --text  --dismount  \"$source_file_encrypted\""
+    return 1  2> /dev/null || { exit 1; }
+  fi
+)
 _setup  $*
 _go
-_teardown  0
+_teardown  'exit'
 
 
 fi   # The above is run as root
