@@ -9,12 +9,12 @@
 
 :<<'}'
 {
-!    "not" -- reverses the sense of the tests below
-      Returns true if condition absent.
+!    "not" -- reverses the sense of the tests below.
+      For example, "[ ! -e ]" means "does not exist".
 
 
--d    exists and is a directory
 -e    exists
+-d    is a directory
 -f    is a regular file (not a directory or device file)
 -L    is a symbolic link
 
