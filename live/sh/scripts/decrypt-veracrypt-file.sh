@@ -20,10 +20,9 @@ trap _teardown INT
 _teardown() {
   if [ ! -z "$1" ]; then  \echo  "\n_teardown code '$1' for the script:\n  $0\n"; fi
   # Check if the file is decrypted
-  \veracrypt  --list "$source_file_encrypted"  > /dev/null  2> /dev/null  \
-  && (
-    \veracrypt  --text  --dismount  "$source_file_encrypted"
-  )
+  if ( \veracrypt  --list "$source_file_encrypted"  > /dev/null  2> /dev/null ); then
+    \veracrypt  --dismount  "$source_file_encrypted"
+  fi
   return  2> /dev/null || { exit; }
 }
 
@@ -51,7 +50,7 @@ _setup() {
       #target='/'
       #\mount | \cut  -d' '  -f3 | \grep  "^$target\$"
     #\echo  "*         Attempting to dismount it."
-    #\veracrypt  --text  --dismount  "$target_directory"
+    #\veracrypt  --dismount  "$target_directory"
     #\umount  "$target_directory"
     return 1  2> /dev/null || { exit 1; }
   elif ( \mount | \grep  "$target_directory" ); then
@@ -69,14 +68,16 @@ _setup() {
 
 
 _go() {
-  # veracrypt  --text  --keyfiles=''  --pim=0  --protect-hidden=no  --mount source.hc  /mnt/mnt
+  # veracrypt  --keyfiles=''  --pim=0  --protect-hidden=no  --mount source.hc  /mnt/mnt
   \veracrypt  \
-    --text  \
     --keyfiles=''  \
     --pim=0  \
     --protect-hidden=no  \
     --mount  "$source_file_encrypted"  "$target_directory"  \
   ||  _teardown  "_go() - veracrypt mount:  $?"
+  \echo
+  \echo  '* Mount success:'
+  \veracrypt  --list "$source_file_encrypted"
   \echo
   \echo  'Press <enter> to teardown.'
   read  _  || _teardown
@@ -94,10 +95,10 @@ _go() {
   \echo  'y to continue'
   \read _
   if [ "$_" = 'y' ]; then 
-    \veracrypt  --text  --dismount  "$source_file_encrypted"
+    \veracrypt  --dismount  "$source_file_encrypted"
   else
     \echo  'You can manually encrypt / dismount it with:'
-    \echo  "\\\veracrypt  --text  --dismount  \"$source_file_encrypted\""
+    \echo  "\\\veracrypt  --dismount  \"$source_file_encrypted\""
     return 1  2> /dev/null || { exit 1; }
   fi
 )
