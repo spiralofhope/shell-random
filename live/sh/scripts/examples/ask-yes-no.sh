@@ -1,5 +1,7 @@
 #!/usr/bin/env  sh
 
+# FIXME - I don't like any of this code.  Rework things with better examples which I can easily copy-paste into scripts.
+
 # https://stackoverflow.com/questions/226703/_/27875395#27875395
 
 # You may wish to supplement this by trapping INT to force 'n', see `trapping-signals.sh`
@@ -8,11 +10,11 @@
 
 #:<<'}'  {
 _askyesno()  {
-  \echo  '[y/N]'
+  \echo  "$1"
   \read _
   # Ignore capslock with:
-  #if [ "$_" != "${_#[Yy]}" ] ;then 
-  if [ "$_" = 'y' ] ;then 
+  #if [ "$_" != "${_#[Yy]}" ]; then 
+  if [ "$_" = 'y' ]; then 
     \echo  'y'
   else
     \echo  'n'
