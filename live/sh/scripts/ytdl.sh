@@ -124,10 +124,11 @@ _get_video_etc(){
 
 
 
-_update
-_get_subtitles  $*
-_get_comments   $*
-_get_video_etc  $*
+_update  &&  \
+_get_video_etc  $*  &&  \
+_get_comments   $*  &&  \
+_get_subtitles  $*  &&  \
+` # `
 
 
 
