@@ -1,5 +1,8 @@
 #!/usr/bin/env  sh
 
+# TODO - It would be interesting to put the video title or other info as the terminal title:
+# \print  -Pn  "\e]0;%~ - $1\a"
+
 
 youtube_username='spiralofhope'
 
