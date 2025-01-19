@@ -29,8 +29,30 @@ if    [ "$TTY" = '/dev/tty1' ]  \
 ; then
   # For security reasons, logout if this script completes or there is a problem.
   # NOTE - If there is bad code in this script, then it will exit to the prompt.
-  _quit() { \logout ; }
-  trap _quit $( \kill -l )
+  _quit() {
+    echo  '* Quitting...'
+    # I actually prefer doing this:
+    \kill -9 "$$"
+    \logout
+  }
+  # Apparently the variable pre-exists!
+  signals=''
+  for i in $( \kill -l ); do
+    # Skip signals I cannot trap to:
+    case $i in
+     'TSTP'  \
+   | 'TTIN'  \
+   | 'TTOU'  \
+   )
+      \echo "$i - skipped"
+      continue
+    ;;
+    esac
+    \echo  "$i"
+    signals="$signals $i"
+  done
+  \echo
+  \trap _quit $signals
 
   # Find the TTY number
   #  e.g.  /dev/tty2  =>  2
@@ -54,8 +76,7 @@ if    [ "$TTY" = '/dev/tty1' ]  \
   # I'm using \tempfile, because \mktemp does not support --prefix
   #\xinit  /etc/X11/xinit/xinitrc -- /usr/bin/X :$(( tty_to_use - 1 )) vt"$tty_to_use"  -auth "$( \tempfile  --prefix='serverauth.' )"  &
   \wait
-  # Seppuku, summoning _quit because of the TERM signal
-  \kill -9 "$$"
+  _quit
 fi
 
 
