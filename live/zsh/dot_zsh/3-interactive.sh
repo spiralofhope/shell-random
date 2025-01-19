@@ -189,8 +189,8 @@ REPORTTIME=10
         ;;
       esac
     }
+  chpwd
   }
-  #chpwd
 }
 
 
