@@ -30,7 +30,7 @@ if    [ "$TTY" = '/dev/tty1' ]  \
   # For security reasons, logout if this script completes or there is a problem.
   # NOTE - If there is bad code in this script, then it will exit to the prompt.
   _quit() { \logout ; }
-  trap _quit $( \kill --list )
+  trap _quit $( \kill -l )
 
   # Find the TTY number
   #  e.g.  /dev/tty2  =>  2
