@@ -86,7 +86,7 @@ alias  update='                              \
     /usr/bin/apt-get  --yes update        && \
     /usr/bin/apt-get  --yes upgrade       && \
     /usr/bin/apt-get  --yes dist-upgrade  && \
-    /usr/bin/apt-get  --yes autoremove    && \
+    /usr/bin/apt-get  --yes autoremove       \
   "                                          \
 '
 # 2025-01-11 - Ubuntu 24.04.1 LTS
