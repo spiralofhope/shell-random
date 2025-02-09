@@ -79,16 +79,14 @@ alias  previous='\cd  "$( \realpath  "$HOME/l/path/previous/" )"'
 # alias  screen='TERM=screen screen'  # http://ubuntuforums.org/showthread.php?t=90910
 
 
-# Debian-like:
-alias  update='                              \
-  \sudo                                      \
-  \sh -c "                                   \
-    /usr/bin/apt-get  --yes update        && \
-    /usr/bin/apt-get  --yes upgrade       && \
-    /usr/bin/apt-get  --yes dist-upgrade  && \
-    /usr/bin/apt-get  --yes autoremove       \
-  "                                          \
-'
+update() {
+  \sudo  \sh -c '
+    /usr/bin/apt-get  --yes update        &&
+    /usr/bin/apt-get  --yes upgrade       &&
+    /usr/bin/apt-get  --yes dist-upgrade  &&
+    /usr/bin/apt-get  --yes autoremove
+  '
+}
 # 2025-01-11 - Ubuntu 24.04.1 LTS
 # "Deferred due to phasing" is a system of holding back packages to test them on some installations before broadly deploying.
 # This message is safe to ignore, but if you want to force-install, do:
