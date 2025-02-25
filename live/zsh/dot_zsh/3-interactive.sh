@@ -197,11 +197,11 @@ REPORTTIME=10
 
 #:<<'}'   #  Paths
 {
-  # Note that these backslashes must not have a space preceeding them, as would normally be my scripting style.
+  # Note that these backslashes must not have a space preceeding them, nor must the following lines have spaces, as would normally be my scripting style.  Must end with a blank line.
   PATH=\
-"$(  \realpath  "$zshdir/scripts" )"\
+"$PATH"\
+:"$(  \realpath  "$zshdir/scripts" )"\
 :"$( \realpath  "$zshdir/../bash/scripts" )"\
-:"$PATH"
 
   if [ "$this_kernel_release" = 'Cygwin' ]  \
   || [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]  \
