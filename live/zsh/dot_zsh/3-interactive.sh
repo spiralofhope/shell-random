@@ -195,8 +195,8 @@ REPORTTIME=10
 
 
 
-{  #  Paths
-
+#:<<'}'   #  Paths
+{
   # Note that these backslashes must not have a space preceeding them, as would normally be my scripting style.
   PATH=\
 "$(  \realpath  "$zshdir/scripts" )"\
@@ -211,17 +211,9 @@ REPORTTIME=10
 "$( \realpath  "$zshdir/../wfl/scripts" )"\
 :"$PATH"
     fi
-
-:<<'}'  #  Not used/tested in a while..
-{
-  # FIXME/TODO - Babun:  Tentative testing suggests there are valid applications within, but Babun is running as user.
-  if [ "$USER" = 'root' ]; then
-    PATH="$PATH":'/sbin'
-    PATH="$PATH":'/usr/sbin'
-  fi
-}
   export  PATH
 }
+
 
 
 :<<'}'   #  Various zshoptions:  `setopt`
