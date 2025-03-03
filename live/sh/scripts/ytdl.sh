@@ -80,10 +80,15 @@ _get_subtitles() {
 # This doesn't work:
 #      --sleep-subtitles 4  ` # Most videos are autotranslated into dozens of languages.`  \
 #    --username  "$youtube_username"  ` # For some people, this will bypass the 429 error.  It prompts for a password.`  \
+#    --no-abort-on-error  --  seems to not be valid.
 #
-#
+# TODO, maybe if I get the list?  Then:
+# - Check the disk and skip those already known
+# - Adjust --sub-langs all,-live_chat
+
+
   \yt-dlp  \
-    --no-abort-on-error  \
+    --ignore-errors  \
     --output  '%(uploader)s/%(upload_date>%Y)s-%(upload_date>%m)s-%(upload_date>%d)s - %(title)s/subs/v.%(ext)s'  \
     --skip-download  \
     --write-subs  \
@@ -132,6 +137,7 @@ _get_video_etc  $*  &&  \
 _get_comments   $*  &&  \
 _get_subtitles  $*  &&  \
 ` # `
+
 
 
 
