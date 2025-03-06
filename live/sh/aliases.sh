@@ -21,6 +21,7 @@ alias  more='\less  --quit-at-eof  --quit-if-one-screen'
 alias  mv='\mv  --interactive'
 # Instead, use a config file like `nanorc`, see `which nanorc`
 # alias  nano='\nano  --mouse'
+alias  path='\echo  $PATH | \tr ":" "\012"'
 alias  pm-suspend='drop-caches.sh  &&  \sudo  /usr/sbin/pm-suspend'
 alias  poweroff='\sudo  /sbin/poweroff'
 alias  reboot='\sudo  /sbin/shutdown  -r  -t now  now  rebooting'
