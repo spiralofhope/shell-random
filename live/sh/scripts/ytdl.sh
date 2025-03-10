@@ -78,14 +78,20 @@ _get_subtitles() {
 # ERROR: Unable to download video subtitles for 'xx': HTTP Error 429: Too Many Requests
 #   https://github.com/blackjack4494/yt-dlc/issues/158
 # This doesn't work:
-#      --sleep-subtitles 4  ` # Most videos are autotranslated into dozens of languages.`  \
+#      --sleep-subtitles 4  \
 #    --username  "$youtube_username"  ` # For some people, this will bypass the 429 error.  It prompts for a password.`  \
+#    --no-abort-on-error  --  seems to not be valid.
 #
-#
+# TODO, maybe if I get the list?  Then:
+# - Check the disk and skip those already known
+# - Adjust --sub-langs all,-live_chat
+
+
   \yt-dlp  \
-    --no-abort-on-error  \
+    --ignore-errors  \
     --output  '%(uploader)s/%(upload_date>%Y)s-%(upload_date>%m)s-%(upload_date>%d)s - %(title)s/subs/v.%(ext)s'  \
     --skip-download  \
+    --sleep-subtitles 3  \
     --write-subs  \
       --convert-subs  srt  \
       --sub-format  srt/best  \
@@ -132,6 +138,7 @@ _get_video_etc  $*  &&  \
 _get_comments   $*  &&  \
 _get_subtitles  $*  &&  \
 ` # `
+
 
 
 

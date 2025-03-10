@@ -58,6 +58,22 @@ export  shdir
 
 
 
+#:<<'}'  #  Colors
+{
+  # Note that these backslashes must not have a space preceeding them, nor must the following lines have spaces, as would normally be my scripting style.  Must end with a blank line.
+  LS_COLORS=\
+"$LS_COLORS"\
+:"*.desktop=1;37"\
+:"*.json=1;37"\
+:"*.mhtml=1;37"\
+:"*.html=1;37"\
+:"*.url=1;37"\
+:"*.webloc=1;37"\
+
+}
+
+
+
 #:<<'}'   #  A simple colored prompt
 {
   :<<'  }'   #  A simple prompt:
