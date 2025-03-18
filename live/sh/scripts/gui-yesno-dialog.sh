@@ -6,14 +6,17 @@
 # Get a basic yes or no
 
 
+# TODO - Learn from terminal.sh to go through all the various terminal and dialog-program (dialog, gdialog, zenity, etc.) options
+# TODO - Also consider xdialog, etc
+
+
 # 0=auto
 height=0
 width=0
 #height=5
 #width=19
 text="$1"
-tempfile=$( \mktemp  --suffix="_gui-yesno-dialog" )
-\rm  --force  "$tempfile"
+tempfile="$( \mktemp  --dry-run  --suffix=".my_temporary_file.$$" )"
 
 
 # I suspect I could have solved this with `read`, but I think I'd have 
@@ -31,13 +34,33 @@ tempfile=$( \mktemp  --suffix="_gui-yesno-dialog" )
   if [ -f "$tempfile" ]; then
     \rm  --force  "$tempfile"
     \echo  '0'
+    \return  0
   else
     \echo  '1'
+    \return  1
   fi
 }
-# Also consider xdialog, etc
 
-#:<<'}'   #  using zenity
+
+
+#:<<'}'   #  qterminal
+{
+  # It doesn't appear to have geometry options
+  \qterminal --execute \
+    \dialog  --yesno  "$text"  "$height"  "$width"  --trace  "$tempfile" 2>/dev/null
+  if [ -f "$tempfile" ]; then
+    \rm  --force  "$tempfile"
+    \echo  '0'
+    \return  0
+  else
+    \echo  '1'
+    \return  1
+  fi
+}
+
+
+
+:<<'}'   #  zenity
 # gdialog is a wrapper around zenity
 {
   if  \
@@ -46,7 +69,6 @@ tempfile=$( \mktemp  --suffix="_gui-yesno-dialog" )
     \echo  '1'
     \return  0
   else
-    \rm  --force  "$tempfile"
     \echo  '0'
     \return  1
   fi
