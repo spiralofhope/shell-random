@@ -68,7 +68,7 @@ _get_comments() {
     --skip-download  \
     --write-comments  \
     --output '%(uploader)s/%(upload_date>%Y)s-%(upload_date>%m)s-%(upload_date>%d)s - %(title)s/comments--'"$( \date  --utc  +%Y-%m-%d_%H։%M )"'.%(ext)s'  \
-  $*  ||  exit  1
+  "$@"  ||  exit  1
 }
 
 
@@ -97,7 +97,7 @@ _get_subtitles() {
       --sub-format  srt/best  \
       --sub-langs  all  \
       --write-auto-subs  \
-  $*  ||  exit  1
+  "$@"  ||  exit  1
 }
 
 
@@ -128,15 +128,15 @@ _get_video_etc(){
       --write-webloc-link  \
     --write-thumbnail  \
       --embed-thumbnail  \
-  $*  ||  exit  1
+  "$@"  ||  exit  1
 }
 
 
 
 _update  &&  \
-_get_video_etc  $*  &&  \
-_get_comments   $*  &&  \
-_get_subtitles  $*  &&  \
+_get_video_etc  "$@"  &&  \
+_get_comments   "$@"  &&  \
+_get_subtitles  "$@"  &&  \
 ` # `
 
 
