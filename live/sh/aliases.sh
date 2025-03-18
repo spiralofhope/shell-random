@@ -46,11 +46,11 @@ ddir() {
 alias  dir='dir-4DOS-style.sh  .  |  myless'
 
 
-ytdl(){
-  printf  '\033]0;...\007'
-  youtube-download.sh  "$@"
-  printf  '\n\n'
-}
+#ytdl(){
+#  printf  '\033]0;...\007'
+#  youtube-download.sh  "$@"
+#  printf  '\n\n'
+#}
 
 
 # This won't work on cygwin, and I'm not even sure what it was for..
