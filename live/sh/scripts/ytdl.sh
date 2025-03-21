@@ -87,15 +87,37 @@ _get_subtitles() {
 # - Adjust --sub-langs all,-live_chat
 
 
+  # TODO - build a list using --list-subs and then walk through them one at a time, checking the download directory and making a manual timeout to ensure that I keep trying.
+
+  # List them:
+  \yt-dlp  \
+    --ignore-errors  \
+    --skip-download  \
+      --list-subs  \
+  "$@"  ||  exit  1
+
+  # Ensure I can get the essential subtitles:
+  \yt-dlp  \
+    --ignore-errors  \
+    --output  '%(uploader)s/%(upload_date>%Y)s-%(upload_date>%m)s-%(upload_date>%d)s - %(title)s/subs/v.%(ext)s'  \
+    --skip-download  \
+    --write-subs  \
+      --sub-langs  "en.*,.*-orig,live_chat"  \
+      --convert-subs  srt  \
+      --sub-format  srt/best  \
+      --write-auto-subs  \
+  "$@"  ||  exit  1
+
+  # Attempt to get the remaining subtitles:
   \yt-dlp  \
     --ignore-errors  \
     --output  '%(uploader)s/%(upload_date>%Y)s-%(upload_date>%m)s-%(upload_date>%d)s - %(title)s/subs/v.%(ext)s'  \
     --skip-download  \
     --sleep-subtitles 3  \
     --write-subs  \
+      --sub-langs  "all,-en.*,-.*-orig,-live_chat"  \
       --convert-subs  srt  \
       --sub-format  srt/best  \
-      --sub-langs  all  \
       --write-auto-subs  \
   "$@"  ||  exit  1
 }
