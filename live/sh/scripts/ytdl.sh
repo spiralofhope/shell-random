@@ -9,7 +9,7 @@
 # TODO - --write-info-json might still contain personal information if cookies are used.
 #   I checked, it doesn't contain my username.
 # A space is not valid in this filename.  Trust me, that can't be implemented as far as I can tell.
-cookies_file="$HOME/youtube-cookies-netscape.txt"
+#cookies_file="$HOME/youtube-cookies-netscape.txt"
 cookies_file=''
 # If you are having problems, make sure you re-create your ~/youtube-cookies-netscape.txt
 # F12 > Application > Cookies > youtube.com > copy it all to ~/youtube-cookies.txt
@@ -62,6 +62,7 @@ _update(){
 
 _get_comments() {
   \yt-dlp  \
+    $( [ -f "$cookies_file" ] && echo "--cookies $cookies_file" )  \
     --skip-download  \
     --write-comments  \
     --output '%(uploader)s/%(upload_date>%Y)s-%(upload_date>%m)s-%(upload_date>%d)s - %(title)s/comments--'"$( \date  --utc  +%Y-%m-%d_%H։%M )"'.%(ext)s'  \
@@ -88,6 +89,7 @@ _get_subtitles() {
 
   # List them:
   \yt-dlp  \
+    $( [ -f "$cookies_file" ] && echo "--cookies $cookies_file" )  \
     --ignore-errors  \
     --skip-download  \
       --list-subs  \
@@ -95,6 +97,7 @@ _get_subtitles() {
 
   # Ensure I can get the essential subtitles:
   \yt-dlp  \
+    $( [ -f "$cookies_file" ] && echo "--cookies $cookies_file" )  \
     --ignore-errors  \
     --output  '%(uploader)s/%(upload_date>%Y)s-%(upload_date>%m)s-%(upload_date>%d)s - %(title)s/subs/v.%(ext)s'  \
     --skip-download  \
@@ -107,6 +110,7 @@ _get_subtitles() {
 
   # Attempt to get the remaining subtitles:
   \yt-dlp  \
+    $( [ -f "$cookies_file" ] && echo "--cookies $cookies_file" )  \
     --ignore-errors  \
     --output  '%(uploader)s/%(upload_date>%Y)s-%(upload_date>%m)s-%(upload_date>%d)s - %(title)s/subs/v.%(ext)s'  \
     --skip-download  \
@@ -146,7 +150,7 @@ _get_video_etc(){
   #$( [ -f "$cookies_file" ] && printf '%s\n' "--cookies $cookies_file" )  \
 
   \yt-dlp  \
-      $( [ -f "$cookies_file" ] && echo "--cookies $cookies_file" )  \
+    $( [ -f "$cookies_file" ] && echo "--cookies $cookies_file" )  \
     --concurrent-fragments  3  \
       --no-keep-fragments  \
     --continue  \
@@ -173,6 +177,7 @@ _get_video_etc(){
       --embed-thumbnail  \
   "$@"  ||  exit  1
 }
+
 
 
 
