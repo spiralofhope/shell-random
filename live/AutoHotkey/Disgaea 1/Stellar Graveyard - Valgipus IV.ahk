@@ -17,8 +17,8 @@ SendMode "Input"
 
 
 ; User-configuration:
-delay_keydown := 80
-delay_keyup   := 70
+delay_keydown := 85
+delay_keyup   := 75
 activate_ability() {
   ;staff_tera_fire()
   ;staff_tera_wind()
