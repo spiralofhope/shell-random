@@ -9,7 +9,7 @@
 # TODO - --write-info-json might still contain personal information if cookies are used.
 #   I checked, it doesn't contain my username.
 # A space is not valid in this filename.  Trust me, that can't be implemented as far as I can tell.
-#cookies_file="$HOME/youtube-cookies-netscape.txt"
+cookies_file="$HOME/youtube-cookies-netscape.txt"
 cookies_file=''
 # If you are having problems, make sure you re-create your ~/youtube-cookies-netscape.txt
 # F12 > Application > Cookies > youtube.com > copy it all to ~/youtube-cookies.txt
