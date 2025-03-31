@@ -34,12 +34,11 @@ autohotkey_window := "ahk_class #32770"
 ; ----
 
 
+
 ; Clear any MsgBox or error dialogs on startup
-ClearDialogs()
-{
-  while WinExist( autohotkey_window )
-  {
-    WinClose autohotkey_window
+ClearDialogs() {
+  while WinExist( autohotkey_window ) {
+    WinClose      autohotkey_window
     Sleep 100  ; Pause to allow closure
   }
 }
@@ -47,12 +46,13 @@ ClearDialogs()
 
 
 
-key( key, times := 1 )
-{
-  Loop times
-  {
+key( key, times := 1 ) {
+  Loop times {
+    ; The theory was to ensure that the application is focused at every keystroke.  In practice, it does not work.
+    ;focus_application()
     Send( "{" . key . " down}" )
     Sleep( delay_keydown )
+    ;focus_application()
     Send( "{" . key . " up}" )
     Sleep( delay_keyup )
   }
@@ -60,18 +60,15 @@ key( key, times := 1 )
 
 
 
-spell_select()
-{
+spell_select() {
   key( "s" )
   key( "s" )
   key( "k" )  ; Special menu
-  ; select next
 }
 
 
 
-spell_target()
-{
+spell_target() {
   key( "k" )
   key( "d" )
   key( "d" )  ; square of 9
@@ -85,8 +82,7 @@ spell_target()
 
 
 
-staff_tera_fire()
-{
+staff_tera_fire() {
   spell_select()
   key( "s", 4 )
   spell_target()
@@ -94,8 +90,7 @@ staff_tera_fire()
 
 
 
-staff_tera_wind()
-{
+staff_tera_wind() {
   spell_select()
   key( "e" )
   key( "s" )
@@ -104,8 +99,7 @@ staff_tera_wind()
 
 
 
-staff_tera_ice()
-{
+staff_tera_ice() {
   spell_select()
   key( "e", 2 )
   key( "w", 2 )
@@ -114,12 +108,11 @@ staff_tera_ice()
 
 
 
-staff_tera_star()
-{
+staff_tera_star() {
   spell_select()
   ;key( "s", 19 )  ; From the top going down
   ;key( "w", 10 )  ; From the bottom going up
-  ;key( "e", 2 ), key( "s", 3 );  Hoping down
+  ;key( "e", 2 ), key( "s", 3 );  Hopping down
   ; Fastest method:
   key( "w" )
   key( "q" )
@@ -129,8 +122,7 @@ staff_tera_star()
 
 
 
-move_in_front()
-{
+move_in_front() {
   key( "k" )  ; Move
   key( "w" )
   key( "a" )
@@ -141,8 +133,7 @@ move_in_front()
 
 
 
-sword_winged_slayer()
-{
+sword_winged_slayer() {
   move_in_front()
   key( "k" )  ; That unit's menu
   key( "s" )
@@ -155,22 +146,21 @@ sword_winged_slayer()
 
 
 
-$F1::
-{
-  ;MsgBox "F1 pressed by you!"
-  if !WinExist(  executable )
-  {
-    MsgBox "Disgaea not found!"
-    return
+focus_application() {
+  if !WinActive(   executable ) {
+    WinActivate    executable
+    WinWaitActive  executable, , 2  ; Delay the script for up to 2 seconds.
   }
-  WinActivate    executable
-  WinWaitActive  executable, , 2
-  if !WinActive( executable )
-  {
-    MsgBox "Failed to activate Disgaea!"
-    return
+  if !WinActive(   executable ) {
+    MsgBox "Failed to focus the application:  " . executable
+    ExitApp
   }
-  ;MsgBox "works"
+}
+
+
+
+$F1:: {
+  focus_application()
   key( "k" )  ; Enter Valgipus IV
   Sleep 3500  ; Wait to enter the area
   key( "e" )  ; Go to the base panel or first unit
@@ -191,11 +181,9 @@ $F1::
 ; Auto-reload when this file is edited.
 initialTime := FileGetTime( A_ScriptFullPath, "M" )
 SetTimer CheckFileChange, 2000
-CheckFileChange()
-{
+CheckFileChange() {
   currentTime := FileGetTime( A_ScriptFullPath, "M" )
-  if ( currentTime != initialTime )
-  {
+  if ( currentTime != initialTime ) {
     Reload
     Sleep 2000
     MsgBox "Reload failed!"
