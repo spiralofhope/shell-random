@@ -2,9 +2,10 @@
 #SingleInstance Force
 #UseHook
 SendMode "Input"
-#Include "lib_staff.ahk"
-#Include "lib_sword.ahk"
-#Include "lib_movement - Valgipus IV.ahk"
+#Include "lib\staff.ahk"
+#Include "lib\sword.ahk"
+#Include "lib\movement - Valgipus IV.ahk"
+#Include "lib\general.ahk"
 ;#Warn  ; Enable warnings to assist with detecting common errors.
 
 ; VARIATION - The first party member casts one spell, the stage is cleared by the next party member.
@@ -119,24 +120,6 @@ clear_ability_activate() {
 
 
 
-executable := "ahk_exe dis1_st.exe"
-; Maybe this would change under some circumstances, perhaps with a future update to AutoHotKey?
-; If needed, use the "Window Spy" command via right-clicking your AutoHotKey tray icon to learn the details of an AutoHotKey dialog.
-autohotkey_window := "ahk_class #32770"
-
-
-
-; -----------------------------------------------------------------------
-
-
-
-; -------------------
-;    Script begins   
-; -------------------
-; Not generally user-serviceable
-
-
-
 ; Okay maybe this one is somewhat user-serviceable if you know what you're doing.
 $F1:: {
   focus_application()
@@ -148,7 +131,7 @@ $F1:: {
   key( "k" )  ; Execute
   Sleep 1400  ; Wait for one spell animation to cast
   Sleep 1400  ; Wait for the second spell animation to cast
-  ; It is assumed that the stage is noe cleared
+  ; It is assumed that the stage is now cleared
   Sleep 2200  ; Wait for the stage end animation to begin and the reward counter to begin
   key( "k" )  ; Stop the reward counter
   key( "k" )  ; Exit reward screen
@@ -157,42 +140,16 @@ $F1:: {
 
 
 
-key( key, times := 1 ) {
-  Loop times {
-    ; The theory was to ensure that the application is focused at every keystroke.  In practice, it does not work.
-    ;focus_application()
-    kill_script_if_executable_not_focused()
-    Send( "{" . key . " down}" )
-    Sleep( milliseconds_holding_a_key_down )
-    ;focus_application()
-    Send( "{" . key . " up}" )
-    Sleep( delay_between_keystrokes )
-  }
-}
+executable := "ahk_exe dis1_st.exe"
+; Maybe this would change under some circumstances, perhaps with a future update to AutoHotKey?
+; If needed, use the "Window Spy" command via right-clicking your AutoHotKey tray icon to learn the details of an AutoHotKey dialog.
+autohotkey_window := "ahk_class #32770"
 
 
 
-focus_application() {
-  if !WinActive(   executable ) {
-    WinActivate    executable
-    ; Delay this script for up to 2 seconds to wait for the system to switch to the executable's window (i.e. an alt-tab).
-    ; Lua-style empty variable
-    WinWaitActive  executable,  , 2
-  }
-  if !WinActive(   executable ) {
-    MsgBox "Failed to focus the application:  " . executable . "`nreloading this script."
-    Reload
-  }
-}
-
-
-
-kill_script_if_executable_not_focused() {
-  if !WinExist( executable ) {
-    MsgBox "Executable not found:  " . executable . "`nexiting this script."
-    ExitApp
-  }
-}
+; -------------------
+;    Script begins
+; -------------------
 
 
 
