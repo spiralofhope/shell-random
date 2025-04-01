@@ -1,8 +1,10 @@
 #Requires AutoHotkey v2
-#Requires AutoHotkey v2
 #SingleInstance Force
 #UseHook
 SendMode "Input"
+#Include "lib_staff.ahk"
+#Include "lib_sword.ahk"
+#Include "lib_movement - Valgipus IV.ahk"
 ;#Warn  ; Enable warnings to assist with detecting common errors.
 
 ; VARIATION - The first party member casts one spell, the stage is cleared by the next party member.
@@ -22,11 +24,13 @@ SendMode "Input"
 ; - Gracefully fails if your first character doesn't clear and your second character runs out of mana.
 ; - Note that this lays the foundation for any sort of automation for any application, and is not limited to Disgaea 1.
 ; - Further in are hard-coded delays using the "Sleep" command which you can customize if your system runs the Disgaea 1 slower than intended.
+; - While this uses the F1 hotkey, that can be configured below.
 
 
 
 ; User-configuration:
-miliseconds_holding_a_key_down := 85
+; Activate this script with the F1 key.  This variation with $F1 is to enhance it's detection.
+milliseconds_holding_a_key_down := 85
 delay_between_keystrokes := 75
 grind_ability_activate() {
   ; - Choose only one ability.
@@ -50,8 +54,8 @@ grind_ability_activate() {
   ;staff_tera_wind()
 
   ;staff_ice()
-  staff_mega_ice()
-  ;staff_giga_ice()
+  ;staff_mega_ice()
+  staff_giga_ice()
   ;staff_omega_ice()
   ;staff_tera_ice()
 
@@ -66,11 +70,14 @@ grind_ability_activate() {
   
   target_from_front_to_middle()
 }
+
+
+
 clear_ability_activate() {
   ; - Choose only one ability.
   ; - This script is designed for a 9x9 ability which is guaranteed to one-shot and clear the stage.
   ; - However, if you are unable to fulfill that requirement, this script is designed to be easily customized, even to the point of letting you control multiple characters.
-  ;   - Beware that if you clear the stage yet the script assumes it needs to control additional characters, you will have a mess on your hands.  Try having multiple characters attack different sections of the group, and follow it up with a 9x9.  This was how I did my original grinding for little characters.
+  ;   - Beware that if you clear the stage yet this script assumes it needs to control additional characters, you will have a mess on your hands.  Try having multiple characters attack different sections of the group, and follow it up with a 9x9.  This was how I did my original grinding for little characters.
 
   key( "e" )  ; Go to the base panel or first unit
   key( "l" )  ; Return unit to base
@@ -107,8 +114,11 @@ clear_ability_activate() {
   target_from_base_to_middle()
 
   ; N/A for now
-  ;clear_sword_winged_slayer()
+  ;sword_winged_slayer()
 }
+
+
+
 executable := "ahk_exe dis1_st.exe"
 ; Maybe this would change under some circumstances, perhaps with a future update to AutoHotKey?
 ; If needed, use the "Window Spy" command via right-clicking your AutoHotKey tray icon to learn the details of an AutoHotKey dialog.
@@ -117,141 +127,6 @@ autohotkey_window := "ahk_class #32770"
 
 
 ; -----------------------------------------------------------------------
-
-
-
-; Lua-style empty variable
-_ := ''
-
-
-
-; --------------
-;      Fire
-; --------------
-staff_fire() {
-  spell_select()
-  key( "k" )
-}
-staff_mega_fire() {
-  spell_select()
-  key( "s" )
-  key( "k" )
-}
-staff_giga_fire() {
-  spell_select()
-  key( "s", 2 )
-  key( "k" )
-}
-staff_omega_fire() {
-  spell_select()
-  key( "s", 3 )
-  key( "k" )
-}
-staff_tera_fire() {
-  spell_select()
-  key( "s", 4 )
-  key( "k" )
-}
-; --------------
-;      Wind
-; --------------
-staff_wind() {
-  spell_select()
-  key( "e" )
-  key( "w", 3 )
-  key( "k" )
-}
-staff_mega_wind() {
-  spell_select()
-  key( "e" )
-  key( "w", 2 )
-  key( "k" )
-}
-staff_giga_wind() {
-  spell_select()
-  key( "e" )
-  key( "w" )
-  key( "k" )
-}
-staff_omega_wind() {
-  spell_select()
-  key( "e" )
-  key( "k" )
-}
-staff_tera_wind() {
-  spell_select()
-  key( "e" )
-  key( "s" )
-  key( "k" )
-}
-; --------------
-;      Ice
-; --------------
-staff_ice() {
-  spell_select()
-  key( "e" )
-  key( "s", 2 )
-  key( "k" )
-}
-staff_mega_ice() {
-  spell_select()
-  key( "e" )
-  key( "s", 3 )
-  key( "k" )
-}
-staff_giga_ice() {
-  spell_select()
-  key( "e" )
-  key( "s", 4 )
-  key( "k" )
-}
-staff_omega_ice() {
-  spell_select()
-  key( "e", 2 )
-  key( "w", 3 )
-  key( "k" )
-}
-staff_tera_ice() {
-  spell_select()
-  key( "e", 2 )
-  key( "w", 2 )
-  key( "k" )
-}
-; --------------
-;      Star
-; --------------
-staff_star() {
-  spell_select()
-  key( "e", 2 )
-  key( "w" )
-  key( "k" )
-}
-staff_mega_star() {
-  spell_select()
-  key( "e", 2 )
-  key( "k" )
-}
-staff_giga_star() {
-  spell_select()
-  key( "e", 2 )
-  key( "s" )
-  key( "k" )
-}
-staff_omega_star() {
-  spell_select()
-  key( "e", 2 )
-  key( "s", 2 )
-  key( "k" )
-}
-staff_tera_star() {
-  spell_select()
-  key( "e", 2 )
-  key( "s", 3 )
-  key( "k" )
-  ; This is the fastest method for a regular unit because it goes from the bottom.
-  ; However, named units have other abilities at the bottom, interfering with this.
-  ;key( "w" ), key( "q" ), key( "w" ), key( "k" )
-}
 
 
 
@@ -288,7 +163,7 @@ key( key, times := 1 ) {
     ;focus_application()
     kill_script_if_executable_not_focused()
     Send( "{" . key . " down}" )
-    Sleep( miliseconds_holding_a_key_down )
+    Sleep( milliseconds_holding_a_key_down )
     ;focus_application()
     Send( "{" . key . " up}" )
     Sleep( delay_between_keystrokes )
@@ -297,66 +172,15 @@ key( key, times := 1 ) {
 
 
 
-spell_select() {
-  key( "s" )
-  key( "s" )
-  key( "k" )  ; Special menu
-}
-
-
-
-target_from_front_to_middle() {
-  key( "a", 2 )  ; Target the enemy in the middle of the nine
-  key( "k" )     ; Confirm
-}
-target_from_base_to_middle() {
-  key( "w" )
-  key( "a", 4 )  ; Target the middle of the group of 9 (the whole group)
-  key( "k" )     ; Confirm
-}
-one_spell_select() {
-  key( "k" )     ; Select the single target spell
-}
-most_spell_select() {  ; Select the biggest spell size possible
-  key( "d", 2 )  ; Select the biggest spell possible
-  key( "k" )     ; Select the single target spell
-}
-
-
-
-; Move directly in front of the block of 9 enemies.
-move_in_front() {
-  key( "k" )  ; Move
-  key( "w" )
-  key( "a" )
-  key( "a" )
-  key( "k" )  ; Move execute
-  Sleep 750   ; Wait for the movement animation.
-}
-
-
-
-clear_sword_winged_slayer() {
-  move_in_front()
-  key( "k" )     ; That unit's menu
-  key( "s" )
-  key( "s" )
-  key( "k" )     ; Special menu
-  key( "s", 3 )  ; Sword > Winged Slayer
-  key( "k" )
-  key( "a" )     ; Target the group of 9
-}
-
-
-
 focus_application() {
   if !WinActive(   executable ) {
     WinActivate    executable
-    ; Delay the script for up to 2 seconds to wait for the system to switch to the executable's window (i.e. an alt-tab).
-    WinWaitActive  executable, _ , 2
+    ; Delay this script for up to 2 seconds to wait for the system to switch to the executable's window (i.e. an alt-tab).
+    ; Lua-style empty variable
+    WinWaitActive  executable,  , 2
   }
   if !WinActive(   executable ) {
-    MsgBox "Failed to focus the application:  " . executable . "`nreloading the script."
+    MsgBox "Failed to focus the application:  " . executable . "`nreloading this script."
     Reload
   }
 }
@@ -365,7 +189,7 @@ focus_application() {
 
 kill_script_if_executable_not_focused() {
   if !WinExist( executable ) {
-    MsgBox "Executable not found:  " . executable . "`nkilling the script."
+    MsgBox "Executable not found:  " . executable . "`nexiting this script."
     ExitApp
   }
 }
@@ -385,11 +209,11 @@ ClearDialogs()
 
 
 ; Auto-reload this script when its file is edited.
-initialTime   := FileGetTime( A_ScriptFullPath, "M" )
-SetTimer CheckFileChange, 2000
-CheckFileChange() {
-  currentTime := FileGetTime( A_ScriptFullPath, "M" )
-  if ( currentTime != initialTime ) {
+script_timestamp_initial   := FileGetTime( A_ScriptFullPath, "M" )
+SetTimer check_for_timestamp_change, 2000
+check_for_timestamp_change() {
+  script_timestamp_current := FileGetTime( A_ScriptFullPath, "M" )
+  if ( script_timestamp_current != script_timestamp_initial ) {
     Reload
     Sleep 2000
     MsgBox "Reload failed!"
