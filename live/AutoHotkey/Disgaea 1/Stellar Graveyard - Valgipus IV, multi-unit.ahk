@@ -1,4 +1,5 @@
 #Requires AutoHotkey v2
+#Requires AutoHotkey v2
 #SingleInstance Force
 #UseHook
 SendMode "Input"
@@ -351,18 +352,20 @@ clear_sword_winged_slayer() {
 focus_application() {
   if !WinActive(   executable ) {
     WinActivate    executable
-    WinWaitActive  executable, _ , 2  ; Delay the script for up to 2 seconds.
+    ; Delay the script for up to 2 seconds to wait for the system to switch to the executable's window (i.e. an alt-tab).
+    WinWaitActive  executable, _ , 2
   }
   if !WinActive(   executable ) {
-    MsgBox "Failed to focus the application:  " . executable
-    ExitApp
+    MsgBox "Failed to focus the application:  " . executable . "`nreloading the script."
+    Reload
   }
 }
 
 
 
 kill_script_if_executable_not_focused() {
-  if !WinActive( executable ) {
+  if !WinExist( executable ) {
+    MsgBox "Executable not found:  " . executable . "`nkilling the script."
     ExitApp
   }
 }
