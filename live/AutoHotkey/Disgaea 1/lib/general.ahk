@@ -43,3 +43,11 @@ ClearDialogs() {
   }
 }
 ClearDialogs()
+
+
+
+special_select() {
+  key( "s" )
+  key( "s" )
+  key( "k" )  ; Special menu
+}

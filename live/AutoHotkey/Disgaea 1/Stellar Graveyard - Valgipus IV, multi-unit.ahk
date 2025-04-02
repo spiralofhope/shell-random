@@ -43,29 +43,29 @@ grind_ability_activate() {
   move_in_front()
   key( "k" )  ; That unit's menu
 
-  ;staff_fire()
-  ;staff_mega_fire()
-  ;staff_giga_fire()
-  ;staff_omega_fire()
-  ;staff_tera_fire()
+  ;staff_Fire()
+  ;staff_Mega_Fire()
+  ;staff_Giga_Fire()
+  ;staff_Omega_Fire()
+  ;staff_Tera_Fire()
 
-  ;staff_wind()
-  ;staff_mega_wind()
-  ;staff_giga_wind()
-  ;staff_omega_wind()
-  ;staff_tera_wind()
+  ;staff_Wind()
+  ;staff_Mega_Wind()
+  ;staff_Giga_Wind()
+  ;staff_Omega_Wind()
+  ;staff_Tera_Wind()
 
-  ;staff_ice()
-  ;staff_mega_ice()
-  ;staff_giga_ice()
-  ;staff_omega_ice()
-  staff_tera_ice()
+  ;staff_Ice()
+  ;staff_Mega_Ice()
+  ;staff_Giga_Ice()
+  ;staff_Omega_Ice()
+  ;staff_Tera_Ice()
 
-  ;staff_star()
-  ;staff_mega_star()
-  ;staff_giga_star()
-  ;staff_omega_star()
-  ;staff_tera_star()
+  ;staff_Star()
+  ;staff_Mega_Star()
+  ;staff_Giga_Star()
+  ;staff_Omega_Star()
+  staff_Tera_Star()
 
   one_spell_select()
   ;most_spell_select()
@@ -86,29 +86,29 @@ clear_ability_activate() {
   key( "k" )  ; Enter base panel
   key( "k" )  ; Select first unit
 
-  ;staff_fire()
-  ;staff_mega_fire()
-  ;staff_giga_fire()
-  ;staff_omega_fire()
-  ;staff_tera_fire()
+  ;staff_Fire()
+  ;staff_Mega_Fire()
+  ;staff_Giga_Fire()
+  ;staff_Omega_Fire()
+  ;staff_Tera_Fire()
 
-  ;staff_wind()
-  ;staff_mega_wind()
-  ;staff_giga_wind()
-  ;staff_omega_wind()
-  ;staff_tera_wind()
+  ;staff_Wind()
+  ;staff_Mega_Wind()
+  ;staff_Giga_Wind()
+  ;staff_Omega_Wind()
+  ;staff_Tera_Wind()
 
-  ;staff_ice()
-  ;staff_mega_ice()
-  ;staff_giga_ice()
-  ;staff_omega_ice()
-  ;staff_tera_ice()
+  ;staff_Ice()
+  ;staff_Mega_Ice()
+  ;staff_Giga_Ice()
+  ;staff_Omega_Ice()
+  ;staff_Tera_Ice()
 
-  ;staff_star()
-  ;staff_mega_star()
-  ;staff_giga_star()
-  ;staff_omega_star()
-  staff_tera_star()
+  ;staff_Star()
+  ;staff_Mega_Star()
+  ;staff_Giga_Star()
+  ;staff_Omega_Star()
+  staff_Tera_Star()
 
   ;one_spell_select()
   eight_spell_select()
@@ -117,12 +117,12 @@ clear_ability_activate() {
   target_from_base_to_middle()
 
   ; N/A for now
-  ;sword_winged_slayer()
+  ;sword_Winged_Slayer()
 }
 
 
 
-; Okay maybe this one is somewhat user-serviceable if you know what you're doing.
+; F1 as a hotkey to run the script
 $F1:: {
   if !WinExist( executable ) {
     MsgBox "Executable not found:  " . executable
@@ -155,12 +155,6 @@ autohotkey_window := "ahk_class #32770"
 
 
 
-; -------------------
-;    Script begins
-; -------------------
-
-
-
 ; Auto-reload this script (and its dependencies) when this file is edited.
 ; I'm not going to bother determining if any libraries get modified.
 script_timestamp_initial   := FileGetTime( A_ScriptFullPath, "M" )
@@ -169,8 +163,6 @@ check_for_timestamp_change() {
   script_timestamp_current := FileGetTime( A_ScriptFullPath, "M" )
   if ( script_timestamp_current != script_timestamp_initial ) {
     Reload
-    Sleep 2000
-    MsgBox "Reload failed!"
   }
 }
 
@@ -179,7 +171,15 @@ check_for_timestamp_change() {
 ; These are down here because variables are set above.
 ; Their order is unimportant because of the structure of this scripting.
 #Include "lib\general.ahk"
-#Include "lib\staff.ahk"
-#Include "lib\sword.ahk"
+
+#Include "lib\weapon skills\Combat.ahk"
+#Include "lib\weapon skills\Sword.ahk"
+#Include "lib\weapon skills\Spear.ahk"
+#Include "lib\weapon skills\Bow.ahk"
+#Include "lib\weapon skills\Gun.ahk"
+#Include "lib\weapon skills\Axe.ahk"
+#Include "lib\weapon skills\Staff.ahk"
+#Include "lib\weapon skills\Monster only.ahk"
+#Include "lib\character skills\Laharl.ahk"
 ; The #Include command does not support variables; this must be hard-coded for your area of interest.
-#Include "lib\Stellar Graveyard\Valgipus IV\movement.ahk"
+#Include "lib\areas\Stellar Graveyard\Valgipus IV\movement.ahk"

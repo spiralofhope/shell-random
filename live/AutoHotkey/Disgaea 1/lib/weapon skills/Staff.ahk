@@ -1,11 +1,3 @@
-spell_select() {
-  key( "s" )
-  key( "s" )
-  key( "k" )  ; Special menu
-}
-
-
-
 ; Select the single target spell
 one_spell_select() {
   key( "k" )
@@ -33,58 +25,58 @@ most_spell_select() {
 ; --------------
 ;      Fire
 ; --------------
-staff_fire() {
-  spell_select()
+staff_Fire() {
+  special_select()
   key( "k" )
 }
-staff_mega_fire() {
-  spell_select()
+staff_Mega_Fire() {
+  special_select()
   key( "s" )
   key( "k" )
 }
-staff_giga_fire() {
-  spell_select()
+staff_Giga_Fire() {
+  special_select()
   key( "s", 2 )
   key( "k" )
 }
-staff_omega_fire() {
-  spell_select()
+staff_Omega_Fire() {
+  special_select()
   key( "s", 3 )
   key( "k" )
 }
-staff_tera_fire() {
-  spell_select()
+staff_Tera_Fire() {
+  special_select()
   key( "s", 4 )
   key( "k" )
 }
 ; --------------
 ;      Wind
 ; --------------
-staff_wind() {
-  spell_select()
+staff_Wind() {
+  special_select()
   key( "e" )
   key( "w", 3 )
   key( "k" )
 }
-staff_mega_wind() {
-  spell_select()
+staff_Mega_Wind() {
+  special_select()
   key( "e" )
   key( "w", 2 )
   key( "k" )
 }
-staff_giga_wind() {
-  spell_select()
+staff_Giga_Wind() {
+  special_select()
   key( "e" )
   key( "w" )
   key( "k" )
 }
-staff_omega_wind() {
-  spell_select()
+staff_Omega_Wind() {
+  special_select()
   key( "e" )
   key( "k" )
 }
-staff_tera_wind() {
-  spell_select()
+staff_Tera_Wind() {
+  special_select()
   key( "e" )
   key( "s" )
   key( "k" )
@@ -92,32 +84,32 @@ staff_tera_wind() {
 ; --------------
 ;      Ice
 ; --------------
-staff_ice() {
-  spell_select()
+staff_Ice() {
+  special_select()
   key( "e" )
   key( "s", 2 )
   key( "k" )
 }
-staff_mega_ice() {
-  spell_select()
+staff_Mega_Ice() {
+  special_select()
   key( "e" )
   key( "s", 3 )
   key( "k" )
 }
-staff_giga_ice() {
-  spell_select()
+staff_Giga_Ice() {
+  special_select()
   key( "e" )
   key( "s", 4 )
   key( "k" )
 }
-staff_omega_ice() {
-  spell_select()
+staff_Omega_Ice() {
+  special_select()
   key( "e", 2 )
   key( "w", 3 )
   key( "k" )
 }
-staff_tera_ice() {
-  spell_select()
+staff_Tera_Ice() {
+  special_select()
   key( "e", 2 )
   key( "w", 2 )
   key( "k" )
@@ -125,31 +117,31 @@ staff_tera_ice() {
 ; --------------
 ;      Star
 ; --------------
-staff_star() {
-  spell_select()
+staff_Star() {
+  special_select()
   key( "e", 2 )
   key( "w" )
   key( "k" )
 }
-staff_mega_star() {
-  spell_select()
+staff_Mega_Star() {
+  special_select()
   key( "e", 2 )
   key( "k" )
 }
-staff_giga_star() {
-  spell_select()
+staff_Giga_Star() {
+  special_select()
   key( "e", 2 )
   key( "s" )
   key( "k" )
 }
-staff_omega_star() {
-  spell_select()
+staff_Omega_Star() {
+  special_select()
   key( "e", 2 )
   key( "s", 2 )
   key( "k" )
 }
-staff_tera_star() {
-  spell_select()
+staff_Tera_Star() {
+  special_select()
   key( "e", 2 )
   key( "s", 3 )
   key( "k" )
