@@ -125,8 +125,8 @@ clear_ability_activate() {
 self_ability_activate() {
   ;key( "e" )  ; Go to the first unit
   key( "k" )  ; Select that unit
-  staff_Heal()
-  ;staff_Mega_Heal()
+  ;staff_Heal()
+  staff_Mega_Heal()
   ;staff_Giga_Heal()
   ;staff_Omega_Heal()
   ;staff_Espoir()
@@ -149,8 +149,11 @@ $F1:: {
   ; I don't know why this doesn't work:
   ;ClearDialogs()
   focus_application()
+  ; Comment-out the following two if using self_ability_activate
 ;  key( "k" )  ; Enter the area
 ;  Sleep 3500  ; Wait to enter the area
+  ; Go to the training area, have only one unit out, move your unit to the far bottom-left corner.
+  ; Your cursor must be on the unit.  If it is not, press e.
   self_ability_activate()
 ;  grind_ability_activate()
 ;  clear_ability_activate()
@@ -158,6 +161,7 @@ $F1:: {
   key( "s" )  ; End Turn
   key( "k" )  ; Execute
   Sleep 1400  ; Wait for one spell animation to cast
+  ; Comment-out everything below if using self_ability_activate
 ;  Sleep 1400  ; Wait for the second spell animation to cast
   ; It is assumed that the stage is now cleared
 ;  Sleep 2200  ; Wait for the stage end animation to begin and the reward counter to begin
@@ -202,5 +206,6 @@ check_for_timestamp_change() {
 #Include "lib\weapon skills\Staff.ahk"
 #Include "lib\weapon skills\Monster only.ahk"
 #Include "lib\character skills\Laharl.ahk"
+
 ; The #Include command does not support variables; this must be hard-coded for your area of interest.
 #Include "lib\areas\Stellar Graveyard\Valgipus IV\movement.ahk"
