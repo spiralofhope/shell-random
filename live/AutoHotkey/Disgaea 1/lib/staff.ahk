@@ -6,15 +6,26 @@ spell_select() {
 
 
 
+; Select the single target spell
 one_spell_select() {
-  key( "k" )     ; Select the single target spell
+  key( "k" )
 }
 
 
 
-most_spell_select() {  ; Select the biggest spell size possible
-  key( "d", 2 )  ; Select the biggest spell possible
-  key( "k" )     ; Select the single target spell
+; Large square with a hole in the middle
+eight_spell_select() {
+  key( "d" )
+  key( "s", 3 )
+  key( "k" )
+}
+
+
+
+; Select the biggest spell size possible
+most_spell_select() {
+  key( "d", 2 )
+  key( "k" )
 }
 
 

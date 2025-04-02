@@ -56,8 +56,8 @@ grind_ability_activate() {
 
   ;staff_ice()
   ;staff_mega_ice()
-  staff_giga_ice()
-  ;staff_omega_ice()
+  ;staff_giga_ice()
+  staff_omega_ice()
   ;staff_tera_ice()
 
   ;staff_star()
@@ -110,7 +110,8 @@ clear_ability_activate() {
   staff_tera_star()
 
   ;one_spell_select()
-  most_spell_select()
+  eight_spell_select()
+  ;most_spell_select()
   
   target_from_base_to_middle()
 
