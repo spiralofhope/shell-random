@@ -123,6 +123,10 @@ clear_ability_activate() {
 
 ; Okay maybe this one is somewhat user-serviceable if you know what you're doing.
 $F1:: {
+  if !WinExist( executable ) {
+    MsgBox "Executable not found:  " . executable
+    Reload
+  }
   focus_application()
   key( "k" )  ; Enter the area
   Sleep 3500  ; Wait to enter the area
