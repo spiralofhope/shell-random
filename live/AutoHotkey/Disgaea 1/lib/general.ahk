@@ -31,3 +31,15 @@ reload_script_if_executable_not_focused() {
     Reload
   }
 }
+
+
+
+; Clear any MsgBox or error dialogs on startup.
+; This lets you make mistakes with your on-the-fly script edits.  Just correct your mistakes and save again, and this script will automatically clear the explosion of errors for you.
+ClearDialogs() {
+  while WinExist( autohotkey_window ) {
+    WinClose      autohotkey_window
+    Sleep 100  ; Pause to allow closure
+  }
+}
+ClearDialogs()

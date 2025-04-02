@@ -2,11 +2,9 @@
 #SingleInstance Force
 #UseHook
 SendMode "Input"
-#Include "lib\staff.ahk"
-#Include "lib\sword.ahk"
-#Include "lib\movement - Valgipus IV.ahk"
-#Include "lib\general.ahk"
 ;#Warn  ; Enable warnings to assist with detecting common errors.
+
+
 
 ; VARIATION - The first party member casts one spell, the stage is cleared by the next party member.
 
@@ -57,8 +55,8 @@ grind_ability_activate() {
   ;staff_ice()
   ;staff_mega_ice()
   ;staff_giga_ice()
-  staff_omega_ice()
-  ;staff_tera_ice()
+  ;staff_omega_ice()
+  staff_tera_ice()
 
   ;staff_star()
   ;staff_mega_star()
@@ -127,6 +125,8 @@ $F1:: {
     MsgBox "Executable not found:  " . executable
     Reload
   }
+  ; I don't know why this doesn't work:
+  ;ClearDialogs()
   focus_application()
   key( "k" )  ; Enter the area
   Sleep 3500  ; Wait to enter the area
@@ -158,19 +158,8 @@ autohotkey_window := "ahk_class #32770"
 
 
 
-; Clear any MsgBox or error dialogs on startup.
-; This lets you make mistakes with your on-the-fly script edits.  Just correct your mistakes and save again, and this script will automatically clear the explosion of errors for you.
-ClearDialogs() {
-  while WinExist( autohotkey_window ) {
-    WinClose      autohotkey_window
-    Sleep 100  ; Pause to allow closure
-  }
-}
-ClearDialogs()
-
-
-
-; Auto-reload this script when its file is edited.
+; Auto-reload this script (and its dependencies) when this file is edited.
+; I'm not going to bother determining if any libraries get modified.
 script_timestamp_initial   := FileGetTime( A_ScriptFullPath, "M" )
 SetTimer check_for_timestamp_change, 2000
 check_for_timestamp_change() {
@@ -181,3 +170,12 @@ check_for_timestamp_change() {
     MsgBox "Reload failed!"
   }
 }
+
+
+
+; These are down here because variables are set above.
+; Their order is unimportant because of the structure of this scripting.
+#Include "lib\general.ahk"
+#Include "lib\staff.ahk"
+#Include "lib\sword.ahk"
+#Include "lib\movement - Valgipus IV.ahk"
