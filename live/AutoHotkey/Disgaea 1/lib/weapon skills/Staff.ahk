@@ -149,3 +149,63 @@ staff_Tera_Star() {
   ; However, named units have other abilities at the bottom, interfering with this.
   ;key( "w" ), key( "q" ), key( "w" ), key( "k" )
 }
+; --------------
+;      Heal
+; --------------
+staff_Heal() {
+  special_select()
+  key( "e", 3 )
+  key( "w", 4 )
+  key( "k" )
+}
+staff_Mega_Heal() {
+  special_select()
+  key( "e", 3 )
+  key( "w", 3 )
+  key( "k" )
+}
+staff_Giga_Heal() {
+  special_select()
+  key( "e", 3 )
+  key( "w", 2 )
+  key( "k" )
+}
+staff_Omega_Heal() {
+  special_select()
+  key( "e", 3 )
+  key( "w" )
+  key( "k" )
+}
+; Note that there is no "Tera Heal"
+; --------------
+;      Misc
+; --------------
+staff_Espoir() {
+  special_select()
+  key( "e", 3 )
+  key( "k" )
+}
+staff_Braveheart() {
+  special_select()
+  key( "e", 3 )
+  key( "s" )
+  key( "k" )
+}
+staff_Shield() {
+  special_select()
+  key( "e", 3 )
+  key( "s", 2 )
+  key( "k" )
+}
+staff_Magic Boost() {
+  special_select()
+  key( "e", 3 )
+  key( "s", 3 )
+  key( "k" )
+}
+staff_Magic Wall() {
+  special_select()
+  key( "e", 3 )
+  key( "s", 4 )
+  key( "k" )
+}
