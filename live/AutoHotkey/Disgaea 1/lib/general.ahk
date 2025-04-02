@@ -51,3 +51,10 @@ special_select() {
   key( "s" )
   key( "k" )  ; Special menu
 }
+
+
+
+target_self() {
+  ; The cursor defaults to self
+  key( "k" )     ; Confirm
+}

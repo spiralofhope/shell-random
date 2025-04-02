@@ -122,6 +122,24 @@ clear_ability_activate() {
 
 
 
+self_ability_activate() {
+  ;key( "e" )  ; Go to the first unit
+  key( "k" )  ; Select that unit
+  staff_Heal()
+  ;staff_Mega_Heal()
+  ;staff_Giga_Heal()
+  ;staff_Omega_Heal()
+  ;staff_Espoir()
+  ;staff_Braveheart()
+  ;staff_Shield()
+  ;staff_Magic_Boost()
+  ;staff_Magic_Wall()
+  one_spell_select()
+  target_self()
+}
+
+
+
 ; F1 as a hotkey to run the script
 $F1:: {
   if !WinExist( executable ) {
@@ -131,19 +149,22 @@ $F1:: {
   ; I don't know why this doesn't work:
   ;ClearDialogs()
   focus_application()
-  key( "k" )  ; Enter the area
-  Sleep 3500  ; Wait to enter the area
-  grind_ability_activate()
-  clear_ability_activate()
+;  key( "k" )  ; Enter the area
+;  Sleep 3500  ; Wait to enter the area
+  self_ability_activate()
+;  grind_ability_activate()
+;  clear_ability_activate()
   key( "i" )  ; Menu
+  key( "s" )  ; End Turn
   key( "k" )  ; Execute
   Sleep 1400  ; Wait for one spell animation to cast
-  Sleep 1400  ; Wait for the second spell animation to cast
+;  Sleep 1400  ; Wait for the second spell animation to cast
   ; It is assumed that the stage is now cleared
-  Sleep 2200  ; Wait for the stage end animation to begin and the reward counter to begin
-  key( "k" )  ; Stop the reward counter
-  key( "k" )  ; Exit reward screen
-  Sleep 500   ; Return to the area select screen
+;  Sleep 2200  ; Wait for the stage end animation to begin and the reward counter to begin
+;  key( "k" )  ; Stop the reward counter
+ 
+;  key( "k" )  ; Exit reward screen
+;  Sleep 500   ; Return to the area select screen
 }
 
 

@@ -197,13 +197,13 @@ staff_Shield() {
   key( "s", 2 )
   key( "k" )
 }
-staff_Magic Boost() {
+staff_Magic_Boost() {
   special_select()
   key( "e", 3 )
   key( "s", 3 )
   key( "k" )
 }
-staff_Magic Wall() {
+staff_Magic_Wall() {
   special_select()
   key( "e", 3 )
   key( "s", 4 )
