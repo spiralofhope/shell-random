@@ -1,12 +1,8 @@
-#Requires AutoHotkey v2
-#SingleInstance Force
-#UseHook
-SendMode "Input"
-;#Warn  ; Enable warnings to assist with detecting common errors.
+; THIS IS A SCRIPT VARIATION - The first party member casts one spell, the stage is cleared by the next party member.
+; TODO - more universality to have just the one unit, as before.
+; TODO - test with other areas, to make sure things are universal there too (likely just movement.ahk)
 
 
-
-; VARIATION - The first party member casts one spell, the stage is cleared by the next party member.
 
 ; - For the game:       Disgaea: Hour of Darkness (Steam)
 ;                         - This is the port of the original 2003 PS/2 game, aka "Disgaea 1"
@@ -27,8 +23,15 @@ SendMode "Input"
 
 
 
+#Requires AutoHotkey v2
+#SingleInstance Force
+#UseHook
+SendMode "Input"
+;#Warn  ; Enable warnings to assist with detecting common errors.
+
+
+
 ; User-configuration:
-; Activate this script with the F1 key.  This variation with $F1 is to enhance it's detection.
 milliseconds_holding_a_key_down := 85
 delay_between_keystrokes := 75
 grind_ability_activate() {
@@ -178,4 +181,5 @@ check_for_timestamp_change() {
 #Include "lib\general.ahk"
 #Include "lib\staff.ahk"
 #Include "lib\sword.ahk"
-#Include "lib\movement - Valgipus IV.ahk"
+; The #Include command does not support variables; this must be hard-coded for your area of interest.
+#Include "lib\Stellar Graveyard\Valgipus IV\movement.ahk"
