@@ -123,12 +123,13 @@ clear_ability_activate() {
 
 
 self_ability_activate() {
+  ; This isn't reliable.  Just have your unit somewhere safe, and keep the cursor overtop of it.
   ;key( "e" )  ; Go to the first unit
   key( "k" )  ; Select that unit
   ;staff_Heal()
-  staff_Mega_Heal()
+  ;staff_Mega_Heal()
   ;staff_Giga_Heal()
-  ;staff_Omega_Heal()
+  staff_Omega_Heal()
   ;staff_Espoir()
   ;staff_Braveheart()
   ;staff_Shield()
@@ -139,36 +140,47 @@ self_ability_activate() {
 }
 
 
+loop_number_of_times := 10
+self_ability := true
 
 ; F1 as a hotkey to run the script
 $F1:: {
-  if !WinExist( executable ) {
-    MsgBox "Executable not found:  " . executable
-    Reload
+    ; Bugged - If 10, this iterates 7 times.
+    Loop loop_number_of_times {
+    if !WinExist( executable ) {
+      MsgBox "Executable not found:`n" . executable
+      Reload
+    }
+    ; I don't know why this doesn't work:
+    ;ClearDialogs()
+    focus_application()
+    ; Comment-out the following two if using self_ability_activate
+  ;  key( "k" )  ; Enter the area
+  ;  Sleep 3500  ; Wait to enter the area
+    ; Go to the training area, have only one unit out, move your unit to the far bottom-left corner.
+    ; Your cursor must be on the unit.  If it is not, press e.
+    self_ability_activate()
+  ;  grind_ability_activate()
+  ;  clear_ability_activate()
+    key( "i" )  ; Menu
+    key( "s" )  ; End Turn
+    key( "k" )  ; Execute
+    focus_application()
+    Sleep 1400  ; Wait for one spell animation to cast
+    focus_application()
+    if ( self_ability ) {
+      Sleep 4000  ; Wait for the round end animation
+    }
   }
-  ; I don't know why this doesn't work:
-  ;ClearDialogs()
-  focus_application()
-  ; Comment-out the following two if using self_ability_activate
-;  key( "k" )  ; Enter the area
-;  Sleep 3500  ; Wait to enter the area
-  ; Go to the training area, have only one unit out, move your unit to the far bottom-left corner.
-  ; Your cursor must be on the unit.  If it is not, press e.
-  self_ability_activate()
-;  grind_ability_activate()
-;  clear_ability_activate()
-  key( "i" )  ; Menu
-  key( "s" )  ; End Turn
-  key( "k" )  ; Execute
-  Sleep 1400  ; Wait for one spell animation to cast
-  ; Comment-out everything below if using self_ability_activate
-;  Sleep 1400  ; Wait for the second spell animation to cast
-  ; It is assumed that the stage is now cleared
-;  Sleep 2200  ; Wait for the stage end animation to begin and the reward counter to begin
-;  key( "k" )  ; Stop the reward counter
- 
-;  key( "k" )  ; Exit reward screen
-;  Sleep 500   ; Return to the area select screen
+  if ( !self_ability ) {
+    Reload  ; Un-comment if using self_ability_activate
+    Sleep 1400  ; Wait for the second spell animation to cast
+    ; It is assumed that the stage is now cleared
+    Sleep 2200  ; Wait for the stage end animation to begin and the reward counter to begin
+    key( "k" )  ; Stop the reward counter
+    key( "k" )  ; Exit reward screen
+    Sleep 500   ; Return to the area select screen
+  }
 }
 
 

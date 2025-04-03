@@ -27,7 +27,7 @@ focus_application() {
 
 reload_script_if_executable_not_focused() {
   if !WinActive( executable ) {
-    MsgBox "Failed to focus the application:  " . executable . "`nReloading this script."
+    MsgBox "Failed to focus the application:`n" . executable . "`nReloading this script."
     Reload
   }
 }
