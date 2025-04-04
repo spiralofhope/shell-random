@@ -4,8 +4,6 @@
 
 
 
-; - For the game:       Disgaea: Hour of Darkness (Steam)
-;                         - This is the port of the original 2003 PS/2 game, aka "Disgaea 1"
 ; - For the area:       Stellar Graveyard > Valgipus IV
 ; - Using the ability:  see clear_ability_activate()
 ; - Grinding for:       HL (money)
@@ -162,9 +160,7 @@ $F1:: {
     self_ability_activate()
   ;  grind_ability_activate()
   ;  clear_ability_activate()
-    key( "i" )  ; Menu
-    key( "s" )  ; End Turn
-    key( "k" )  ; Execute
+    end_turn()
     focus_application()
     Sleep 1400  ; Wait for one spell animation to cast
     focus_application()

@@ -58,3 +58,11 @@ target_self() {
   ; The cursor defaults to self
   key( "k" )     ; Confirm
 }
+
+
+
+end_turn() {
+  key( "i" )  ; Menu
+  key( "s" )  ; End Turn
+  key( "k" )  ; Execute
+}
