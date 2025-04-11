@@ -1,4 +1,5 @@
 #!/usr/bin/env  sh
+# Note that some systems may also have $UID or $ID
 
 
 
