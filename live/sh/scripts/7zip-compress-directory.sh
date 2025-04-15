@@ -1,11 +1,9 @@
 #!/usr/bin/env  sh
+# 7zip compression helper.
+# Because it's really this difficult to remember how in the fuck to use it.
+#
+# Requires p7zip-full
 
-
-
-# --
-# -- 7zip compression helper.
-# --   Because it's really this difficult to remember how in the fuck to use it.
-# --
 
 
 if   [ -z "$1" ]  \
@@ -23,11 +21,10 @@ fi
 
 source="$1"
 shift
-if [ -z "$1" ]; then 
+if [ -z "$1" ]; then
   target=$( \basename "$source" )
   target="./${target}.tar.7z"
 else
-echo here
   target="$( \realpath $1 )"
   target="${target}/${source}.tar.7z"
   shift
@@ -45,5 +42,5 @@ fi
 #   a          create archive (.tar)
 #   -si        standard input
 #   $*         any other inputs the user passes, like -m0 for no compression (store)
-\tar  --create  -f  -  "$source" |\
+\tar  --create  --file=-  "$source" |\
   \7za  a   -si "$target"
