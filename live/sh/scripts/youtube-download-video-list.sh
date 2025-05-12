@@ -77,7 +77,7 @@ check_URL() {
 _download_URL() {
   URL="$1"
   #
-  \youtube-dl  \
+  \yt-dlp  \
     --flat-playlist  \
     --get-id  \
     --no-call-home  \
