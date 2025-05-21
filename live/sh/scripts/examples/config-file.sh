@@ -10,12 +10,12 @@ So, for example, if your script worked with usernames, it would not need it hard
 
 
 # This can be as simple as:
-# . 'configuration_file.txt'
+# . 'config-file.txt'
 
 # Or more complicated, like:
-# file called 'config-file' in this directory.
+# file called 'config-file.txt' in this directory.
 # shellcheck disable=1090
-. "$( \dirname "$( \realpath "$0" )" )"/config-file
+. "$( \dirname "$( \realpath "$0" )" )"/config-file.txt
 
 
 
