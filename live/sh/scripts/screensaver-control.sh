@@ -18,7 +18,7 @@ screensaver_enable() {
   then
     \xscreensaver  -no-splash &
   else
-    #:<<'  }'   #  xautolock/slock
+    #:<<'    }'   #  xautolock/slock
     {
     # 5 minutes to activation.
     # `readlink`  is to get the full path of _this_ script.
