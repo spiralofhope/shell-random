@@ -31,7 +31,7 @@ fi
 
 
 echo todo - size summary is slow
-#:<<'}'  #  This is slow as fuck
+:<<'}'  #  This is slow as fuck
 {
 # Manually create a summary
 # TODO - only display it with /a (that would be annoying)
