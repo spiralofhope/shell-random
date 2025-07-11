@@ -8,7 +8,7 @@ DEBUG='true'
 
 if [ -z "$*" ]; then
   # Pass example parameters to this very script:
-  "$0"  2  'this is several words'
+  "$0"  2  'these are several words'
   # =>
   # words
   return
