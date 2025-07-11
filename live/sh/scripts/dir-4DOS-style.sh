@@ -66,7 +66,7 @@ process() {
 
 # Directories
 for i in * .*; do
-  if ! [ -d "$i" ]  \
+  if [ ! -d "$i" ]  \
     || [ "$i" = '.'  ] \
     || [ "$i" = '..' ]; then
     continue
