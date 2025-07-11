@@ -25,24 +25,27 @@ fi
 # shellcheck disable=2086
 # I need word splitting for multiple parameters.
 # shellcheck disable=1001
-\tree  --noreport  -C  -i  -L 1  --dirsfirst  $_my_parameters
-
-  #\less  --no-init  --RAW-CONTROL-CHARS  --quit-if-one-screen  --QUIT-AT-EOF
-
-  #\tail  --lines='+2'  |\
+\tree  --noreport  -a  -C  -i  -L 1  --dirsfirst  $_my_parameters  |  \tail  --lines='+3'  |  \head  --lines='-1'  |  LESS=  \less  --no-init  --raw-control-chars  --quit-at-eof  --quit-if-one-screen
+#\tree  --noreport  -a  -C  -i  -L 1  --dirsfirst  --info  $_my_parameters
 
 
+
+echo todo - size summary is slow
+#:<<'}'  #  This is slow as fuck
+{
 # Manually create a summary
 # TODO - only display it with /a (that would be annoying)
-# du doesn't seem to work.
-#\du  --all  --human-readable  --max-depth=0  $*
+# slow:
+__=$( \du  --bytes  --summarize  $* )
 #\echo  "$( \ls -ARgo "$@" | awk '{q += $3} END {print q}' ) bytes"
 # shellcheck disable=2012
 # I'm not going to deal with the equivalent of `find` right now.
-__="$( \ls -ARgo "$@"  |  \awk '{q += $3} END {print q}' )"
-# add commas
+# slow:
+#__="$( \ls -ARgo "$@"  |  \awk '{q += $3} END {print q}' )"
+# Add commas:
 __=$( \echo  "$__"  |  \sed  --expression=':a'  --expression='s/\(.*[0-9]\)\([0-9]\{3\}\)/\1,\2/;ta' )
 \echo "$__ bytes total"
 unset  __
 
 unset  _my_parameters
+}

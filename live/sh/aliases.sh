@@ -13,31 +13,35 @@ alias  eject='\eject  -i 0 ; \eject'                                    # Force-
 alias  free='\free  --human  --si'
 alias  grep='\grep  --color'                                            # Note that bash-windows does not support --color
 alias  hibernate='drop-caches.sh  &&  \sudo  \systemctl  hibernate'
-#alias  less='\less  --force  --RAW-CONTROL-CHARS  --quit-if-one-screen  $@'
-alias  less='\less  --chop-long-lines  --RAW-CONTROL-CHARS'
+# See `sh/lib.sh` for the LESS variable.
+#alias  less='LESS=  \less  --force  --RAW-CONTROL-CHARS  --quit-if-one-screen  $@'
+alias  less='LESS=  \less  --chop-long-lines  --RAW-CONTROL-CHARS'
 alias  ls='\ls  -1  --all  --classify  --color=always  --group-directories-first  --show-control-chars'
 alias  md='\mkdir'
-alias  more='\less  --quit-at-eof  --quit-if-one-screen'
+alias  more='LESS=  \less  --quit-at-eof  --quit-if-one-screen'
 alias  mv='\mv  --interactive'
 # Instead, use a config file like `nanorc`, see `which nanorc`
 # alias  nano='\nano  --mouse'
 alias  path='\echo  $PATH | \tr ":" "\012"'
 
 #alias  pm-suspend='drop-caches.sh  &&  \sudo  /usr/sbin/pm-suspend'
-#alias  pm-suspend='drop-caches.sh  &&  \slock  &&  \systemctl suspend'
-alias  pm-suspend='\systemctl suspend'
+#alias  suspend='drop-caches.sh  &&  \slock  &&  \systemctl suspend'
+#alias  suspend='drop-caches.sh  &&  \sudo  \systemctl  suspend'
+#alias  suspend='\systemctl suspend'
+# I can't figure out how to integrate slock, so just use the default xscreensaver (reinstall it)
+# xdg-screensaver
+alias  suspend='\systemctl suspend'
 
 alias  poweroff='\sudo  /sbin/poweroff'
 alias  reboot='\sudo  /sbin/shutdown  -r  -t now  now  rebooting'
 #alias  reboot="/bin/su  -c  '/sbin/shutdown  -r  -t now  now  rebooting'"
-alias  suspend='drop-caches.sh  &&  \sudo  \systemctl  suspend'
 alias  rm='\rm  --interactive  --one-file-system'
 alias  sh='\sh  -l'
 alias  xclip='xclip -selection c'
 
 # --QUIT-AT-EOF
 # --no-init is mandatory for Windows Subsystem for Linux.
-alias  myless='\less  --no-init  --RAW-CONTROL-CHARS  --quit-if-one-screen'
+alias  myless='LESS=  \less  --no-init  --RAW-CONTROL-CHARS  --quit-if-one-screen'
 #alias  dir='   dir-DOS-style.sh      |  \head  --lines='-1'  |  myless'
 
 #alias  ddir='  dir-4DOS-style.sh  |  myless'
@@ -47,7 +51,7 @@ ddir() {
   else  dir-4DOS-style.sh  "$@"  |  myless
   fi
 }
-alias  dir='dir-4DOS-style.sh  .  |  myless'
+alias  dir='dir-4DOS-style.sh'
 
 
 #ytdl(){
