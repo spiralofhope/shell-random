@@ -7,21 +7,23 @@
 
 
 
-if [ $# -eq 0 ]; then
-  # Pass example parameters to this very script:
-  "$0"  ~
-  #"$0"  ~  |  \less  --no-init  --RAW-CONTROL-CHARS  --quit-if-one-screen
-  return
-fi
+#if [ $# -eq 0 ]; then
+  ## Pass example parameters to this very script:
+  #"$0"  ~
+  ##"$0"  ~  |  LESS=  \less  --no-init  --RAW-CONTROL-CHARS  --quit-if-one-screen
+  #return  2> /dev/null || { exit; }
+#fi
 
 
 
-\cd  "$1"  ||  return  $?
+\cd  "$1"  ||  return  $?  2> /dev/null || { exit $?; }
+
 
 if [ ! -f 'descript.ion' ]; then
+  #echo '* WARNING:  No descript.ion file found.'
   # Just run my regular script
-  dir-DOS-style.sh  |  \head  --lines='-1'  |  \less  --no-init  --RAW-CONTROL-CHARS  --quit-if-one-screen
-  return
+  dir-DOS-style.sh  $@
+  return  2> /dev/null || { exit; }
 fi
 
 description=$( \cat  descript.ion )
@@ -66,7 +68,7 @@ process() {
 
 # Directories
 for i in * .*; do
-  if ! [ -d "$i" ]  \
+  if [ ! -d "$i" ]  \
     || [ "$i" = '.'  ] \
     || [ "$i" = '..' ]; then
     continue

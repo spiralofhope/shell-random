@@ -8,7 +8,8 @@
 #:<<'}'  #  Variables
 {
   # --follow-name would allow the file to be edited and less will automatically display changes.
-  LESS=' --force  --ignore-case  --long-prompt  --no-init  --silent  --status-column  --tilde  --window=-2'
+  LESS=' --force  --ignore-case  --long-prompt  --no-init  --quit-at-eof  --quit-if-one-screen  --raw-control-chars  --silent  --tilde  --window=-2'
+  #LESS=' --force  --ignore-case  --long-prompt  --no-init  --silent  --status-column  --tilde  --window=-2'
   export  LESS
 
 

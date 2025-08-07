@@ -19,9 +19,11 @@ else
 
 _teardown() {
   \echo  _teardown code "$1"
+  # TODO - fix the exit $? to also use the "return" trick
   \veracrypt  --text  --dismount  "$encrypted_source_partition"  ||  exit  $?
-  \rmdir  "$decrypted_target_mountpoint"
-  exit
+  # TODO - fix the exit $? to also use the "return" trick
+  \rmdir  "$decrypted_target_mountpoint"  ||  exit  $?
+  return 0  2> /dev/null || { exit 0; }
 }
 
 
@@ -34,16 +36,12 @@ _setup() {
   if [ -z "$2" ]; then
     \echo  '* ERROR:  2 parameters expected:'
     \echo  "  $*"
-    exit  1
-  elif [ -z "$1" ]; then
-    \echo  '* ERROR:  No parameters have been given:'
-    \echo  "  $*"
-    exit  1
+    return 1  2> /dev/null || { exit 1; }
   elif [ -z "$encrypted_source_partition" ]  \
   || ! [ -e "$encrypted_source_partition" ]; then
     \echo  '* ERROR:  Encrypted source partition does not exist:'
     \echo  "  $encrypted_source_partition"
-    exit  1
+    return 1  2> /dev/null || { exit 1; }
   fi
 
 
@@ -56,6 +54,7 @@ _setup() {
   \echo  "To the target directory:"
   \echo  "  $decrypted_target_mountpoint"
   \echo
+  # TODO - fix the exit $? to also use the "return" trick
   \mkdir  --parents  "$decrypted_target_mountpoint"  ||  exit  $?
 }
 
