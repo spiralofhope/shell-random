@@ -1,28 +1,32 @@
 #!/usr/bin/env  sh
 
+# FIXME - this seems to be backwards.
+# TODO - A default log file and script file
+# TODO - chmod the script if it's not executable?
+
 # Required programs: dirname, grep, sed, tail
 # Tested on 2025-08-10 with fdupes 2.1.2
 #   https://github.com/adrianlopezroche/fdupes
 # Required programs:  cat, dirname, grep, sed, tail
 
 #DEBUG=1
-log_file=/tmp/debug.log
+#input_fdupes_logfile=/tmp/debug.log
 
 _debug() {
   [ "$DEBUG" = 1 ] || return
-  if [ ! -s "$log_file" ]; then
-    cat <<EOF > "$log_file"
+  if [ ! -s "$input_fdupes_logfile" ]; then
+    cat <<EOF > "$input_fdupes_logfile"
 This is a debugging log file for the fdupes file deletion reversion script.
 Created $( \date  --utc  "+%Y-%m-%d - %H:%M:%S" )
 
 log file:
-$log_file
+$input_fdupes_logfile
 
 input_fdupes_logfile
 $input_fdupes_logfile
 
-output_file:
-$output_file
+output_script_file:
+$output_script_file
 
 Using command:
 $custom_string
@@ -35,19 +39,19 @@ $0
 EOF
   fi
   \echo "Debugging: $1"
-  \echo "$1" >> "$log_file"
+  \echo "$1" >> "$input_fdupes_logfile"
 }
 
 input_fdupes_logfile="$1"
-output_file="$2"
+output_script_file="$2"
 # Default
 custom_string="cp -a <source> <dest>"
 
 _help() {
   \echo "Generates a shell script to process fdupes deletions with a custom command."
   \echo
-  \echo "Usage: $0 <fdupes_log_file> <output_script> [--custom '<command> <source> <dest>' | left middle right]"
-  \echo "  <fdupes_log_file>  Path to fdupes log file"
+  \echo "Usage: $0 <fdupes_input_fdupes_logfile> <output_script> [--custom '<command> <source> <dest>' | left middle right]"
+  \echo "  <fdupes_input_fdupes_logfile>  Path to fdupes log file"
   \echo "  <output_script>    Path to output shell script"
   \echo "  --custom           Custom command with <source> and <dest> placeholders or three parts (left middle right)"
   \echo "                     Example: --custom 'ln -s <source> <dest>' or --custom left middle right"
@@ -63,9 +67,9 @@ if [ ! -f "$input_fdupes_logfile" ]; then
   \echo "$input_fdupes_logfile"
   return 1  2> /dev/null || { exit 1; }
 fi
-if [ -z "$output_file" ]; then
+if [ -z "$output_script_file" ]; then
   \echo "Error: No output file specified:"
-  \echo "$output_file"
+  \echo "$output_script_file"
   return 1  2> /dev/null || { exit 1; }
 fi
 
@@ -92,7 +96,7 @@ wd="$( \grep '^working directory:' "$input_fdupes_logfile" | \sed 's/^working di
 _debug "Extracted working directory: '$wd'"
 
 # Initialize output script
-cat <<EOF > "$output_file"
+cat <<EOF > "$output_script_file"
 #!/bin/env  sh
 
 # Text file created from fdupes deletions logfile:
@@ -144,7 +148,7 @@ $del"
         string="$( \echo "$custom_string" | \sed "s/<source>/$source_path/g; s/<dest>/$dest_path/g" )"
         _debug "Generated string: '$string'"
         if [ -n "$string" ]; then
-          \echo "$string" >> "$output_file"
+          \echo "$string" >> "$output_script_file"
         fi
       fi
     done
@@ -155,4 +159,4 @@ $del"
   fi
 done < "$input_fdupes_logfile"
 
-\echo "Generated output file: $output_file"
+\echo "Generated output file: $output_script_file"
