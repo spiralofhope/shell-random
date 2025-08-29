@@ -11,6 +11,24 @@
 }
 
 
+#:<<'}'   #  There is also  `replace-dirname.sh`
+_zsh_dirname() {
+  local dir=${1:-.}
+  local var_name=$2
+  dir=${dir:h}
+  [[ -z $dir ]] && dir=/
+  typeset -g "$var_name=$dir"
+}
+
+
+_zsh_realpath() {
+  local file=$1 var_name=$2
+  typeset -g "$var_name=${file:A}"
+}
+  _zsh_realpath '/home/user/.zshrc' zshdir
+
+
+
 :<<'}'
 {
 if [ ! "$shdir" = '' ]; then
@@ -28,9 +46,9 @@ fi
 #:<<'}'  #  Variables
 {
   # It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
-  zshdir="$( \realpath  /home/user/.zshrc )"
-  zshdir="$( \dirname "$( \dirname "$zshdir" )" )"
-  zshdir="$( \realpath "$zshdir" )"
+  _zsh_realpath '/home/user/.zshrc' zshdir
+  _zsh_dirname "$zshdir" zshdir
+  _zsh_dirname "$zshdir" zshdir
   if ! [ -d "$zshdir" ]; then
     \echo  "\$zshdir is not a directory:  $zshdir"
     return  1
@@ -200,15 +218,16 @@ REPORTTIME=10
   # Note that these backslashes must not have a space preceeding them, nor must the following lines have spaces, as would normally be my scripting style.  Must end with a blank line.
   PATH=\
 "$PATH"\
-:"$(  \realpath  "$zshdir/scripts" )"\
-:"$( \realpath  "$zshdir/../bash/scripts" )"\
+:"$zshdir/scripts"\
+:"$zshdir/../bash/scripts"\
+:'/home/user/.local/bin'\
 
   if [ "$this_kernel_release" = 'Cygwin' ]  \
   || [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]  \
   || [ "$this_kernel_release" = 'Windows Subsystem for Linux 2' ]  \
   ; then
     PATH=\
-"$( \realpath  "$zshdir/../wfl/scripts" )"\
+"$zshdir/../wfl/scripts"\
 :"$PATH"
     fi
   export  PATH
