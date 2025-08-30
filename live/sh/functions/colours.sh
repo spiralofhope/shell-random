@@ -114,19 +114,29 @@ initializeANSI() {
   purple_bold="${boldon}${ANSI_escape_code}${purple}"
   cyan_bold="${boldon}${ANSI_escape_code}${cyan}"
   white_bold="${boldon}${ANSI_escape_code}${white}"
-
   reset_color="${ANSI_escape_code}[0m"
 
-  cursor_position_save='${ANSI_escape_code}[s'
-  cursor_position_restore='${ANSI_escape_code}[u'
+  down="${ANSI_escape_code}[1B"
+  # Go left, life is peaceful there, go left, in the open air...
+  left_all="${ANSI_escape_code}[1000D"
+  carriage_return="${down}${left_all}"
 }
 initializeANSI
+
+
+cursor_position_save() {
+  echo  -n  "${ANSI_escape_code}[s"
+}
+cursor_position_restore() {
+  echo  -n  "${ANSI_escape_code}[u"
+}
 
 
 
 :<< '}'   #  Testing
 {
-  \echo  "${yellow}This is a phrase in yellow${redb} and red"
+  \printf  '%s\n'  "${yellow}yellow:  example using printf"
+  \echo  "${yellow}yellow:  This is a phrase in yellow ${redb}(with a red background)"
   \echo  -n  "${reset_color}"
   \echo  "${ulon}This is underlined${uloff} and this is not"
   \echo  "${boldon}This is bold${boldoff} and this is not"
@@ -135,4 +145,5 @@ initializeANSI
   \echo  "${invon}This is inv${invoff} and this is not"
   \echo  "${yellow}${redb}Warning I ${yellowb}${red}Warning II"
   \echo  -n  "${reset_color}"
+  \echo  "${carriage_return}carriage returns${carriage_return}"
 }

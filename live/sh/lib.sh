@@ -5,6 +5,16 @@
 
 
 
+_debug() {
+  [ $STARTUP_DEBUG ] && echo "$*"
+}
+
+
+
+_debug  '* running sh/lib.sh'
+
+
+
 #:<<'}'  #  Variables
 {
   # --follow-name would allow the file to be edited and less will automatically display changes.
@@ -125,20 +135,20 @@
   _ "*.xls=1;37"  # Microsoft Excel
   export  LS_COLORS
 
-# 2019-11-23
-# The above redirection is to avoid errors with "#" actually trying to be executed.
-#
-# This is seen on Debian 64bit
-#   dash  0.5.10.2-5
-#   zsh   5.7.1-1
-# But not Debian 32bit
-#   dash  0.5.8-2.4
-#   zsh   5.3.1-4+b3
-# But not Windows Subsystem for Linux / Debian
-#   dash  0.5.8-2.4
-#   zsh   5.3.1-4+b3
-#
-# Future self will probably re-discover this problem, so hopefull this note helps.
+  # 2019-11-23
+  # The above redirection is to avoid errors with "#" actually trying to be executed.
+  #
+  # This is seen on Debian 64bit
+  #   dash  0.5.10.2-5
+  #   zsh   5.7.1-1
+  # But not Debian 32bit
+  #   dash  0.5.8-2.4
+  #   zsh   5.3.1-4+b3
+  # But not Windows Subsystem for Linux / Debian
+  #   dash  0.5.8-2.4
+  #   zsh   5.3.1-4+b3
+  #
+  # Future self will probably re-discover this problem, so hopefull this note helps.
 
 }
 

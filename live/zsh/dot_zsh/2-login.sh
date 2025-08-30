@@ -3,5 +3,11 @@
 # Read after zshenv, if the shell is a login shell.
 
 
-# Read the profile from dash/sh:
-source  ~/.profile
+
+_debug() {
+  [ $STARTUP_DEBUG ] && echo "$*"
+}
+
+
+
+_debug  '* running ~/.zsh/2-login.sh'

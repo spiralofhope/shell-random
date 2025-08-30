@@ -3,6 +3,17 @@
 # shellcheck disable=1001
 # ~/.zshrc
 
+
+
+_debug() {
+  [ $STARTUP_DEBUG ] && echo "$*"
+}
+
+
+
+_debug  '* running ~/.zsh/3-interactive.sh'
+
+
 :<<'}'   #  Notes
 {
   man zshoptions
@@ -29,6 +40,7 @@ _zsh_realpath() {
 
 
 
+# 2-login.sh should be running this already:
 :<<'}'
 {
 if [ ! "$shdir" = '' ]; then
@@ -39,7 +51,7 @@ if [ ! "$shdir" = '' ]; then
   .  "$HOME/.profile"
 fi
 }
-  .  "$HOME/.profile"
+#  .  "$HOME/.profile"
 
 
 
@@ -56,34 +68,36 @@ fi
 }
 
 
+_='3-interactive.sh'
+# Taken directly from .profile
 {  # 'source' additional scripting and settings.
-
+  _='.profile'
   _pushd="$PWD"
-  sourceallthat() {
-    #\echo  "sourcing $1"
-    \cd  "$1"  ||  return
-    # shellcheck disable=1091
-    # zshism
-    # shellcheck disable=2039
-    if [ -f 'lib.sh' ]; then  .  ./'lib.sh';  fi
+  _sourceallthat() {
+    \cd  "$1"  ||  return  $?
     for i in *.sh; do
-      if [ "$i" = 'lib.sh' ]; then continue; fi
+      _debug  "... $_ is sourcing $PWD/$i"
       # shellcheck disable=1090
-      # zshism
-      # shellcheck disable=2039
       .  ./"$i"
+      #if $STARTUP_DEBUG; then
+        #.  ./"$i"
+      #else
+        #.  ./"$i"   > /dev/null  2> /dev/null
+      #fi
     done
   }
 
-
-  sourceallthat  "$zshdir/functions/"
-  sourceallthat  "$zshdir/"
-
-
+  .  "$zshdir/lib.sh"
+  _sourceallthat  "$zshdir/functions/"
+  _sourceallthat  "$zshdir/"
   \cd  "$_pushd"  ||  return  $?
   \unset      _pushd
+  \unset  -f  _sourceallthat
+}
 
 
+
+{
   case "${this_kernel_release:?}" in
     'Cygwin')
       sourceallthat  "$zshdir/../babun/"
@@ -94,17 +108,15 @@ fi
       # shellcheck disable=1090
       # zshism
       # shellcheck disable=2039
+      _debug  "... 3-interactive.sh is sourcing $zshdir/../wfl/lib.sh"
       .  "$zshdir/../wfl/lib.sh"
       # shellcheck disable=1090
       # zshism
       # shellcheck disable=2039
+      _debug  "... 3-interactive.sh is sourcing $zshdir/../wfl/aliases.sh"
       .  "$zshdir/../wfl/aliases.sh"
     ;;
   esac
-
-
-  \unset  -f sourceallthat
-
 }
 
 

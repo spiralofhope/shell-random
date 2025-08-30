@@ -3,6 +3,13 @@
 # Manually run by zsh
 
 
+#STARTUP_DEBUG=true
+export STARTUP_DEBUG
+_debug() {
+  [ $STARTUP_DEBUG ] && echo "$*"
+}
+_debug  'running ~/.profile'
+
 
 :<<'}'   #  A common default ~/.profile :
 {
@@ -18,11 +25,16 @@ mesg n || true
 }
 
 
-
-# It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
-shdir="$( \realpath "$( \dirname "$( \realpath  /home/user/.zshrc )" )"/../../sh/ )"
+# It's dumb to leverage the existence of ~/.zshrc like this, but it works for my setup.
+shdir="$( \realpath  '/home/user/.zshrc' )"
+shdir="${shdir%/*}"/../../sh/
+# This shouldn't be needed.  Save startup speed by not launching yet another subshell:
+#shdir="$( \realpath "$shdir" )"
+_debug  ".profile has set \$shdir to $shdir"
 if ! [ -d "$shdir" ]; then
   \echo  "\$shdir is not a directory:  $shdir"
+  shdir=''
+  export  shdir
   return  1
 fi
 export  shdir
@@ -30,37 +42,35 @@ export  shdir
 
 
 {  # 'source' additional scripting and settings.
+  _='.profile'
   _pushd="$PWD"
-  sourceallthat() {
-    #\echo  "sourcing $1"
+  _sourceallthat() {
     \cd  "$1"  ||  return  $?
-    if [ -f 'lib.sh' ]; then
-      # shellcheck disable=1091
-      .  './lib.sh'
-    fi
     for i in *.sh; do
-      if [ "$i" = 'lib.sh' ]; then
-        continue
-      fi
+      _debug  "... $_ is sourcing $PWD/$i"
       # shellcheck disable=1090
-      #\echo  "$i"
-      .  "./$i"
+      .  ./"$i"
+      #if $STARTUP_DEBUG; then
+        #.  ./"$i"
+      #else
+        #.  ./"$i"   > /dev/null  2> /dev/null
+      #fi
     done
   }
 
-  sourceallthat  "$shdir/"
-  sourceallthat  "$shdir/functions/"
+  .  "$shdir/lib.sh"
+  _sourceallthat  "$shdir/"
+  _sourceallthat  "$shdir/functions/"
   \cd  "$_pushd"  ||  return  $?
   \unset      _pushd
-
-  \unset  -f  sourceallthat
+  \unset  -f  _sourceallthat
 }
 
 
 
 #:<<'}'  #  Colors
 {
-  # Note that these backslashes must not have a space preceeding them, nor must the following lines have spaces, as would normally be my scripting style.  Must end with a blank line.
+  # Note that these backslashes must neither have a space preceeding them, nor must the following lines have spaces, as would normally be my scripting style.  Must end with a blank line.
   LS_COLORS=\
 "$LS_COLORS"\
 :"*.desktop=1;37"\
@@ -74,59 +84,44 @@ export  shdir
 
 
 
-#:<<'}'   #  A simple colored prompt
+#:<<'}'   #  Prompt
 {
-  :<<'  }'   #  A simple prompt:
-  {
-  # Single quotes ( ' ) are necessary to keep $PS1 updated.
-  if [ "$USER" = root ];
-    then  PS1='${PWD} # '
-    else  PS1='${PWD} $ '
-  fi
-  }
-
-
-  # ANSI colors
   #
-  # This is from sh/functions/colours.sh , which has more info.
-  initializeANSI
-  #
-  # Alternately it's possible to embed backticks and use ``echo -n <stuff>`  but that would keep executing echo which sounds slow.
+  # Using ANSI colors from  `sh/functions/colours.sh`
+  #   Loaded during  `sourceallthat()`  above.
+  #   \echo  -n  "${yellow}this is a color test${reset_color}"
 
-  #:<<'  }'   #  A simple colored prompt:
-  {
-  # Single quotes ( ' ) are necessary to keep $PS1 updated.
+  #if [ "$( \whoami )" = root ];
+  # more portable than whoami:
+  #if [ "$( \id -un )" = root ];
+  #if [ "$UID" = 0 ];
   if [ "$USER" = root ];
-    then  PS1='${reset_color}${PWD}${boldon}${red} > ${reset_color}'
-    else  PS1='${reset_color}${PWD}${boldon}${blue} > ${reset_color}'
+    then user_prompt_color="$red"
+    else user_prompt_color="$blue"
   fi
-  }
 
 
-  #:<<'  }'   #  A complex prompt:
-  # shellcheck disable=1117
-  sh_prompt() {
-    if [ ${#PWD} -gt 20 ]; then
-      long_prompt='\n'
+  #:<<'  }  # long lines'
+  {
+    if [ $( \ps -p $$ -o comm= ) = 'sh' ]; then
+      prompt_command() {
+        # dash uses PS1 exclusively, and single-quotes for PS1=''
+        if [ ${#PWD} -gt 20 ];
+        then \printf  '%b'  "${reset_color}${PWD}${boldon}${user_prompt_color}\n> ${reset_color}"
+        else \printf  '%s'  "${reset_color}${PWD}${boldon}${user_prompt_color} > ${reset_color}"
+        fi
+      }
+      PS1='$( prompt_command )'
+    else
+      # zsh uses precmd instead, and double-quotes for PS1=""
+      precmd() {
+        if [ ${#PWD} -gt 20 ];
+        then PS1="$( \printf  '%s'  "${reset_color}${PWD}${boldon}${user_prompt_color}${carriage_return}> ${reset_color}" )"
+        else PS1="$( \printf  '%s'  "${reset_color}${PWD}${boldon}${user_prompt_color} > ${reset_color}" )"
+        fi
+      }
     fi
-    \printf  '%b'  "${reset_color}${PWD}${long_prompt}${boldon}${1} > ${reset_color}"
-  }
+  }  # long lines
 
-
-# It's apparently necessary for this to be right here, but I don't know why:
-precmd(){
-  if [ "$( \whoami )" = root ];
-    then  PS1="$( sh_prompt  "${red}"  )"
-    else  PS1="$( sh_prompt  "${blue}" )"
-  fi
+# /Prompt
 }
-
-
-
-}
-
-
-if [ "$USER" = root ];
-  then  PS1='${reset_color}${PWD}${boldon}${red} > ${reset_color}'
-  else  PS1='${reset_color}${PWD}${boldon}${blue} > ${reset_color}'
-fi

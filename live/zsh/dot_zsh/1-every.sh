@@ -4,6 +4,18 @@
 
 
 
+_debug() {
+  [ $STARTUP_DEBUG ] && echo "$*"
+}
+
+
+
+_debug  '* running ~/.zsh/1-every.sh'
+# Read the profile from dash/sh:
+source  ~/.profile
+
+
+
 #  Distinguish between:
 #    Cygwin
 #    Linux
@@ -37,7 +49,7 @@ esac
 if [ "$this_kernel_release" = 'Cygwin' ]; then  exit 0  ; fi
 
 
-if _=$( \which smartctl >> /dev/null )  \
+if whence -p smartctl > /dev/null  \
    &&  [ "$USER" = 'root' ]  \
    &&  [ "$this_kernel_release" = 'Linux' ]
 then
