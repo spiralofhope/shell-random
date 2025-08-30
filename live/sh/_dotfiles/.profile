@@ -41,8 +41,8 @@ export  shdir
 
 
 
+_='.profile'
 {  # 'source' additional scripting and settings.
-  _='.profile'
   _pushd="$PWD"
   _sourceallthat() {
     \cd  "$1"  ||  return  $?
