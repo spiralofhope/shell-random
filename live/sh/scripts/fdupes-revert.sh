@@ -45,7 +45,7 @@ EOF
 input_fdupes_logfile="$1"
 output_script_file="$2"
 # Default
-custom_string="cp -a <source> <dest>"
+custom_string="cp -a '<source>' '<dest>'"
 
 _help() {
   \echo "Generates a shell script to process fdupes deletions with a custom command."
