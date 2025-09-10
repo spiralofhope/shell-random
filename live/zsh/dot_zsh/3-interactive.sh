@@ -3,6 +3,17 @@
 # shellcheck disable=1001
 # ~/.zshrc
 
+
+
+_debug() {
+  [ $STARTUP_DEBUG ] && echo "$*"
+}
+
+
+
+_debug  '* running ~/.zsh/3-interactive.sh'
+
+
 :<<'}'   #  Notes
 {
   man zshoptions
@@ -11,6 +22,25 @@
 }
 
 
+#:<<'}'   #  There is also  `replace-dirname.sh`
+_zsh_dirname() {
+  local dir=${1:-.}
+  local var_name=$2
+  dir=${dir:h}
+  [[ -z $dir ]] && dir=/
+  typeset -g "$var_name=$dir"
+}
+
+
+_zsh_realpath() {
+  local file=$1 var_name=$2
+  typeset -g "$var_name=${file:A}"
+}
+  _zsh_realpath '/home/user/.zshrc' zshdir
+
+
+
+# 2-login.sh should be running this already:
 :<<'}'
 {
 if [ ! "$shdir" = '' ]; then
@@ -21,16 +51,16 @@ if [ ! "$shdir" = '' ]; then
   .  "$HOME/.profile"
 fi
 }
-  .  "$HOME/.profile"
+#  .  "$HOME/.profile"
 
 
 
 #:<<'}'  #  Variables
 {
   # It really isn't quite right to leverage the existence of ~/.zshrc like this, but it works for my setup.
-  zshdir="$( \realpath  /home/user/.zshrc )"
-  zshdir="$( \dirname "$( \dirname "$zshdir" )" )"
-  zshdir="$( \realpath "$zshdir" )"
+  _zsh_realpath '/home/user/.zshrc' zshdir
+  _zsh_dirname "$zshdir" zshdir
+  _zsh_dirname "$zshdir" zshdir
   if ! [ -d "$zshdir" ]; then
     \echo  "\$zshdir is not a directory:  $zshdir"
     return  1
@@ -38,34 +68,35 @@ fi
 }
 
 
+_='3-interactive.sh'
+# Taken directly from .profile
 {  # 'source' additional scripting and settings.
-
   _pushd="$PWD"
-  sourceallthat() {
-    #\echo  "sourcing $1"
-    \cd  "$1"  ||  return
-    # shellcheck disable=1091
-    # zshism
-    # shellcheck disable=2039
-    if [ -f 'lib.sh' ]; then  .  ./'lib.sh';  fi
+  _sourceallthat() {
+    \cd  "$1"  ||  return  $?
     for i in *.sh; do
-      if [ "$i" = 'lib.sh' ]; then continue; fi
+      _debug  "... $_ is sourcing $PWD/$i"
       # shellcheck disable=1090
-      # zshism
-      # shellcheck disable=2039
       .  ./"$i"
+      #if $STARTUP_DEBUG; then
+        #.  ./"$i"
+      #else
+        #.  ./"$i"   > /dev/null  2> /dev/null
+      #fi
     done
   }
 
-
-  sourceallthat  "$zshdir/functions/"
-  sourceallthat  "$zshdir/"
-
-
+  .  "$zshdir/lib.sh"
+  _sourceallthat  "$zshdir/functions/"
+  _sourceallthat  "$zshdir/"
   \cd  "$_pushd"  ||  return  $?
   \unset      _pushd
+  \unset  -f  _sourceallthat
+}
 
 
+
+{
   case "${this_kernel_release:?}" in
     'Cygwin')
       sourceallthat  "$zshdir/../babun/"
@@ -76,17 +107,15 @@ fi
       # shellcheck disable=1090
       # zshism
       # shellcheck disable=2039
+      _debug  "... 3-interactive.sh is sourcing $zshdir/../wfl/lib.sh"
       .  "$zshdir/../wfl/lib.sh"
       # shellcheck disable=1090
       # zshism
       # shellcheck disable=2039
+      _debug  "... 3-interactive.sh is sourcing $zshdir/../wfl/aliases.sh"
       .  "$zshdir/../wfl/aliases.sh"
     ;;
   esac
-
-
-  \unset  -f sourceallthat
-
 }
 
 
@@ -200,15 +229,16 @@ REPORTTIME=10
   # Note that these backslashes must not have a space preceeding them, nor must the following lines have spaces, as would normally be my scripting style.  Must end with a blank line.
   PATH=\
 "$PATH"\
-:"$(  \realpath  "$zshdir/scripts" )"\
-:"$( \realpath  "$zshdir/../bash/scripts" )"\
+:"$zshdir/scripts"\
+:"$zshdir/../bash/scripts"\
+:'/home/user/.local/bin'\
 
   if [ "$this_kernel_release" = 'Cygwin' ]  \
   || [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]  \
   || [ "$this_kernel_release" = 'Windows Subsystem for Linux 2' ]  \
   ; then
     PATH=\
-"$( \realpath  "$zshdir/../wfl/scripts" )"\
+"$zshdir/../wfl/scripts"\
 :"$PATH"
     fi
   export  PATH

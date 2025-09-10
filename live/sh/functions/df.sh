@@ -7,13 +7,13 @@
 #alias  df='\df  --human-readable'
 _df_sorted(){
   _df() {
-    \df  --human-readable  --exclude-type tmpfs  --exclude-type devtmpfs
+    \df  --human-readable  --exclude-type tmpfs  --exclude-type devtmpfs  2> /dev/null
   }
   # The text at the top
   _df |\
-    \head --lines='1'
+    \head --lines='1'  2> /dev/null
   # The actual list of stuff
   _df |\
     \tail --lines='+2'  |\
-    \sort --key="$1"
+    \sort --key="$1"  2> /dev/null
 }

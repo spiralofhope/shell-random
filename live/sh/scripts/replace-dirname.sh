@@ -1,4 +1,6 @@
 #!/usr/bin/env  sh
+# There is also  `zsh-replace-dirname.sh`
+
 
 
 # https://github.com/dylanaraps/pure-sh-bible#get-the-directory-name-of-a-file-path

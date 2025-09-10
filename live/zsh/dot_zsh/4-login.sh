@@ -9,8 +9,17 @@
 
 
 
-if  \
-  _=$( \which  setfont )
+_debug() {
+  [ $STARTUP_DEBUG ] && echo "$*"
+}
+
+
+
+_debug  '* running ~/.zsh/4-login.sh'
+
+
+
+if whence -p setfont > /dev/null
 then
   # No need if booting is otherwise set up correctly:
   # This is technically only usable by root, even though this works..

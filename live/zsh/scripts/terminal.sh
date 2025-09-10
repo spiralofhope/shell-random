@@ -4,6 +4,8 @@
 # shellcheck disable=1001
 
 
+#DEBUG=true
+
 
 # --
 # -- Is a terminal not tabbed?
@@ -48,6 +50,11 @@
 
 
 
+_debug() {
+  [[ $DEBUG ]] && echo "$*"
+}
+
+
 # Sometimes the user knows what they're doing, and there's really no need for this script at all.
 if [ "x$1" = 'xFORCE' ]; then
   # Nuke $1
@@ -56,12 +63,6 @@ if [ "x$1" = 'xFORCE' ]; then
   \setsid  "$@" &
   \exit  0
 fi
-
-
-
-trim_whitespace() {
-  \echo  "$1" | \xargs
-}
 
 
 
@@ -132,15 +133,16 @@ terminal_setup() {
 
 
 
-determine_which_terminal_to_run() {
+_determine_which_terminal_to_run() {
   determine_terminal_existance() {
     for i in "$@"; do
-      i="$( trim_whitespace  "$i" )"
-      if
-        #\which "$i"  > /dev/null  2> /dev/null
-        _=$( \which  "$i" )
+      _debug "checking $i"
+      # Trim whitespace:
+      # (doesn't seem necessary)
+      #i="$( _trim_whitespace  "$i" )"
+      if whence -p "$i" >/dev/null
       then
-        \echo  "$i"
+        terminal_to_run="$i"
         break
       fi
     done
@@ -168,7 +170,7 @@ launch_terminal() {
     \echo  'ERROR:  No valid terminal was found.  Edit this script to add one.'
     exit  1
   else
-    \echo  "Running $1"
+    _debug  "Running $1"
   fi
 
   # The below two lines let me use "$i" to refer to $1 and "$@" to refer to $2 $3 $4 etc.
@@ -335,8 +337,7 @@ launch_terminal() {
       # This dumbass terminal does not have a proper fallback if I use an invalid font.
       # See ~/.Xresources
 
-      if
-        _="$( \realpath xlsfonts )"
+      if whence -p xlsfonts >/dev/null
       then
         \echo "I can probably use a font, trying.."
         # Note - See `man 7 urxvt` for more on fonts, but not that much more.. so good luck.
@@ -476,8 +477,7 @@ launch_terminal() {
 terminal_setup  ''
 #echo "$terminals_with_lines"
 #echo "$terminals_without_lines"
-terminal_to_run="$( determine_which_terminal_to_run  '' )"
-#\echo  "I would launch $terminal_to_run"
+_determine_which_terminal_to_run
 launch_terminal  "$terminal_to_run"
 
 
@@ -493,6 +493,7 @@ exit $?
 
 # st doesn't support scrollback, so I need a multiplexer for that.
 run_tabbed_st_if_they_exist() {
+  # TODO - Don't use realpath, see  `zsh-replace-realpath.sh`
   \realpath \tabbed > /dev/null   ;   local  tabbed ; tabbed=$?   ;   if  [ $tabbed -ne 0 ]; then return 1; fi
   \realpath \st     > /dev/null   ;   local  st     ; st=$?       ;   if  [ $st     -ne 0 ]; then return 1; fi
 
