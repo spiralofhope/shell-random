@@ -223,24 +223,35 @@ REPORTTIME=10
 }
 
 
-
 #:<<'}'   #  Paths
 {
+
+  addpath() {
+    _zsh_realpath "$1" __
   # Note that these backslashes must not have a space preceeding them, nor must the following lines have spaces, as would normally be my scripting style.  Must end with a blank line.
   PATH=\
 "$PATH"\
-:"$zshdir/scripts"\
-:"$zshdir/../bash/scripts"\
-:'/home/user/.local/bin'\
+:"$__"
+  }
+
+addpath  "$zshdir/scripts"
+addpath  "$zshdir/../bash/scripts"
+addpath  "$zshdir/../sh/scripts"
+addpath  '/home/user/.local/bin'
+  #PATH=\
+#"$PATH"\
+#:"$zshdir/scripts"\
+#:"$zshdir/../bash/scripts"\
+#:'/home/user/.local/bin'\
 
   if [ "$this_kernel_release" = 'Cygwin' ]  \
   || [ "$this_kernel_release" = 'Windows Subsystem for Linux' ]  \
   || [ "$this_kernel_release" = 'Windows Subsystem for Linux 2' ]  \
   ; then
-    PATH=\
-"$zshdir/../wfl/scripts"\
-:"$PATH"
-    fi
+    addpath  "$zshdir/../wfl/scripts"
+  fi
+
+  \unset  addpath
   export  PATH
 }
 

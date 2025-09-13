@@ -25,6 +25,7 @@ mesg n || true
 }
 
 
+
 # It's dumb to leverage the existence of ~/.zshrc like this, but it works for my setup.
 shdir="$( \realpath  '/home/user/.zshrc' )"
 shdir="${shdir%/*}"/../../sh/
